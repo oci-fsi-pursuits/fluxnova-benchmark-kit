@@ -22,7 +22,7 @@ If a result cannot be confirmed, refresh Tasklist and inspect whether the task r
 
 ## Deploy and validate
 
-The form (retained in the private research archive) and [BPMN](../workloads/bound-payment-approval.bpmn) are packaged together in the engine deployment. The installed Fluxnova 3.0.1 browser SDK uses `fxn-script` and `fxnForm`; the BPMN parser continues to use its existing Camunda extension namespace. The form uses the SDK's variable lifecycle to fetch display data, retain the original payment hash and submit only `reviewerDecision` plus `reviewedPaymentSha256`. It removes display-only variables from the SDK's submission set. Browser read-only controls and acknowledgment are usability controls; the server's signature, process/screening binding and authenticated-actor checks remain the payment authority.
+The [form](../workloads/forms/payment-review.html) and [BPMN](../workloads/bound-payment-approval.bpmn) are packaged together in the engine deployment. The installed Fluxnova 3.0.1 browser SDK uses `fxn-script` and `fxnForm`; the BPMN parser continues to use its existing Camunda extension namespace. The form uses the SDK's variable lifecycle to fetch display data, retain the original payment hash and submit only `reviewerDecision` plus `reviewedPaymentSha256`. It removes display-only variables from the SDK's submission set. Browser read-only controls and acknowledgment are usability controls; the server's signature, process/screening binding and authenticated-actor checks remain the payment authority.
 
 Using the existing trusted `BENCH_*` environment and private forwards, the focused installer deploys only this definition and form, verifies their hashes, and refuses to change a different current version or an active review definition:
 

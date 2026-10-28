@@ -5,11 +5,23 @@
   "thesis": "Measure how quickly and reliably financial and agentic workflows reach correct, authorized outcomes.",
   "intro": "Fluxnova is the FINOS open-source Java engine for BPMN workflows and DMN decisions.[1] This project adds repeatable workloads, correctness checks and retained evidence so teams can compare a declared change before adopting it. Models can propose actions; workflow policy, review and backend verification control the synthetic payment effect.",
   "results": [
-    ["<b>W01</b><br/>Worker pacing", "Payments within two seconds: <b>600/1,200 to 1,200/1,200</b>. All 2,400 payments correct.[2]", "Five matched OCI burst pairs. Removing the success delay improved timely completion in this workload."],
-    ["<b>W02</b><br/>Parallel checks", "<b>32.1% lower observed p95</b> at the median paired change. All 6,000 payments correct and on time.[3]", "Five matched OCI pairs at 1 start/s. Deadline goodput stayed 1/s; higher capacity was not established."],
-    ["<b>W03</b><br/>Review routing", "Review tasks <b>10 to 4</b>; all four mandatory reviews retained. <b>20/20</b> expected outcomes.[4]", "Local synthetic functional comparison with scripted reviews. No measured human time saving."]
+    [
+      "<b>W01</b><br/>Worker pacing",
+      "Payments within two seconds: <b>600/1,200 to 1,200/1,200</b>. All 2,400 payments correct.[2]",
+      "Five matched OCI burst pairs; reconstructed 100 ms success delay versus idle-only backoff."
+    ],
+    [
+      "<b>W02</b><br/>Parallel checks",
+      "<b>32.1% lower observed p95</b> at the median paired change. All 6,000 payments correct and on time.[3]",
+      "Five matched OCI pairs at 1 start/s. Deadline goodput stayed 1/s; higher capacity was not established."
+    ],
+    [
+      "<b>W03</b><br/>Review routing",
+      "Review tasks <b>10 to 4</b>; all four mandatory reviews retained. <b>20/20</b> expected outcomes.[4]",
+      "Local synthetic functional comparison with scripted reviews. No measured human time saving."
+    ]
   ],
-  "mixed_update": "<b>New research.</b> Mixed traffic now covers approvals, refusals, unknown checks and one-time faults across five dependency profiles. The latest OCI qualification verified 300/300 measured outcomes, retaining 69 deadline misses. The five-pair mixed comparison is running; its effect is not yet established.[5]",
+  "mixed_update": "<b>Mixed-outcome follow-up.</b> Five OCI pairs, sequential to parallel at 1/s: timely settlements rose from 880 to 1,037 of 1,200; timely refusals fell from 780 to 669 of 1,200. All 6,000 outcomes were correct across five dependency profiles. Median paired settlement change: +0.0517/s. All 1,648 deadline misses are retained. [5]",
   "limits": "These are separate synthetic studies. Live-model and human-review time, customer traffic, maximum capacity and complete cost per outcome remain outside these findings.",
   "oci": [
     "<b>Compute-led adoption.</b> The reference uses four fixed VMs and PostgreSQL, without autoscaling. Flexible CPU and memory sizing supports explicit resource budgets; infrastructure consumption is the commercial opportunity.[6]",
@@ -17,17 +29,38 @@
     "<b>Controlled AI integration.</b> OCI offers IAM, Bastion and private model endpoints. Private model connectivity and regulated production readiness were not validated by these tests.[7]"
   ],
   "adoption": "Clone the source. Try <font name=\"Courier\">python -m benchlib.cli demo</font> for an offline report. Reuse workloads and outcome checks, pin artifacts, record the environment and measure one change. The demo generates sample data; it does not run Fluxnova.",
-  "repo_url": "https://github.com/oci-fsi-pursuits/fluxnova-benchmarking",
-  "next": "<b>Next:</b> finish the mixed study and cost attribution, then validate a customer-specific workload. The contribution-ready package is a proposed reusable benchmark protocol, not an adopted FINOS standard. Public release is under review.",
+  "repo_url": "https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit",
+  "next": "<b>Next:</b> validate a customer-specific workload and complete cost attribution. Reuse the Apache 2.0 kit and contribute another controlled comparison. The benchmark protocol is a community proposal, not an adopted FINOS standard.",
   "citation": "Nicholas Cusato, Performance-Testing POV for FINOS Fluxnova on OCI, v1.1 (2026), and the benchmark implementation. Results through 28 October 2026 UTC.",
-  "credit": "Fluxnova software and original logo: FINOS community. Research and OCI implementation: Nicholas Cusato. Source repository currently requires access. No OCI price or performance superiority is claimed.",
+  "credit": "Fluxnova software and original logo: FINOS community. Research and OCI implementation: Nicholas Cusato. Code: Apache 2.0; logos retain their terms. No OCI price or performance superiority is claimed.",
   "sources": [
-    {"label":"FINOS Fluxnova","url":"https://fluxnova.finos.org/engine"},
-    {"label":"W01 evidence","url":"https://github.com/oci-fsi-pursuits/fluxnova-benchmarking/blob/6b54359/validation/oci-20261027-w01-comparison/README.md"},
-    {"label":"W02 evidence","url":"https://github.com/oci-fsi-pursuits/fluxnova-benchmarking/blob/6b54359/validation/oci-20261027-w02-comparison/README.md"},
-    {"label":"W03 evidence","url":"https://github.com/oci-fsi-pursuits/fluxnova-benchmarking/blob/6b54359/validation/local-20261027-w03/README.md"},
-    {"label":"Mixed study status","url":"https://github.com/oci-fsi-pursuits/fluxnova-benchmarking/blob/main/docs/status.md"},
-    {"label":"OCI Compute","url":"https://docs.oracle.com/en-us/iaas/Content/Compute/References/computeshapes.htm"},
-    {"label":"Private model access","url":"https://docs.oracle.com/en-us/iaas/Content/generative-ai/private-endpoint.htm"}
+    {
+      "label": "FINOS Fluxnova",
+      "url": "https://fluxnova.finos.org/engine"
+    },
+    {
+      "label": "W01 evidence",
+      "url": "https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit/blob/ffe7f29317fe357d8720e0f268b3c4e1fb5ba9e2/validation/oci-20261027-w01-comparison/README.md"
+    },
+    {
+      "label": "W02 evidence",
+      "url": "https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit/blob/ffe7f29317fe357d8720e0f268b3c4e1fb5ba9e2/validation/oci-20261027-w02-comparison/README.md"
+    },
+    {
+      "label": "W03 evidence",
+      "url": "https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit/blob/ffe7f29317fe357d8720e0f268b3c4e1fb5ba9e2/validation/local-20261027-w03/README.md"
+    },
+    {
+      "label": "Mixed study evidence",
+      "url": "https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit/blob/main/validation/oci-20261028-w02-mixed-comparison/README.md"
+    },
+    {
+      "label": "OCI Compute",
+      "url": "https://docs.oracle.com/en-us/iaas/Content/Compute/References/computeshapes.htm"
+    },
+    {
+      "label": "Private model access",
+      "url": "https://docs.oracle.com/en-us/iaas/Content/generative-ai/private-endpoint.htm"
+    }
   ]
 }

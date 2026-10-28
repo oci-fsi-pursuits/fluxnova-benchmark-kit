@@ -7,8 +7,8 @@ Start with reporting, then choose a functional or measured study. Use a source c
 With Git and Python 3.12+ installed:
 
 ```bash
-git clone https://github.com/oci-fsi-pursuits/fluxnova-benchmarking.git
-cd fluxnova-benchmarking
+git clone https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit.git
+cd fluxnova-benchmark-kit
 python -m benchlib.cli demo
 ```
 
@@ -17,6 +17,7 @@ The command prints HTML, JSON, CSV and Markdown paths under `runs/`. Its generat
 ```bash
 python scripts/open_report.py --path "PATH_TO_REPORT.html"
 python scripts/open_report.py --path docs/assets/fluxnova-research-brief-20261028.pdf
+python scripts/open_report.py --path docs/results/w02-mixed/report.html
 ```
 
 The launcher opens a local file in your default viewer. It starts no server, cloud resource or workload. Copy saved HTML and adjacent JSON/manifest files together. Historical private study exports referenced in documentation are not included in a fresh clone.

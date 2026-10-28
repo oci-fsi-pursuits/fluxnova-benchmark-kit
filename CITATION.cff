@@ -7,7 +7,7 @@ authors:
     given-names: Nicholas
 version: 0.1.0
 license: Apache-2.0
-repository-code: https://github.com/oci-fsi-pursuits/fluxnova-benchmarking
+repository-code: https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit
 abstract: Independent research toolkit for repeatable financial and agentic workflow comparisons, outcome verification and retained evidence, with an OCI reference implementation.
 keywords:
   - workflow benchmarking

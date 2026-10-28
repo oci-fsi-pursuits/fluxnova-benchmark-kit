@@ -1,6 +1,6 @@
 # Release policy and readiness
 
-The release owner approved Apache 2.0 and a clean companion repository on 28 October 2026 UTC. [LICENSE](../LICENSE) is now applied to this code. The intended destination is `oci-fsi-pursuits/fluxnova-benchmark-kit`. Keep it private until the remaining pattern study and release checks below are complete. Logos, trademarks and third-party dependencies retain their own terms.
+The release owner approved Apache 2.0 and a clean companion repository on 28 October 2026 UTC. [LICENSE](../LICENSE) applies to this code. The destination is `oci-fsi-pursuits/fluxnova-benchmark-kit`. Publication requires matching test and sanitization receipts for its commit. Logos, trademarks and third-party dependencies retain their own terms.
 
 ## Final documents only
 
@@ -30,11 +30,13 @@ The export refuses dirty sources, unreviewed binaries, changed final assets, pri
 4. Build the clean package, verify its document inventory, scan both snapshot and new Git history, and run tests plus the offline demo on Windows and Linux. Check public destination links and file access.
 5. Publish the clean companion only after these checks pass. The original research repository stays private. No upstream message or PR is part of this release.
 
-The preceding source gate (`b253b29`) passed 385 tests and CI on Linux/Python 3.12 and Windows/Python 3.13. The final candidate must repeat the checks appropriate to its changes; historical CI is not a substitute for checking the release source.
+The [mixed-pattern series](../validation/oci-20261028-w02-mixed-comparison/README.md) completed all ten arms, with 6,000 correct measured outcomes and all 1,648 deadline misses retained. Independent audit verified 527 exported files. Owned cleanup, original-reference preservation, browser checks and visual review passed. Settlement timeliness improved and refusal timeliness worsened; both findings are included in the final brief. The released source must also pass [its own CI](https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit/actions/workflows/ci.yml); historical CI is not a substitute.
+
+The source exporter reads committed file bytes and normalizes rewritten Markdown to LF. Its hashes therefore describe the committed release across Windows and Linux checkouts, not incidental workstation line endings. Deployed HTML forms and telemetry requirements remain application resources, separate from excluded document drafts.
 
 ## Secret-scan review
 
-The initial private history inventory covered 1,043 blobs across 112 commits. Its 18 Gitleaks matches were verified source-file SHA-256 values, explicit example identifiers and a Terraform enum. Historical exceptions are exact fingerprints. Fresh snapshots permit only the exact safe values in the named files, with all default rules enabled. A negative control verified detection of synthetic token replacements in all five named example files. No production credential was used.
+The initial private history inventory covered 1,043 blobs across 112 commits. Its 18 Gitleaks matches were verified source-file SHA-256 values, explicit example identifiers and a Terraform enum. Historical exceptions are exact fingerprints retained only in the private research checkout; the clean export inherits none of them. Fresh snapshots permit only the exact safe values in the named files, with all default rules enabled. A negative control verified detection of synthetic token replacements in all five named example files. No production credential was used.
 
 ## Upstream route
 

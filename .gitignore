@@ -41,6 +41,8 @@ config.ready.json
 !/docs/
 !/presentations/
 !/docs/assets/
+!/docs/results/
+!/docs/results/w02-mixed/
 !/docs/README.md
 !/docs/approval-agent.md
 !/docs/assets/README.md
@@ -61,6 +63,9 @@ config.ready.json
 !/docs/remote-deployment.md
 !/docs/reproduce.md
 !/docs/research-brief.md
+!/docs/results/w02-mixed/manifest.json
+!/docs/results/w02-mixed/report.html
+!/docs/results/w02-mixed/summary.json
 !/docs/state-checkpoints.md
 !/docs/upstream-proposal.md
 !/docs/w01-worker-pacing.md

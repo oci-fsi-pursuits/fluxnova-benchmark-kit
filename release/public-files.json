@@ -2,7 +2,7 @@
   "schema_version": 1,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
-  "publication_status": "hold_until_pattern_audit_and_sanitization_complete",
+  "publication_status": "approved_subject_to_matching_ci_and_sanitization_receipts",
   "documents": [
     "docs/README.md",
     "docs/getting-started.md",
@@ -38,7 +38,10 @@
     "docs/assets/README.md",
     "docs/assets/fluxnova-logo.png",
     "docs/assets/fluxnova-research-brief-20261028.pdf",
-    "presentations/fluxnova-team-brief-20261028.json"
+    "presentations/fluxnova-team-brief-20261028.json",
+    "docs/results/w02-mixed/report.html",
+    "docs/results/w02-mixed/summary.json",
+    "docs/results/w02-mixed/manifest.json"
   ],
   "evidence_directories": [
     "validation/oci-20261027-w01-comparison",
@@ -48,11 +51,15 @@
     "validation/local-20261028-w02-mixed-load",
     "validation/oci-20261028-w02-mixed-qualification",
     "validation/oci-20261028-w02-mixed-requalification",
-    "validation/local-20261028-w02-cloud-view"
+    "validation/local-20261028-w02-cloud-view",
+    "validation/oci-20261028-w02-mixed-comparison"
   ],
-  "evidence_filenames": ["README.md", "summary.json"],
+  "evidence_filenames": [
+    "README.md",
+    "summary.json"
+  ],
   "reviewed_assets": {
     "docs/assets/fluxnova-logo.png": "2f989041af4b4237dff14316e011b4afc93fa5962c8f041728a5a7dd8845b177",
-    "docs/assets/fluxnova-research-brief-20261028.pdf": "63e914fb185f853e3e63d47bb371a381696ad5bac53870a42d27b327d5a50711"
+    "docs/assets/fluxnova-research-brief-20261028.pdf": "39170a4508f8edef2ae335400cb0a1ea1598ddfb7cafc1fa6dbc66c726d64e55"
   }
 }

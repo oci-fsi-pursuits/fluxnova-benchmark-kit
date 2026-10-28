@@ -1,5 +1,9 @@
 # Browser automation for the workload demos
 
+The completed [W02-M2 saved report](results/w02-mixed/report.html) is included in the checkout. Open it without a cloud account using `python scripts/open_report.py --path docs/results/w02-mixed/report.html`.
+
+All ten arms passed independent audit. Browser verification checked six outcome rows, fifteen paired rows and fifty dependency-profile rows, including the refusal-timeliness regression. Keyboard navigation, evidence links, desktop/laptop layout and visual review passed. Opening the page makes no external network requests and starts no workload.
+
 Use Playwright with Chrome to repeat the browser review. It can select a case, switch comparison arms, check displayed outcomes against the original evidence, follow the evidence link, take screenshots and record a walkthrough. This path does not depend on the desktop automation connection.
 
 The current runners open a fresh browser context. They read saved local bundles, block HTTP/HTTPS requests and execute no new payments or model calls. The existing live Fluxnova Tasklist path is a separate demonstration: it needs authenticated engine access, temporary synthetic cases and an explicit cleanup/reconciliation step. A saved-viewer pass is not a new live-Tasklist pass.

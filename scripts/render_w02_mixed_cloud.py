@@ -121,9 +121,9 @@ def browser_check(result,output,review,playwright_path=None):
                     expect(detail.locator('tbody tr').nth(j).locator('th,td')).to_have_text(wanted);profile_rows+=1
                 detail.locator('summary').click()
             page.evaluate('scrollTo(0,0)');page.screenshot(path=str(review/'desktop-top.png'))
-            keyboard_checked=page.locator('details').count()>0
+            keyboard_checked=page.locator('details.profile').count()>0
             if keyboard_checked:
-                first=page.locator('details').first;first.locator('summary').focus();page.keyboard.press('Enter')
+                first=page.locator('details.profile').first;first.locator('summary').focus();page.keyboard.press('Enter')
                 expect(first).to_have_attribute('open','');first.scroll_into_view_if_needed();page.screenshot(path=str(review/'profile-detail.png'))
             page.locator('#evidence').click();page.wait_for_url('**/summary.json');assert json.loads(page.locator('body').inner_text())==result
             page.go_back();page.set_viewport_size({'width':1366,'height':768});page.evaluate('scrollTo(0,0)')

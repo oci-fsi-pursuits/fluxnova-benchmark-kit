@@ -1,0 +1,1557 @@
+{
+  "status": "complete",
+  "study_id": "w02_m2",
+  "completed_arms": 10,
+  "planned_arms": 10,
+  "source_commit": "2eb03249e65018e226efd21e3e3f50ab24f66ed6",
+  "population": "Repeated seeded 50-case synthetic grid: 40% settled, 40% refused, 20% safe unknown-check stops; five delay profiles and one-time faults",
+  "rate_per_s": 1,
+  "measurement_s_per_arm": 600,
+  "primary_outcome": "Paired change in correct settlements observed within 2 seconds per measurement second",
+  "deadline_s": 2,
+  "poll_interval_ms": 100,
+  "arms": [
+    {
+      "pair": 1,
+      "arm": "sequential",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "verified": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "outcomes": {
+        "settled": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 179,
+          "deadline_misses": 61,
+          "observed_p95_ms": 3761.185734000009,
+          "observed_p99_ms": 4107.510401000013
+        },
+        "rejected": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 156,
+          "deadline_misses": 84,
+          "observed_p95_ms": 3373.544141000025,
+          "observed_p99_ms": 3389.1161159999965
+        },
+        "blocked": {
+          "expected": 120,
+          "verified": 120,
+          "within_deadline": 88,
+          "deadline_misses": 32,
+          "observed_p95_ms": 2777.159324999985,
+          "observed_p99_ms": 2891.375747999973
+        }
+      },
+      "on_time_settlements_per_s": 0.29833333333333334,
+      "warmup_offered": 100,
+      "warmup_verified": 100
+    },
+    {
+      "pair": 1,
+      "arm": "parallel",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "verified": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "outcomes": {
+        "settled": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 209,
+          "deadline_misses": 31,
+          "observed_p95_ms": 3523.5094139999887,
+          "observed_p99_ms": 3745.76255300002
+        },
+        "rejected": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 133,
+          "deadline_misses": 107,
+          "observed_p95_ms": 3250.4393399999854,
+          "observed_p99_ms": 3728.89931200001
+        },
+        "blocked": {
+          "expected": 120,
+          "verified": 120,
+          "within_deadline": 108,
+          "deadline_misses": 12,
+          "observed_p95_ms": 2286.823996999999,
+          "observed_p99_ms": 2399.681763999979
+        }
+      },
+      "on_time_settlements_per_s": 0.34833333333333333,
+      "warmup_offered": 100,
+      "warmup_verified": 100
+    },
+    {
+      "pair": 2,
+      "arm": "parallel",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "verified": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "outcomes": {
+        "settled": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 208,
+          "deadline_misses": 32,
+          "observed_p95_ms": 3614.849595999999,
+          "observed_p99_ms": 3747.4044890000187
+        },
+        "rejected": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 138,
+          "deadline_misses": 102,
+          "observed_p95_ms": 3263.493270999959,
+          "observed_p99_ms": 3623.705603000019
+        },
+        "blocked": {
+          "expected": 120,
+          "verified": 120,
+          "within_deadline": 108,
+          "deadline_misses": 12,
+          "observed_p95_ms": 2286.303014999987,
+          "observed_p99_ms": 2399.595825999995
+        }
+      },
+      "on_time_settlements_per_s": 0.3466666666666667,
+      "warmup_offered": 100,
+      "warmup_verified": 100
+    },
+    {
+      "pair": 2,
+      "arm": "sequential",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "verified": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "outcomes": {
+        "settled": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 171,
+          "deadline_misses": 69,
+          "observed_p95_ms": 3865.4442040000276,
+          "observed_p99_ms": 4114.479110999981
+        },
+        "rejected": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 156,
+          "deadline_misses": 84,
+          "observed_p95_ms": 3373.4238040000264,
+          "observed_p99_ms": 3389.9304849999794
+        },
+        "blocked": {
+          "expected": 120,
+          "verified": 120,
+          "within_deadline": 88,
+          "deadline_misses": 32,
+          "observed_p95_ms": 2884.157818999938,
+          "observed_p99_ms": 2891.0084299999994
+        }
+      },
+      "on_time_settlements_per_s": 0.285,
+      "warmup_offered": 100,
+      "warmup_verified": 100
+    },
+    {
+      "pair": 3,
+      "arm": "sequential",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "verified": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "outcomes": {
+        "settled": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 178,
+          "deadline_misses": 62,
+          "observed_p95_ms": 3877.373487,
+          "observed_p99_ms": 4111.587826999994
+        },
+        "rejected": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 156,
+          "deadline_misses": 84,
+          "observed_p95_ms": 3369.9473279999665,
+          "observed_p99_ms": 3384.658026000011
+        },
+        "blocked": {
+          "expected": 120,
+          "verified": 120,
+          "within_deadline": 90,
+          "deadline_misses": 30,
+          "observed_p95_ms": 2883.783917999949,
+          "observed_p99_ms": 2896.275440000011
+        }
+      },
+      "on_time_settlements_per_s": 0.2966666666666667,
+      "warmup_offered": 100,
+      "warmup_verified": 100
+    },
+    {
+      "pair": 3,
+      "arm": "parallel",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "verified": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "outcomes": {
+        "settled": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 209,
+          "deadline_misses": 31,
+          "observed_p95_ms": 3512.0224169999974,
+          "observed_p99_ms": 3740.3912389999905
+        },
+        "rejected": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 132,
+          "deadline_misses": 108,
+          "observed_p95_ms": 3242.58981600002,
+          "observed_p99_ms": 3729.937815000028
+        },
+        "blocked": {
+          "expected": 120,
+          "verified": 120,
+          "within_deadline": 108,
+          "deadline_misses": 12,
+          "observed_p95_ms": 2289.5417289999787,
+          "observed_p99_ms": 2399.046261999956
+        }
+      },
+      "on_time_settlements_per_s": 0.34833333333333333,
+      "warmup_offered": 100,
+      "warmup_verified": 100
+    },
+    {
+      "pair": 4,
+      "arm": "parallel",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "verified": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "outcomes": {
+        "settled": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 206,
+          "deadline_misses": 34,
+          "observed_p95_ms": 3531.680563000009,
+          "observed_p99_ms": 3740.0190469999757
+        },
+        "rejected": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 132,
+          "deadline_misses": 108,
+          "observed_p95_ms": 3251.5563199999915,
+          "observed_p99_ms": 3724.468744000035
+        },
+        "blocked": {
+          "expected": 120,
+          "verified": 120,
+          "within_deadline": 107,
+          "deadline_misses": 13,
+          "observed_p95_ms": 2283.6227419999773,
+          "observed_p99_ms": 2399.7527489999584
+        }
+      },
+      "on_time_settlements_per_s": 0.3433333333333333,
+      "warmup_offered": 100,
+      "warmup_verified": 100
+    },
+    {
+      "pair": 4,
+      "arm": "sequential",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "verified": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "outcomes": {
+        "settled": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 175,
+          "deadline_misses": 65,
+          "observed_p95_ms": 3869.877526000039,
+          "observed_p99_ms": 4106.431198999985
+        },
+        "rejected": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 156,
+          "deadline_misses": 84,
+          "observed_p95_ms": 3376.481746999957,
+          "observed_p99_ms": 3389.436077999989
+        },
+        "blocked": {
+          "expected": 120,
+          "verified": 120,
+          "within_deadline": 92,
+          "deadline_misses": 28,
+          "observed_p95_ms": 2771.809492999978,
+          "observed_p99_ms": 2888.3499009999696
+        }
+      },
+      "on_time_settlements_per_s": 0.2916666666666667,
+      "warmup_offered": 100,
+      "warmup_verified": 100
+    },
+    {
+      "pair": 5,
+      "arm": "sequential",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "verified": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "outcomes": {
+        "settled": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 177,
+          "deadline_misses": 63,
+          "observed_p95_ms": 3873.628108000048,
+          "observed_p99_ms": 4114.0931850000015
+        },
+        "rejected": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 156,
+          "deadline_misses": 84,
+          "observed_p95_ms": 3379.1099310000163,
+          "observed_p99_ms": 3392.78187299999
+        },
+        "blocked": {
+          "expected": 120,
+          "verified": 120,
+          "within_deadline": 89,
+          "deadline_misses": 31,
+          "observed_p95_ms": 2884.5178949999877,
+          "observed_p99_ms": 2896.845710999997
+        }
+      },
+      "on_time_settlements_per_s": 0.295,
+      "warmup_offered": 100,
+      "warmup_verified": 100
+    },
+    {
+      "pair": 5,
+      "arm": "parallel",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "verified": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "outcomes": {
+        "settled": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 205,
+          "deadline_misses": 35,
+          "observed_p95_ms": 3527.0578699999933,
+          "observed_p99_ms": 3745.7627060000223
+        },
+        "rejected": {
+          "expected": 240,
+          "verified": 240,
+          "within_deadline": 134,
+          "deadline_misses": 106,
+          "observed_p95_ms": 3250.5043369999953,
+          "observed_p99_ms": 3628.7671309999896
+        },
+        "blocked": {
+          "expected": 120,
+          "verified": 120,
+          "within_deadline": 108,
+          "deadline_misses": 12,
+          "observed_p95_ms": 2285.9540000000607,
+          "observed_p99_ms": 2404.4120670000098
+        }
+      },
+      "on_time_settlements_per_s": 0.3416666666666667,
+      "warmup_offered": 100,
+      "warmup_verified": 100
+    }
+  ],
+  "comparison": {
+    "paired_runs": [
+      {
+        "pair": 1,
+        "sequential_on_time_settlements_per_s": 0.29833333333333334,
+        "parallel_on_time_settlements_per_s": 0.34833333333333333,
+        "parallel_on_time_settlement_change_per_s": 0.04999999999999999,
+        "outcomes": {
+          "settled": {
+            "sequential_within_deadline": 179,
+            "parallel_within_deadline": 209,
+            "parallel_on_time_fraction_change_percentage_points": 12.5,
+            "sequential_p95_ms": 3761.185734000009,
+            "parallel_p95_ms": 3523.5094139999887
+          },
+          "rejected": {
+            "sequential_within_deadline": 156,
+            "parallel_within_deadline": 133,
+            "parallel_on_time_fraction_change_percentage_points": -9.583333333333334,
+            "sequential_p95_ms": 3373.544141000025,
+            "parallel_p95_ms": 3250.4393399999854
+          },
+          "blocked": {
+            "sequential_within_deadline": 88,
+            "parallel_within_deadline": 108,
+            "parallel_on_time_fraction_change_percentage_points": 16.666666666666668,
+            "sequential_p95_ms": 2777.159324999985,
+            "parallel_p95_ms": 2286.823996999999
+          }
+        }
+      },
+      {
+        "pair": 2,
+        "sequential_on_time_settlements_per_s": 0.285,
+        "parallel_on_time_settlements_per_s": 0.3466666666666667,
+        "parallel_on_time_settlement_change_per_s": 0.0616666666666667,
+        "outcomes": {
+          "settled": {
+            "sequential_within_deadline": 171,
+            "parallel_within_deadline": 208,
+            "parallel_on_time_fraction_change_percentage_points": 15.416666666666666,
+            "sequential_p95_ms": 3865.4442040000276,
+            "parallel_p95_ms": 3614.849595999999
+          },
+          "rejected": {
+            "sequential_within_deadline": 156,
+            "parallel_within_deadline": 138,
+            "parallel_on_time_fraction_change_percentage_points": -7.5,
+            "sequential_p95_ms": 3373.4238040000264,
+            "parallel_p95_ms": 3263.493270999959
+          },
+          "blocked": {
+            "sequential_within_deadline": 88,
+            "parallel_within_deadline": 108,
+            "parallel_on_time_fraction_change_percentage_points": 16.666666666666668,
+            "sequential_p95_ms": 2884.157818999938,
+            "parallel_p95_ms": 2286.303014999987
+          }
+        }
+      },
+      {
+        "pair": 3,
+        "sequential_on_time_settlements_per_s": 0.2966666666666667,
+        "parallel_on_time_settlements_per_s": 0.34833333333333333,
+        "parallel_on_time_settlement_change_per_s": 0.05166666666666664,
+        "outcomes": {
+          "settled": {
+            "sequential_within_deadline": 178,
+            "parallel_within_deadline": 209,
+            "parallel_on_time_fraction_change_percentage_points": 12.916666666666666,
+            "sequential_p95_ms": 3877.373487,
+            "parallel_p95_ms": 3512.0224169999974
+          },
+          "rejected": {
+            "sequential_within_deadline": 156,
+            "parallel_within_deadline": 132,
+            "parallel_on_time_fraction_change_percentage_points": -10.0,
+            "sequential_p95_ms": 3369.9473279999665,
+            "parallel_p95_ms": 3242.58981600002
+          },
+          "blocked": {
+            "sequential_within_deadline": 90,
+            "parallel_within_deadline": 108,
+            "parallel_on_time_fraction_change_percentage_points": 15.0,
+            "sequential_p95_ms": 2883.783917999949,
+            "parallel_p95_ms": 2289.5417289999787
+          }
+        }
+      },
+      {
+        "pair": 4,
+        "sequential_on_time_settlements_per_s": 0.2916666666666667,
+        "parallel_on_time_settlements_per_s": 0.3433333333333333,
+        "parallel_on_time_settlement_change_per_s": 0.05166666666666664,
+        "outcomes": {
+          "settled": {
+            "sequential_within_deadline": 175,
+            "parallel_within_deadline": 206,
+            "parallel_on_time_fraction_change_percentage_points": 12.916666666666666,
+            "sequential_p95_ms": 3869.877526000039,
+            "parallel_p95_ms": 3531.680563000009
+          },
+          "rejected": {
+            "sequential_within_deadline": 156,
+            "parallel_within_deadline": 132,
+            "parallel_on_time_fraction_change_percentage_points": -10.0,
+            "sequential_p95_ms": 3376.481746999957,
+            "parallel_p95_ms": 3251.5563199999915
+          },
+          "blocked": {
+            "sequential_within_deadline": 92,
+            "parallel_within_deadline": 107,
+            "parallel_on_time_fraction_change_percentage_points": 12.5,
+            "sequential_p95_ms": 2771.809492999978,
+            "parallel_p95_ms": 2283.6227419999773
+          }
+        }
+      },
+      {
+        "pair": 5,
+        "sequential_on_time_settlements_per_s": 0.295,
+        "parallel_on_time_settlements_per_s": 0.3416666666666667,
+        "parallel_on_time_settlement_change_per_s": 0.04666666666666669,
+        "outcomes": {
+          "settled": {
+            "sequential_within_deadline": 177,
+            "parallel_within_deadline": 205,
+            "parallel_on_time_fraction_change_percentage_points": 11.666666666666666,
+            "sequential_p95_ms": 3873.628108000048,
+            "parallel_p95_ms": 3527.0578699999933
+          },
+          "rejected": {
+            "sequential_within_deadline": 156,
+            "parallel_within_deadline": 134,
+            "parallel_on_time_fraction_change_percentage_points": -9.166666666666666,
+            "sequential_p95_ms": 3379.1099310000163,
+            "parallel_p95_ms": 3250.5043369999953
+          },
+          "blocked": {
+            "sequential_within_deadline": 89,
+            "parallel_within_deadline": 108,
+            "parallel_on_time_fraction_change_percentage_points": 15.833333333333334,
+            "sequential_p95_ms": 2884.5178949999877,
+            "parallel_p95_ms": 2285.9540000000607
+          }
+        }
+      }
+    ],
+    "arms": {
+      "sequential": {
+        "offered": 3000,
+        "verified": 3000,
+        "on_time_settlements_per_s": 0.29333333333333333,
+        "outcomes": {
+          "settled": {
+            "expected": 1200,
+            "verified": 1200,
+            "within_deadline": 880,
+            "deadline_misses": 320,
+            "median_of_run_p95_ms": 3869.877526000039,
+            "median_of_run_p99_ms": 4111.587826999994
+          },
+          "rejected": {
+            "expected": 1200,
+            "verified": 1200,
+            "within_deadline": 780,
+            "deadline_misses": 420,
+            "median_of_run_p95_ms": 3373.544141000025,
+            "median_of_run_p99_ms": 3389.436077999989
+          },
+          "blocked": {
+            "expected": 600,
+            "verified": 600,
+            "within_deadline": 447,
+            "deadline_misses": 153,
+            "median_of_run_p95_ms": 2883.783917999949,
+            "median_of_run_p99_ms": 2891.375747999973
+          }
+        }
+      },
+      "parallel": {
+        "offered": 3000,
+        "verified": 3000,
+        "on_time_settlements_per_s": 0.3456666666666667,
+        "outcomes": {
+          "settled": {
+            "expected": 1200,
+            "verified": 1200,
+            "within_deadline": 1037,
+            "deadline_misses": 163,
+            "median_of_run_p95_ms": 3527.0578699999933,
+            "median_of_run_p99_ms": 3745.76255300002
+          },
+          "rejected": {
+            "expected": 1200,
+            "verified": 1200,
+            "within_deadline": 669,
+            "deadline_misses": 531,
+            "median_of_run_p95_ms": 3250.5043369999953,
+            "median_of_run_p99_ms": 3724.468744000035
+          },
+          "blocked": {
+            "expected": 600,
+            "verified": 600,
+            "within_deadline": 539,
+            "deadline_misses": 61,
+            "median_of_run_p95_ms": 2286.303014999987,
+            "median_of_run_p99_ms": 2399.681763999979
+          }
+        }
+      }
+    },
+    "median_paired_on_time_settlement_change_per_s": 0.05166666666666664,
+    "paired_on_time_settlement_change_per_s_range": [
+      0.04666666666666669,
+      0.0616666666666667
+    ],
+    "interpretation": "Positive change means more timely settlements in parallel; negative means fewer. Refusals and safe stops remain separate outcomes."
+  },
+  "limits": [
+    "No representative-customer, live-model or sustainable-capacity claim. Expected refusals and safe stops are not settlements.",
+    "Observed completion includes 100 ms history polling.",
+    "Five paired changes; their range is not a confidence interval.",
+    "Shared-controller OCI topology differs from P01.",
+    "Run percentiles are not pooled request percentiles; warmup outcomes are separate."
+  ],
+  "scope": "OCI synthetic mixed-outcome workflow study",
+  "phase": "campaign",
+  "functional_audit": {
+    "cases": 20,
+    "effects": 8,
+    "repeated_calls": 120,
+    "premature_effect_refusals": 20,
+    "cross_process_replays_blocked": 2
+  },
+  "measurement_outcomes": {
+    "settled": 2400,
+    "rejected": 2400,
+    "blocked": 1200
+  },
+  "warmup_outcomes": {
+    "settled": 400,
+    "rejected": 400,
+    "blocked": 200
+  },
+  "persisted_store_totals": {
+    "cases": 7000,
+    "effects": 2800,
+    "receipts": 21000,
+    "injected_once_faults": 1400
+  },
+  "persisted_store_audit": [
+    {
+      "folder": "p1-1-sequential",
+      "cases": 700,
+      "effects": 280,
+      "receipts": 2100,
+      "injected_once_faults": 140,
+      "measurement_profiles": {
+        "kyc_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "rejected": 48,
+            "settled": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "rejected": 36,
+            "settled": 36,
+            "blocked": 24
+          }
+        },
+        "balanced": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 47,
+            "blocked": 16,
+            "rejected": 48
+          }
+        },
+        "both_slow": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 0,
+            "blocked": 0,
+            "rejected": 0
+          }
+        },
+        "risk_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 24,
+            "blocked": 24
+          }
+        },
+        "fast": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 101,
+        "host_cpu_p95_percent": 8.20948336871904,
+        "minimum_memory_available_fraction": 0.8845269229058645,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "reset_fingerprint": "0880abec6324f885c954c0ba744be821555c69554a735393df364e01cff0ba60"
+    },
+    {
+      "folder": "p1-2-parallel",
+      "cases": 700,
+      "effects": 280,
+      "receipts": 2100,
+      "injected_once_faults": 140,
+      "measurement_profiles": {
+        "kyc_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "rejected": 48,
+            "settled": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "rejected": 25,
+            "settled": 36,
+            "blocked": 24
+          }
+        },
+        "balanced": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          }
+        },
+        "both_slow": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 29,
+            "blocked": 24,
+            "rejected": 12
+          }
+        },
+        "risk_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 0,
+            "blocked": 12
+          }
+        },
+        "fast": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 101,
+        "host_cpu_p95_percent": 8.130081300813007,
+        "minimum_memory_available_fraction": 0.8712532678293109,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "reset_fingerprint": "0880abec6324f885c954c0ba744be821555c69554a735393df364e01cff0ba60"
+    },
+    {
+      "folder": "p2-1-parallel",
+      "cases": 700,
+      "effects": 280,
+      "receipts": 2100,
+      "injected_once_faults": 140,
+      "measurement_profiles": {
+        "kyc_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "rejected": 48,
+            "settled": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "rejected": 27,
+            "settled": 36,
+            "blocked": 24
+          }
+        },
+        "balanced": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          }
+        },
+        "both_slow": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 28,
+            "blocked": 24,
+            "rejected": 12
+          }
+        },
+        "risk_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 3,
+            "blocked": 12
+          }
+        },
+        "fast": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 101,
+        "host_cpu_p95_percent": 8.442710180915213,
+        "minimum_memory_available_fraction": 0.8796771685215116,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "reset_fingerprint": "0880abec6324f885c954c0ba744be821555c69554a735393df364e01cff0ba60"
+    },
+    {
+      "folder": "p2-2-sequential",
+      "cases": 700,
+      "effects": 280,
+      "receipts": 2100,
+      "injected_once_faults": 140,
+      "measurement_profiles": {
+        "kyc_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "rejected": 48,
+            "settled": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "rejected": 36,
+            "settled": 33,
+            "blocked": 24
+          }
+        },
+        "balanced": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 43,
+            "blocked": 16,
+            "rejected": 48
+          }
+        },
+        "both_slow": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 0,
+            "blocked": 0,
+            "rejected": 0
+          }
+        },
+        "risk_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 47,
+            "rejected": 24,
+            "blocked": 24
+          }
+        },
+        "fast": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 101,
+        "host_cpu_p95_percent": 8.389380530973456,
+        "minimum_memory_available_fraction": 0.8619039403582357,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "reset_fingerprint": "0880abec6324f885c954c0ba744be821555c69554a735393df364e01cff0ba60"
+    },
+    {
+      "folder": "p3-1-sequential",
+      "cases": 700,
+      "effects": 280,
+      "receipts": 2100,
+      "injected_once_faults": 140,
+      "measurement_profiles": {
+        "kyc_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "rejected": 48,
+            "settled": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "rejected": 36,
+            "settled": 36,
+            "blocked": 24
+          }
+        },
+        "balanced": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 46,
+            "blocked": 18,
+            "rejected": 48
+          }
+        },
+        "both_slow": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 0,
+            "blocked": 0,
+            "rejected": 0
+          }
+        },
+        "risk_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 24,
+            "blocked": 24
+          }
+        },
+        "fast": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 101,
+        "host_cpu_p95_percent": 8.693860733415736,
+        "minimum_memory_available_fraction": 0.8826658058348562,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "reset_fingerprint": "0880abec6324f885c954c0ba744be821555c69554a735393df364e01cff0ba60"
+    },
+    {
+      "folder": "p3-2-parallel",
+      "cases": 700,
+      "effects": 280,
+      "receipts": 2100,
+      "injected_once_faults": 140,
+      "measurement_profiles": {
+        "kyc_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "rejected": 48,
+            "settled": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "rejected": 24,
+            "settled": 36,
+            "blocked": 24
+          }
+        },
+        "balanced": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          }
+        },
+        "both_slow": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 29,
+            "blocked": 24,
+            "rejected": 12
+          }
+        },
+        "risk_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 0,
+            "blocked": 12
+          }
+        },
+        "fast": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 101,
+        "host_cpu_p95_percent": 8.994334277620396,
+        "minimum_memory_available_fraction": 0.877253024437425,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "reset_fingerprint": "0880abec6324f885c954c0ba744be821555c69554a735393df364e01cff0ba60"
+    },
+    {
+      "folder": "p4-1-parallel",
+      "cases": 700,
+      "effects": 280,
+      "receipts": 2100,
+      "injected_once_faults": 140,
+      "measurement_profiles": {
+        "kyc_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "rejected": 48,
+            "settled": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "rejected": 24,
+            "settled": 36,
+            "blocked": 24
+          }
+        },
+        "balanced": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          }
+        },
+        "both_slow": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 26,
+            "blocked": 23,
+            "rejected": 12
+          }
+        },
+        "risk_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 0,
+            "blocked": 12
+          }
+        },
+        "fast": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 101,
+        "host_cpu_p95_percent": 8.111937654976975,
+        "minimum_memory_available_fraction": 0.882726898175685,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "reset_fingerprint": "0880abec6324f885c954c0ba744be821555c69554a735393df364e01cff0ba60"
+    },
+    {
+      "folder": "p4-2-sequential",
+      "cases": 700,
+      "effects": 280,
+      "receipts": 2100,
+      "injected_once_faults": 140,
+      "measurement_profiles": {
+        "kyc_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "rejected": 48,
+            "settled": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "rejected": 36,
+            "settled": 36,
+            "blocked": 24
+          }
+        },
+        "balanced": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 44,
+            "blocked": 20,
+            "rejected": 48
+          }
+        },
+        "both_slow": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 0,
+            "blocked": 0,
+            "rejected": 0
+          }
+        },
+        "risk_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 47,
+            "rejected": 24,
+            "blocked": 24
+          }
+        },
+        "fast": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 101,
+        "host_cpu_p95_percent": 7.7114427860696555,
+        "minimum_memory_available_fraction": 0.8860520321023145,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "reset_fingerprint": "0880abec6324f885c954c0ba744be821555c69554a735393df364e01cff0ba60"
+    },
+    {
+      "folder": "p5-1-sequential",
+      "cases": 700,
+      "effects": 280,
+      "receipts": 2100,
+      "injected_once_faults": 140,
+      "measurement_profiles": {
+        "kyc_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "rejected": 48,
+            "settled": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "rejected": 36,
+            "settled": 34,
+            "blocked": 24
+          }
+        },
+        "balanced": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 48,
+            "blocked": 17,
+            "rejected": 48
+          }
+        },
+        "both_slow": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 0,
+            "blocked": 0,
+            "rejected": 0
+          }
+        },
+        "risk_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 47,
+            "rejected": 24,
+            "blocked": 24
+          }
+        },
+        "fast": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 101,
+        "host_cpu_p95_percent": 8.336289464349056,
+        "minimum_memory_available_fraction": 0.8841044082766926,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "reset_fingerprint": "0880abec6324f885c954c0ba744be821555c69554a735393df364e01cff0ba60"
+    },
+    {
+      "folder": "p5-2-parallel",
+      "cases": 700,
+      "effects": 280,
+      "receipts": 2100,
+      "injected_once_faults": 140,
+      "measurement_profiles": {
+        "kyc_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "rejected": 48,
+            "settled": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "rejected": 25,
+            "settled": 36,
+            "blocked": 24
+          }
+        },
+        "balanced": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          }
+        },
+        "both_slow": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "blocked": 24,
+            "rejected": 48
+          },
+          "within_deadline": {
+            "settled": 25,
+            "blocked": 24,
+            "rejected": 12
+          }
+        },
+        "risk_dominant": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 1,
+            "blocked": 12
+          }
+        },
+        "fast": {
+          "offered": 120,
+          "outcomes": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          },
+          "within_deadline": {
+            "settled": 48,
+            "rejected": 48,
+            "blocked": 24
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 101,
+        "host_cpu_p95_percent": 8.640226628895187,
+        "minimum_memory_available_fraction": 0.8796896313590407,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "reset_fingerprint": "0880abec6324f885c954c0ba744be821555c69554a735393df364e01cff0ba60"
+    }
+  ],
+  "source_manifest_sha256": "98880b49845518f9ee65b4ef23d56a27a403c0961d7c2cfc108451d04886737c",
+  "frozen_plan_sha256": "a28a32c149e252c5f1d45abde4e9f53eca9b6cdaa2a99dc779308eb6ebc51da7",
+  "corpus_sha256": "295f512146199c2ee707c6550ebe980b2a2680075acdedfd70b8a4c4250fe6a7",
+  "export_files_verified": 527,
+  "source_unchanged": true,
+  "native_model_calls": 0,
+  "cloud_resources_accessed": true,
+  "representative_customer_distribution": false,
+  "auditor_sha256": "88067df016d0f377261f9276cd3bd05cb1428574f8ce69495c2ab19eaaccffe1"
+}

@@ -49,4 +49,4 @@ On the prepared workstation, use the OCI Python 3.13 environment with `--playwri
 
 Before presenting, open the extracted bundle on the presentation laptop, follow the sequence above, confirm that both workflow buttons and every case selector update the visible outcome, and check text size at the actual display resolution. Use a rehearsed recording or the existing labelled screenshot if that review cannot be completed.
 
-Research and OCI implementation: **Nicholas Cusato**. Fluxnova software: **FINOS contributors**. The project [source and reproduction guide](https://github.com/oci-fsi-pursuits/fluxnova-benchmarking) credits the software separately from this research.
+Research and OCI implementation: **Nicholas Cusato**. Fluxnova software: **FINOS contributors**. The project [source and reproduction guide](https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit) credits the software separately from this research.

@@ -1,6 +1,6 @@
 # Reproduce the workflow benchmark
 
-Start here from the presentation QR. Repository: [oci-fsi-pursuits/fluxnova-benchmarking](https://github.com/oci-fsi-pursuits/fluxnova-benchmarking).
+Start here from the presentation QR. Repository: [oci-fsi-pursuits/fluxnova-benchmark-kit](https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit).
 
 **Same workload, declared environment, independently checked outcomes.** Reusing the build on another platform does not make its results directly comparable to the OCI reference. Keep model calls and reviewer wait separate from deterministic load.
 
@@ -9,8 +9,8 @@ Start here from the presentation QR. Repository: [oci-fsi-pursuits/fluxnova-benc
 Git and Python 3.12+ are enough. From the repository root:
 
 ```bash
-git clone https://github.com/oci-fsi-pursuits/fluxnova-benchmarking.git
-cd fluxnova-benchmarking
+git clone https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit.git
+cd fluxnova-benchmark-kit
 python -m benchlib.cli demo
 ```
 

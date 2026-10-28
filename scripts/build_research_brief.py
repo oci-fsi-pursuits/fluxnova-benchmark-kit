@@ -79,7 +79,8 @@ def build(data,logo,output):
     drawing=Drawing(size,size,transform=[size/(bounds[2]-bounds[0]),0,0,size/(bounds[3]-bounds[1]),0,0]);drawing.add(qr)
     renderPDF.draw(drawing,c,qx,qtop-size)
     c.linkURL(data['repo_url'],(qx,qtop-size,qx+size,qtop),relative=0,thickness=0)
-    para('<b>Source and guide</b><br/><link href="'+escape(data['repo_url'],quote=True)+'" color="#0065bc">oci-fsi-pursuits/<br/>fluxnova-benchmarking</link>',qtop-7,'small',x=442,w=130)
+    repo_label=escape(data['repo_url'].removeprefix('https://github.com/').rstrip('/')).replace('/', '/<br/>', 1)
+    para('<b>Source and guide</b><br/><link href="'+escape(data['repo_url'],quote=True)+'" color="#0065bc">'+repo_label+'</link>',qtop-7,'small',x=442,w=130)
     y=min(left,qtop-size)-12
     y=para(data['next'],y,'small')
     y=para('<b>Research citation.</b> '+escape(data['citation']),y-8,'foot')

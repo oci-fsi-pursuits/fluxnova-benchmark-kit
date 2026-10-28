@@ -5,6 +5,7 @@ import tempfile
 import unittest
 
 from scripts import build_public_candidate as release
+from benchlib.fluxnova import workload_resources
 
 
 class PublicReleaseTests(unittest.TestCase):
@@ -30,6 +31,15 @@ class PublicReleaseTests(unittest.TestCase):
             path.write_text(json.dumps(policy), encoding='utf-8')
             with self.assertRaisesRegex(ValueError, 'Duplicate'):
                 release.load_policy(path)
+
+    def test_deployable_workload_assets_are_all_in_the_export(self):
+        resources = workload_resources(release.ROOT / 'workloads')
+        self.assertTrue(resources)
+        for resource in resources:
+            name = resource.relative_to(release.ROOT).as_posix()
+            self.assertTrue(release.included(name, self.policy), name)
+        self.assertTrue(release.included('workloads/forms/payment-review.html', self.policy))
+        self.assertTrue(release.included('telemetry/requirements.txt', self.policy))
 
     def test_sensitive_content_is_rejected_without_echoing_the_value(self):
         samples = [
@@ -81,6 +91,20 @@ class PublicReleaseTests(unittest.TestCase):
         cleaned = release.sanitize_markdown(value)
         self.assertIn(b'REGISTRY_HOST/REGISTRY_NAMESPACE/image:tag', cleaned)
         release.check_content('docs/sample.md', cleaned, self.policy)
+
+    def test_manifest_source_bytes_follow_the_commit_not_windows_line_endings(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            git = ['git', '-c', 'safe.directory=' + root.as_posix(),
+                   '-c', 'user.name=Release Fixture', '-c', 'user.email=release@example.invalid',
+                   '-c', 'commit.gpgsign=false']
+            subprocess.run([*git, 'init', '--quiet'], cwd=root, check=True, capture_output=True)
+            (root / '.gitattributes').write_bytes(b'* text=auto eol=lf\n')
+            (root / 'source.py').write_bytes(b'first\r\nsecond\r\n')
+            subprocess.run([*git, 'add', '--all'], cwd=root, check=True, capture_output=True)
+            subprocess.run([*git, 'commit', '--quiet', '-m', 'fixture'], cwd=root, check=True, capture_output=True)
+            self.assertEqual(release.committed_bytes(['source.py'], git, root),
+                             {'source.py': b'first\nsecond\n'})
 
 
 if __name__ == '__main__':

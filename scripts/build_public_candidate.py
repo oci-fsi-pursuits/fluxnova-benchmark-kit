@@ -15,8 +15,12 @@ CORE = {'benchlib', 'configs', 'deploy', 'infra', 'load', 'schemas', 'scripts',
 ROOT_FILES = {'README.md', 'LICENSE', 'pyproject.toml', 'requirements-cloud.txt',
               'requirements-database.txt', 'bench.ps1', 'bench.sh', '.gitignore',
               '.gitattributes', '.dockerignore', '.gitleaksignore', '.gitleaks.toml',
-              'CONTRIBUTING.md', 'SECURITY.md', 'CITATION.cff', 'release/public-files.json'}
-DOCUMENT_SUFFIXES = {'.md', '.pdf', '.pptx', '.ppt', '.docx', '.doc', '.xlsx', '.html'}
+              'CONTRIBUTING.md', 'SECURITY.md', 'CITATION.cff', 'release/public-files.json',
+              'telemetry/requirements.txt'}
+# HTML in workloads/services is application UI code, including deployed BPMN
+# review forms. Documents outside CORE still require an exact inventory entry.
+DOCUMENT_SUFFIXES = {'.md', '.pdf', '.pptx', '.ppt', '.docx', '.doc', '.xlsx',
+                     '.xls', '.rtf', '.odt', '.ods', '.odp', '.txt'}
 IGNORE_BEGIN = '# BEGIN final-document inventory (release/public-files.json)'
 IGNORE_END = '# END final-document inventory'
 SENSITIVE_TEXT = {
@@ -33,7 +37,7 @@ def sha(data):
 
 def safe_relative(name):
     path = PurePosixPath(name)
-    if not name or '\\' in name or ':' in name or path.is_absolute() or '..' in path.parts:
+    if not name or '\\' in name or ':' in name or any(c in name for c in '\0\r\n') or path.is_absolute() or '..' in path.parts:
         raise ValueError('Unsafe release path')
     return name
 
@@ -114,6 +118,34 @@ def check_content(name, data, policy):
             raise ValueError(reason + ': ' + name)
 
 
+def committed_bytes(names, git, cwd):
+    """Read canonical committed bytes, independent of checkout line endings."""
+    for name in names:
+        safe_relative(name)
+    request = ''.join('HEAD:' + name + '\n' for name in names).encode('utf-8')
+    result = subprocess.run([*git, 'cat-file', '--batch'], input=request, cwd=cwd,
+                            capture_output=True, check=True, timeout=60)
+    data = result.stdout
+    cursor = 0
+    files = {}
+    for name in names:
+        end = data.index(b'\n', cursor)
+        header = data[cursor:end].split()
+        if len(header) != 3 or header[1] != b'blob':
+            raise ValueError('Missing committed source: ' + name)
+        size = int(header[2])
+        cursor = end + 1
+        value = data[cursor:cursor + size]
+        cursor += size
+        if len(value) != size or data[cursor:cursor + 1] != b'\n':
+            raise ValueError('Incomplete committed source: ' + name)
+        files[name] = value
+        cursor += 1
+    if cursor != len(data):
+        raise ValueError('Unexpected source inventory')
+    return files
+
+
 def build(output):
     output = output.resolve()
     archive = output.with_suffix('.zip')
@@ -129,14 +161,17 @@ def build(output):
     if missing:
         raise ValueError('Final document is not tracked: ' + ', '.join(sorted(missing)))
     chosen = [n for n in tracked if n and included(n, policy)]
+    committed = committed_bytes(chosen, git, ROOT)
     output.mkdir(parents=True)
     records = []
     for name in chosen:
         source = ROOT / name
         if not source.is_file() or source.is_symlink():
             raise ValueError('Invalid source file: ' + name)
-        data = source.read_bytes()
+        data = committed[name]
         original = sha(data)
+        if name == '.gitleaksignore':
+            data = b'# No private-history exceptions are inherited by the public kit.\n# Exact safe example values are scoped in .gitleaks.toml.\n'
         if source.suffix == '.md':
             data = sanitize_markdown(data)
         check_content(name, data, policy)
@@ -157,15 +192,15 @@ def build(output):
                 return match.group(0)
             archive_refs.append({'file': path.relative_to(output).as_posix(), 'target': target})
             return label + ' (retained in the private research archive)'
-        path.write_text(re.sub(r'\[([^\]]+)\]\(([^)]+)\)', link, value), encoding='utf-8')
+        path.write_text(re.sub(r'\[([^\]]+)\]\(([^)]+)\)', link, value), encoding='utf-8', newline='\n')
     for row in records:
         row['candidate_sha256'] = sha((output / row['path']).read_bytes())
-    manifest = {'status': 'review_candidate_not_published', 'source_commit': source_commit,
+    manifest = {'status': 'source_snapshot', 'source_commit': source_commit,
         'contains_git_history': False, 'license': policy['license'], 'destination': policy['destination'],
         'publication_status': policy['publication_status'], 'files': records,
         'excluded_file_count': len([n for n in tracked if n and n not in chosen]),
         'archive_references_made_explicit': archive_refs, 'raw_private_cloud_evidence_included': False}
-    (output / 'RELEASE-MANIFEST.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
+    (output / 'RELEASE-MANIFEST.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8', newline='\n')
     with zipfile.ZipFile(archive, 'x', zipfile.ZIP_DEFLATED) as bundle:
         for path in sorted(output.rglob('*')):
             if path.is_file():

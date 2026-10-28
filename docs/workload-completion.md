@@ -1,43 +1,46 @@
-# Completed workflow studies and next research
+# Completed workflow patterns
 
-The thesis is **time to a correct, authorized payment outcome**. The current three-study workload set is complete. Each finding has its own control, input population and limit.
+The thesis is **time to a correct, authorized outcome**. The three workflow patterns and their mixed-outcome follow-up are complete in their declared scopes. There are no measured arms left in this phase. Each study has its own control, population and limits.
 
-| Study | Comparison | Result | Boundary |
+| Study | One changed factor | Audited result | Boundary |
 | --- | --- | --- | --- |
-| W01: worker pacing | Reconstructed 100 ms success delay versus current idle-only backoff | 600/1,200 control and 1,200/1,200 candidate payments correct within two seconds; median paired deadline-goodput change +1.000/s. All 2,400 measured payments correct | Five matched synthetic burst pairs, not maximum capacity |
-| W02: independent checks | Sequential versus parallel KYC/risk, same inputs and two worker slots | 32.1% lower median paired observed p95; 6,000/6,000 measured payments correct and on time at 1/s | Fixed synthetic 400/600 ms dependencies; deadline goodput unchanged |
-| W03: review routing | Explicit all-review control versus fixed-policy routing | Review tasks 10 to 4; all four mandatory reviews preserved; 20/20 expected outcomes | Constructed ten-case corpus; scripted review, no human time-saving claim |
+| [W01: worker pacing](../validation/oci-20261027-w01-comparison/README.md) | Reconstructed 100 ms success delay versus idle-only backoff | Timely payments 600/1,200 to 1,200/1,200; all 2,400 correct | Five matched synthetic burst pairs; not maximum capacity |
+| [W02: approved payments](../validation/oci-20261027-w02-comparison/README.md) | Sequential versus parallel independent KYC/risk | Median paired observed p95 reduced 32.1%; 6,000/6,000 correct and on time; deadline goodput unchanged at 1/s | Fixed 400/600 ms dependencies, two workers in both arms |
+| [W03: review routing](../validation/local-20261027-w03/README.md) | All-review control versus fixed-policy routing | Review tasks 10 to 4; all four mandatory reviews preserved; 20/20 expected outcomes | Local synthetic cases and scripted review; no human time-saving claim |
+| [W02-M2: mixed outcomes](../validation/oci-20261028-w02-mixed-comparison/README.md) | Sequential versus parallel checks over the same mixed corpus | Timely settlements 880 to 1,037 of 1,200; timely refusals 780 to 669 of 1,200; all 6,000 outcomes correct | Five paired OCI measurements at 1/s; five dependency profiles; latency includes 100 ms polling |
 
-Evidence: [W01](../validation/oci-20261027-w01-comparison/README.md), [W02](../validation/oci-20261027-w02-comparison/README.md), [W03](../validation/local-20261027-w03/README.md).
+The mixed study improved settlement timeliness and worsened refusal timeliness. Its median paired change was **+0.0517 timely settlements/s**, with a pair range of +0.0467 to +0.0617/s. Safe stops within two seconds increased from 447 to 539 of 600. All **1,648 deadline misses** remain reported. Refusals and safe stops do not count as payment throughput; paired ranges are not confidence intervals.
 
-All three saved viewers passed browser automation and visual review. W02 also has a reviewed 75-second recording. The offline presenter package (retained in the private research archive) combines the talk, handout, viewers and recording in one folder. See [commands and scope](browser-automation.md). These pages show retained executions; they start no new payments. A live Tasklist rehearsal and the actual presentation display check are separate.
+## All five dependency profiles completed
 
-The temporary W01/W02 databases and owned workloads are retired. The original reference remains allocated. The cost record is a planning reservation, not complete actual billing.
+The frozen corpus crosses ten policy/fault cases with five delay profiles. Both arms retain two workers, original-input binding and exact-effect checks.
 
-The 15-minute talk (retained in the private research archive) and team brief (retained in the private research archive) now include these audited results, preserving the original title and thesis. The architecture stays honest about the four-host reference, colocated W01/W02 trials and local W03 study.
+| Profile | KYC / risk delay | Sequential timely settlements | Parallel timely settlements | Correct settlements, both arms |
+| --- | --- | ---: | ---: | ---: |
+| Fast | 50 / 70 ms | 240/240 | 240/240 | 480/480 |
+| Balanced | 400 / 400 ms | 228/240 | 240/240 | 480/480 |
+| Risk dominates | 100 / 900 ms | 237/240 | 240/240 | 480/480 |
+| KYC dominates | 900 / 100 ms | 175/240 | 180/240 | 480/480 |
+| Both slow | 900 / 1,100 ms | 0/240 | 137/240 | 480/480 |
 
-Next research, in order: qualify a representative customer input mix and policy; measure one declared change with full outcome and resource accounting; finish cost per correct outcome; then run separately controlled runtime/platform/database or agent-versus-rules studies. Do not relabel the current synthetic set as production or live-agent capacity. Historical failures and the original narrow tuning studies remain retained.
+The ten cases cover approval, sanctions refusal, risk refusal, unauthorized action, required review, unknown KYC, unknown risk, retry before a receipt, reconciliation after a receipt and concurrent completion. Equal coverage is a synthetic test design, not a customer frequency distribution. The [full aggregate audit](../validation/oci-20261028-w02-mixed-comparison/summary.json) retains all outcomes, per-pair changes, profiles and telemetry.
 
-The first follow-up qualification is complete: [W02-S1 dependency sensitivity](w02-dependency-sensitivity.md) passed 100 executions across five synthetic delay profiles, with 40 exact effects and 600 safe repeated calls. This tests more conditions while the customer scenario/mix remains to be sourced. It is not an additional performance percentage or an expansion of the 15-minute talk.
+## Evidence and cleanup
 
-The next local gate also passes: [W02-M1 mixed steady-state load](w02-mixed-load.md) verified 300 measured outcomes across four runs, separating 120 settlements, 120 refusals and 60 safe stops. It retains 58 deadline misses, with zero drops or incorrect outcomes. The audit verifies 360 original registrations and 1,080 receipts including warmup; all four engines are stopped and the saved report passes browser and visual checks.
+All ten mixed arms passed independent audit. The audit checked 527 exported files and original stores, including 7,000 cases with warmup, source/control hashes, reset evidence and exact effects. Browser checks passed six outcome rows, fifteen paired rows and fifty profile rows; the saved report passed visual review.
 
-[W02-M2's first cloud qualification](../validation/oci-20261028-w02-mixed-qualification/README.md) passed all four runs and independent audit: 300 correct measured outcomes and 54 deadline misses. A workstation status connection reset interrupted continuation before any paired measurement. That qualification and interruption remain retained; cleanup and original-reference preservation passed.
+The owned W01, W02 and mixed-study databases/workloads are retired. Original-reference preservation passed. The original reference remains allocated and billable; full attributed cost per correct outcome is still open.
 
-The [fresh qualification](../validation/oci-20261028-w02-mixed-requalification/README.md) also passed: 300 correct measured outcomes, 69 reportable deadline misses and no drops or incorrect outcomes. Five matched pairs are running from frozen source `2eb03249e65018e226efd21e3e3f50ab24f66ed6`. The planned result requires all ten arms, independent audit, original-reference preservation and owned cleanup. Qualification alone establishes no comparative benefit. The $210.30 planning estimate covers this attempt and the original reference through 28 October 12:00 UTC under the authorized $300 ceiling; it is not complete billing.
+The [first mixed qualification and interrupted handoff](../validation/oci-20261028-w02-mixed-qualification/README.md) are retained. No paired measurement started before that interruption. A fresh target [requalified independently](../validation/oci-20261028-w02-mixed-requalification/README.md) before the completed series. No failed measured arm was replaced to obtain a favorable result. Earlier [functional sensitivity](w02-dependency-sensitivity.md) and [local mixed qualification](w02-mixed-load.md) remain separate evidence.
 
-## Pattern coverage for the current release
+## Read the result or reproduce your own
 
-W01, approved-only W02 and local scripted W03 are complete in their stated scopes. The remaining measured pattern is W02-M2. Its fixed corpus crosses ten policy/fault cases with these five dependency profiles:
+Open the [saved report](results/w02-mixed/report.html) from a local checkout:
 
-| Profile | KYC delay | Risk delay | Local functional gate | Mixed OCI paired result |
-| --- | --- | --- | --- | --- |
-| Fast | 50 ms | 70 ms | Passed | Pending final audit |
-| Balanced | 400 ms | 400 ms | Passed | Pending final audit |
-| Risk dominates | 100 ms | 900 ms | Passed | Pending final audit |
-| KYC dominates | 900 ms | 100 ms | Passed | Pending final audit |
-| Both slow | 900 ms | 1,100 ms | Passed | Pending final audit |
+```bash
+python scripts/open_report.py --path docs/results/w02-mixed/report.html
+```
 
-The ten cases cover approval, sanctions refusal, risk refusal, unauthorized action, required review, unknown KYC, unknown risk, retry before a receipt, reconciliation after a receipt and concurrent completion. Both BPMNs use the same original inputs and two worker slots. Every profile must retain correct effects, refusals, safe stops, replay checks and deadline misses. Equal case coverage is a synthetic test design, not a customer frequency distribution.
+The page shows retained audited executions and starts no payments. Use the [one-page brief](assets/fluxnova-research-brief-20261028.pdf), [getting-started guide](getting-started.md), [benchmark protocol](benchmark-protocol.md) and [portability guide](portability.md) to reuse the work.
 
-Completing this release does not establish representative customer traffic, live-model advantage, human productivity, cross-cloud parity, maximum capacity or a Java/Spring upgrade benefit. Those are separately designed future studies. Full cost per correct outcome also remains open until billing attribution is complete.
+Next research requires representative customer inputs and policies, complete cost attribution, then separately controlled runtime/platform/database or agent-versus-rules studies. Current results do not establish customer capacity, live-model advantage, human productivity, cross-cloud parity or a Java/Spring upgrade benefit.

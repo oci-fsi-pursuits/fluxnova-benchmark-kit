@@ -1,0 +1,106 @@
+<form role="form" id="bound-payment-review" aria-labelledby="payment-review-title">
+  <style>
+    #bound-payment-review { max-width: 760px; padding: 8px 12px 20px; }
+    #bound-payment-review .payment-summary { display: flex; flex-wrap: wrap; gap: 16px; margin: 20px 0; }
+    #bound-payment-review .payment-figure { flex: 1; min-width: 200px; padding: 16px; background: #f4f7fa; border: 1px solid #d6dfe8; border-radius: 4px; }
+    #bound-payment-review .payment-figure strong { display: block; font-size: 28px; color: #173451; }
+    #bound-payment-review dl { display: grid; grid-template-columns: 150px 1fr; gap: 12px 16px; margin: 20px 0; }
+    #bound-payment-review dt { text-align: left; }
+    #bound-payment-review dd { margin: 0; overflow-wrap: anywhere; }
+    #bound-payment-review .review-choice { margin-top: 24px; padding-top: 20px; border-top: 1px solid #d6dfe8; }
+    #bound-payment-review .review-choice select { max-width: 420px; }
+    #bound-payment-review .review-acknowledgment { display: flex; align-items: flex-start; gap: 10px; margin: 18px 0; font-weight: normal; }
+    #bound-payment-review .review-acknowledgment input { margin-top: 3px; flex-shrink: 0; }
+    #bound-payment-review .review-note { color: #46596b; }
+    @media (max-width: 500px) { #bound-payment-review dl { grid-template-columns: 1fr; gap: 4px; } #bound-payment-review dd { margin-bottom: 12px; } }
+  </style>
+
+  <h3 id="payment-review-title">Review synthetic payment</h3>
+  <p>This payment exceeds the delegated limit and needs your decision.</p>
+  <p ng-if="paymentReviewLoading" role="status">Loading payment details&hellip;</p>
+  <div ng-if="paymentReviewLoadError" class="alert alert-danger" role="alert">
+    Payment details could not be loaded. Leave the task open and contact the operator.
+  </div>
+
+  <section ng-if="paymentReviewReady" aria-label="Payment details">
+    <div class="payment-summary">
+      <div class="payment-figure"><span>Payment amount (minor units)</span><strong id="review-payment-amount" ng-bind="paymentReview.paymentAmountMinor"></strong></div>
+      <div class="payment-figure"><span>Delegated limit (minor units)</span><strong id="review-payment-limit" ng-bind="paymentReview.paymentLimitMinor"></strong></div>
+    </div>
+    <dl>
+      <dt>Beneficiary</dt><dd id="review-payment-beneficiary" ng-bind="paymentReview.paymentBeneficiary"></dd>
+      <dt>Payment reference</dt><dd id="review-payment-reference" ng-bind="paymentReview.paymentKey"></dd>
+      <dt>Authorization</dt><dd id="review-payment-authorization" ng-bind="paymentReview.paymentAuthorized ? 'Authorized' : 'Not authorized'"></dd>
+      <dt>Sanctions flag</dt><dd id="review-payment-sanctions" ng-bind="paymentReview.paymentSanctions ? 'Match flagged' : 'No match flagged'"></dd>
+    </dl>
+    <p class="review-note">Your authenticated Tasklist account is recorded with the decision. Payment details and screening evidence are checked again before any simulated settlement.</p>
+  </section>
+
+  <div class="review-choice">
+    <div class="form-group">
+      <label for="payment-review-decision">Your decision</label>
+      <select id="payment-review-decision" name="paymentReviewDecision" class="form-control"
+              ng-model="paymentReviewDecision" ng-disabled="!paymentReviewReady || paymentReviewSubmitting" required>
+        <option value="">Choose a decision</option>
+        <option value="approve">Approve this payment</option>
+        <option value="reject">Reject this payment</option>
+      </select>
+    </div>
+    <label class="review-acknowledgment" for="payment-review-acknowledgment">
+      <input id="payment-review-acknowledgment" name="paymentReviewAcknowledgment" type="checkbox"
+             ng-model="paymentReviewAcknowledgment" ng-disabled="!paymentReviewReady || paymentReviewSubmitting" required>
+      <span>I have reviewed the payment details above and confirm my decision.</span>
+    </label>
+    <p class="review-note">Choose a decision, confirm the review, then select Complete.</p>
+    <p ng-if="paymentReviewSubmitting &amp;&amp; !paymentReviewSubmitError" role="status">Submitting your decision&hellip;</p>
+    <div ng-if="paymentReviewSubmitError" class="alert alert-warning" role="alert">
+      The result could not be confirmed. Refresh Tasklist to check this task's status before deciding again.
+    </div>
+  </div>
+
+  <script fxn-script type="text/form-script">
+    var manager = fxnForm.variableManager;
+    var displayNames = ['paymentAmountMinor', 'paymentLimitMinor', 'paymentAuthorized',
+      'paymentSanctions', 'paymentBeneficiary', 'paymentKey', 'paymentSha256'];
+    var originalPaymentHash;
+    $scope.paymentReviewLoading = true;
+    $scope.paymentReviewReady = false;
+    $scope.paymentReviewDecision = '';
+    $scope.paymentReviewAcknowledgment = false;
+    $scope.paymentReviewSubmitting = false;
+
+    fxnForm.on('form-loaded', function () {
+      displayNames.forEach(function (name) { manager.fetchVariable(name); });
+    });
+    fxnForm.on('variables-fetched', function () {
+      var payment = {};
+      displayNames.forEach(function (name) { payment[name] = manager.variableValue(name); });
+      var valid = Number.isSafeInteger(payment.paymentAmountMinor) &&
+        Number.isSafeInteger(payment.paymentLimitMinor) && payment.paymentLimitMinor >= 0 &&
+        payment.paymentAmountMinor > payment.paymentLimitMinor &&
+        typeof payment.paymentAuthorized === 'boolean' && typeof payment.paymentSanctions === 'boolean' &&
+        typeof payment.paymentBeneficiary === 'string' && payment.paymentBeneficiary.length > 0 &&
+        /^bound-[0-9a-f]{32}$/.test(payment.paymentKey) && /^[0-9a-f]{64}$/.test(payment.paymentSha256);
+      $scope.paymentReviewLoading = false;
+      $scope.paymentReviewReady = valid;
+      $scope.paymentReviewLoadError = !valid;
+      if (valid) { $scope.paymentReview = payment; originalPaymentHash = payment.paymentSha256; }
+    });
+    fxnForm.on('submit', function () {
+      if (!$scope.paymentReviewReady || $scope.paymentReviewSubmitting || !$scope.paymentReviewAcknowledgment ||
+          ['approve', 'reject'].indexOf($scope.paymentReviewDecision) === -1) {
+        fxnForm.submitPrevented = true;
+        return;
+      }
+      // Display data is fetched for review, never copied into the submission.
+      displayNames.forEach(function (name) { if (manager.variable(name)) { manager.destroyVariable(name); } });
+      [{ name: 'reviewerDecision', value: $scope.paymentReviewDecision },
+       { name: 'reviewedPaymentSha256', value: originalPaymentHash }].forEach(function (item) {
+        if (manager.variable(item.name)) { manager.variableValue(item.name, item.value); }
+        else { manager.createVariable({ name: item.name, type: 'String', value: item.value }); }
+      });
+      $scope.paymentReviewSubmitting = true;
+    });
+    fxnForm.on('submit-failed', function () { $scope.paymentReviewSubmitError = true; });
+  </script>
+</form>
