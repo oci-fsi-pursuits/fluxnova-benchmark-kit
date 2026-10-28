@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fluxnova-benchmarks"
+version = "0.1.0"
+description = "Reproducible OCI Fluxnova benchmarking and evidence reporting"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+cloud = ["oci>=2.150,<3"]
+parquet = ["pyarrow>=19,<24"]
+
+[project.scripts]
+bench = "benchlib.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["benchlib*"]

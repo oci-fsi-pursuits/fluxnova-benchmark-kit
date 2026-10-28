@@ -1,0 +1,10 @@
+* text=auto eol=lf
+*.zip -text
+*.parquet -text
+validation/** -text whitespace=cr-at-eol
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pptx binary
+*.zip binary

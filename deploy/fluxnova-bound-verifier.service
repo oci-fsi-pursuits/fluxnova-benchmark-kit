@@ -1,0 +1,29 @@
+[Unit]
+Description=Fluxnova synthetic payment intent authority and verifier
+After=network-online.target docker.service
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=fluxnova-verifier
+Group=fluxnova-verifier
+WorkingDirectory=/opt/fluxnova-bound-verifier/current
+ExecStart=/opt/fluxnova-bench/venv/bin/python -m services.verifier_service --config /etc/fluxnova-bound-verifier/config.json
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=15
+StateDirectory=fluxnova-bound-verifier
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/fluxnova-bound-verifier
+LimitCORE=0
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,382 @@
+{
+  "status": "qualification_passed_continuation_interrupted",
+  "source_commit": "5b694047378686aad185aa718429dd3e32a47564",
+  "scope": "OCI synthetic mixed-outcome workflow study",
+  "completed_qualification_arms": 4,
+  "completed_measurement_arms": 0,
+  "selected_rate_per_s": 1,
+  "measurement_outcomes": {
+    "settled": 120,
+    "rejected": 120,
+    "blocked": 60
+  },
+  "warmup_outcomes": {
+    "settled": 120,
+    "rejected": 120,
+    "blocked": 60
+  },
+  "persisted_store_totals": {
+    "cases": 600,
+    "effects": 240,
+    "receipts": 1800,
+    "injected_once_faults": 120
+  },
+  "functional_audit": {
+    "cases": 20,
+    "effects": 8,
+    "repeated_calls": 120,
+    "premature_effect_refusals": 20,
+    "cross_process_replays_blocked": 2
+  },
+  "runs": [
+    {
+      "folder": "q1-sequential",
+      "arm": "sequential",
+      "rate_per_s": 0.5,
+      "offered": 50,
+      "correct": 50,
+      "dropped": 0,
+      "within_deadline": 39,
+      "deadline_misses": 11,
+      "outcomes": {
+        "settled": {
+          "expected": 20,
+          "verified": 20,
+          "within_deadline": 15,
+          "observed_latency_s": {
+            "n": 20,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.252447454999981,
+            "p95": 2.3419768080000125,
+            "p99": 3.333838493999991,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3653486660000169,
+            "max": 3.333838493999991
+          }
+        },
+        "rejected": {
+          "expected": 20,
+          "verified": 20,
+          "within_deadline": 16,
+          "observed_latency_s": {
+            "n": 20,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.242299992999989,
+            "p95": 2.226664631999995,
+            "p99": 2.229254233000006,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.36530321000000754,
+            "max": 2.229254233000006
+          }
+        },
+        "blocked": {
+          "expected": 10,
+          "verified": 10,
+          "within_deadline": 8,
+          "observed_latency_s": {
+            "n": 10,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.2382239150000203,
+            "p95": 2.3398643630000038,
+            "p99": 2.3398643630000038,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.36587935999997967,
+            "max": 2.3398643630000038
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 30,
+        "host_cpu_p95_percent": 11.378943637008154,
+        "minimum_memory_available_fraction": 0.8883078056950768,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "checkpoint_verified": true
+    },
+    {
+      "folder": "q2-parallel",
+      "arm": "parallel",
+      "rate_per_s": 0.5,
+      "offered": 50,
+      "correct": 50,
+      "dropped": 0,
+      "within_deadline": 48,
+      "deadline_misses": 2,
+      "outcomes": {
+        "settled": {
+          "expected": 20,
+          "verified": 20,
+          "within_deadline": 18,
+          "observed_latency_s": {
+            "n": 20,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.1384680200000048,
+            "p95": 2.13033507199998,
+            "p99": 3.1250815949999833,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.25767921500002444,
+            "max": 3.1250815949999833
+          }
+        },
+        "rejected": {
+          "expected": 20,
+          "verified": 20,
+          "within_deadline": 20,
+          "observed_latency_s": {
+            "n": 20,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.1335234219999961,
+            "p95": 1.3572944480000046,
+            "p99": 1.3583176260000016,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.2589651339999932,
+            "max": 1.3583176260000016
+          }
+        },
+        "blocked": {
+          "expected": 10,
+          "verified": 10,
+          "within_deadline": 10,
+          "observed_latency_s": {
+            "n": 10,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.1323627350000152,
+            "p95": 1.3591198769999977,
+            "p99": 1.3591198769999977,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.25871633799999927,
+            "max": 1.3591198769999977
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 30,
+        "host_cpu_p95_percent": 12.137296532200992,
+        "minimum_memory_available_fraction": 0.8886357493806458,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "checkpoint_verified": true
+    },
+    {
+      "folder": "q3-parallel",
+      "arm": "parallel",
+      "rate_per_s": 1,
+      "offered": 100,
+      "correct": 100,
+      "dropped": 0,
+      "within_deadline": 83,
+      "deadline_misses": 17,
+      "outcomes": {
+        "settled": {
+          "expected": 40,
+          "verified": 40,
+          "within_deadline": 36,
+          "observed_latency_s": {
+            "n": 40,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.150357337999992,
+            "p95": 3.2392085500000007,
+            "p99": 3.341851652999992,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.25611733299999173,
+            "max": 3.341851652999992
+          }
+        },
+        "rejected": {
+          "expected": 40,
+          "verified": 40,
+          "within_deadline": 28,
+          "observed_latency_s": {
+            "n": 40,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.1351329039999882,
+            "p95": 2.669723774000005,
+            "p99": 3.339820359000015,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.2578958919999934,
+            "max": 3.339820359000015
+          }
+        },
+        "blocked": {
+          "expected": 20,
+          "verified": 20,
+          "within_deadline": 19,
+          "observed_latency_s": {
+            "n": 20,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.138625508000004,
+            "p95": 1.570429378,
+            "p99": 2.1313444829999924,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.36597751999997286,
+            "max": 2.1313444829999924
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 30,
+        "host_cpu_p95_percent": 15.27581329561527,
+        "minimum_memory_available_fraction": 0.8741448905054193,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "checkpoint_verified": true
+    },
+    {
+      "folder": "q4-sequential",
+      "arm": "sequential",
+      "rate_per_s": 1,
+      "offered": 100,
+      "correct": 100,
+      "dropped": 0,
+      "within_deadline": 76,
+      "deadline_misses": 24,
+      "outcomes": {
+        "settled": {
+          "expected": 40,
+          "verified": 40,
+          "within_deadline": 30,
+          "observed_latency_s": {
+            "n": 40,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.3463627689999953,
+            "p95": 3.4430675490000056,
+            "p99": 3.662480189000007,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3646345930000052,
+            "max": 3.662480189000007
+          }
+        },
+        "rejected": {
+          "expected": 40,
+          "verified": 40,
+          "within_deadline": 30,
+          "observed_latency_s": {
+            "n": 40,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.2472160009999982,
+            "p95": 2.6816594649999956,
+            "p99": 3.228089845999989,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.36540001899999197,
+            "max": 3.228089845999989
+          }
+        },
+        "blocked": {
+          "expected": 20,
+          "verified": 20,
+          "within_deadline": 16,
+          "observed_latency_s": {
+            "n": 20,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.2424804409999979,
+            "p95": 2.4545538609999937,
+            "p99": 2.4560462729999983,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3643525120000106,
+            "max": 2.4560462729999983
+          }
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 30,
+        "host_cpu_p95_percent": 13.809016684416042,
+        "minimum_memory_available_fraction": 0.8878283530042526,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "checkpoint_verified": true
+    }
+  ],
+  "paired_comparison": null,
+  "measurement_deadline_misses": 54,
+  "archive_verification": {
+    "sha256": "09543d91f9b5fff65c5a0926601e9f9c75c108df3e2f97c81a65e82f4b99f3ed",
+    "files": 331,
+    "credentials_excluded": true
+  },
+  "independent_audit_sha256": "8c2714911c6e39ea209f1bc53c0306d0790a47c80af7fe4a29bc895b28702ded",
+  "source_preservation": {
+    "reference_queues_empty": true,
+    "reference_services_unchanged": true,
+    "reference_verifier_unchanged": true,
+    "controller_containers_empty": true,
+    "changed_tables": [
+      "act_ru_meter_log"
+    ],
+    "other_logical_changes": [],
+    "database_access_unchanged": true,
+    "normal_meter_rows_before": 15180,
+    "normal_meter_rows_after": 15228,
+    "tls_before": [
+      true,
+      "TLSv1.3"
+    ],
+    "tls_after": [
+      true,
+      "TLSv1.3"
+    ],
+    "status": "passed"
+  },
+  "temporary_database_deleted_at": "2026-10-28T03:55:41.825655+00:00",
+  "interruption": "Workstation status SSH connection reset; the observer cancelled continuation. All four controller qualification runs finished and passed independent audit. No paired measurement started. The connection reset cause is unresolved.",
+  "recovery": "Bounded read-only status retries; no workload or payment submission retries. A fresh target must qualify before measurements.",
+  "tests": {
+    "passed": 382,
+    "skipped": 0
+  }
+}

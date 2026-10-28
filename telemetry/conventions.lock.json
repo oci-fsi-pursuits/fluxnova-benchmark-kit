@@ -1,0 +1,22 @@
+{
+  "benchmark_telemetry_contract_version": "1.0",
+  "transport": "OTLP HTTP/protobuf",
+  "archive_format": "OTLP JSON records, one record per line; retain raw data and exact collector digest",
+  "resource_attributes": {
+    "cloud.provider": "oracle_cloud",
+    "cloud.platform": "oracle_cloud_compute",
+    "service.name": "fluxnova",
+    "benchmark.telemetry.contract_version": "1.0"
+  },
+  "project_defined_values": ["benchmark.telemetry.contract_version", "benchmark.run.id"],
+  "cloud_conventions_source": "https://opentelemetry.io/docs/specs/semconv/attributes-registry/cloud/",
+  "verified_at": "2026-09-29",
+  "javaagent": {
+    "version": "2.21.0",
+    "url": "https://repo.maven.apache.org/maven2/io/opentelemetry/javaagent/opentelemetry-javaagent/2.21.0/opentelemetry-javaagent-2.21.0.jar",
+    "sha256": "5b35ccc6c275fd477a06db01923813e13d99c1a52a20b0ea8ed6576eae177c7d",
+    "checksum_source": "https://repo.maven.apache.org/maven2/io/opentelemetry/javaagent/opentelemetry-javaagent/2.21.0/opentelemetry-javaagent-2.21.0.jar.sha256"
+  },
+  "sampling": {"proposal": "parentbased_traceidratio", "ratio": 0.1, "metrics_interval_ms": 10000},
+  "limits": "Resource convention 1.0 is a project contract. It is not an OpenTelemetry certification. Javaagent instrumentation does not establish business correctness."
+}

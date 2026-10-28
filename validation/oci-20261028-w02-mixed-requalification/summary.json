@@ -1,0 +1,59 @@
+{
+  "status": "passed",
+  "source_commit": "2eb03249e65018e226efd21e3e3f50ab24f66ed6",
+  "measurement_outcomes": {
+    "settled": 120,
+    "rejected": 120,
+    "blocked": 60
+  },
+  "warmup_outcomes": {
+    "settled": 120,
+    "rejected": 120,
+    "blocked": 60
+  },
+  "persisted_store_totals": {
+    "cases": 600,
+    "effects": 240,
+    "receipts": 1800,
+    "injected_once_faults": 120
+  },
+  "export_files_verified": 322,
+  "selected_rate_per_s": 1,
+  "runs": [
+    {
+      "arm": "sequential",
+      "rate_per_s": 0.5,
+      "correct": 50,
+      "on_time": 39,
+      "late": 11,
+      "status": "passed"
+    },
+    {
+      "arm": "parallel",
+      "rate_per_s": 0.5,
+      "correct": 50,
+      "on_time": 48,
+      "late": 2,
+      "status": "passed"
+    },
+    {
+      "arm": "parallel",
+      "rate_per_s": 1,
+      "correct": 100,
+      "on_time": 74,
+      "late": 26,
+      "status": "passed"
+    },
+    {
+      "arm": "sequential",
+      "rate_per_s": 1,
+      "correct": 100,
+      "on_time": 70,
+      "late": 30,
+      "status": "passed"
+    }
+  ],
+  "deadline_misses": 69,
+  "scope": "Fresh-target cloud qualification; no comparative effect claim",
+  "paired_measurements": "running"
+}

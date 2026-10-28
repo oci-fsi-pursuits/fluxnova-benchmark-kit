@@ -1,0 +1,595 @@
+{
+  "status": "complete",
+  "completed_arms": 10,
+  "planned_arms": 10,
+  "population": "Synthetic approved payments; deterministic 400 ms KYC and 600 ms risk checks",
+  "rate_per_s": 1,
+  "measurement_s_per_arm": 600,
+  "deadline_s": 2,
+  "poll_interval_ms": 100,
+  "source_commit": "de00889d6d78ada55eea63427b1b0d7b475831c7",
+  "arms": [
+    {
+      "pair": 1,
+      "arm": "parallel",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "correct": 600,
+      "on_time_correct": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "observed_p95_ms": 915.4511200000002,
+      "observed_p99_ms": 1012.1958309999854,
+      "deadline_goodput_per_s": 1.0,
+      "warmup_correct": 120,
+      "warmup_offered": 120
+    },
+    {
+      "pair": 1,
+      "arm": "sequential",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "correct": 600,
+      "on_time_correct": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "observed_p95_ms": 1342.1496869999885,
+      "observed_p99_ms": 1345.5114539999897,
+      "deadline_goodput_per_s": 1.0,
+      "warmup_correct": 120,
+      "warmup_offered": 120
+    },
+    {
+      "pair": 2,
+      "arm": "sequential",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "correct": 600,
+      "on_time_correct": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "observed_p95_ms": 1341.8177920000005,
+      "observed_p99_ms": 1345.1372499999934,
+      "deadline_goodput_per_s": 1.0,
+      "warmup_correct": 120,
+      "warmup_offered": 120
+    },
+    {
+      "pair": 2,
+      "arm": "parallel",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "correct": 600,
+      "on_time_correct": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "observed_p95_ms": 910.196854999981,
+      "observed_p99_ms": 1012.204526000005,
+      "deadline_goodput_per_s": 1.0,
+      "warmup_correct": 120,
+      "warmup_offered": 120
+    },
+    {
+      "pair": 3,
+      "arm": "sequential",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "correct": 600,
+      "on_time_correct": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "observed_p95_ms": 1341.9844819999867,
+      "observed_p99_ms": 1345.333175999997,
+      "deadline_goodput_per_s": 1.0,
+      "warmup_correct": 120,
+      "warmup_offered": 120
+    },
+    {
+      "pair": 3,
+      "arm": "parallel",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "correct": 600,
+      "on_time_correct": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "observed_p95_ms": 912.2680990000163,
+      "observed_p99_ms": 1010.6210139999803,
+      "deadline_goodput_per_s": 1.0,
+      "warmup_correct": 120,
+      "warmup_offered": 120
+    },
+    {
+      "pair": 4,
+      "arm": "parallel",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "correct": 600,
+      "on_time_correct": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "observed_p95_ms": 909.8878690000447,
+      "observed_p99_ms": 1011.5636599999789,
+      "deadline_goodput_per_s": 1.0,
+      "warmup_correct": 120,
+      "warmup_offered": 120
+    },
+    {
+      "pair": 4,
+      "arm": "sequential",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "correct": 600,
+      "on_time_correct": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "observed_p95_ms": 1339.4472939999105,
+      "observed_p99_ms": 1343.7538099999813,
+      "deadline_goodput_per_s": 1.0,
+      "warmup_correct": 120,
+      "warmup_offered": 120
+    },
+    {
+      "pair": 5,
+      "arm": "sequential",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "correct": 600,
+      "on_time_correct": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "observed_p95_ms": 1340.6049790000907,
+      "observed_p99_ms": 1344.033439000043,
+      "deadline_goodput_per_s": 1.0,
+      "warmup_correct": 120,
+      "warmup_offered": 120
+    },
+    {
+      "pair": 5,
+      "arm": "parallel",
+      "measurement_valid": true,
+      "issues": [],
+      "offered": 600,
+      "correct": 600,
+      "on_time_correct": 600,
+      "dropped": 0,
+      "unknown_or_invalid": 0,
+      "observed_p95_ms": 910.7333600000231,
+      "observed_p99_ms": 1013.4297759999527,
+      "deadline_goodput_per_s": 1.0,
+      "warmup_correct": 120,
+      "warmup_offered": 120
+    }
+  ],
+  "comparison": {
+    "paired_runs": [
+      {
+        "pair": 1,
+        "sequential_p95_ms": 1342.1496869999885,
+        "parallel_p95_ms": 915.4511200000002,
+        "parallel_p95_change_percent": -31.792174236076242,
+        "parallel_p95_change_ms": -426.6985669999883
+      },
+      {
+        "pair": 2,
+        "sequential_p95_ms": 1341.8177920000005,
+        "parallel_p95_ms": 910.196854999981,
+        "parallel_p95_change_percent": -32.1668813436049,
+        "parallel_p95_change_ms": -431.62093700001947
+      },
+      {
+        "pair": 3,
+        "sequential_p95_ms": 1341.9844819999867,
+        "parallel_p95_ms": 912.2680990000163,
+        "parallel_p95_change_percent": -32.02096512767088,
+        "parallel_p95_change_ms": -429.7163829999704
+      },
+      {
+        "pair": 4,
+        "sequential_p95_ms": 1339.4472939999105,
+        "parallel_p95_ms": 909.8878690000447,
+        "parallel_p95_change_percent": -32.069901288694865,
+        "parallel_p95_change_ms": -429.55942499986577
+      },
+      {
+        "pair": 5,
+        "sequential_p95_ms": 1340.6049790000907,
+        "parallel_p95_ms": 910.7333600000231,
+        "parallel_p95_change_percent": -32.06549473810648,
+        "parallel_p95_change_ms": -429.87161900006754
+      }
+    ],
+    "arms": {
+      "sequential": {
+        "median_of_run_p95_ms": 1341.8177920000005,
+        "run_p95_range_ms": [
+          1339.4472939999105,
+          1342.1496869999885
+        ],
+        "median_of_run_p99_ms": 1345.1372499999934,
+        "correct": 3000,
+        "offered": 3000,
+        "on_time_correct": 3000,
+        "dropped": 0,
+        "deadline_goodput_per_s": 1.0
+      },
+      "parallel": {
+        "median_of_run_p95_ms": 910.7333600000231,
+        "run_p95_range_ms": [
+          909.8878690000447,
+          915.4511200000002
+        ],
+        "median_of_run_p99_ms": 1012.1958309999854,
+        "correct": 3000,
+        "offered": 3000,
+        "on_time_correct": 3000,
+        "dropped": 0,
+        "deadline_goodput_per_s": 1.0
+      }
+    },
+    "median_paired_p95_change_percent": -32.06549473810648,
+    "paired_p95_change_percent_range": [
+      -32.1668813436049,
+      -31.792174236076242
+    ],
+    "interpretation": "Negative change means lower observed parallel p95; positive means higher. Range is across five pairs, not a confidence interval."
+  },
+  "limits": [
+    "Synthetic deterministic approved-payment trace; negative cases are qualified separately.",
+    "Observed latency includes 100 ms completion polling.",
+    "Five pairs; report their range without a significance or production-capacity claim.",
+    "Shared-controller OCI topology is not an absolute comparison with P01."
+  ],
+  "independently_reaudited": true,
+  "source_manifest_sha256": "c24eaa3c20226ce6761a2823616e4eea703b97c654453d9d70ff87414676f834",
+  "measurement_plan_sha256": "7ec9f0a0e3414d945623378dd7549b794b26f81a0f1ae10c27c6bf0d81b7952a",
+  "scope": "OCI W02; not a live-model or production-payment benchmark",
+  "persisted_store_audit": {
+    "status": "passed",
+    "unique_processes": 7200,
+    "unique_cases": 7200,
+    "timed_exact_effects": 6000,
+    "warmup_exact_effects": 1200,
+    "exact_receipts": 21600,
+    "stores_integrity_checked": 10,
+    "restored_checkpoint_fingerprints": 1,
+    "rows": [
+      {
+        "pair": 1,
+        "arm": "parallel",
+        "persisted_exact_effects_verified": 720,
+        "persisted_receipts_verified": 2160,
+        "measurement_check_overlap_count": 600,
+        "measurement_count": 600,
+        "observed_backlog": {
+          "bounded_under_declared_guard": true,
+          "limit": "Declared guard at 0.5 or 1 start/s; not a maximum-capacity estimate."
+        },
+        "final_state": {
+          "active_instances": 0,
+          "external_tasks": 0,
+          "incidents": 0,
+          "completed_instances": 720,
+          "effects": 720,
+          "registrations": 720,
+          "receipts": 2160
+        },
+        "measurement_arrival_lag_p99_ms": 1.9238699999846176,
+        "host_cpu_p95_percent": 7.6214108472173026,
+        "minimum_memory_available_fraction": 0.8872259825236806,
+        "engine_cpu_p95_percent_one_logical_cpu": 23.59349999999999,
+        "worker_cpu_p95_percent_one_logical_cpu": 1.6569999999999998,
+        "database_deadlock_counter_change": 0,
+        "database_max_sampled_lock_waiters": 0,
+        "sampled_peak_active_instances": 1,
+        "sampled_peak_external_tasks": 2,
+        "telemetry_samples": 104
+      },
+      {
+        "pair": 1,
+        "arm": "sequential",
+        "persisted_exact_effects_verified": 720,
+        "persisted_receipts_verified": 2160,
+        "measurement_check_overlap_count": 0,
+        "measurement_count": 600,
+        "observed_backlog": {
+          "bounded_under_declared_guard": true,
+          "limit": "Declared guard at 0.5 or 1 start/s; not a maximum-capacity estimate."
+        },
+        "final_state": {
+          "active_instances": 0,
+          "external_tasks": 0,
+          "incidents": 0,
+          "completed_instances": 720,
+          "effects": 720,
+          "registrations": 720,
+          "receipts": 2160
+        },
+        "measurement_arrival_lag_p99_ms": 2.315269000007447,
+        "host_cpu_p95_percent": 8.823529411764708,
+        "minimum_memory_available_fraction": 0.8851356469898827,
+        "engine_cpu_p95_percent_one_logical_cpu": 21.702499999999976,
+        "worker_cpu_p95_percent_one_logical_cpu": 1.69,
+        "database_deadlock_counter_change": 0,
+        "database_max_sampled_lock_waiters": 0,
+        "sampled_peak_active_instances": 2,
+        "sampled_peak_external_tasks": 2,
+        "telemetry_samples": 104
+      },
+      {
+        "pair": 2,
+        "arm": "sequential",
+        "persisted_exact_effects_verified": 720,
+        "persisted_receipts_verified": 2160,
+        "measurement_check_overlap_count": 0,
+        "measurement_count": 600,
+        "observed_backlog": {
+          "bounded_under_declared_guard": true,
+          "limit": "Declared guard at 0.5 or 1 start/s; not a maximum-capacity estimate."
+        },
+        "final_state": {
+          "active_instances": 0,
+          "external_tasks": 0,
+          "incidents": 0,
+          "completed_instances": 720,
+          "effects": 720,
+          "registrations": 720,
+          "receipts": 2160
+        },
+        "measurement_arrival_lag_p99_ms": 1.5734659999679934,
+        "host_cpu_p95_percent": 8.218207580588022,
+        "minimum_memory_available_fraction": 0.882825379029101,
+        "engine_cpu_p95_percent_one_logical_cpu": 22.51849999999999,
+        "worker_cpu_p95_percent_one_logical_cpu": 1.7285,
+        "database_deadlock_counter_change": 0,
+        "database_max_sampled_lock_waiters": 0,
+        "sampled_peak_active_instances": 2,
+        "sampled_peak_external_tasks": 2,
+        "telemetry_samples": 104
+      },
+      {
+        "pair": 2,
+        "arm": "parallel",
+        "persisted_exact_effects_verified": 720,
+        "persisted_receipts_verified": 2160,
+        "measurement_check_overlap_count": 600,
+        "measurement_count": 600,
+        "observed_backlog": {
+          "bounded_under_declared_guard": true,
+          "limit": "Declared guard at 0.5 or 1 start/s; not a maximum-capacity estimate."
+        },
+        "final_state": {
+          "active_instances": 0,
+          "external_tasks": 0,
+          "incidents": 0,
+          "completed_instances": 720,
+          "effects": 720,
+          "registrations": 720,
+          "receipts": 2160
+        },
+        "measurement_arrival_lag_p99_ms": 2.095079000014266,
+        "host_cpu_p95_percent": 7.896600566572243,
+        "minimum_memory_available_fraction": 0.8838703024266367,
+        "engine_cpu_p95_percent_one_logical_cpu": 30.479,
+        "worker_cpu_p95_percent_one_logical_cpu": 1.6469999999999998,
+        "database_deadlock_counter_change": 0,
+        "database_max_sampled_lock_waiters": 0,
+        "sampled_peak_active_instances": 1,
+        "sampled_peak_external_tasks": 2,
+        "telemetry_samples": 104
+      },
+      {
+        "pair": 3,
+        "arm": "sequential",
+        "persisted_exact_effects_verified": 720,
+        "persisted_receipts_verified": 2160,
+        "measurement_check_overlap_count": 0,
+        "measurement_count": 600,
+        "observed_backlog": {
+          "bounded_under_declared_guard": true,
+          "limit": "Declared guard at 0.5 or 1 start/s; not a maximum-capacity estimate."
+        },
+        "final_state": {
+          "active_instances": 0,
+          "external_tasks": 0,
+          "incidents": 0,
+          "completed_instances": 720,
+          "effects": 720,
+          "registrations": 720,
+          "receipts": 2160
+        },
+        "measurement_arrival_lag_p99_ms": 1.5180990000089878,
+        "host_cpu_p95_percent": 8.617021276595748,
+        "minimum_memory_available_fraction": 0.8838465985983951,
+        "engine_cpu_p95_percent_one_logical_cpu": 27.49099999999999,
+        "worker_cpu_p95_percent_one_logical_cpu": 1.73,
+        "database_deadlock_counter_change": 0,
+        "database_max_sampled_lock_waiters": 0,
+        "sampled_peak_active_instances": 2,
+        "sampled_peak_external_tasks": 2,
+        "telemetry_samples": 104
+      },
+      {
+        "pair": 3,
+        "arm": "parallel",
+        "persisted_exact_effects_verified": 720,
+        "persisted_receipts_verified": 2160,
+        "measurement_check_overlap_count": 600,
+        "measurement_count": 600,
+        "observed_backlog": {
+          "bounded_under_declared_guard": true,
+          "limit": "Declared guard at 0.5 or 1 start/s; not a maximum-capacity estimate."
+        },
+        "final_state": {
+          "active_instances": 0,
+          "external_tasks": 0,
+          "incidents": 0,
+          "completed_instances": 720,
+          "effects": 720,
+          "registrations": 720,
+          "receipts": 2160
+        },
+        "measurement_arrival_lag_p99_ms": 2.096674000085841,
+        "host_cpu_p95_percent": 7.967422096317279,
+        "minimum_memory_available_fraction": 0.882663362141223,
+        "engine_cpu_p95_percent_one_logical_cpu": 26.12549999999999,
+        "worker_cpu_p95_percent_one_logical_cpu": 1.6684999999999999,
+        "database_deadlock_counter_change": 0,
+        "database_max_sampled_lock_waiters": 0,
+        "sampled_peak_active_instances": 1,
+        "sampled_peak_external_tasks": 2,
+        "telemetry_samples": 104
+      },
+      {
+        "pair": 4,
+        "arm": "parallel",
+        "persisted_exact_effects_verified": 720,
+        "persisted_receipts_verified": 2160,
+        "measurement_check_overlap_count": 600,
+        "measurement_count": 600,
+        "observed_backlog": {
+          "bounded_under_declared_guard": true,
+          "limit": "Declared guard at 0.5 or 1 start/s; not a maximum-capacity estimate."
+        },
+        "final_state": {
+          "active_instances": 0,
+          "external_tasks": 0,
+          "incidents": 0,
+          "completed_instances": 720,
+          "effects": 720,
+          "registrations": 720,
+          "receipts": 2160
+        },
+        "measurement_arrival_lag_p99_ms": 2.313730999958352,
+        "host_cpu_p95_percent": 7.9460801702731505,
+        "minimum_memory_available_fraction": 0.8821401673343652,
+        "engine_cpu_p95_percent_one_logical_cpu": 28.46899999999996,
+        "worker_cpu_p95_percent_one_logical_cpu": 1.6954999999999998,
+        "database_deadlock_counter_change": 0,
+        "database_max_sampled_lock_waiters": 0,
+        "sampled_peak_active_instances": 1,
+        "sampled_peak_external_tasks": 2,
+        "telemetry_samples": 104
+      },
+      {
+        "pair": 4,
+        "arm": "sequential",
+        "persisted_exact_effects_verified": 720,
+        "persisted_receipts_verified": 2160,
+        "measurement_check_overlap_count": 0,
+        "measurement_count": 600,
+        "observed_backlog": {
+          "bounded_under_declared_guard": true,
+          "limit": "Declared guard at 0.5 or 1 start/s; not a maximum-capacity estimate."
+        },
+        "final_state": {
+          "active_instances": 0,
+          "external_tasks": 0,
+          "incidents": 0,
+          "completed_instances": 720,
+          "effects": 720,
+          "registrations": 720,
+          "receipts": 2160
+        },
+        "measurement_arrival_lag_p99_ms": 2.1351880000111123,
+        "host_cpu_p95_percent": 7.332624867162596,
+        "minimum_memory_available_fraction": 0.8698850437641092,
+        "engine_cpu_p95_percent_one_logical_cpu": 26.17899999999999,
+        "worker_cpu_p95_percent_one_logical_cpu": 1.71,
+        "database_deadlock_counter_change": 0,
+        "database_max_sampled_lock_waiters": 0,
+        "sampled_peak_active_instances": 2,
+        "sampled_peak_external_tasks": 2,
+        "telemetry_samples": 104
+      },
+      {
+        "pair": 5,
+        "arm": "sequential",
+        "persisted_exact_effects_verified": 720,
+        "persisted_receipts_verified": 2160,
+        "measurement_check_overlap_count": 0,
+        "measurement_count": 600,
+        "observed_backlog": {
+          "bounded_under_declared_guard": true,
+          "limit": "Declared guard at 0.5 or 1 start/s; not a maximum-capacity estimate."
+        },
+        "final_state": {
+          "active_instances": 0,
+          "external_tasks": 0,
+          "incidents": 0,
+          "completed_instances": 720,
+          "effects": 720,
+          "registrations": 720,
+          "receipts": 2160
+        },
+        "measurement_arrival_lag_p99_ms": 2.224975000046925,
+        "host_cpu_p95_percent": 8.778761061946906,
+        "minimum_memory_available_fraction": 0.8824642011101211,
+        "engine_cpu_p95_percent_one_logical_cpu": 26.65149999999998,
+        "worker_cpu_p95_percent_one_logical_cpu": 1.777,
+        "database_deadlock_counter_change": 0,
+        "database_max_sampled_lock_waiters": 0,
+        "sampled_peak_active_instances": 2,
+        "sampled_peak_external_tasks": 2,
+        "telemetry_samples": 104
+      },
+      {
+        "pair": 5,
+        "arm": "parallel",
+        "persisted_exact_effects_verified": 720,
+        "persisted_receipts_verified": 2160,
+        "measurement_check_overlap_count": 600,
+        "measurement_count": 600,
+        "observed_backlog": {
+          "bounded_under_declared_guard": true,
+          "limit": "Declared guard at 0.5 or 1 start/s; not a maximum-capacity estimate."
+        },
+        "final_state": {
+          "active_instances": 0,
+          "external_tasks": 0,
+          "incidents": 0,
+          "completed_instances": 720,
+          "effects": 720,
+          "registrations": 720,
+          "receipts": 2160
+        },
+        "measurement_arrival_lag_p99_ms": 1.8721529999936593,
+        "host_cpu_p95_percent": 8.297872340425528,
+        "minimum_memory_available_fraction": 0.8696357870135278,
+        "engine_cpu_p95_percent_one_logical_cpu": 22.815999999999995,
+        "worker_cpu_p95_percent_one_logical_cpu": 1.617,
+        "database_deadlock_counter_change": 0,
+        "database_max_sampled_lock_waiters": 0,
+        "sampled_peak_active_instances": 1,
+        "sampled_peak_external_tasks": 2,
+        "telemetry_samples": 104
+      }
+    ],
+    "audit_script_sha256": "a5122bebd8af60c74bdce9c6cf897c289d6809bb165c8524a74afe2f50471bf0"
+  },
+  "retention": {
+    "archive_sha256": "59c58c769792af9ccb064ade9baaef88be45b8be537d8d22a57ae44c39017b6e",
+    "export_files_verified": 725,
+    "frozen_inputs_and_failed_attempts_retained": true,
+    "credentials_excluded": true
+  },
+  "cleanup": {
+    "owned_containers_removed": true,
+    "owned_network_removed": true,
+    "temporary_database_deleted": true,
+    "temporary_idle_sleep_prevention_released": true,
+    "existing_reference_resources_retained": true
+  },
+  "telemetry_scope": "Whole-arm Linux/Docker/SQL samples include warmup. Managed-database host CPU and full distributed tracing were not collected.",
+  "started_at": "2026-10-27T17:32:36.409766+00:00",
+  "finished_at": "2026-10-27T19:40:30.007083+00:00"
+}

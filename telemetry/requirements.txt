@@ -1,0 +1,2 @@
+# Optional database metrics only; install into the controller's dedicated venv.
+psycopg[binary]==3.3.6

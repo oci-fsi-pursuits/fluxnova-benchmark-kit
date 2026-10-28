@@ -1,0 +1,14 @@
+{
+  "basis": "effective_actual",
+  "columns": {
+    "BillingCurrency": "currency",
+    "EffectiveCost": "effective_cost",
+    "ResourceId": "resource_id",
+    "ChargePeriodStart": "charge_start",
+    "ChargePeriodEnd": "charge_end",
+    "x_BenchmarkCategory": "benchmark_category",
+    "x_AllocationFraction": "allocation_fraction",
+    "x_AllocationBasis": "allocation_basis"
+  },
+  "defaults": {"ProviderName": "Oracle"}
+}

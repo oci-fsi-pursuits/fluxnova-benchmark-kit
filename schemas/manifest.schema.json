@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fluxnova-benchmarks:manifest:1.0",
+  "title": "Fluxnova immutable run manifest 1.0",
+  "type": "object",
+  "required": ["schema_version", "run_id", "created_at", "config", "source_hashes"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "run_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "config": {"$ref": "config.schema.json"},
+    "source_hashes": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {"type": "string", "minLength": 1},
+      "additionalProperties": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+    }
+  },
+  "$comment": "source_hashes maps workspace-relative source paths to SHA-256; config is the frozen snapshot containing run.id and run.started_at. checksums.json seals this manifest and the collected evidence after finalization. Hashes establish local integrity, not authenticated provenance."
+}

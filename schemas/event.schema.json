@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fluxnova-benchmarks:event:1.0",
+  "title": "One benchmark request lifecycle event",
+  "type": "object",
+  "required": ["event", "run_id", "logical_request_id", "scenario"],
+  "anyOf": [{"required": ["at"]}, {"required": ["elapsed_s"]}],
+  "properties": {
+    "event": {"enum": ["scheduled", "started", "accepted", "completed", "dropped", "error", "outcome"]},
+    "run_id": {"type": "string", "minLength": 1},
+    "logical_request_id": {"type": "string", "minLength": 1},
+    "attempt_id": {"type": "string"},
+    "scenario": {"type": "string", "minLength": 1},
+    "at": {"type": "string", "format": "date-time"},
+    "elapsed_s": {"type": "number"},
+    "latency_s": {"type": "number", "minimum": 0},
+    "deadline_s": {"type": "number", "minimum": 0},
+    "phase": {"enum": ["measurement", "warmup", "drain"]},
+    "status": {"enum": ["correct", "incorrect", "unknown", "expected_rejection"]},
+    "details": {
+      "type": "object",
+      "properties": {"safety_violation": {"type": "boolean"}, "policy_violation": {"type": "boolean"}, "violations": {"type": "array", "items": {"type": "string"}}}
+    }
+  },
+  "$comment": "Negative elapsed_s is permitted only for warmup before measurement start; the executable validator enforces this. latency_s on completed/outcome means scheduled-arrival to durable completion. completed without an explicit correctness status does not establish a correct business outcome. outcome can reconcile that state later without adding observer delay to the completed timestamp."
+}

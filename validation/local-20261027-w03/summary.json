@@ -1,0 +1,640 @@
+{
+  "scope": "Synthetic functional review/task-count study; not human productivity or OCI performance",
+  "status": "passed",
+  "cases": [
+    {
+      "case_id": "eligible_small",
+      "arm": "all_review",
+      "outcome": "settled",
+      "effects": 1,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 802,
+      "observed_case_duration_s": 2.4680000000007567,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "eligible_small",
+      "arm": "policy_routing",
+      "outcome": "settled",
+      "effects": 1,
+      "review_tasks": 0,
+      "required_review_preserved": true,
+      "task_duration_ms": null,
+      "observed_case_duration_s": 0.6409999999996217,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "eligible_at_limit",
+      "arm": "policy_routing",
+      "outcome": "settled",
+      "effects": 1,
+      "review_tasks": 0,
+      "required_review_preserved": true,
+      "task_duration_ms": null,
+      "observed_case_duration_s": 0.6090000000003783,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "eligible_at_limit",
+      "arm": "all_review",
+      "outcome": "settled",
+      "effects": 1,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 468,
+      "observed_case_duration_s": 1.125,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "over_limit_approve",
+      "arm": "all_review",
+      "outcome": "settled",
+      "effects": 1,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 451,
+      "observed_case_duration_s": 0.9540000000015425,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "over_limit_approve",
+      "arm": "policy_routing",
+      "outcome": "settled",
+      "effects": 1,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 406,
+      "observed_case_duration_s": 0.9380000000019209,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "over_limit_reject",
+      "arm": "policy_routing",
+      "outcome": "review_rejected",
+      "effects": 0,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 406,
+      "observed_case_duration_s": 0.9220000000022992,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "over_limit_reject",
+      "arm": "all_review",
+      "outcome": "review_rejected",
+      "effects": 0,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 394,
+      "observed_case_duration_s": 0.8279999999977008,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "high_risk_approve",
+      "arm": "all_review",
+      "outcome": "settled",
+      "effects": 1,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 392,
+      "observed_case_duration_s": 0.875,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "high_risk_approve",
+      "arm": "policy_routing",
+      "outcome": "settled",
+      "effects": 1,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 423,
+      "observed_case_duration_s": 0.875,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "high_risk_reject",
+      "arm": "policy_routing",
+      "outcome": "review_rejected",
+      "effects": 0,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 386,
+      "observed_case_duration_s": 0.875,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "high_risk_reject",
+      "arm": "all_review",
+      "outcome": "review_rejected",
+      "effects": 0,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 422,
+      "observed_case_duration_s": 0.9530000000013388,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "unauthorized",
+      "arm": "all_review",
+      "outcome": "rejected",
+      "effects": 0,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 385,
+      "observed_case_duration_s": 0.8440000000009604,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "unauthorized",
+      "arm": "policy_routing",
+      "outcome": "rejected",
+      "effects": 0,
+      "review_tasks": 0,
+      "required_review_preserved": true,
+      "task_duration_ms": null,
+      "observed_case_duration_s": 0.43800000000192085,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "sanctions",
+      "arm": "policy_routing",
+      "outcome": "rejected",
+      "effects": 0,
+      "review_tasks": 0,
+      "required_review_preserved": true,
+      "task_duration_ms": null,
+      "observed_case_duration_s": 0.4219999999986612,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "sanctions",
+      "arm": "all_review",
+      "outcome": "rejected",
+      "effects": 0,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 388,
+      "observed_case_duration_s": 0.7959999999984575,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "unknown_checks",
+      "arm": "all_review",
+      "outcome": "blocked",
+      "effects": 0,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 402,
+      "observed_case_duration_s": 0.9529999999977008,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "unknown_checks",
+      "arm": "policy_routing",
+      "outcome": "blocked",
+      "effects": 0,
+      "review_tasks": 0,
+      "required_review_preserved": true,
+      "task_duration_ms": null,
+      "observed_case_duration_s": 0.5,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "stale_market",
+      "arm": "policy_routing",
+      "outcome": "blocked",
+      "effects": 0,
+      "review_tasks": 0,
+      "required_review_preserved": true,
+      "task_duration_ms": null,
+      "observed_case_duration_s": 0.4209999999984575,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    },
+    {
+      "case_id": "stale_market",
+      "arm": "all_review",
+      "outcome": "blocked",
+      "effects": 0,
+      "review_tasks": 1,
+      "required_review_preserved": true,
+      "task_duration_ms": 381,
+      "observed_case_duration_s": 0.8279999999977008,
+      "human_active_handling_time_s": null,
+      "status": "passed"
+    }
+  ],
+  "denials": [
+    {
+      "probe": "agent-self-approval",
+      "http_status": 403
+    },
+    {
+      "probe": "agent-change-original",
+      "http_status": 403
+    },
+    {
+      "probe": "agent-skip-review",
+      "http_status": 403
+    },
+    {
+      "probe": "reviewer-start-payment",
+      "http_status": 403
+    }
+  ],
+  "backend_probes": [
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_policy",
+      "reason": "missing_original_policy_receipt",
+      "effects": 0
+    },
+    {
+      "probe": "settlement_before_completed_review",
+      "reason": "review_not_completed",
+      "effects": 0
+    },
+    {
+      "probe": "completed_by_wrong_authenticated_actor",
+      "reason": "review_actor_mismatch",
+      "effects": 0
+    },
+    {
+      "probe": "completed_by_wrong_authenticated_actor",
+      "reason": "review_actor_mismatch",
+      "effects": 0
+    }
+  ],
+  "human_time_saved": null,
+  "live_model_calls": 0,
+  "cloud_resources_accessed": false,
+  "functional_cases_passed": 20,
+  "expected_effects": 8,
+  "review_tasks": {
+    "all_review": 10,
+    "policy_routing": 4
+  },
+  "replay_calls": 120,
+  "cross_process_replays_rejected": 20,
+  "active_instances": 0,
+  "external_tasks": 0,
+  "incidents": 0,
+  "owned_engine_stopped": true,
+  "cleanup_errors": [],
+  "temporary_principals_removed": true,
+  "independent_reaudit": "passed",
+  "source_checksums_sha256": "f6929961657e4fa4b5bf3831874a348666f4a5e12385edef2d55246d7092670b",
+  "original_files_verified": 62,
+  "auditor_sha256": "e57537946a2b61acccc4cb926a3313d85bc9900134d6d1c2fade4dd92d98f531",
+  "browser": {
+    "status": "passed",
+    "new_payment_executions": 0,
+    "bundle_files_verified": 24,
+    "bundle_manifest_sha256": "efcd1974408cf766d6ad140c31260e8433f17819913d2e348278fe13991cd5d7",
+    "runner_sha256": "9394d0793a321df30593ce993eb92a486160cc74502a17ce9db4d0080ff91e5f",
+    "browser_version": "156.0.8078.48",
+    "checks": [
+      {
+        "case_id": "eligible_small",
+        "arm": "all_review",
+        "review_tasks": 1,
+        "outcome": "settled",
+        "effects": 1
+      },
+      {
+        "case_id": "eligible_small",
+        "arm": "policy_routing",
+        "review_tasks": 0,
+        "outcome": "settled",
+        "effects": 1
+      },
+      {
+        "case_id": "eligible_at_limit",
+        "arm": "all_review",
+        "review_tasks": 1,
+        "outcome": "settled",
+        "effects": 1
+      },
+      {
+        "case_id": "eligible_at_limit",
+        "arm": "policy_routing",
+        "review_tasks": 0,
+        "outcome": "settled",
+        "effects": 1
+      },
+      {
+        "case_id": "over_limit_approve",
+        "arm": "all_review",
+        "review_tasks": 1,
+        "outcome": "settled",
+        "effects": 1
+      },
+      {
+        "case_id": "over_limit_approve",
+        "arm": "policy_routing",
+        "review_tasks": 1,
+        "outcome": "settled",
+        "effects": 1
+      },
+      {
+        "case_id": "over_limit_reject",
+        "arm": "all_review",
+        "review_tasks": 1,
+        "outcome": "review_rejected",
+        "effects": 0
+      },
+      {
+        "case_id": "over_limit_reject",
+        "arm": "policy_routing",
+        "review_tasks": 1,
+        "outcome": "review_rejected",
+        "effects": 0
+      },
+      {
+        "case_id": "high_risk_approve",
+        "arm": "all_review",
+        "review_tasks": 1,
+        "outcome": "settled",
+        "effects": 1
+      },
+      {
+        "case_id": "high_risk_approve",
+        "arm": "policy_routing",
+        "review_tasks": 1,
+        "outcome": "settled",
+        "effects": 1
+      },
+      {
+        "case_id": "high_risk_reject",
+        "arm": "all_review",
+        "review_tasks": 1,
+        "outcome": "review_rejected",
+        "effects": 0
+      },
+      {
+        "case_id": "high_risk_reject",
+        "arm": "policy_routing",
+        "review_tasks": 1,
+        "outcome": "review_rejected",
+        "effects": 0
+      },
+      {
+        "case_id": "unauthorized",
+        "arm": "all_review",
+        "review_tasks": 1,
+        "outcome": "rejected",
+        "effects": 0
+      },
+      {
+        "case_id": "unauthorized",
+        "arm": "policy_routing",
+        "review_tasks": 0,
+        "outcome": "rejected",
+        "effects": 0
+      },
+      {
+        "case_id": "sanctions",
+        "arm": "all_review",
+        "review_tasks": 1,
+        "outcome": "rejected",
+        "effects": 0
+      },
+      {
+        "case_id": "sanctions",
+        "arm": "policy_routing",
+        "review_tasks": 0,
+        "outcome": "rejected",
+        "effects": 0
+      },
+      {
+        "case_id": "unknown_checks",
+        "arm": "all_review",
+        "review_tasks": 1,
+        "outcome": "blocked",
+        "effects": 0
+      },
+      {
+        "case_id": "unknown_checks",
+        "arm": "policy_routing",
+        "review_tasks": 0,
+        "outcome": "blocked",
+        "effects": 0
+      },
+      {
+        "case_id": "stale_market",
+        "arm": "all_review",
+        "review_tasks": 1,
+        "outcome": "blocked",
+        "effects": 0
+      },
+      {
+        "case_id": "stale_market",
+        "arm": "policy_routing",
+        "review_tasks": 0,
+        "outcome": "blocked",
+        "effects": 0
+      }
+    ],
+    "javascript_errors": [],
+    "external_requests": [],
+    "keyboard_navigation": "passed",
+    "evidence_navigation": "passed",
+    "horizontal_overflow": false,
+    "original_bundle_unchanged": true,
+    "browser_closed": true,
+    "visual_review": {
+      "status": "passed",
+      "reviewed": [
+        "eligible_small-all_review.png",
+        "eligible_small-policy_routing.png",
+        "over_limit_approve-policy_routing.png",
+        "unknown_checks-policy_routing.png",
+        "laptop.png"
+      ],
+      "presentation_display_review": "pending"
+    }
+  },
+  "retained_preparation_failures": [
+    "First local attempt stopped before any payment after an adapter attribute mismatch; owned engine and temporary user were removed."
+  ],
+  "repository_tests_passed": 361,
+  "optional_k6_checks_enabled": true
+}

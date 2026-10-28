@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: Please cite this research and implementation when reusing its workloads, methods or results.
+type: software
+title: Benchmarking Fluxnova for Financial and Agentic Payment Workflows
+authors:
+  - family-names: Cusato
+    given-names: Nicholas
+version: 0.1.0
+license: Apache-2.0
+repository-code: https://github.com/oci-fsi-pursuits/fluxnova-benchmarking
+abstract: Independent research toolkit for repeatable financial and agentic workflow comparisons, outcome verification and retained evidence, with an OCI reference implementation.
+keywords:
+  - workflow benchmarking
+  - Fluxnova
+  - BPMN
+  - reproducibility

@@ -1,0 +1,62 @@
+{
+  "status": "passed",
+  "scope": "Saved mixed OCI qualification viewer; complete-comparison UI tested with fixtures only",
+  "real_qualification_browser": {
+    "status": "passed",
+    "new_workload_executions": 0,
+    "visual_review": "passed",
+    "browser_version": "156.0.8078.49",
+    "outcome_rows_verified": 0,
+    "pair_rows_verified": 0,
+    "profile_rows_verified": 20,
+    "evidence_navigation": "passed",
+    "keyboard_navigation": "passed",
+    "horizontal_overflow": false,
+    "javascript_errors": [],
+    "external_network_requests": [],
+    "screenshots_reviewed": [
+      "desktop-top.png",
+      "profile-detail.png",
+      "laptop-top.png"
+    ],
+    "visual_findings": "Readable headings, separate outcome counts and profile denominators; no visible clipping at either viewport."
+  },
+  "fixture_browser": {
+    "status": "passed",
+    "new_workload_executions": 0,
+    "visual_review": "pending",
+    "browser_version": "156.0.8078.49",
+    "outcome_rows_verified": 6,
+    "pair_rows_verified": 15,
+    "profile_rows_verified": 0,
+    "evidence_navigation": "passed",
+    "keyboard_navigation": "passed",
+    "horizontal_overflow": false,
+    "javascript_errors": [],
+    "external_network_requests": []
+  },
+  "fixture_values_are_research_results": false,
+  "campaign_results_available": false,
+  "report_manifest": {
+    "source_audit_sha256": "8c2714911c6e39ea209f1bc53c0306d0790a47c80af7fe4a29bc895b28702ded",
+    "export_checksums_sha256": "cd81377bc78823f9b3ae8669f675e4662f3270597ea0151de87a693284513867",
+    "renderer_sha256": "b86584969673b4b5991f74d8e8810100b6927a4299b760b9ff78de06bb81c07a",
+    "files": {
+      "summary.json": "8c2714911c6e39ea209f1bc53c0306d0790a47c80af7fe4a29bc895b28702ded",
+      "report.html": "47d98512169ee0904290e1006e2241f143ac454d273fc465ab9e1ac4a481a360"
+    },
+    "new_workload_executions": 0
+  },
+  "screenshots": {
+    "desktop-top.png": "ec960754951501d22409bffb99a545d0fbde43fa1d6ff0a97beffaa93973dd4a",
+    "laptop-top.png": "3a8fcf2a3d77d0cfd00a434399dce529ac9e289a086fc737ef4a15b9c5288ae6",
+    "profile-detail.png": "cd79db6379b492def4673292351da1c518d3ffd6e49e155a792a3e5c372fdb4f"
+  },
+  "tests": {
+    "passed": 385,
+    "skipped": 0,
+    "log_sha256": "817369b8fda5429083639ff4d9a7636d494953961c20b68520c6d40ded0dd0a0"
+  },
+  "final_keyboard_only_adjustment": "Verified with final fixture browser integration check",
+  "renderer_sha256": "a0bffa7ddb45f2cb50fbb65b42d53bedbbbce0ebc8d2b6561c729d49e7cd6e52"
+}

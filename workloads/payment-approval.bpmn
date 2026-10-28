@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks">
+  <process id="bench_payment_approval" name="Synthetic payment review lifecycle" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start"/><sequenceFlow id="f1" sourceRef="start" targetRef="payment_review"/>
+    <userTask id="payment_review" name="Review synthetic payment" camunda:candidateGroups="benchmark-reviewers"/>
+    <sequenceFlow id="f2" sourceRef="payment_review" targetRef="decision"/>
+    <exclusiveGateway id="decision" default="reject"/>
+    <sequenceFlow id="accept" sourceRef="decision" targetRef="settle"><conditionExpression xsi:type="tFormalExpression">${reviewerDecision == 'approve'}</conditionExpression></sequenceFlow>
+    <sequenceFlow id="reject" sourceRef="decision" targetRef="rejected"/>
+    <serviceTask id="settle" camunda:type="external" camunda:topic="bench-service" camunda:asyncBefore="true">
+      <extensionElements><camunda:inputOutput>
+        <camunda:inputParameter name="scenario">settlement</camunda:inputParameter>
+        <camunda:inputParameter name="approved">${reviewerDecision == 'approve'}</camunda:inputParameter>
+        <camunda:inputParameter name="authorized">${paymentAuthorized}</camunda:inputParameter>
+        <camunda:inputParameter name="sanctions_match">${paymentSanctions}</camunda:inputParameter>
+        <camunda:inputParameter name="amount_minor">${paymentAmountMinor}</camunda:inputParameter>
+        <camunda:inputParameter name="limit_minor">${paymentLimitMinor}</camunda:inputParameter>
+        <camunda:inputParameter name="logical_request_id">${paymentKey}</camunda:inputParameter>
+      </camunda:inputOutput></extensionElements>
+    </serviceTask>
+    <sequenceFlow id="f3" sourceRef="settle" targetRef="finished"/>
+    <endEvent id="finished"/><endEvent id="rejected"/>
+  </process>
+</definitions>

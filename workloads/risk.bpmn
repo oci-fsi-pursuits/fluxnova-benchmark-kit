@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks">
+  <process id="bench_risk" name="Synthetic trade risk decision" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start"/><sequenceFlow id="f1" sourceRef="start" targetRef="check"/>
+    <serviceTask id="check" camunda:type="external" camunda:topic="bench-service" camunda:asyncBefore="true"/>
+    <sequenceFlow id="f2" sourceRef="check" targetRef="decision"/><exclusiveGateway id="decision" default="reject"/>
+    <sequenceFlow id="accept" sourceRef="decision" targetRef="accepted"><conditionExpression xsi:type="tFormalExpression">${workerResult == 'accepted'}</conditionExpression></sequenceFlow>
+    <sequenceFlow id="reject" sourceRef="decision" targetRef="rejected"/>
+    <endEvent id="accepted"/><endEvent id="rejected"/>
+  </process>
+</definitions>

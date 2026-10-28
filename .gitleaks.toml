@@ -1,0 +1,22 @@
+title = "Fluxnova benchmark examples and secret scanning"
+
+[extend]
+useDefault = true
+
+# Match both a named example path AND the exact non-secret value. Other values
+# in these same files remain subject to every default detection rule.
+[[allowlists]]
+description = "Explicit example Vault identifiers"
+targetRules = ["generic-api-key"]
+condition = "AND"
+regexTarget = "secret"
+paths = ['''(^|/)(deploy/verifier\.config\.example\.json|infra/oci-reference/terraform\.tfvars\.example|tests/test_recovery_bundle\.py)$''']
+regexes = ['''^ocid1\.vaultsecret\.(REPLACE|oc1\.test)$''']
+
+[[allowlists]]
+description = "Terraform enum selecting a Vault reference"
+targetRules = ["hashicorp-tf-password"]
+condition = "AND"
+regexTarget = "match"
+paths = ['''(^|/)infra/oci-reference/(main\.tf|tests/reference\.tftest\.hcl)$''']
+regexes = ['''^\.?password_type\s*(=|==)\s*"VAULT_SECRET"\s*$''']

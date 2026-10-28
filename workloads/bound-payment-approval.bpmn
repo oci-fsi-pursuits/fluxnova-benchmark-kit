@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks">
+  <process id="bench_bound_payment_approval" name="Review bound to signed synthetic payment intent" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start"/><sequenceFlow id="f1" sourceRef="start" targetRef="payment_review"/>
+    <userTask id="payment_review" name="Review signed synthetic payment" camunda:formKey="embedded:deployment:forms/payment-review.html"/>
+    <sequenceFlow id="f2" sourceRef="payment_review" targetRef="decision"/><exclusiveGateway id="decision" default="reject"/>
+    <sequenceFlow id="approve" sourceRef="decision" targetRef="settle"><conditionExpression xsi:type="tFormalExpression">${reviewerDecision == 'approve'}</conditionExpression></sequenceFlow>
+    <sequenceFlow id="reject" sourceRef="decision" targetRef="rejected"/><endEvent id="rejected"/>
+    <serviceTask id="settle" camunda:type="external" camunda:topic="bench-bound-review" camunda:asyncBefore="true"/>
+    <sequenceFlow id="f3" sourceRef="settle" targetRef="finished"/><endEvent id="finished"/>
+  </process>
+</definitions>

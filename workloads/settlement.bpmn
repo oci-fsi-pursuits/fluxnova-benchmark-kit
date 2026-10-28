@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks">
+  <process id="bench_settlement" name="Synthetic settlement with deduplicated ledger effect" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start"/><sequenceFlow id="f1" sourceRef="start" targetRef="settle"/>
+    <serviceTask id="settle" camunda:type="external" camunda:topic="bench-service" camunda:asyncBefore="true"/>
+    <sequenceFlow id="f2" sourceRef="settle" targetRef="decision"/><exclusiveGateway id="decision" default="reject"/>
+    <sequenceFlow id="settled_flow" sourceRef="decision" targetRef="settled"><conditionExpression xsi:type="tFormalExpression">${workerResult == 'settled'}</conditionExpression></sequenceFlow>
+    <sequenceFlow id="reject" sourceRef="decision" targetRef="rejected"/>
+    <endEvent id="settled"/><endEvent id="rejected"/>
+  </process>
+</definitions>

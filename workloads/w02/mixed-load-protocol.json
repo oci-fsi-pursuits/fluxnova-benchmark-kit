@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "study_id": "w02_m1",
+  "scope": "Local mixed-outcome load-driver qualification, not OCI performance or a representative customer mix.",
+  "case_selection": "repeat_seeded_grid_each_phase",
+  "worker_slots": 2,
+  "fixed_vus": 16,
+  "completion_poll_ms": 100,
+  "deadline_s": 2,
+  "deadline_miss_action": "report",
+  "drain_s": 15,
+  "warmup_s": 20,
+  "duration_s": 100,
+  "lanes": [
+    {"arm":"sequential", "rate":0.5},
+    {"arm":"parallel", "rate":0.5},
+    {"arm":"parallel", "rate":1},
+    {"arm":"sequential", "rate":1}
+  ]
+}

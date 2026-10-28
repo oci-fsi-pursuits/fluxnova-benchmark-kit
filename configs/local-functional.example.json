@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "campaign": {"name": "local-functional", "currency": "USD"},
+  "artifact": {"release": "3.0.1", "provenance": "Maven Central distribution; local functional validation only"},
+  "runtime": {"base_url": "http://127.0.0.1:18080/engine-rest", "support_url": "http://127.0.0.1:18081", "cpu": 4, "memory_gib": 8, "heap_gib": 4},
+  "workload": {"scenario": "minimal", "seed": 42, "rate": 1, "duration_s": 10, "warmup_s": 0, "drain_s": 30, "deadline_s": 2, "payload_bytes": 1024, "poll_interval_ms": 100, "preallocated_vus": 8, "max_vus": 8},
+  "run": {"mode": "local-functional"},
+  "execution": {"k6_binary": "k6", "max_run_seconds": 90},
+  "costs": {"currency": "USD", "complete": false, "records": []}
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks">
+  <process id="bench_async" name="Benchmark external service" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start"/>
+    <sequenceFlow id="to_service" sourceRef="start" targetRef="service"/>
+    <serviceTask id="service" name="Deterministic external task" camunda:type="external" camunda:topic="bench-service" camunda:asyncBefore="true"/>
+    <sequenceFlow id="to_end" sourceRef="service" targetRef="end"/>
+    <endEvent id="end"/>
+  </process>
+</definitions>

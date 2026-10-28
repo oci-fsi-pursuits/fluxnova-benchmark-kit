@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fluxnova-benchmarks:config:1.0",
+  "title": "Fluxnova benchmark configuration 1.0",
+  "type": "object",
+  "required": ["schema_version", "campaign", "artifact", "runtime", "workload"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "campaign": {
+      "type": "object", "required": ["name", "currency"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "region": {"type": "string"},
+        "compartment_id": {"type": "string"},
+        "budget_limit": {"type": "number", "exclusiveMinimum": 0},
+        "currency": {"const": "USD"},
+        "access_method": {"enum": ["resource_principal", "instance_principal", "config_file"]}
+      }
+    },
+    "artifact": {
+      "type": "object", "required": ["release"],
+      "properties": {
+        "release": {"type": "string", "minLength": 1},
+        "image": {"type": "string"},
+        "source_commit": {"type": "string"},
+        "image_source": {"type": "string"},
+        "distribution_url": {"type": "string", "format": "uri"},
+        "distribution_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+        "java_image": {"type": "string"},
+        "k6_image": {"type": "string", "pattern": "^.+@sha256:[a-fA-F0-9]{64}$"}
+      }
+    },
+    "runtime": {
+      "type": "object", "required": ["cpu", "memory_gib", "heap_gib"],
+      "properties": {
+        "base_url": {"type": "string"},
+        "worker_timing_enabled": {"type": "boolean", "default": false},
+        "auth_username_env": {"type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"},
+        "auth_password_env": {"type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"},
+        "cpu": {"type": "number", "exclusiveMinimum": 0},
+        "memory_gib": {"type": "number", "exclusiveMinimum": 0},
+        "heap_gib": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "workload": {
+      "type": "object", "required": ["scenario", "seed", "rate", "duration_s", "warmup_s", "drain_s", "deadline_s", "payload_bytes"],
+      "properties": {
+        "scenario": {"enum": ["minimal", "variables", "async", "kyc", "risk", "settlement"]},
+        "seed": {"type": "integer", "minimum": 0},
+        "rate": {"type": "integer", "exclusiveMinimum": 0},
+        "duration_s": {"type": "integer", "exclusiveMinimum": 0},
+        "warmup_s": {"type": "integer", "minimum": 0},
+        "abort_on_warmup_unknown": {"type": "boolean", "default": false},
+        "late_poll_interval_ms": {"type": "number", "exclusiveMinimum": 0},
+        "drain_s": {"type": "integer", "exclusiveMinimum": 0},
+        "deadline_s": {"type": "number", "exclusiveMinimum": 0},
+        "payload_bytes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "run": {
+      "type": "object",
+      "properties": {"id": {"type": "string", "minLength": 1}, "mode": {"enum": ["live", "fixture", "local-functional"]}, "started_at": {"type": "string", "format": "date-time"}}
+    },
+    "estimated_cost": {
+      "type": "object", "required": ["amount", "currency", "basis"],
+      "properties": {"amount": {"type": "number", "minimum": 0}, "currency": {"const": "USD"}, "basis": {"type": "string"}}
+    }
+  },
+  "$comment": "The executable stdlib validator adds cloud preflight rules: concrete OCI identifiers, positive budget, supported OCI identity, immutable image digest, full source SHA, no credentials in URLs, and heap below memory. Extra fields allow OCI and future adapters without schema churn."
+}

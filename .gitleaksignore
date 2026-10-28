@@ -1,0 +1,55 @@
+# Exact reviewed historical false positives only. See docs/public-release.md.
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+f5faf82dd2db699356686d72ccdb183f058c6541:validation/local-20261021-key-rotation/summary.json:generic-api-key:41
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+f5faf82dd2db699356686d72ccdb183f058c6541:validation/local-20261021-key-rotation/summary.json:generic-api-key:42
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+f5faf82dd2db699356686d72ccdb183f058c6541:validation/local-20261021-key-rotation/summary.json:generic-api-key:45
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+f5faf82dd2db699356686d72ccdb183f058c6541:validation/local-20261021-key-rotation/summary.json:generic-api-key:48
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+f5faf82dd2db699356686d72ccdb183f058c6541:validation/local-20261021-key-rotation/summary.json:generic-api-key:49
+
+# Reserved example Vault secret identifier in a unit-test fixture.
+409f040a499eec3b38d0770864ed1216b2bb84df:tests/test_recovery_bundle.py:generic-api-key:16
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+c1a330fbfad70a9c906d38561e3d74eaab9db32a:validation/local-20261022-key-lifecycle/summary.json:generic-api-key:62
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+c1a330fbfad70a9c906d38561e3d74eaab9db32a:validation/local-20261022-key-lifecycle/summary.json:generic-api-key:64
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+c1a330fbfad70a9c906d38561e3d74eaab9db32a:validation/local-20261022-key-lifecycle/summary.json:generic-api-key:65
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+c1a330fbfad70a9c906d38561e3d74eaab9db32a:validation/local-20261022-key-lifecycle/summary.json:generic-api-key:67
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+c1a330fbfad70a9c906d38561e3d74eaab9db32a:validation/local-20261022-key-lifecycle/summary.json:generic-api-key:68
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+c1a330fbfad70a9c906d38561e3d74eaab9db32a:validation/local-20261022-key-lifecycle/summary.json:generic-api-key:71
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+c1a330fbfad70a9c906d38561e3d74eaab9db32a:validation/local-20261022-key-lifecycle/summary.json:generic-api-key:73
+
+# Verified SHA-256 of the named source file at the recorded commit; not key material.
+c1a330fbfad70a9c906d38561e3d74eaab9db32a:validation/local-20261022-key-lifecycle/summary.json:generic-api-key:74
+
+# Explicit REPLACE placeholder in an example configuration.
+7195f1429294cd7ce697210fbe664dc8b7ec4aa7:deploy/verifier.config.example.json:generic-api-key:3
+
+# Explicit REPLACE placeholder in example Terraform inputs.
+a5eacca369d40f90064012b2c651baf09ce8619d:infra/oci-reference/terraform.tfvars.example:generic-api-key:8
+
+# Terraform enum VAULT_SECRET selecting a secret reference, not a password.
+a5eacca369d40f90064012b2c651baf09ce8619d:infra/oci-reference/main.tf:hashicorp-tf-password:61
+
+# Terraform enum VAULT_SECRET selecting a secret reference, not a password.
+a5eacca369d40f90064012b2c651baf09ce8619d:infra/oci-reference/tests/reference.tftest.hcl:hashicorp-tf-password:44

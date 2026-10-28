@@ -1,0 +1,3 @@
+# Validated SDK/API shapes; resolve/install in a dedicated controller virtualenv.
+oci==2.187.1
+pyarrow==23.0.1

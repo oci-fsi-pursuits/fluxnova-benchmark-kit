@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks/w03">
+  <process id="bench_w03_policy_routing" name="W03 policy_routing: synthetic payment review" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start"/><sequenceFlow id="begin" sourceRef="start" targetRef="route"/>
+    <serviceTask id="route" name="Evaluate immutable original policy" camunda:type="external" camunda:topic="bench-w03-routing"/>
+    <sequenceFlow id="route_choice" sourceRef="route" targetRef="review_choice"/>
+    <exclusiveGateway id="review_choice" default="no_review"/>
+    <sequenceFlow id="needs_review" sourceRef="review_choice" targetRef="payment_review"><conditionExpression xsi:type="tFormalExpression">${w03Route == 'review_required'}</conditionExpression></sequenceFlow>
+    <sequenceFlow id="no_review" sourceRef="review_choice" targetRef="verify_settle"/>
+    <userTask id="payment_review" name="Review original synthetic payment"/>
+    <sequenceFlow id="review_done" sourceRef="payment_review" targetRef="verify_settle"/>
+    <serviceTask id="verify_settle" name="Verify actor and exact effect" camunda:type="external" camunda:topic="bench-w03-routing"/>
+    <sequenceFlow id="checked" sourceRef="verify_settle" targetRef="outcome"/>
+    <exclusiveGateway id="outcome" default="blocked_flow"/>
+    <sequenceFlow id="settled_flow" sourceRef="outcome" targetRef="settled"><conditionExpression xsi:type="tFormalExpression">${w03Outcome == 'settled'}</conditionExpression></sequenceFlow>
+    <sequenceFlow id="rejected_flow" sourceRef="outcome" targetRef="rejected"><conditionExpression xsi:type="tFormalExpression">${w03Outcome == 'rejected'}</conditionExpression></sequenceFlow>
+    <sequenceFlow id="review_rejected_flow" sourceRef="outcome" targetRef="review_rejected"><conditionExpression xsi:type="tFormalExpression">${w03Outcome == 'review_rejected'}</conditionExpression></sequenceFlow>
+    <sequenceFlow id="blocked_flow" sourceRef="outcome" targetRef="blocked"/>
+    <endEvent id="settled"/><endEvent id="rejected"/><endEvent id="review_rejected"/><endEvent id="blocked"/>
+  </process>
+</definitions>

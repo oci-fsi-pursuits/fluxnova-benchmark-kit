@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "study_id": "w02_s1",
+  "title": "Payment checks across dependency conditions",
+  "seed": 20261027,
+  "scope": "Synthetic functional sensitivity grid. Equal scenario coverage is a test design, not a customer frequency distribution. No model calls or human review.",
+  "base_case_ids": ["approve", "sanctions_reject", "risk_reject", "unauthorized", "review_required", "unknown_kyc", "unknown_risk", "retry_before_receipt", "reconcile_after_receipt", "concurrent_completion"],
+  "profiles": [
+    {"id":"fast", "label":"Fast dependencies", "kyc_ms":50, "risk_ms":70},
+    {"id":"balanced", "label":"Balanced dependencies", "kyc_ms":400, "risk_ms":400},
+    {"id":"risk_dominant", "label":"Risk check dominates", "kyc_ms":100, "risk_ms":900},
+    {"id":"kyc_dominant", "label":"KYC check dominates", "kyc_ms":900, "risk_ms":100},
+    {"id":"both_slow", "label":"Both dependencies slow", "kyc_ms":900, "risk_ms":1100}
+  ]
+}

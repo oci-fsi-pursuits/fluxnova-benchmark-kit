@@ -1,0 +1,28 @@
+name: Benchmark or workload proposal
+description: Propose one declared comparison with an independent outcome check.
+title: "Benchmark: "
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question and declared change
+      description: Name the baseline, treatment and decision this would inform.
+    validations:
+      required: true
+  - type: textarea
+    id: population
+    attributes:
+      label: Workload and expected outcomes
+      description: Describe synthetic inputs, outcome categories, negative cases and verification.
+    validations:
+      required: true
+  - type: textarea
+    id: controls
+    attributes:
+      label: Environment and controls
+      description: Versions, resources, schedule, repeats, resets, telemetry, deadline and stop rules. Exclude credentials and private identifiers.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Reproduction and evidence
+      description: Link sanitized source and retained evidence. Distinguish proposed work from measurements.

@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "scope": "Synthetic policy-routing functional/task-count comparison; all-review is a declared demonstration control, not a customer operating-policy baseline.",
+  "policy": "Reject unauthorized/sanctions; block unknown/stale checks; require review over 1000 minor units or high risk; otherwise eligible. Reviewer cannot override authority or unknown checks.",
+  "scripted_review_pause_s": 0.3,
+  "human_active_handling_time": null,
+  "live_model_calls": 0,
+  "cases": [
+    {
+      "case_id": "eligible_small",
+      "payment": {
+        "payment_id": "w03-eligible_small",
+        "beneficiary": "synthetic-beneficiary",
+        "amount_minor": 100,
+        "limit_minor": 1000,
+        "authorized": true,
+        "sanctions_match": false,
+        "high_risk": false,
+        "stale_market": false,
+        "checks_known": true
+      },
+      "scripted_reviewer_decision": "approve",
+      "expected_outcome": "settled",
+      "expected_policy_review": false
+    },
+    {
+      "case_id": "eligible_at_limit",
+      "payment": {
+        "payment_id": "w03-eligible_at_limit",
+        "beneficiary": "synthetic-beneficiary",
+        "amount_minor": 1000,
+        "limit_minor": 1000,
+        "authorized": true,
+        "sanctions_match": false,
+        "high_risk": false,
+        "stale_market": false,
+        "checks_known": true
+      },
+      "scripted_reviewer_decision": "approve",
+      "expected_outcome": "settled",
+      "expected_policy_review": false
+    },
+    {
+      "case_id": "over_limit_approve",
+      "payment": {
+        "payment_id": "w03-over_limit_approve",
+        "beneficiary": "synthetic-beneficiary",
+        "amount_minor": 2000,
+        "limit_minor": 1000,
+        "authorized": true,
+        "sanctions_match": false,
+        "high_risk": false,
+        "stale_market": false,
+        "checks_known": true
+      },
+      "scripted_reviewer_decision": "approve",
+      "expected_outcome": "settled",
+      "expected_policy_review": true
+    },
+    {
+      "case_id": "over_limit_reject",
+      "payment": {
+        "payment_id": "w03-over_limit_reject",
+        "beneficiary": "synthetic-beneficiary",
+        "amount_minor": 2000,
+        "limit_minor": 1000,
+        "authorized": true,
+        "sanctions_match": false,
+        "high_risk": false,
+        "stale_market": false,
+        "checks_known": true
+      },
+      "scripted_reviewer_decision": "reject",
+      "expected_outcome": "review_rejected",
+      "expected_policy_review": true
+    },
+    {
+      "case_id": "high_risk_approve",
+      "payment": {
+        "payment_id": "w03-high_risk_approve",
+        "beneficiary": "synthetic-beneficiary",
+        "amount_minor": 100,
+        "limit_minor": 1000,
+        "authorized": true,
+        "sanctions_match": false,
+        "high_risk": true,
+        "stale_market": false,
+        "checks_known": true
+      },
+      "scripted_reviewer_decision": "approve",
+      "expected_outcome": "settled",
+      "expected_policy_review": true
+    },
+    {
+      "case_id": "high_risk_reject",
+      "payment": {
+        "payment_id": "w03-high_risk_reject",
+        "beneficiary": "synthetic-beneficiary",
+        "amount_minor": 100,
+        "limit_minor": 1000,
+        "authorized": true,
+        "sanctions_match": false,
+        "high_risk": true,
+        "stale_market": false,
+        "checks_known": true
+      },
+      "scripted_reviewer_decision": "reject",
+      "expected_outcome": "review_rejected",
+      "expected_policy_review": true
+    },
+    {
+      "case_id": "unauthorized",
+      "payment": {
+        "payment_id": "w03-unauthorized",
+        "beneficiary": "synthetic-beneficiary",
+        "amount_minor": 100,
+        "limit_minor": 1000,
+        "authorized": false,
+        "sanctions_match": false,
+        "high_risk": false,
+        "stale_market": false,
+        "checks_known": true
+      },
+      "scripted_reviewer_decision": "approve",
+      "expected_outcome": "rejected",
+      "expected_policy_review": false
+    },
+    {
+      "case_id": "sanctions",
+      "payment": {
+        "payment_id": "w03-sanctions",
+        "beneficiary": "synthetic-beneficiary",
+        "amount_minor": 100,
+        "limit_minor": 1000,
+        "authorized": true,
+        "sanctions_match": true,
+        "high_risk": false,
+        "stale_market": false,
+        "checks_known": true
+      },
+      "scripted_reviewer_decision": "approve",
+      "expected_outcome": "rejected",
+      "expected_policy_review": false
+    },
+    {
+      "case_id": "unknown_checks",
+      "payment": {
+        "payment_id": "w03-unknown_checks",
+        "beneficiary": "synthetic-beneficiary",
+        "amount_minor": 100,
+        "limit_minor": 1000,
+        "authorized": true,
+        "sanctions_match": false,
+        "high_risk": false,
+        "stale_market": false,
+        "checks_known": false
+      },
+      "scripted_reviewer_decision": "approve",
+      "expected_outcome": "blocked",
+      "expected_policy_review": false
+    },
+    {
+      "case_id": "stale_market",
+      "payment": {
+        "payment_id": "w03-stale_market",
+        "beneficiary": "synthetic-beneficiary",
+        "amount_minor": 100,
+        "limit_minor": 1000,
+        "authorized": true,
+        "sanctions_match": false,
+        "high_risk": false,
+        "stale_market": true,
+        "checks_known": true
+      },
+      "scripted_reviewer_decision": "approve",
+      "expected_outcome": "blocked",
+      "expected_policy_review": false
+    }
+  ]
+}

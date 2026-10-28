@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="https://finos.org/benchmarks/w02" id="w02_sequential">
+  <process id="bench_w02_sequential" name="W02 sequential independent payment checks" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start" name="Payment received">
+      <outgoing>start_kyc</outgoing>
+    </startEvent>
+    <serviceTask id="kyc_check" name="KYC screening" camunda:type="external" camunda:topic="bench-w02-checks">
+      <incoming>start_kyc</incoming>
+      <outgoing>kyc_risk</outgoing>
+    </serviceTask>
+    <serviceTask id="risk_check" name="Independent risk check" camunda:type="external" camunda:topic="bench-w02-checks">
+      <incoming>kyc_risk</incoming>
+      <outgoing>risk_verify</outgoing>
+    </serviceTask>
+    <serviceTask id="verify_settle" name="Verify both checks and settle" camunda:type="external" camunda:topic="bench-w02-checks">
+      <incoming>risk_verify</incoming>
+      <outgoing>verify_decision</outgoing>
+    </serviceTask>
+    <exclusiveGateway id="decision" name="Outcome" default="blocked_flow">
+      <incoming>verify_decision</incoming>
+      <outgoing>settled_flow</outgoing>
+      <outgoing>rejected_flow</outgoing>
+      <outgoing>blocked_flow</outgoing>
+    </exclusiveGateway>
+    <endEvent id="settled" name="Exactly one effect">
+      <incoming>settled_flow</incoming>
+    </endEvent>
+    <endEvent id="rejected" name="Rejected without effect">
+      <incoming>rejected_flow</incoming>
+    </endEvent>
+    <endEvent id="blocked" name="Unknown blocks effect">
+      <incoming>blocked_flow</incoming>
+    </endEvent>
+    <sequenceFlow id="start_kyc" sourceRef="start" targetRef="kyc_check" />
+    <sequenceFlow id="kyc_risk" sourceRef="kyc_check" targetRef="risk_check" />
+    <sequenceFlow id="risk_verify" sourceRef="risk_check" targetRef="verify_settle" />
+    <sequenceFlow id="verify_decision" sourceRef="verify_settle" targetRef="decision" />
+    <sequenceFlow id="settled_flow" sourceRef="decision" targetRef="settled">
+      <conditionExpression xsi:type="tFormalExpression">${w02Outcome == 'settled'}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="rejected_flow" sourceRef="decision" targetRef="rejected">
+      <conditionExpression xsi:type="tFormalExpression">${w02Outcome == 'rejected'}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="blocked_flow" sourceRef="decision" targetRef="blocked" />
+  </process>
+  <bpmndi:BPMNDiagram id="diagram_sequential">
+    <bpmndi:BPMNPlane id="plane_sequential" bpmnElement="bench_w02_sequential">
+      <bpmndi:BPMNShape id="start_shape" bpmnElement="start">
+        <dc:Bounds x="42" y="172" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="14" y="213" width="92" height="30" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="kyc_check_shape" bpmnElement="kyc_check">
+        <dc:Bounds x="140" y="158" width="110" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="risk_check_shape" bpmnElement="risk_check">
+        <dc:Bounds x="292" y="158" width="110" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="verify_settle_shape" bpmnElement="verify_settle">
+        <dc:Bounds x="445" y="158" width="125" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="decision_shape" bpmnElement="decision">
+        <dc:Bounds x="610" y="165" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="582" y="220" width="106" height="30" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="settled_shape" bpmnElement="settled">
+        <dc:Bounds x="722" y="72" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="694" y="113" width="92" height="30" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="rejected_shape" bpmnElement="rejected">
+        <dc:Bounds x="722" y="172" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="694" y="213" width="92" height="30" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="blocked_shape" bpmnElement="blocked">
+        <dc:Bounds x="722" y="272" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="694" y="313" width="92" height="30" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="start_kyc_edge" bpmnElement="start_kyc">
+        <di:waypoint x="78" y="190" />
+        <di:waypoint x="140" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="kyc_risk_edge" bpmnElement="kyc_risk">
+        <di:waypoint x="250" y="190" />
+        <di:waypoint x="292" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="risk_verify_edge" bpmnElement="risk_verify">
+        <di:waypoint x="402" y="190" />
+        <di:waypoint x="445" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="verify_decision_edge" bpmnElement="verify_decision">
+        <di:waypoint x="570" y="190" />
+        <di:waypoint x="610" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="settled_flow_edge" bpmnElement="settled_flow">
+        <di:waypoint x="635" y="165" />
+        <di:waypoint x="635" y="90" />
+        <di:waypoint x="722" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="rejected_flow_edge" bpmnElement="rejected_flow">
+        <di:waypoint x="660" y="190" />
+        <di:waypoint x="722" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="blocked_flow_edge" bpmnElement="blocked_flow">
+        <di:waypoint x="635" y="215" />
+        <di:waypoint x="635" y="290" />
+        <di:waypoint x="722" y="290" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

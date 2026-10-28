@@ -1,0 +1,155 @@
+{
+  "status": "passed",
+  "scope": "LOCAL FUNCTIONAL VALIDATION - NOT OCI PERFORMANCE",
+  "study_id": "w02_s1",
+  "source_manifest_sha256": "8e58586933b0fdbd2e40bd3924537a446104a5098638cc0414db326d79b7716b",
+  "source_checksums_sha256": "e9cbf6a717c78b4c855b940862e24875e535034bb8f661ee0e795866d132f2ef",
+  "auditor_sha256": "c3986fc545a498c4017c7d54d9a7b7889687613032ce653e08bf3988cc104e4d",
+  "sealed_files_verified": 224,
+  "unique_scenarios": 50,
+  "functional_executions": 100,
+  "expected_effects": 40,
+  "original_receipts_verified": 300,
+  "repeated_calls": 600,
+  "premature_settlement_denials": 100,
+  "cross_process_replays_blocked": 2,
+  "injected_once_faults_verified": 20,
+  "required_parallel_overlap_probes": 4,
+  "profiles": {
+    "kyc_dominant": {
+      "executions": 20,
+      "effects": 8,
+      "outcomes": {
+        "rejected": 8,
+        "settled": 8,
+        "blocked": 4
+      },
+      "repeated_calls": 120,
+      "parallel_executions": 10,
+      "parallel_receipt_overlaps": 9
+    },
+    "balanced": {
+      "executions": 20,
+      "effects": 8,
+      "outcomes": {
+        "settled": 8,
+        "blocked": 4,
+        "rejected": 8
+      },
+      "repeated_calls": 120,
+      "parallel_executions": 10,
+      "parallel_receipt_overlaps": 9
+    },
+    "both_slow": {
+      "executions": 20,
+      "effects": 8,
+      "outcomes": {
+        "settled": 8,
+        "blocked": 4,
+        "rejected": 8
+      },
+      "repeated_calls": 120,
+      "parallel_executions": 10,
+      "parallel_receipt_overlaps": 10
+    },
+    "risk_dominant": {
+      "executions": 20,
+      "effects": 8,
+      "outcomes": {
+        "settled": 8,
+        "rejected": 8,
+        "blocked": 4
+      },
+      "repeated_calls": 120,
+      "parallel_executions": 10,
+      "parallel_receipt_overlaps": 4
+    },
+    "fast": {
+      "executions": 20,
+      "effects": 8,
+      "outcomes": {
+        "settled": 8,
+        "rejected": 8,
+        "blocked": 4
+      },
+      "repeated_calls": 120,
+      "parallel_executions": 10,
+      "parallel_receipt_overlaps": 1
+    }
+  },
+  "owned_engine_stopped": true,
+  "remaining_engine_work": 0,
+  "source_unchanged": true,
+  "performance_claim": null,
+  "representative_customer_distribution": false,
+  "native_model_calls": 0,
+  "cloud_resources_accessed": false,
+  "date": "2026-10-27",
+  "runtime": {
+    "fluxnova": "3.0.1",
+    "distribution_sha256": "ced4311c541faf1a7248d88e37ba53bd8c659fefe8387d2f78c21c30a117d7cf",
+    "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+    "java_executable_sha256": "82051fdab26319d77d20cc0065045d05ec00b3e3d05f44935d7c06b96b621d55",
+    "database": "embedded H2",
+    "worker_slots": 2,
+    "completion_poll_ms": 100
+  },
+  "source_sha256": {
+    "services/workflow_checks.py": "53266a65572ec6c282f1a3f99e6b48f57c4633fd2b822c28d1dc697dd91a90ee",
+    "services/workflow_checks_worker.py": "502796041dc1a409ba923d12c47a546bac309c91720c08a7bf73555e3c3b6a5c",
+    "services/http_support.py": "1ed258ef6040684402fffaa7630a9ee24a24d092d6b34312e638120d3168b23e",
+    "services/worker.py": "114d7ef905583133a63570a7691f21906cc1e885f86953530ece2e9402058a4e",
+    "benchlib/fluxnova.py": "02f9e4cff23937dc82f3da2ddf53e860d0e827cda299d520f2d61606d7d15679",
+    "scripts/run_w02_functional.py": "75be28bb2e325757d17f534aff69fc08017bcc0ae535ea607c5b7f156d510cd7",
+    "benchlib/workflow_checks_report.py": "abd52efb2968500a0d45d49b75f872f838249244e29d4631c4aa12814864ea18",
+    "benchlib/workflow_corpus.py": "163f8f1cbd9a71691ac50deca9ba3ba567a60e4c0e68f8d5aa2a75c583cb285c",
+    "workloads/w02/cases.json": "1b117ccbfbc44d35a4cc2eb4cfed12fb9cf31a525ba20641ca114d702801d38e",
+    "workloads/w02/sequential.bpmn": "f9b00507623942bda6966de7fd3990e435de2e8e711644e7112f3560c8ce9565",
+    "workloads/w02/parallel.bpmn": "b9980eae45806013bfc01093c268e5fb02914a973b9eb099c7e987174499bdcd"
+  },
+  "protocol_sha256": "d0048dc83c95e1794279902d36d5c7c107777c654765a9ac4f2fddee38c2a594",
+  "resolved_corpus_sha256": "c21eff0a24636d201f40e4a8fe05ba610417b77cc33af1a15d74a24f10bd5c8f",
+  "browser_review": {
+    "status": "passed",
+    "rows": 100,
+    "browser_version": "156.0.8078.48",
+    "runner_sha256": "d11632f7581e6b65154196effb0a63aa3a73a26fe245f0bbd4097ed2e1974f99",
+    "visual_review": "passed",
+    "source_unchanged": true
+  },
+  "negative_audit_controls": [
+    {
+      "case": "changed_sealed_file",
+      "rejected": true,
+      "reason": "sealed_file_changed: report.html"
+    },
+    {
+      "case": "missing_case_with_resealed_summary",
+      "rejected": true,
+      "reason": "incomplete_or_reordered_cases"
+    },
+    {
+      "case": "changed_store_with_resealed_hash",
+      "rejected": true,
+      "reason": "original_store_effects_changed"
+    }
+  ],
+  "test_gate": {
+    "unique_tests_passed": 367,
+    "skipped": 0,
+    "optional_k6_checks_enabled": true,
+    "final_preflight_guard": "An explicitly requested empty sensitivity protocol fails before runtime access or output creation.",
+    "workload_impact": "The completed run used a nonempty validated protocol; its archived source and results remain unchanged."
+  },
+  "limitations": [
+    "Synthetic test grid, not a sourced customer distribution.",
+    "Per-case local functional execution; no steady-state latency, deadline-goodput or capacity claim.",
+    "No live model or human review.",
+    "Receipt overlap excludes earlier failed attempts."
+  ],
+  "executed_workload_source_commit": "c1ea6c08fb0c8b8a9db144406cac72cfb162b06e",
+  "source_commit_verification": {
+    "files": 11,
+    "comparison": "Archived bytes hashed independently; Git source matches after CRLF/LF normalization."
+  }
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks">
+  <process id="bench_variables" name="Benchmark variables and transient boundary" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start"/>
+    <sequenceFlow id="to_branch" sourceRef="start" targetRef="branch"/>
+    <exclusiveGateway id="branch" default="false_branch"/>
+    <sequenceFlow id="true_branch" sourceRef="branch" targetRef="true_end">
+      <conditionExpression xsi:type="tFormalExpression">${anotherVariable == true}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="false_branch" sourceRef="branch" targetRef="false_end"/>
+    <endEvent id="true_end" camunda:asyncBefore="true"/>
+    <endEvent id="false_end" camunda:asyncBefore="true"/>
+  </process>
+</definitions>

@@ -1,0 +1,9 @@
+{
+  "region": "us-phoenix-1",
+  "secret_id": "ocid1.vaultsecret.REPLACE",
+  "secret_version": 1,
+  "engine_url": "http://APP_PRIVATE_IP:8080/engine-rest",
+  "support_url": "http://127.0.0.1:8090",
+  "state_directory": "/var/lib/fluxnova-bound-verifier",
+  "port": 8092
+}

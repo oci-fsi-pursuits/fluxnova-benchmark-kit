@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "campaign": {"name": "fluxnova-reference", "region": "", "compartment_id": "", "budget_limit": null, "currency": "USD", "access_method": "instance_principal"},
+  "artifact": {"release": "3.0.1", "image": "", "source_commit": "", "python_image": "", "k6_image": "", "otel_image": ""},
+  "runtime": {"base_url": "", "support_url": "", "auth_username_env": "BENCH_USERNAME", "auth_password_env": "BENCH_PASSWORD", "cpu": 4, "memory_gib": 8, "heap_gib": 4, "history_level": "full", "allow_insecure_http": false, "jdbc_url": "", "db_ca_file": "", "admin_password_secret_id": "", "support_token_secret_id": ""},
+  "workload": {"scenario": "minimal", "seed": 42, "rate": 1, "duration_s": 1800, "warmup_s": 600, "drain_s": 300, "deadline_s": 1, "payload_bytes": 1024, "poll_interval_ms": 100, "preallocated_vus": 256, "max_vus": 256},
+  "run": {"mode": "live"},
+  "estimated_cost": {"amount": null, "currency": "USD", "basis": "", "duration_hours": null},
+  "oci": {"availability_domain": "", "image_ocid": "", "ssh_authorized_key": "", "db_admin_secret_id": "", "db_admin_username": "benchadmin", "db_shape": "", "db_ocpu_count": null, "db_memory_gb": null, "db_storage_iops": null, "artifact_namespace": "", "artifact_bucket_name": ""},
+  "database_probe": {"driver": "postgresql", "dsn": "", "user": "benchadmin", "password_env": "BENCH_DB_PASSWORD", "password_secret_id": ""},
+  "evidence": {"generator_validation_file": "", "telemetry_file": "", "golden_file": "", "golden_sha256": "", "database_file": ""},
+  "execution": {"k6_binary": "k6", "max_run_seconds": 3000},
+  "costs": {"currency": "USD", "complete": false, "records": []}
+}

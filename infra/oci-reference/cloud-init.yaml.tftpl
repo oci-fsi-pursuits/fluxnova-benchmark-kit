@@ -1,0 +1,38 @@
+#cloud-config
+package_update: true
+package_upgrade: false
+ntp:
+  enabled: true
+  ntp_client: chrony
+  servers:
+    - 169.254.169.254
+  pools: []
+packages:
+%{ for package in package_specs ~}
+  - ${package}
+%{ endfor ~}
+write_files:
+  - path: /opt/fluxnova-bench/role
+    permissions: '0644'
+    content: ${role}
+  - path: /opt/fluxnova-bench/bootstrap.sh
+    permissions: '0755'
+    content: |
+      #!/usr/bin/env bash
+      set -euo pipefail
+      python3 -c 'import sys; assert sys.version_info >= (3, 12), "Ubuntu 24.04/Python 3.12 required"'
+      install -d -o ubuntu -g ubuntu /opt/fluxnova-bench/workspace
+      python3 -m venv /opt/fluxnova-bench/venv
+      chown -R ubuntu:ubuntu /opt/fluxnova-bench/venv
+      systemctl enable --now docker
+      usermod -aG docker ubuntu
+      dpkg-query -W -f='$${Package}=$${Version}\n' python3 python3-venv docker.io docker-compose-v2 git chrony > /opt/fluxnova-bench/package-versions.txt
+      python3 --version > /opt/fluxnova-bench/python-version.txt
+      docker version > /opt/fluxnova-bench/docker-version.txt
+      docker compose version > /opt/fluxnova-bench/compose-version.txt
+      chronyc tracking > /opt/fluxnova-bench/time-sync.txt
+      date -u +%FT%TZ > /opt/fluxnova-bench/bootstrap-complete
+      # Upload the reviewed project archive, then install requirements-cloud.txt and
+      # the project using this venv. Repository identity is deliberately not guessed.
+runcmd:
+  - [bash, /opt/fluxnova-bench/bootstrap.sh]

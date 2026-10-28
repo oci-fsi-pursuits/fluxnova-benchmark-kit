@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fluxnova-benchmarks:costs:1.0",
+  "title": "Allocated benchmark cost evidence (FOCUS-inspired subset, not a FOCUS conformance claim)",
+  "type": "object",
+  "required": ["currency", "complete", "records"],
+  "properties": {
+    "currency": {"const": "USD"},
+    "complete": {"type": "boolean"},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["category", "amount", "basis", "allocation"],
+        "properties": {
+          "category": {"type": "string"}, "amount": {"type": "number"}, "currency": {"const": "USD"},
+          "basis": {"enum": ["list_estimate", "effective_actual"]},
+          "allocation": {"enum": ["measurement", "warmup", "drain", "deployment", "idle"]},
+          "resource_id": {"type": "string"}, "source_export": {"type": "string"},
+          "charge_period_start": {"type": "string", "format": "date-time"},
+          "charge_period_end": {"type": "string", "format": "date-time"}
+        }
+      }
+    }
+  },
+  "$comment": "Actual unit cost requires complete=true. Negative amounts are allowed for explicit credits. Preserve original FOCUS export separately; these allocated rows are analysis inputs, not a replacement for complete provider billing data."
+}

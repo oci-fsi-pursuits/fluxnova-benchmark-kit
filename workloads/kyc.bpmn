@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks">
+  <process id="bench_kyc" name="Synthetic KYC decision and manual review" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start"/><sequenceFlow id="f1" sourceRef="start" targetRef="screen"/>
+    <serviceTask id="screen" camunda:type="external" camunda:topic="bench-service" camunda:asyncBefore="true"/>
+    <sequenceFlow id="f2" sourceRef="screen" targetRef="decision"/><exclusiveGateway id="decision" default="reject"/>
+    <sequenceFlow id="approve" sourceRef="decision" targetRef="approved"><conditionExpression xsi:type="tFormalExpression">${workerResult == 'approved'}</conditionExpression></sequenceFlow>
+    <sequenceFlow id="review" sourceRef="decision" targetRef="manual_review"><conditionExpression xsi:type="tFormalExpression">${workerResult == 'review'}</conditionExpression></sequenceFlow>
+    <sequenceFlow id="reject" sourceRef="decision" targetRef="rejected"/>
+    <userTask id="manual_review" name="Synthetic analyst review"/><sequenceFlow id="f3" sourceRef="manual_review" targetRef="reviewed"/>
+    <endEvent id="approved"/><endEvent id="rejected"/><endEvent id="reviewed"/>
+  </process>
+</definitions>

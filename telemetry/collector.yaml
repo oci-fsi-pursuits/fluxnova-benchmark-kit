@@ -1,0 +1,72 @@
+# Run the reviewed otel/opentelemetry-collector-contrib image BY DIGEST.
+# Bind-mounted /data must be writable by the container UID and dedicated to this campaign.
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+    path: /health
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 384
+    spike_limit_mib: 96
+  resource/cloud:
+    attributes:
+      - key: cloud.provider
+        value: oracle_cloud
+        action: insert
+      - key: cloud.platform
+        value: oracle_cloud_compute
+        action: insert
+      - key: benchmark.telemetry.contract_version
+        value: "1.0"
+        action: insert
+      - key: cloud.region
+        value: ${env:BENCH_OCI_REGION}
+        action: insert
+  batch:
+    timeout: 1s
+    send_batch_size: 512
+    send_batch_max_size: 2048
+
+exporters:
+  file/metrics:
+    path: /data/metrics.jsonl
+    format: json
+    append: true
+    flush_interval: 1s
+  file/traces:
+    path: /data/traces.jsonl
+    format: json
+    append: true
+    flush_interval: 1s
+  file/logs:
+    path: /data/logs.jsonl
+    format: json
+    append: true
+    flush_interval: 1s
+
+service:
+  extensions: [health_check]
+  telemetry:
+    logs:
+      level: warn
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, resource/cloud, batch]
+      exporters: [file/metrics]
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, resource/cloud, batch]
+      exporters: [file/traces]
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, resource/cloud, batch]
+      exporters: [file/logs]

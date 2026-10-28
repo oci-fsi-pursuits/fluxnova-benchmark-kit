@@ -1,0 +1,1113 @@
+{
+  "status": "complete",
+  "phase": "campaign",
+  "completed_arms": 10,
+  "planned_arms": 10,
+  "source_commit": "dba00228be711c71927ab0f31d3274348794c113",
+  "independently_reaudited": true,
+  "export_files_verified": 492,
+  "source_manifest_sha256": "45c22bc78812e1103d9d13575e0da8725fa8b56c573ca974b902632269dcf2c4",
+  "measurement_plan_sha256": "3856d8ac22f88e6cda801f12bdb53bee104aff19837c81ed74c1f6872b5c4da4",
+  "auditor_sha256": "2bada00c8bee36fa8f674f9c8d6f0dc2fddc24c7d5ffbec9b15bbb2cb984aa80",
+  "rows": [
+    {
+      "pair": 1,
+      "order": 1,
+      "arm": "success_delay_100ms",
+      "folder": "p1-1-success_delay_100ms",
+      "measurement_valid": true,
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 108,
+          "deadline_misses": 132,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.002679375000013806,
+            "p95": 0.003388609000012366,
+            "p99": 0.003685996999990948,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.00031357999999670483,
+            "max": 0.003796673000010742
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 2.2364673769999968,
+            "p95": 3.8932828100000023,
+            "p99": 5.347070756999997,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.31835704400000964,
+            "max": 5.711716234999997
+          },
+          "max_observed_outstanding": 20
+        },
+        "measurement": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 120,
+          "deadline_misses": 120,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.002871081999998637,
+            "p95": 0.0035906270000118923,
+            "p99": 0.0037485629999878256,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.0007522230000063246,
+            "max": 0.003881281999973396
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.9940762550000102,
+            "p95": 3.574031654999999,
+            "p99": 3.7952059590000147,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3177129979999904,
+            "max": 3.799746661000029
+          },
+          "max_observed_outstanding": 17
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 36,
+        "host_cpu_p95_percent": 19.130127298444133,
+        "minimum_memory_available_fraction": 0.8857006289578673,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "peak_http_per_1s_bucket": 143,
+      "persisted_original_effects_checked": 480,
+      "reset_fingerprint": "1f12fc62d25e3cd6b7515fd6ceced375174878352c5bd11af0d289bec20b2e83"
+    },
+    {
+      "pair": 1,
+      "order": 2,
+      "arm": "idle_only",
+      "folder": "p1-2-idle_only",
+      "measurement_valid": true,
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 218,
+          "deadline_misses": 22,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.0013257589999966513,
+            "p95": 0.0021012459999951716,
+            "p99": 0.0022353839999880165,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.0002445899999941048,
+            "max": 0.0024870230000146876
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.170594182000002,
+            "p95": 2.6287674009999904,
+            "p99": 3.761912040999988,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3167022239999966,
+            "max": 3.958561289000002
+          },
+          "max_observed_outstanding": 20
+        },
+        "measurement": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 240,
+          "deadline_misses": 0,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.0012873729999967054,
+            "p95": 0.0020308899999861296,
+            "p99": 0.0023197300000077914,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.0002938869999979943,
+            "max": 0.0023812359999965116
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.0363818630000026,
+            "p95": 1.7616653299999996,
+            "p99": 1.8811584710000204,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3144842049999994,
+            "max": 1.8857010720000176
+          },
+          "max_observed_outstanding": 15
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 36,
+        "host_cpu_p95_percent": 15.71125265392781,
+        "minimum_memory_available_fraction": 0.8730449840011378,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "peak_http_per_1s_bucket": 144,
+      "persisted_original_effects_checked": 480,
+      "reset_fingerprint": "1f12fc62d25e3cd6b7515fd6ceced375174878352c5bd11af0d289bec20b2e83"
+    },
+    {
+      "pair": 2,
+      "order": 1,
+      "arm": "success_delay_100ms",
+      "folder": "p2-1-success_delay_100ms",
+      "measurement_valid": true,
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 105,
+          "deadline_misses": 135,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.0014398249999914015,
+            "p95": 0.002114739999996118,
+            "p99": 0.002358353000005309,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.0003537860000051296,
+            "max": 0.002386444999999071
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 2.140049110999996,
+            "p95": 3.9574750379999983,
+            "p99": 5.538255841999998,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.31797960999999475,
+            "max": 5.789599143000004
+          },
+          "max_observed_outstanding": 20
+        },
+        "measurement": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 118,
+          "deadline_misses": 122,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.0013540390000130742,
+            "p95": 0.0021678379999805486,
+            "p99": 0.0023735119999770404,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.0004759900000053108,
+            "max": 0.005370720000016149
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 2.011269930999987,
+            "p95": 3.667265155000024,
+            "p99": 3.8028226300000085,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.31471003300001144,
+            "max": 3.8153192080000053
+          },
+          "max_observed_outstanding": 17
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 36,
+        "host_cpu_p95_percent": 19.77321048901488,
+        "minimum_memory_available_fraction": 0.8718473297515301,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "peak_http_per_1s_bucket": 142,
+      "persisted_original_effects_checked": 480,
+      "reset_fingerprint": "1f12fc62d25e3cd6b7515fd6ceced375174878352c5bd11af0d289bec20b2e83"
+    },
+    {
+      "pair": 2,
+      "order": 2,
+      "arm": "idle_only",
+      "folder": "p2-2-idle_only",
+      "measurement_valid": true,
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 222,
+          "deadline_misses": 18,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.0029544759999993175,
+            "p95": 0.0036312000000009448,
+            "p99": 0.003877090000003136,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.00042221700000766305,
+            "max": 0.0039853929999935644
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.1680926499999913,
+            "p95": 2.4871740769999917,
+            "p99": 3.8262142279999978,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3188345020000014,
+            "max": 3.922276038999996
+          },
+          "max_observed_outstanding": 20
+        },
+        "measurement": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 240,
+          "deadline_misses": 0,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.002846026000000279,
+            "p95": 0.00348202799999342,
+            "p99": 0.0037063959999983354,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.0005415429999970911,
+            "max": 0.0037456620000142493
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.0379786190000004,
+            "p95": 1.7587347559999955,
+            "p99": 1.88431777400001,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3159487749999812,
+            "max": 1.8922470300000214
+          },
+          "max_observed_outstanding": 15
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 36,
+        "host_cpu_p95_percent": 15.813625132368514,
+        "minimum_memory_available_fraction": 0.8718954705161032,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "peak_http_per_1s_bucket": 144,
+      "persisted_original_effects_checked": 480,
+      "reset_fingerprint": "1f12fc62d25e3cd6b7515fd6ceced375174878352c5bd11af0d289bec20b2e83"
+    },
+    {
+      "pair": 3,
+      "order": 1,
+      "arm": "success_delay_100ms",
+      "folder": "p3-1-success_delay_100ms",
+      "measurement_valid": true,
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 108,
+          "deadline_misses": 132,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.0011931539999920915,
+            "p95": 0.0020584439999851156,
+            "p99": 0.0022052470000062385,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.00027601499999718726,
+            "max": 0.0022725230000020247
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 2.1241428229999997,
+            "p95": 3.8295776329999995,
+            "p99": 5.237363676000001,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.31543366199998957,
+            "max": 5.62954040999999
+          },
+          "max_observed_outstanding": 20
+        },
+        "measurement": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 122,
+          "deadline_misses": 118,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.001392500999997992,
+            "p95": 0.0019966609999983176,
+            "p99": 0.0021209830000004093,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.00039354900000887483,
+            "max": 0.0021908770000038658
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.9860543980000216,
+            "p95": 3.5555286519999925,
+            "p99": 3.6794420189999926,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3157890669999972,
+            "max": 3.692419495000024
+          },
+          "max_observed_outstanding": 17
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 36,
+        "host_cpu_p95_percent": 19.5890896209706,
+        "minimum_memory_available_fraction": 0.8753310593949513,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "peak_http_per_1s_bucket": 142,
+      "persisted_original_effects_checked": 480,
+      "reset_fingerprint": "1f12fc62d25e3cd6b7515fd6ceced375174878352c5bd11af0d289bec20b2e83"
+    },
+    {
+      "pair": 3,
+      "order": 2,
+      "arm": "idle_only",
+      "folder": "p3-2-idle_only",
+      "measurement_valid": true,
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 221,
+          "deadline_misses": 19,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.0011080480000060788,
+            "p95": 0.0019495469999952775,
+            "p99": 0.002119074000006549,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.00023688800000343235,
+            "max": 0.002319023000012521
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.1768583380000024,
+            "p95": 2.6398792800000024,
+            "p99": 3.826373201999999,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3164155380000011,
+            "max": 3.862820185000004
+          },
+          "max_observed_outstanding": 20
+        },
+        "measurement": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 240,
+          "deadline_misses": 0,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.0012097319999888612,
+            "p95": 0.002077142999993953,
+            "p99": 0.002223281999988558,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.000373090000010734,
+            "max": 0.0022803490000171678
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.0395213660000024,
+            "p95": 1.7647513749999746,
+            "p99": 1.880176069000015,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3135122629999785,
+            "max": 1.8974658250000118
+          },
+          "max_observed_outstanding": 15
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 36,
+        "host_cpu_p95_percent": 14.987628137150931,
+        "minimum_memory_available_fraction": 0.8840980546732464,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "peak_http_per_1s_bucket": 138,
+      "persisted_original_effects_checked": 480,
+      "reset_fingerprint": "1f12fc62d25e3cd6b7515fd6ceced375174878352c5bd11af0d289bec20b2e83"
+    },
+    {
+      "pair": 4,
+      "order": 1,
+      "arm": "idle_only",
+      "folder": "p4-1-idle_only",
+      "measurement_valid": true,
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 219,
+          "deadline_misses": 21,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.0012111749999945687,
+            "p95": 0.001890546000012705,
+            "p99": 0.001969010000010485,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.0002758450000044377,
+            "max": 0.002289529999998763
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.1581431019999968,
+            "p95": 2.78346677399999,
+            "p99": 3.848691865999996,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3148711329999969,
+            "max": 4.005543351
+          },
+          "max_observed_outstanding": 20
+        },
+        "measurement": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 240,
+          "deadline_misses": 0,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.001428840999977865,
+            "p95": 0.002031596999989893,
+            "p99": 0.0021771160000199075,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.00029661399997849003,
+            "max": 0.0022977090000040334
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.0377269800000306,
+            "p95": 1.7567367929999875,
+            "p99": 1.8758034849999916,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.315708485000016,
+            "max": 1.8829798300000107
+          },
+          "max_observed_outstanding": 15
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 36,
+        "host_cpu_p95_percent": 18.021201413427555,
+        "minimum_memory_available_fraction": 0.8754080357443955,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "peak_http_per_1s_bucket": 146,
+      "persisted_original_effects_checked": 480,
+      "reset_fingerprint": "1f12fc62d25e3cd6b7515fd6ceced375174878352c5bd11af0d289bec20b2e83"
+    },
+    {
+      "pair": 4,
+      "order": 2,
+      "arm": "success_delay_100ms",
+      "folder": "p4-2-success_delay_100ms",
+      "measurement_valid": true,
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 110,
+          "deadline_misses": 130,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.0019150079999974423,
+            "p95": 0.0028254780000054325,
+            "p99": 0.002993096999986733,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.0004923049999945306,
+            "max": 0.0036086160000010636
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 2.1295710879999987,
+            "p95": 3.8164417990000032,
+            "p99": 5.094659545999988,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3181456699999927,
+            "max": 5.704734018000011
+          },
+          "max_observed_outstanding": 20
+        },
+        "measurement": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 122,
+          "deadline_misses": 118,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.002045533999995186,
+            "p95": 0.002687495999985856,
+            "p99": 0.0029022650000001815,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.0006513390000009167,
+            "max": 0.0036353849999954946
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.9898340080000025,
+            "p95": 3.5541569259999903,
+            "p99": 3.6777806780000333,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.3133472220000044,
+            "max": 3.785256216000022
+          },
+          "max_observed_outstanding": 17
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 36,
+        "host_cpu_p95_percent": 19.5616211745244,
+        "minimum_memory_available_fraction": 0.883650369999653,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "peak_http_per_1s_bucket": 147,
+      "persisted_original_effects_checked": 480,
+      "reset_fingerprint": "1f12fc62d25e3cd6b7515fd6ceced375174878352c5bd11af0d289bec20b2e83"
+    },
+    {
+      "pair": 5,
+      "order": 1,
+      "arm": "idle_only",
+      "folder": "p5-1-idle_only",
+      "measurement_valid": true,
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 219,
+          "deadline_misses": 21,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.001223501999987775,
+            "p95": 0.002081118999996079,
+            "p99": 0.002290231000003473,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.00034148500000696913,
+            "max": 0.0024291010000041524
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.1679274070000076,
+            "p95": 2.7953305510000064,
+            "p99": 3.8020742760000132,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.31385705900000005,
+            "max": 3.846624900000009
+          },
+          "max_observed_outstanding": 20
+        },
+        "measurement": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 240,
+          "deadline_misses": 0,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.0012622989999897527,
+            "p95": 0.0018219030000040104,
+            "p99": 0.002031062999996891,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.00036348199998315067,
+            "max": 0.002093201999990413
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 1.1513065469999901,
+            "p95": 1.8740484639999977,
+            "p99": 1.8937260269999996,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.313341964999978,
+            "max": 1.900849806999986
+          },
+          "max_observed_outstanding": 15
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 36,
+        "host_cpu_p95_percent": 16.148409893992934,
+        "minimum_memory_available_fraction": 0.8838079882389913,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "peak_http_per_1s_bucket": 144,
+      "persisted_original_effects_checked": 480,
+      "reset_fingerprint": "1f12fc62d25e3cd6b7515fd6ceced375174878352c5bd11af0d289bec20b2e83"
+    },
+    {
+      "pair": 5,
+      "order": 2,
+      "arm": "success_delay_100ms",
+      "folder": "p5-2-success_delay_100ms",
+      "measurement_valid": true,
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 106,
+          "deadline_misses": 134,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.0028916179999924907,
+            "p95": 0.003602456000010079,
+            "p99": 0.003783931000000962,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.0004931989999903408,
+            "max": 0.004756836000012754
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 2.2364067329999955,
+            "p95": 3.8330728999999906,
+            "p99": 5.527952266,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.32037129199999015,
+            "max": 5.72151685
+          },
+          "max_observed_outstanding": 20
+        },
+        "measurement": {
+          "offered": 240,
+          "correct": 240,
+          "dropped": 0,
+          "invalid": [],
+          "on_time_correct": 118,
+          "deadline_misses": 122,
+          "arrival_lag_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 0.002769150999995418,
+            "p95": 0.0035350490000105594,
+            "p99": 0.003738032000008218,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.0003306369999904746,
+            "max": 0.007766029999991986
+          },
+          "observed_latency_s": {
+            "n": 240,
+            "unit": "s",
+            "method": "nearest_rank",
+            "p50": 2.0023202769999955,
+            "p95": 3.6741738630000214,
+            "p99": 3.795673786000009,
+            "p99_9": null,
+            "p99_9_suppressed": true,
+            "min": 0.31477908499999785,
+            "max": 3.8058147810000094
+          },
+          "max_observed_outstanding": 17
+        }
+      },
+      "telemetry": {
+        "complete": true,
+        "headroom": true,
+        "issues": [],
+        "samples": 36,
+        "host_cpu_p95_percent": 20.148462354188755,
+        "minimum_memory_available_fraction": 0.8822215423323492,
+        "limits": {
+          "host_cpu_p95_below_percent": 80,
+          "available_memory_at_least_fraction": 0.2,
+          "max_sample_gap_s": 15
+        },
+        "scope": "Shared Linux controller headroom plus engine/backend/worker and SQL telemetry; not managed DB CPU or full distributed tracing."
+      },
+      "peak_http_per_1s_bucket": 143,
+      "persisted_original_effects_checked": 480,
+      "reset_fingerprint": "1f12fc62d25e3cd6b7515fd6ceced375174878352c5bd11af0d289bec20b2e83"
+    }
+  ],
+  "comparison": {
+    "primary_metric": "correct on-time payments per full measurement second",
+    "arms": {
+      "success_delay_100ms": {
+        "offered": 1200,
+        "correct": 1200,
+        "on_time_correct": 600,
+        "deadline_misses": 600,
+        "dropped": 0,
+        "deadline_goodput_per_s": 1.0,
+        "median_run_p95_ms": 3574.031654999999,
+        "median_run_p99_ms": 3795.2059590000144
+      },
+      "idle_only": {
+        "offered": 1200,
+        "correct": 1200,
+        "on_time_correct": 1200,
+        "deadline_misses": 0,
+        "dropped": 0,
+        "deadline_goodput_per_s": 2.0,
+        "median_run_p95_ms": 1761.6653299999996,
+        "median_run_p99_ms": 1881.1584710000204
+      }
+    },
+    "pairs": [
+      {
+        "pair": 1,
+        "on_time_correct_before": 120,
+        "on_time_correct_after": 240,
+        "deadline_goodput_difference_per_s": 1.0,
+        "observed_p95_before_ms": 3574.031654999999,
+        "observed_p95_after_ms": 1761.6653299999996,
+        "observed_p95_change_percent": -50.70929694941384
+      },
+      {
+        "pair": 2,
+        "on_time_correct_before": 118,
+        "on_time_correct_after": 240,
+        "deadline_goodput_difference_per_s": 1.0166666666666666,
+        "observed_p95_before_ms": 3667.2651550000237,
+        "observed_p95_after_ms": 1758.7347559999955,
+        "observed_p95_change_percent": -52.0423345008991
+      },
+      {
+        "pair": 3,
+        "on_time_correct_before": 122,
+        "on_time_correct_after": 240,
+        "deadline_goodput_difference_per_s": 0.9833333333333333,
+        "observed_p95_before_ms": 3555.5286519999927,
+        "observed_p95_after_ms": 1764.7513749999746,
+        "observed_p95_change_percent": -50.365992016199954
+      },
+      {
+        "pair": 4,
+        "on_time_correct_before": 122,
+        "on_time_correct_after": 240,
+        "deadline_goodput_difference_per_s": 0.9833333333333333,
+        "observed_p95_before_ms": 3554.1569259999906,
+        "observed_p95_after_ms": 1756.7367929999875,
+        "observed_p95_change_percent": -50.57233460490167
+      },
+      {
+        "pair": 5,
+        "on_time_correct_before": 118,
+        "on_time_correct_after": 240,
+        "deadline_goodput_difference_per_s": 1.0166666666666666,
+        "observed_p95_before_ms": 3674.1738630000214,
+        "observed_p95_after_ms": 1874.0484639999977,
+        "observed_p95_change_percent": -48.994017869644104
+      }
+    ],
+    "median_paired_deadline_goodput_difference_per_s": 1.0,
+    "median_paired_p95_change_percent": -50.57233460490167,
+    "paired_p95_change_range_percent": [
+      -52.0423345008991,
+      -48.994017869644104
+    ]
+  },
+  "functional": {
+    "cases": 12,
+    "expected_effects": 6,
+    "repeat_calls": 36
+  },
+  "measured_offered": 2400,
+  "measured_correct": 2400,
+  "warmup_correct": 2400,
+  "scope": "W01 synthetic burst study; reconstructed pacing control, not a current Fluxnova default",
+  "limits": [
+    "Two-minute measured burst intervals; not a sustained-load or maximum-capacity estimate.",
+    "Observed latency includes the unchanged 100 ms completion observer.",
+    "Shared controller plus fresh single-node OCI PostgreSQL; not comparable absolute timings to P01 or W02.",
+    "Synthetic payments and exact effects, no live model or financial network.",
+    "Host/Docker/SQL telemetry, not managed DB host CPU or full distributed traces.",
+    "Actual billed cost is not measured."
+  ],
+  "browser": {
+    "status": "passed",
+    "new_payment_executions": 0,
+    "bundle_files_verified": 13,
+    "bundle_manifest_sha256": "dc8264aeae5a1a553f2658255517501fc11ed772d4d4ae6f67cc8f4d384334c8",
+    "runner_sha256": "e6968db9245a9d1dba7a2d6c2e51b3198c2b2d99aa977573e85430bc7f8434d3",
+    "browser_version": "156.0.8078.48",
+    "paired_burst_selections": 60,
+    "plotted_original_payments_checked": 2400,
+    "javascript_errors": [],
+    "external_requests": [],
+    "keyboard_navigation": "passed",
+    "evidence_navigation": "passed",
+    "horizontal_overflow": false,
+    "original_bundle_unchanged": true,
+    "browser_closed": true,
+    "visual_review": {
+      "status": "passed",
+      "reviewed": [
+        "pair-1-burst-1.png",
+        "pair-1-burst-12.png",
+        "pair-5-burst-1.png",
+        "pair-5-burst-12.png",
+        "laptop.png"
+      ],
+      "findings": [],
+      "checks": "Readable fixed axes, individual deadline ticks, retained late outcomes, source links and scope labels; no clipping or horizontal overflow.",
+      "presentation_display_review": "pending",
+      "screenshots_sha256": {
+        "pair-1-burst-1.png": "7ff5b514dfa7d8ae22dd633d407173e7cbcf7e3f755827fa9c289dadded52bbd",
+        "pair-1-burst-12.png": "34a783388ff4d571d02866c6463bed60a86e6f77059c8e2c0b1f5188ce1c14f5",
+        "pair-5-burst-1.png": "917e6355dfb92130ed524022b8887b4d3e9c1dd20bf3749b3c66a6357b45a593",
+        "pair-5-burst-12.png": "a39092da46bd8a1d3a8751720703713f8eeff9f6ba38e2cc4f1415de52163112",
+        "laptop.png": "9ef6457feae53fb79a4f9271055c46f6da52d72e626fb8df17978baaebe744ae"
+      }
+    }
+  },
+  "retention": {
+    "sha256": "e466b1ac75f5c042d8d917c9805efefafe2ff2ef48edd8dd2cb1d94c366000b6",
+    "verified_files": 492,
+    "credentials_excluded": true
+  },
+  "cleanup": {
+    "temporary_database_deleted": true,
+    "owned_containers_removed": true,
+    "owned_network_removed": true,
+    "temporary_idle_sleep_prevention_released": true,
+    "original_reference_preservation": "passed",
+    "existing_reference_resources_retained_and_billable": true
+  },
+  "reference_preservation": {
+    "reference_queues_empty": true,
+    "reference_services_unchanged": true,
+    "reference_verifier_unchanged": true,
+    "controller_containers_empty": true,
+    "changed_tables": [
+      "act_ru_meter_log"
+    ],
+    "other_logical_changes": [],
+    "database_access_unchanged": true,
+    "normal_meter_rows_before": 14892,
+    "normal_meter_rows_after": 14952,
+    "tls_before": [
+      true,
+      "TLSv1.3"
+    ],
+    "tls_after": [
+      true,
+      "TLSv1.3"
+    ],
+    "status": "passed"
+  },
+  "started_at": "2026-10-27T21:17:56.532555+00:00",
+  "finished_at": "2026-10-27T22:06:12.417116+00:00"
+}

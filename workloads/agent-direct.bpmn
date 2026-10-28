@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks">
+  <process id="bench_agent_direct" name="Restricted agent fixed 1000 minor-unit delegation" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start"/><sequenceFlow id="f1" sourceRef="start" targetRef="limit"/>
+    <exclusiveGateway id="limit" default="reject"/>
+    <sequenceFlow id="allowed" sourceRef="limit" targetRef="settle"><conditionExpression xsi:type="tFormalExpression">${amount_minor &gt; 0 &amp;&amp; amount_minor &lt;= 1000}</conditionExpression></sequenceFlow>
+    <sequenceFlow id="reject" sourceRef="limit" targetRef="rejected"/><endEvent id="rejected"/>
+    <serviceTask id="settle" camunda:type="external" camunda:topic="bench-service" camunda:asyncBefore="true">
+      <extensionElements><camunda:inputOutput>
+        <camunda:inputParameter name="scenario">settlement</camunda:inputParameter>
+        <camunda:inputParameter name="approved">${false}</camunda:inputParameter>
+        <camunda:inputParameter name="limit_minor">${1000}</camunda:inputParameter>
+      </camunda:inputOutput></extensionElements>
+    </serviceTask>
+    <sequenceFlow id="f2" sourceRef="settle" targetRef="finished"/><endEvent id="finished"/>
+  </process>
+</definitions>

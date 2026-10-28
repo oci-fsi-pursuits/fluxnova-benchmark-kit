@@ -1,0 +1,1153 @@
+{
+  "status": "passed",
+  "study_id": "w02_m1",
+  "scope": "LOCAL LOAD-DRIVER QUALIFICATION - NOT OCI PERFORMANCE",
+  "sealed_files_verified": 88,
+  "source_manifest_sha256": "7cef55abec63bd906b85b387613e520b59a7b56b2a0f5cd7e9c4ba3353495e93",
+  "source_checksums_sha256": "16546931c37970694a9179a00e70b2f2366fdbad73e97fb13574238e9df4222f",
+  "auditor_sha256": "64c613974df40fd9a82a24bfc84fe0ce4f41fcb052c665af1f3c8c89944fe89f",
+  "protocol_sha256": "cdd3ef34a78f6e4152115d9f3d59e4cc3da623f9835cf646708b9908546e77d6",
+  "resolved_corpus_sha256": "c21eff0a24636d201f40e4a8fe05ba610417b77cc33af1a15d74a24f10bd5c8f",
+  "measurement_arrivals": 300,
+  "measurement_outcomes": {
+    "settled": 120,
+    "rejected": 120,
+    "blocked": 60
+  },
+  "warmup_arrivals": 60,
+  "warmup_outcomes": {
+    "settled": 36,
+    "rejected": 16,
+    "blocked": 8
+  },
+  "original_store_totals": {
+    "cases": 360,
+    "effects": 156,
+    "receipts": 1080,
+    "injected_once_faults": 80
+  },
+  "all_owned_engines_stopped": true,
+  "remaining_engine_work": 0,
+  "source_unchanged": true,
+  "deadline_miss_action": "report",
+  "representative_customer_distribution": false,
+  "performance_claim": null,
+  "cloud_resources_accessed": false,
+  "native_model_calls": 0,
+  "date": "2026-10-28",
+  "executed_workload_source_commit": "e5302a21a84412f247068bb1065c1902592ac3ba",
+  "source_sha256": {
+    "scripts/qualify_w02_load.py": "319b6c541ae1fcbd8e3921abc7a5155408c5d8d3be8410c68b02a4e345fc7802",
+    "scripts/run_w02_functional.py": "d204533ba5cdf8dcb9bb15c2e750c3bff3f6652ff66f52c3996b43475a341043",
+    "load/workflow_checks.js": "068d79e1cc8ca33d57363eb14ca0c3f69a67cf62d3abf7ba9f6c58bf030ce482",
+    "benchlib/w02_qualification.py": "f4fe8d7e20ba408b5e3cfada407e3fa77bce0b91c51d366e4fc91eb572282f5f",
+    "benchlib/runner.py": "0a7c758a1cec4bc9d1dbc7705efa21312e51691ae0af6d8ef22e3d67446f3e94",
+    "benchlib/evidence.py": "d33dce8cc65b80bf563ed61bb2f511b0b0c0284a55ff81cdee3848bea0ab31a4",
+    "benchlib/analysis.py": "c19831676c5600f39a7d9d155425e8f4b512d16e92c0734327d4b11726307101",
+    "benchlib/contracts.py": "baa0ae3aa7c0b2f3ed5e7b5b67ecaaba9a3d6d034e55d5513b9fcb3738e6723b",
+    "benchlib/util.py": "970a5421bb7205124ba158c27bb59735c5c87d25c8299e8525e2bf0273cde337",
+    "benchlib/fluxnova.py": "02f9e4cff23937dc82f3da2ddf53e860d0e827cda299d520f2d61606d7d15679",
+    "services/workflow_checks.py": "53266a65572ec6c282f1a3f99e6b48f57c4633fd2b822c28d1dc697dd91a90ee",
+    "services/workflow_checks_worker.py": "502796041dc1a409ba923d12c47a546bac309c91720c08a7bf73555e3c3b6a5c",
+    "services/worker.py": "114d7ef905583133a63570a7691f21906cc1e885f86953530ece2e9402058a4e",
+    "services/http_support.py": "1ed258ef6040684402fffaa7630a9ee24a24d092d6b34312e638120d3168b23e",
+    "workloads/w02/cases.json": "1b117ccbfbc44d35a4cc2eb4cfed12fb9cf31a525ba20641ca114d702801d38e",
+    "workloads/w02/sequential.bpmn": "f9b00507623942bda6966de7fd3990e435de2e8e711644e7112f3560c8ce9565",
+    "workloads/w02/parallel.bpmn": "b9980eae45806013bfc01093c268e5fb02914a973b9eb099c7e987174499bdcd",
+    "benchlib/workflow_corpus.py": "400ec6f19a71235d91ccb2e7c885c600eb34cddfdbc8b81a1f271b4570b0805c",
+    "workloads/w02/sensitivity-protocol.json": "d0048dc83c95e1794279902d36d5c7c107777c654765a9ac4f2fddee38c2a594"
+  },
+  "source_commit_verification": {
+    "files": 19,
+    "comparison": "Archived bytes hashed independently; Git source matches after CRLF/LF normalization."
+  },
+  "runtime": {
+    "fluxnova": "3.0.1",
+    "distribution_sha256": "ced4311c541faf1a7248d88e37ba53bd8c659fefe8387d2f78c21c30a117d7cf",
+    "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+    "java_executable_sha256": "82051fdab26319d77d20cc0065045d05ec00b3e3d05f44935d7c06b96b621d55",
+    "k6": {
+      "version": "k6.exe v2.3.0 (commit/e088784614, go1.26.8, windows/amd64)",
+      "binary_sha256": "efec04c36452cfb9c0ef313082c021e5656caf5004f922c2d8b807fdf4a0e02f",
+      "archive_sha256": "112276d495e5741c968e2bc09ea6196099c1275bd6db9ee0875d173c7148ce43"
+    },
+    "database": "embedded H2",
+    "worker_slots": 2,
+    "completion_poll_ms": 100
+  },
+  "browser_review": {
+    "status": "passed",
+    "report_sha256": {
+      "summary.json": "3c419f444c4b81c596e9495b774d1029472c39478c60abd7879c047c26f9f709",
+      "report.html": "19e40f448ed2bcdc7ed44eda7081d5adbe1e51d8f1bf3b573328c86fa3b4d9ba"
+    },
+    "runner_sha256": "a70fd431c9d76f4812f4d248ba664d4c856c0dfc1a2480232a17e24232911ee9",
+    "new_workload_executions": 0,
+    "browser_version": "156.0.8078.49",
+    "lane_rows_verified": 4,
+    "profile_rows_verified": 20,
+    "evidence_navigation": "passed",
+    "keyboard_navigation": "passed",
+    "horizontal_overflow": false,
+    "javascript_errors": [],
+    "external_network_requests": [],
+    "source_unchanged": true,
+    "visual_review": "passed"
+  },
+  "negative_audit_controls": [
+    {
+      "case": "sealed_file",
+      "rejected": true,
+      "reason": "sealed_file_changed: 01-sequential-0.5/k6-summary.json"
+    },
+    {
+      "case": "resealed_effect",
+      "rejected": true,
+      "reason": "original_store_effects_changed"
+    },
+    {
+      "case": "resealed_outcome_totals",
+      "rejected": true,
+      "reason": "derived_assessment_changed"
+    }
+  ],
+  "test_gate": {
+    "unique_tests_passed": 374,
+    "skipped": 0,
+    "optional_k6_checks_enabled": true,
+    "log_sha256": "4296ebd9473572b7ec3bc39bf71f318eab92c958639c8ad6b2e4ffe73f40e805"
+  },
+  "limitations": [
+    "Synthetic grid, not a sourced customer mix.",
+    "Single local fixed-order qualification, not a matched OCI performance series.",
+    "Deadline misses are retained; passing qualification does not mean every outcome met its deadline.",
+    "No live model, human productivity or sustainable-capacity claim."
+  ],
+  "lanes": [
+    {
+      "arm": "sequential",
+      "offered_rate": 0.5,
+      "measurement": {
+        "offered": 50,
+        "started": 50,
+        "accepted": 50,
+        "completed": 50,
+        "correct": 50,
+        "dropped": 0,
+        "invalid_or_unknown": [],
+        "arrival_lag_s": {
+          "n": 50,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 0.0024670999999898413,
+          "p95": 0.003377199999999192,
+          "p99": 0.004423899999999037,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.0015511000000003605,
+          "max": 0.004423899999999037
+        },
+        "observed_latency_s": {
+          "n": 50,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 1.4002346999999986,
+          "p95": 2.477085900000006,
+          "p99": 3.546906199999995,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.37339099999999803,
+          "max": 3.546906199999995
+        },
+        "on_time_correct": 39,
+        "outcomes": {
+          "settled": {
+            "expected": 20,
+            "verified": 20,
+            "within_deadline": 15,
+            "observed_latency_s": {
+              "n": 20,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.3901626000000036,
+              "p95": 2.566060500000006,
+              "p99": 3.546906199999995,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.49942080000001,
+              "max": 3.546906199999995
+            }
+          },
+          "rejected": {
+            "expected": 20,
+            "verified": 20,
+            "within_deadline": 16,
+            "observed_latency_s": {
+              "n": 20,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.4002346999999986,
+              "p95": 2.4685975000000013,
+              "p99": 2.477085900000006,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.37339099999999803,
+              "max": 2.477085900000006
+            }
+          },
+          "blocked": {
+            "expected": 10,
+            "verified": 10,
+            "within_deadline": 8,
+            "observed_latency_s": {
+              "n": 10,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.3914440999999869,
+              "p95": 2.3808243999999945,
+              "p99": 2.3808243999999945,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.49479150000000516,
+              "max": 2.3808243999999945
+            }
+          }
+        },
+        "on_time_settlements_per_s": 0.15,
+        "unresolved_or_invalid_count": 0
+      },
+      "warmup": {
+        "offered": 10,
+        "started": 10,
+        "accepted": 10,
+        "completed": 10,
+        "correct": 10,
+        "dropped": 0,
+        "invalid_or_unknown": [],
+        "arrival_lag_s": {
+          "n": 10,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 0.0011674999999993219,
+          "p95": 0.003281900000001059,
+          "p99": 0.003281900000001059,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.0005226000000000397,
+          "max": 0.003281900000001059
+        },
+        "observed_latency_s": {
+          "n": 10,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 1.6161038999999988,
+          "p95": 3.506654900000001,
+          "p99": 3.506654900000001,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.9356223999999997,
+          "max": 3.506654900000001
+        },
+        "on_time_correct": 7,
+        "outcomes": {
+          "settled": {
+            "expected": 7,
+            "verified": 7,
+            "within_deadline": 5,
+            "observed_latency_s": {
+              "n": 7,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.6161038999999988,
+              "p95": 2.625028199999999,
+              "p99": 2.625028199999999,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.9356223999999997,
+              "max": 2.625028199999999
+            }
+          },
+          "rejected": {
+            "expected": 2,
+            "verified": 2,
+            "within_deadline": 1,
+            "observed_latency_s": {
+              "n": 2,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.6493044999999995,
+              "p95": 3.506654900000001,
+              "p99": 3.506654900000001,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 1.6493044999999995,
+              "max": 3.506654900000001
+            }
+          },
+          "blocked": {
+            "expected": 1,
+            "verified": 1,
+            "within_deadline": 1,
+            "observed_latency_s": {
+              "n": 1,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.438167,
+              "p95": 1.438167,
+              "p99": 1.438167,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 1.438167,
+              "max": 1.438167
+            }
+          }
+        },
+        "on_time_settlements_per_s": 0.25,
+        "unresolved_or_invalid_count": 0
+      },
+      "original_store": {
+        "cases": 60,
+        "effects": 27,
+        "receipts": 180,
+        "injected_once_faults": 15,
+        "measurement_profiles": {
+          "kyc_dominant": {
+            "offered": 10,
+            "outcomes": {
+              "rejected": 4,
+              "settled": 4,
+              "blocked": 2
+            },
+            "within_deadline": {
+              "rejected": 4,
+              "settled": 3,
+              "blocked": 2
+            }
+          },
+          "balanced": {
+            "offered": 10,
+            "outcomes": {
+              "settled": 4,
+              "blocked": 2,
+              "rejected": 4
+            },
+            "within_deadline": {
+              "settled": 4,
+              "blocked": 2,
+              "rejected": 4
+            }
+          },
+          "both_slow": {
+            "offered": 10,
+            "outcomes": {
+              "settled": 4,
+              "blocked": 2,
+              "rejected": 4
+            },
+            "within_deadline": {
+              "settled": 0,
+              "blocked": 0,
+              "rejected": 0
+            }
+          },
+          "risk_dominant": {
+            "offered": 10,
+            "outcomes": {
+              "settled": 4,
+              "rejected": 4,
+              "blocked": 2
+            },
+            "within_deadline": {
+              "settled": 4,
+              "rejected": 4,
+              "blocked": 2
+            }
+          },
+          "fast": {
+            "offered": 10,
+            "outcomes": {
+              "settled": 4,
+              "rejected": 4,
+              "blocked": 2
+            },
+            "within_deadline": {
+              "settled": 4,
+              "rejected": 4,
+              "blocked": 2
+            }
+          }
+        }
+      },
+      "cleanup": "owned_engine_stopped"
+    },
+    {
+      "arm": "parallel",
+      "offered_rate": 0.5,
+      "measurement": {
+        "offered": 50,
+        "started": 50,
+        "accepted": 50,
+        "completed": 50,
+        "correct": 50,
+        "dropped": 0,
+        "invalid_or_unknown": [],
+        "arrival_lag_s": {
+          "n": 50,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 0.0026218000000000075,
+          "p95": 0.003679499999996949,
+          "p99": 0.006039799999996376,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.001804599999999823,
+          "max": 0.006039799999996376
+        },
+        "observed_latency_s": {
+          "n": 50,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 1.238994299999998,
+          "p95": 1.6182426999999961,
+          "p99": 3.2718440000000015,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.3878727000000026,
+          "max": 3.2718440000000015
+        },
+        "on_time_correct": 48,
+        "outcomes": {
+          "settled": {
+            "expected": 20,
+            "verified": 20,
+            "within_deadline": 18,
+            "observed_latency_s": {
+              "n": 20,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.2365424000000047,
+              "p95": 3.173310200000003,
+              "p99": 3.2718440000000015,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.5243062000000123,
+              "max": 3.2718440000000015
+            }
+          },
+          "rejected": {
+            "expected": 20,
+            "verified": 20,
+            "within_deadline": 20,
+            "observed_latency_s": {
+              "n": 20,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.238994299999998,
+              "p95": 1.5021995000000032,
+              "p99": 1.5029165999999918,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.39086059999999634,
+              "max": 1.5029165999999918
+            }
+          },
+          "blocked": {
+            "expected": 10,
+            "verified": 10,
+            "within_deadline": 10,
+            "observed_latency_s": {
+              "n": 10,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.1780586,
+              "p95": 1.5017364999999927,
+              "p99": 1.5017364999999927,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.3878727000000026,
+              "max": 1.5017364999999927
+            }
+          }
+        },
+        "on_time_settlements_per_s": 0.18,
+        "unresolved_or_invalid_count": 0
+      },
+      "warmup": {
+        "offered": 10,
+        "started": 10,
+        "accepted": 10,
+        "completed": 10,
+        "correct": 10,
+        "dropped": 0,
+        "invalid_or_unknown": [],
+        "arrival_lag_s": {
+          "n": 10,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 0.0014862999999998294,
+          "p95": 0.004838800000001697,
+          "p99": 0.004838800000001697,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.0005999000000009858,
+          "max": 0.004838800000001697
+        },
+        "observed_latency_s": {
+          "n": 10,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 1.3132134999999998,
+          "p95": 3.2156521,
+          "p99": 3.2156521,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.6861682000000009,
+          "max": 3.2156521
+        },
+        "on_time_correct": 9,
+        "outcomes": {
+          "settled": {
+            "expected": 7,
+            "verified": 7,
+            "within_deadline": 7,
+            "observed_latency_s": {
+              "n": 7,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.4229207000000006,
+              "p95": 1.6547349999999987,
+              "p99": 1.6547349999999987,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.6861682000000009,
+              "max": 1.6547349999999987
+            }
+          },
+          "rejected": {
+            "expected": 2,
+            "verified": 2,
+            "within_deadline": 1,
+            "observed_latency_s": {
+              "n": 2,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.2892083999999997,
+              "p95": 3.2156521,
+              "p99": 3.2156521,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 1.2892083999999997,
+              "max": 3.2156521
+            }
+          },
+          "blocked": {
+            "expected": 1,
+            "verified": 1,
+            "within_deadline": 1,
+            "observed_latency_s": {
+              "n": 1,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 0.8349292999999989,
+              "p95": 0.8349292999999989,
+              "p99": 0.8349292999999989,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.8349292999999989,
+              "max": 0.8349292999999989
+            }
+          }
+        },
+        "on_time_settlements_per_s": 0.35,
+        "unresolved_or_invalid_count": 0
+      },
+      "original_store": {
+        "cases": 60,
+        "effects": 27,
+        "receipts": 180,
+        "injected_once_faults": 15,
+        "measurement_profiles": {
+          "kyc_dominant": {
+            "offered": 10,
+            "outcomes": {
+              "rejected": 4,
+              "settled": 4,
+              "blocked": 2
+            },
+            "within_deadline": {
+              "rejected": 4,
+              "settled": 3,
+              "blocked": 2
+            }
+          },
+          "balanced": {
+            "offered": 10,
+            "outcomes": {
+              "settled": 4,
+              "blocked": 2,
+              "rejected": 4
+            },
+            "within_deadline": {
+              "settled": 4,
+              "blocked": 2,
+              "rejected": 4
+            }
+          },
+          "both_slow": {
+            "offered": 10,
+            "outcomes": {
+              "settled": 4,
+              "blocked": 2,
+              "rejected": 4
+            },
+            "within_deadline": {
+              "settled": 3,
+              "blocked": 2,
+              "rejected": 4
+            }
+          },
+          "risk_dominant": {
+            "offered": 10,
+            "outcomes": {
+              "settled": 4,
+              "rejected": 4,
+              "blocked": 2
+            },
+            "within_deadline": {
+              "settled": 4,
+              "rejected": 4,
+              "blocked": 2
+            }
+          },
+          "fast": {
+            "offered": 10,
+            "outcomes": {
+              "settled": 4,
+              "rejected": 4,
+              "blocked": 2
+            },
+            "within_deadline": {
+              "settled": 4,
+              "rejected": 4,
+              "blocked": 2
+            }
+          }
+        }
+      },
+      "cleanup": "owned_engine_stopped"
+    },
+    {
+      "arm": "parallel",
+      "offered_rate": 1,
+      "measurement": {
+        "offered": 100,
+        "started": 100,
+        "accepted": 100,
+        "completed": 100,
+        "correct": 100,
+        "dropped": 0,
+        "invalid_or_unknown": [],
+        "arrival_lag_s": {
+          "n": 100,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 0.0019106999999962682,
+          "p95": 0.0027858999999992307,
+          "p99": 0.0032051999999964664,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.00077179999999899,
+          "max": 0.003619300000011094
+        },
+        "observed_latency_s": {
+          "n": 100,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 1.3882720000000006,
+          "p95": 3.041207100000001,
+          "p99": 3.4986013000000042,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.24264920000000245,
+          "max": 3.588856800000002
+        },
+        "on_time_correct": 80,
+        "outcomes": {
+          "settled": {
+            "expected": 40,
+            "verified": 40,
+            "within_deadline": 36,
+            "observed_latency_s": {
+              "n": 40,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.2911974999999956,
+              "p95": 3.3732803999999987,
+              "p99": 3.588856800000002,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.34041090000000906,
+              "max": 3.588856800000002
+            }
+          },
+          "rejected": {
+            "expected": 40,
+            "verified": 40,
+            "within_deadline": 26,
+            "observed_latency_s": {
+              "n": 40,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.5947254999999956,
+              "p95": 3.041207100000001,
+              "p99": 3.4986013000000042,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.3393457999999896,
+              "max": 3.4986013000000042
+            }
+          },
+          "blocked": {
+            "expected": 20,
+            "verified": 20,
+            "within_deadline": 18,
+            "observed_latency_s": {
+              "n": 20,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.3713274999999996,
+              "p95": 2.126208300000002,
+              "p99": 2.139470700000004,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.24264920000000245,
+              "max": 2.139470700000004
+            }
+          }
+        },
+        "on_time_settlements_per_s": 0.36,
+        "unresolved_or_invalid_count": 0
+      },
+      "warmup": {
+        "offered": 20,
+        "started": 20,
+        "accepted": 20,
+        "completed": 20,
+        "correct": 20,
+        "dropped": 0,
+        "invalid_or_unknown": [],
+        "arrival_lag_s": {
+          "n": 20,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 0.001224000000000558,
+          "p95": 0.0033519999999995775,
+          "p99": 0.006860200000000205,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.00015989999999987958,
+          "max": 0.006860200000000205
+        },
+        "observed_latency_s": {
+          "n": 20,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 1.5980841999999988,
+          "p95": 4.251064400000001,
+          "p99": 4.4960024999999995,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.4357645000000012,
+          "max": 4.4960024999999995
+        },
+        "on_time_correct": 13,
+        "outcomes": {
+          "settled": {
+            "expected": 11,
+            "verified": 11,
+            "within_deadline": 8,
+            "observed_latency_s": {
+              "n": 11,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.5980841999999988,
+              "p95": 4.251064400000001,
+              "p99": 4.251064400000001,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.5333799999999993,
+              "max": 4.251064400000001
+            }
+          },
+          "rejected": {
+            "expected": 6,
+            "verified": 6,
+            "within_deadline": 3,
+            "observed_latency_s": {
+              "n": 6,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.101388,
+              "p95": 4.4960024999999995,
+              "p99": 4.4960024999999995,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.4357645000000012,
+              "max": 4.4960024999999995
+            }
+          },
+          "blocked": {
+            "expected": 3,
+            "verified": 3,
+            "within_deadline": 2,
+            "observed_latency_s": {
+              "n": 3,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.9250357000000005,
+              "p95": 3.400150700000001,
+              "p99": 3.400150700000001,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 1.449501699999999,
+              "max": 3.400150700000001
+            }
+          }
+        },
+        "on_time_settlements_per_s": 0.4,
+        "unresolved_or_invalid_count": 0
+      },
+      "original_store": {
+        "cases": 120,
+        "effects": 51,
+        "receipts": 360,
+        "injected_once_faults": 25,
+        "measurement_profiles": {
+          "kyc_dominant": {
+            "offered": 20,
+            "outcomes": {
+              "rejected": 8,
+              "settled": 8,
+              "blocked": 4
+            },
+            "within_deadline": {
+              "rejected": 4,
+              "settled": 6,
+              "blocked": 4
+            }
+          },
+          "balanced": {
+            "offered": 20,
+            "outcomes": {
+              "settled": 8,
+              "blocked": 4,
+              "rejected": 8
+            },
+            "within_deadline": {
+              "settled": 8,
+              "blocked": 4,
+              "rejected": 8
+            }
+          },
+          "both_slow": {
+            "offered": 20,
+            "outcomes": {
+              "settled": 8,
+              "blocked": 4,
+              "rejected": 8
+            },
+            "within_deadline": {
+              "settled": 6,
+              "blocked": 4,
+              "rejected": 2
+            }
+          },
+          "risk_dominant": {
+            "offered": 20,
+            "outcomes": {
+              "settled": 8,
+              "rejected": 8,
+              "blocked": 4
+            },
+            "within_deadline": {
+              "settled": 8,
+              "rejected": 4,
+              "blocked": 2
+            }
+          },
+          "fast": {
+            "offered": 20,
+            "outcomes": {
+              "settled": 8,
+              "rejected": 8,
+              "blocked": 4
+            },
+            "within_deadline": {
+              "settled": 8,
+              "rejected": 8,
+              "blocked": 4
+            }
+          }
+        }
+      },
+      "cleanup": "owned_engine_stopped"
+    },
+    {
+      "arm": "sequential",
+      "offered_rate": 1,
+      "measurement": {
+        "offered": 100,
+        "started": 100,
+        "accepted": 100,
+        "completed": 100,
+        "correct": 100,
+        "dropped": 0,
+        "invalid_or_unknown": [],
+        "arrival_lag_s": {
+          "n": 100,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 0.0018288999999924727,
+          "p95": 0.0027326000000016393,
+          "p99": 0.0036687999999998056,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.0007772000000016988,
+          "max": 0.0037863999999956377
+        },
+        "observed_latency_s": {
+          "n": 100,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 1.2877539999999996,
+          "p95": 3.269623199999998,
+          "p99": 3.8076851000000005,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.3362472000000025,
+          "max": 3.8900498
+        },
+        "on_time_correct": 75,
+        "outcomes": {
+          "settled": {
+            "expected": 40,
+            "verified": 40,
+            "within_deadline": 30,
+            "observed_latency_s": {
+              "n": 40,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.3243153999999997,
+              "p95": 3.3844826000000054,
+              "p99": 3.8900498,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.3399293999999884,
+              "max": 3.8900498
+            }
+          },
+          "rejected": {
+            "expected": 40,
+            "verified": 40,
+            "within_deadline": 29,
+            "observed_latency_s": {
+              "n": 40,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.2876071999999965,
+              "p95": 2.861199500000005,
+              "p99": 3.290497700000003,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.3362472000000025,
+              "max": 3.290497700000003
+            }
+          },
+          "blocked": {
+            "expected": 20,
+            "verified": 20,
+            "within_deadline": 16,
+            "observed_latency_s": {
+              "n": 20,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.280288200000001,
+              "p95": 2.4441216000000026,
+              "p99": 2.448868499999996,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.352988400000001,
+              "max": 2.448868499999996
+            }
+          }
+        },
+        "on_time_settlements_per_s": 0.3,
+        "unresolved_or_invalid_count": 0
+      },
+      "warmup": {
+        "offered": 20,
+        "started": 20,
+        "accepted": 20,
+        "completed": 20,
+        "correct": 20,
+        "dropped": 0,
+        "invalid_or_unknown": [],
+        "arrival_lag_s": {
+          "n": 20,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 0.001140099999998867,
+          "p95": 0.005090000000000927,
+          "p99": 0.00543169999999904,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.0005950000000005673,
+          "max": 0.00543169999999904
+        },
+        "observed_latency_s": {
+          "n": 20,
+          "unit": "s",
+          "method": "nearest_rank",
+          "p50": 1.3476047999999992,
+          "p95": 2.5248197999999995,
+          "p99": 2.528713100000001,
+          "p99_9": null,
+          "p99_9_suppressed": true,
+          "min": 0.4598596000000015,
+          "max": 2.528713100000001
+        },
+        "on_time_correct": 16,
+        "outcomes": {
+          "settled": {
+            "expected": 11,
+            "verified": 11,
+            "within_deadline": 9,
+            "observed_latency_s": {
+              "n": 11,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.4313821000000004,
+              "p95": 2.5248197999999995,
+              "p99": 2.5248197999999995,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.7097562999999987,
+              "max": 2.5248197999999995
+            }
+          },
+          "rejected": {
+            "expected": 6,
+            "verified": 6,
+            "within_deadline": 5,
+            "observed_latency_s": {
+              "n": 6,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.1021078000000024,
+              "p95": 2.0344988000000015,
+              "p99": 2.0344988000000015,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 0.4598596000000015,
+              "max": 2.0344988000000015
+            }
+          },
+          "blocked": {
+            "expected": 3,
+            "verified": 3,
+            "within_deadline": 2,
+            "observed_latency_s": {
+              "n": 3,
+              "unit": "s",
+              "method": "nearest_rank",
+              "p50": 1.3151696000000008,
+              "p95": 2.528713100000001,
+              "p99": 2.528713100000001,
+              "p99_9": null,
+              "p99_9_suppressed": true,
+              "min": 1.1642451000000005,
+              "max": 2.528713100000001
+            }
+          }
+        },
+        "on_time_settlements_per_s": 0.45,
+        "unresolved_or_invalid_count": 0
+      },
+      "original_store": {
+        "cases": 120,
+        "effects": 51,
+        "receipts": 360,
+        "injected_once_faults": 25,
+        "measurement_profiles": {
+          "kyc_dominant": {
+            "offered": 20,
+            "outcomes": {
+              "rejected": 8,
+              "settled": 8,
+              "blocked": 4
+            },
+            "within_deadline": {
+              "rejected": 8,
+              "settled": 6,
+              "blocked": 4
+            }
+          },
+          "balanced": {
+            "offered": 20,
+            "outcomes": {
+              "settled": 8,
+              "blocked": 4,
+              "rejected": 8
+            },
+            "within_deadline": {
+              "settled": 8,
+              "blocked": 4,
+              "rejected": 8
+            }
+          },
+          "both_slow": {
+            "offered": 20,
+            "outcomes": {
+              "settled": 8,
+              "blocked": 4,
+              "rejected": 8
+            },
+            "within_deadline": {
+              "settled": 0,
+              "blocked": 0,
+              "rejected": 0
+            }
+          },
+          "risk_dominant": {
+            "offered": 20,
+            "outcomes": {
+              "settled": 8,
+              "rejected": 8,
+              "blocked": 4
+            },
+            "within_deadline": {
+              "settled": 8,
+              "rejected": 5,
+              "blocked": 4
+            }
+          },
+          "fast": {
+            "offered": 20,
+            "outcomes": {
+              "settled": 8,
+              "rejected": 8,
+              "blocked": 4
+            },
+            "within_deadline": {
+              "settled": 8,
+              "rejected": 8,
+              "blocked": 4
+            }
+          }
+        }
+      },
+      "cleanup": "owned_engine_stopped"
+    }
+  ],
+  "measurement_deadline_misses": 58
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks">
+  <process id="bench_agent_screen" name="Restricted agent screening entry" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start"/><sequenceFlow id="f1" sourceRef="start" targetRef="screen"/>
+    <serviceTask id="screen" camunda:type="external" camunda:topic="bench-service" camunda:asyncBefore="true">
+      <extensionElements><camunda:inputOutput>
+        <camunda:inputParameter name="scenario">kyc</camunda:inputParameter>
+        <camunda:inputParameter name="approved">${false}</camunda:inputParameter>
+      </camunda:inputOutput></extensionElements>
+    </serviceTask>
+    <sequenceFlow id="f2" sourceRef="screen" targetRef="finished"/><endEvent id="finished"/>
+  </process>
+</definitions>

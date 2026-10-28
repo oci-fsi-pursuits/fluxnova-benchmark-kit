@@ -1,0 +1,7 @@
+{
+  "variables": {
+    "aVariable": {"value": "aStringValue", "type": "String", "valueInfo": {"transient": true}},
+    "anotherVariable": {"value": true, "type": "Boolean"}
+  },
+  "businessKey": "myBusinessKey"
+}

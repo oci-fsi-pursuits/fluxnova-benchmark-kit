@@ -1,0 +1,11 @@
+# W02 dependency sensitivity qualification
+
+All **100/100 local functional executions** passed: fifty cases formed from ten existing policy/fault scenarios and five prespecified delay profiles, each run through both sequential and parallel graphs. The original SQLite store verifies **40 exact effects and 300 receipts**. Six hundred repeated calls preserved the results; 100 premature settlements and two cross-process replays were denied. Twenty one-time faults/lost responses were exercised. Rejected/blocked outcomes had zero effects.
+
+The independent auditor rechecked all **224 archived file hashes**, the complete seeded case/arm order, raw engine outcomes and original store state. Separate negative controls rejected changed sealed content, a missing case hidden by a resealed passing summary, and a modified SQLite effect hidden by a resealed database hash. The first negative-test preparation left SQLite journal files open and tested the extra-file guard; the corrected closed-database control establishes the semantic store check reported here. All original evidence remains unchanged.
+
+The saved report passed browser checks for all 100 rows, both arm filters, real JSON navigation, keyboard use and laptop-width layout. Three screenshots were visually reviewed. The owned engine stopped, with no remaining instances, tasks or incidents. No OCI resources or model calls were accessed.
+
+The final full repository suite passes **367 tests with zero skips**, including all optional k6 integration checks. A final preflight regression verifies that an explicitly requested empty sensitivity file fails before runtime access or output creation. The completed workload used a nonempty validated protocol and is unaffected. Its eleven executed source files match revision `c1ea6c08fb0c8b8a9db144406cac72cfb162b06e` after Git line-ending normalization; the original raw hashes remain in `summary.json`.
+
+This is Windows / Java 21 / Fluxnova 3.0.1 / embedded H2 functional validation. Workers start for each case. Equal scenario coverage is not a production mix; there is no new p95, two-second success-rate or capacity result. Final receipt overlap varied by profile and excludes earlier failed attempts. The existing OCI result and presentation numbers remain unchanged. [Protocol, observations and reproduction](../../docs/w02-dependency-sensitivity.md).

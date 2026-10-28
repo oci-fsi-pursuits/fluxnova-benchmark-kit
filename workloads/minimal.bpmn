@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks">
+  <process id="bench_minimal" name="Benchmark minimal" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start"/>
+    <sequenceFlow id="flow" sourceRef="start" targetRef="end"/>
+    <endEvent id="end"/>
+  </process>
+</definitions>

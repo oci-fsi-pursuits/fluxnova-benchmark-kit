@@ -1,0 +1,17 @@
+# Non-secret example only. Replace every identifier from discovery; do not copy placeholders into a deployment.
+region              = "REPLACE_WITH_REGION"
+compartment_id      = "ocid1.compartment.REPLACE"
+availability_domain = "REPLACE_WITH_FULL_AD_NAME"
+image_ocid          = "ocid1.image.REPLACE_WITH_UBUNTU_24_04_X86_64"
+budget_limit_usd    = 100
+ssh_authorized_key  = "ssh-ed25519 REPLACE_WITH_PUBLIC_KEY"
+db_admin_secret_id  = "ocid1.vaultsecret.REPLACE"
+db_admin_username   = "benchadmin"
+db_shape            = "REPLACE_FROM_POSTGRESQL_LIST_SHAPES"
+db_ocpu_count       = 2
+db_memory_gb        = 32
+db_storage_iops     = 75000
+artifact_bucket_name = "REPLACE_WITH_RETAINED_BUCKET"
+# Database sizes above are examples, not validated regional minima or recommendations.
+# administrator_cidrs = ["10.50.0.0/24"] # Existing routed private management path.
+# bastion_client_cidrs = ["203.0.113.10/32"] # Replace with your workstation's public IPv4; enables OCI Bastion.
