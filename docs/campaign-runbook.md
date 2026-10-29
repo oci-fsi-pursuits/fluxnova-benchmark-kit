@@ -42,6 +42,24 @@ For failed golden incidents, `scripts/cleanup_failed_golden.py --config CONFIG -
 
 ## Deployment and evidence commands
 
+For a declared capacity-discovery ladder, set `campaign.discovery_rates`, for example
+`[5, 10, 15, 20, 25, 30, 40, 50]`, before running the `discovery` profile. Each
+step measures for 300 seconds and keeps the configured warmup, drain, deadline
+and observation policy. The full ladder is validated before load starts. It must
+contain 1-16 strictly increasing integer rates from 1 to 1000; omitting it retains
+the historical default ladder.
+
+The campaign record is saved before each attempt and retains completed,
+nonpassing, interrupted and unattempted steps. Any nonpassing live run stops
+escalation. No retry or lower-rate replacement occurs automatically. An invalid
+generator run cannot identify engine saturation, and `last_valid_rate` remains
+a passing observation, not a maximum-capacity result. Confirmation requires
+separately frozen steady-state repetitions and backlog evidence. An eight-hour
+soak is one continuous measurement; stitching short runs together does not
+establish endurance. Validate storage, telemetry retention and analysis memory
+before launching it. The existing reference's active verifier still forbids its
+historical two-store reset; preserve that guard.
+
 After provisioning, `configure --config config.locked.local.json --environment dist/environment.local.json --output config.environment.local.json` fills verified database TLS, private endpoints and registry destinations. Build/publish that configuration on the OCI controller. The image includes a checksum-pinned Java agent. Supply separate Vault references for application-admin authentication and the simulator token.
 
 From the controller, `deploy --config config.ready.json --all-hosts dist/environment.local.json` installs support/collector, application, worker and generator tooling on the explicit private hosts using verified SSH keys. Follow [remote deployment](remote-deployment.md); single-host role commands below remain available. Select `runtime.allow_insecure_http=true` explicitly for the isolated HTTP lab, or configure HTTPS. Set `runtime.db_user`/`db_password_secret_id` for a separately provisioned application principal; the default isolated lab uses the configured database administrator and must disclose that boundary.

@@ -26,18 +26,88 @@ python scripts/open_report.py --path PATH_TO_REPORT.html
 
 ## How a measured workflow works
 
-```mermaid
-flowchart LR
-    A[Synthetic arrivals] --> B[Fluxnova BPMN]
-    B --> C[External-task workers]
-    C --> D[KYC and risk simulators]
-    C --> E[Policy verification and synthetic ledger]
-    B --> F[Independent outcome audit]
-    E --> F
-    F --> G[Saved results and evidence]
-```
+Imagine you build a payment workflow and want to know whether a change helps. This kit runs repeatable cases through the actual engine and checks both the time taken and the outcome.
 
-The workload declares the expected decision and exact payment effect before execution. The audit checks engine history and the original case records. Model-assisted and human-review paths have separate functional checks; live model calls and human waiting time are outside the deterministic load comparisons.
+1. **Choose the flow and its inputs.** A BPMN file defines the order of tasks and decisions. Worker code performs the external work. Test cases declare the expected outcome before execution.
+2. **Fix the conditions.** Record the software versions, machine resources, starting state, request rate and deadline. For a comparison, change one declared factor.
+3. **Send repeatable requests.** The load runner starts workflows at the chosen rate or burst pattern. Each request has an identity so its events and results can be joined.
+4. **Watch and verify.** Observe durable engine history, then check stored data and independent tool receipts. For payments, check the original policy and the exact synthetic ledger effect. A successful HTTP response alone is insufficient.
+5. **Compare the evidence.** Report latency, correct outcomes, deadline misses, dropped starts and resource use. Repeat matched runs and retain failures as well as successes.
+
+**The clock includes completion polling.** These are externally observed workflow times, not isolated engine processing times. Expected refusals and safe stops are checked separately from completed payments. Model-assisted and human-review paths have separate checks; live model calls and human waiting time are outside the deterministic load comparisons.
+
+An **endurance run** holds one configuration and request rate steady for hours. It checks whether correctness, response times, queues, memory, storage and telemetry remain healthy as work accumulates. Its results need a final outcome audit and a review of resource growth before acceptance.
+
+## Three changes you can see
+
+### 1. Keep the worker moving
+
+The payment workflow stays the same. We compare a reconstructed 100 ms pause after successful work with fetching the next task immediately. Empty-poll and retry backoff stay unchanged.
+
+![Worker pacing: complete a task, wait 100 ms, then fetch the next task; compared with fetching immediately after completion.](docs/assets/workflows/01-w01-worker-pacing.png)
+
+[W01 implementation and evidence](docs/w01-worker-pacing.md)
+
+### 2. Run independent checks together
+
+Both designs perform KYC and risk checks. The parallel design starts the independent checks together and waits for both before applying the same verification and settlement policy.
+
+![Sequential payment checks run KYC then risk. Parallel checks run KYC and risk together, wait for both, then verify and settle.](docs/assets/workflows/02-w02-parallel-checks.png)
+
+[W02 implementation and evidence](docs/w02-independent-checks.md). The mixed-outcome follow-up uses this same graph with more input cases and dependency delays.
+
+### 3. Send only required cases to review
+
+The control sends every case to a reviewer. Policy routing retains mandatory reviews and lets other cases reach verification directly. Rejected or unknown inputs still cannot cause a payment.
+
+![Review routing: review every case versus checking policy and routing only required cases through review; both paths verify the outcome.](docs/assets/workflows/03-w03-review-routing.png)
+
+[W03 implementation and evidence](docs/w03-review-routing.md). Reviewers are scripted in this study; human time saved was not measured.
+
+<details>
+<summary><strong>Explore the six basic workload types</strong></summary>
+
+These are implemented building blocks. The three comparisons above reuse or extend them. Six workload types plus three comparison diagrams make nine explanatory images, with different evidence scopes. Additional agent, approval and recovery tests are documented separately in the [workload guide](docs/workloads.md).
+
+### Start and finish (`minimal`)
+
+The smallest process checks durable completion and its recorded identity. Its input still includes correlation data and a payload.
+
+![Minimal workflow: Start to End, with a separate benchmark check of durable completion.](docs/assets/workflows/04-basic-minimal.png)
+
+### Preserve the right data (`variables`)
+
+A Boolean chooses a branch. After the asynchronous boundary, persistent data must remain and transient data must be absent from history. The boundary boxes explain engine behavior; they are not additional service tasks.
+
+![Variable workflow: true and false branches each cross an asynchronous boundary and end; the benchmark checks stored data afterward.](docs/assets/workflows/05-basic-variables.png)
+
+### Finish external work (`async`)
+
+The engine activates an external task. A worker fetches it, calls a deterministic echo tool and completes it. This is the workload used for the endurance study; it contains no live AI call or payment.
+
+![Async workflow: Start to External task to End; the external task is executed by worker fetch, echo tool and worker completion.](docs/assets/workflows/06-basic-async.png)
+
+### Screen a customer (`kyc`)
+
+Synthetic screening can approve, reject or create a real review task. The test explicitly simulates completing that task.
+
+![KYC workflow: screening branches to approved, manual review followed by reviewed, or rejected.](docs/assets/workflows/07-basic-kyc.png)
+
+### Enforce risk rules (`risk`)
+
+The test checks acceptance for permitted inputs and rejection for an excessive notional or stale market input.
+
+![Risk workflow: within-limit current inputs are accepted; over-limit or stale inputs are rejected.](docs/assets/workflows/08-basic-risk.png)
+
+### Check the payment effect (`settlement`)
+
+The synthetic backend enforces policy before creating a ledger effect. Independent checks cover the exact effect, replay deduplication and recovery after a lost response. No real money moves.
+
+![Settlement workflow: apply the policy, create one ledger effect when permitted or none when denied, and check that a replay creates no duplicate effect.](docs/assets/workflows/09-basic-settlement.png)
+
+</details>
+
+The diagrams explain the flows; the executable BPMN, worker code and case definitions are the technical source of truth. See [workload contracts](docs/workloads.md) and [reproduction steps](docs/reproduce.md) to run or adapt them. Research and diagram content: **Nicholas Cusato**; Fluxnova software: **FINOS contributors**. [Image provenance and branding](docs/assets/README.md).
 
 ## What has been measured
 

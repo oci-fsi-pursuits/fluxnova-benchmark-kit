@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "d3825f1cba96d2be8f5a0e518677980fce1d872a",
+  "source_commit": "6a240bbda86f8a217a7275d35534617b624a825b",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -28,8 +28,8 @@
     },
     {
       "path": ".gitignore",
-      "source_sha256": "90eec5aa7c5b618cc3ed282a84d634c6ea30531ff9469b1521842f9ab52d35cc",
-      "candidate_sha256": "90eec5aa7c5b618cc3ed282a84d634c6ea30531ff9469b1521842f9ab52d35cc"
+      "source_sha256": "aeae56c164717d756374aa35cb79cc03aa8fb995d49fb2d9455f9da02243b6bc",
+      "candidate_sha256": "aeae56c164717d756374aa35cb79cc03aa8fb995d49fb2d9455f9da02243b6bc"
     },
     {
       "path": ".gitleaks.toml",
@@ -58,8 +58,8 @@
     },
     {
       "path": "README.md",
-      "source_sha256": "9689edd8fc6410167e535981984144cfa4f350bd260b6075d7a409ff8d8574eb",
-      "candidate_sha256": "9689edd8fc6410167e535981984144cfa4f350bd260b6075d7a409ff8d8574eb"
+      "source_sha256": "07a402ea403ffe8955c9c367d3d27d053c1cef1da9a4be7904ff91cc1f821857",
+      "candidate_sha256": "07a402ea403ffe8955c9c367d3d27d053c1cef1da9a4be7904ff91cc1f821857"
     },
     {
       "path": "SECURITY.md",
@@ -108,8 +108,8 @@
     },
     {
       "path": "benchlib/campaign.py",
-      "source_sha256": "63b8baca0a0d54280ac84a11b70622dc9e30ca815b443e2178e22753ec194897",
-      "candidate_sha256": "63b8baca0a0d54280ac84a11b70622dc9e30ca815b443e2178e22753ec194897"
+      "source_sha256": "2e856b53178b02aa98fce55d7b067e3831c95ebaa7476c9a7acccab10079107e",
+      "candidate_sha256": "2e856b53178b02aa98fce55d7b067e3831c95ebaa7476c9a7acccab10079107e"
     },
     {
       "path": "benchlib/checkpoint.py",
@@ -318,8 +318,8 @@
     },
     {
       "path": "docs/README.md",
-      "source_sha256": "bb5d2bf942acbb01568b79b5f3aaade3bf5eb800bb471ec346722d6e273b9d6e",
-      "candidate_sha256": "bb5d2bf942acbb01568b79b5f3aaade3bf5eb800bb471ec346722d6e273b9d6e"
+      "source_sha256": "a59520365305d8d07a5049c3f01da269ea722fdf297dda033bccc0d18c8c1444",
+      "candidate_sha256": "a59520365305d8d07a5049c3f01da269ea722fdf297dda033bccc0d18c8c1444"
     },
     {
       "path": "docs/approval-agent.md",
@@ -328,8 +328,8 @@
     },
     {
       "path": "docs/assets/README.md",
-      "source_sha256": "7b7046201ed3395aa00c040d74a26138648412559a275af0cf272681977ca05d",
-      "candidate_sha256": "7b7046201ed3395aa00c040d74a26138648412559a275af0cf272681977ca05d"
+      "source_sha256": "6a4b16b718c4d399741e829ff9692a45543037a5ce23752894df66017c9f0ded",
+      "candidate_sha256": "6a4b16b718c4d399741e829ff9692a45543037a5ce23752894df66017c9f0ded"
     },
     {
       "path": "docs/assets/fluxnova-logo.png",
@@ -340,6 +340,51 @@
       "path": "docs/assets/fluxnova-research-brief-20261028.pdf",
       "source_sha256": "39170a4508f8edef2ae335400cb0a1ea1598ddfb7cafc1fa6dbc66c726d64e55",
       "candidate_sha256": "39170a4508f8edef2ae335400cb0a1ea1598ddfb7cafc1fa6dbc66c726d64e55"
+    },
+    {
+      "path": "docs/assets/workflows/01-w01-worker-pacing.png",
+      "source_sha256": "076d3e8ef5758d40e8f56c14a64851fd1fd733c4fb3d99925f73682c7b51ed69",
+      "candidate_sha256": "076d3e8ef5758d40e8f56c14a64851fd1fd733c4fb3d99925f73682c7b51ed69"
+    },
+    {
+      "path": "docs/assets/workflows/02-w02-parallel-checks.png",
+      "source_sha256": "3fb9f0b6e2378fc1e53c504d83f4bbb4083c9d3905445c1e1a190540192660b3",
+      "candidate_sha256": "3fb9f0b6e2378fc1e53c504d83f4bbb4083c9d3905445c1e1a190540192660b3"
+    },
+    {
+      "path": "docs/assets/workflows/03-w03-review-routing.png",
+      "source_sha256": "13626b8f2be1fd52b898881b9cb472519275b3b1dfd85a46b38725c3f646f026",
+      "candidate_sha256": "13626b8f2be1fd52b898881b9cb472519275b3b1dfd85a46b38725c3f646f026"
+    },
+    {
+      "path": "docs/assets/workflows/04-basic-minimal.png",
+      "source_sha256": "41dd52a925751283e37c30fb954d276fdbbf840ac95823796f39ece80cae6f30",
+      "candidate_sha256": "41dd52a925751283e37c30fb954d276fdbbf840ac95823796f39ece80cae6f30"
+    },
+    {
+      "path": "docs/assets/workflows/05-basic-variables.png",
+      "source_sha256": "2df1baa44bed79a91c7a11344289bc75578092b04ed8ca61299e21da69349ebb",
+      "candidate_sha256": "2df1baa44bed79a91c7a11344289bc75578092b04ed8ca61299e21da69349ebb"
+    },
+    {
+      "path": "docs/assets/workflows/06-basic-async.png",
+      "source_sha256": "cd2f4961a991a23725b133277bfabb3a3393cc934bf7339c83c2980fed971fd8",
+      "candidate_sha256": "cd2f4961a991a23725b133277bfabb3a3393cc934bf7339c83c2980fed971fd8"
+    },
+    {
+      "path": "docs/assets/workflows/07-basic-kyc.png",
+      "source_sha256": "be90cce83c7d87d5ae2637ce6ee954b542ce29a2d462ba86a0b6f5b290cf0cd5",
+      "candidate_sha256": "be90cce83c7d87d5ae2637ce6ee954b542ce29a2d462ba86a0b6f5b290cf0cd5"
+    },
+    {
+      "path": "docs/assets/workflows/08-basic-risk.png",
+      "source_sha256": "07873b9bd1c6a0d2bc4d06fdbb52293cbb72360a7e3ec42b8961abdb8903df23",
+      "candidate_sha256": "07873b9bd1c6a0d2bc4d06fdbb52293cbb72360a7e3ec42b8961abdb8903df23"
+    },
+    {
+      "path": "docs/assets/workflows/09-basic-settlement.png",
+      "source_sha256": "b59b0111e290a56cfe6081de36532bfed26d76c69c5505600f2624f07ad3f5d7",
+      "candidate_sha256": "b59b0111e290a56cfe6081de36532bfed26d76c69c5505600f2624f07ad3f5d7"
     },
     {
       "path": "docs/benchmark-protocol.md",
@@ -358,8 +403,8 @@
     },
     {
       "path": "docs/campaign-runbook.md",
-      "source_sha256": "7c9c141ec8ea68f0f9b56aa39a55d63c07f8fdf8fab2856cbc247c99bb0c2370",
-      "candidate_sha256": "4ee411bdae63dd4182ac657e02cc8e3fe94c27ba7980ef0843334689f57d4ebe"
+      "source_sha256": "254dfe0528e44d3337da0e9d6b74e407e60d5090f714c2f7e3e74ceec2f0d82d",
+      "candidate_sha256": "2860d7b9e1cd11bf1f630fce56b0f723a1c41a9558d9e60028bbc6f1c39d63bb"
     },
     {
       "path": "docs/getting-started.md",
@@ -593,8 +638,8 @@
     },
     {
       "path": "release/public-files.json",
-      "source_sha256": "76064775290f520c36f3b6dc79719fef1a2444292bf1754edc6a6f4ce6556466",
-      "candidate_sha256": "76064775290f520c36f3b6dc79719fef1a2444292bf1754edc6a6f4ce6556466"
+      "source_sha256": "6410d24dc6c9fd98fede79f0efc9b0b32b3174860561948d176fa46f55795e4c",
+      "candidate_sha256": "6410d24dc6c9fd98fede79f0efc9b0b32b3174860561948d176fa46f55795e4c"
     },
     {
       "path": "requirements-cloud.txt",
@@ -613,8 +658,8 @@
     },
     {
       "path": "schemas/config.schema.json",
-      "source_sha256": "a8d692233958a6f2a8affdaaecdc3471bbf4287d9a91b02fa97e546c08e695b3",
-      "candidate_sha256": "a8d692233958a6f2a8affdaaecdc3471bbf4287d9a91b02fa97e546c08e695b3"
+      "source_sha256": "91f2c66300ae68e941a22615f039710b0a7fae9dd621478901b7237f7a4c5b99",
+      "candidate_sha256": "91f2c66300ae68e941a22615f039710b0a7fae9dd621478901b7237f7a4c5b99"
     },
     {
       "path": "schemas/costs.schema.json",
@@ -1090,6 +1135,11 @@
       "path": "tests/test_bound_payment.py",
       "source_sha256": "ecaf8fcf35949288f15f11107a022c4edd09905e402d8a983ab4bbe8f8f1c51e",
       "candidate_sha256": "ecaf8fcf35949288f15f11107a022c4edd09905e402d8a983ab4bbe8f8f1c51e"
+    },
+    {
+      "path": "tests/test_capacity_campaign.py",
+      "source_sha256": "298ab4e66811498bbc4e7a4556b329f421c6499f51277103c1f9c428893e229a",
+      "candidate_sha256": "298ab4e66811498bbc4e7a4556b329f421c6499f51277103c1f9c428893e229a"
     },
     {
       "path": "tests/test_checkpoint.py",

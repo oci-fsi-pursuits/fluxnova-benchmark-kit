@@ -4,6 +4,7 @@ The thesis is time to a **correct, authorized outcome**. Start with the [researc
 
 | Task | Maintained guide |
 | --- | --- |
+| Understand the workflow pictures | [How the benchmark works and nine diagrams](../README.md#how-a-measured-workflow-works) |
 | Open a report and try sample data | [Getting started](getting-started.md) |
 | Build and check a workflow | [Reproduction](reproduce.md) and [workloads](workloads.md) |
 | Understand completed comparisons | [Pattern register](workload-completion.md) |

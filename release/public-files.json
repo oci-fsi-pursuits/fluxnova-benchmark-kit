@@ -41,7 +41,16 @@
     "presentations/fluxnova-team-brief-20261028.json",
     "docs/results/w02-mixed/report.html",
     "docs/results/w02-mixed/summary.json",
-    "docs/results/w02-mixed/manifest.json"
+    "docs/results/w02-mixed/manifest.json",
+    "docs/assets/workflows/01-w01-worker-pacing.png",
+    "docs/assets/workflows/02-w02-parallel-checks.png",
+    "docs/assets/workflows/03-w03-review-routing.png",
+    "docs/assets/workflows/04-basic-minimal.png",
+    "docs/assets/workflows/05-basic-variables.png",
+    "docs/assets/workflows/06-basic-async.png",
+    "docs/assets/workflows/07-basic-kyc.png",
+    "docs/assets/workflows/08-basic-risk.png",
+    "docs/assets/workflows/09-basic-settlement.png"
   ],
   "evidence_directories": [
     "validation/oci-20261027-w01-comparison",
@@ -60,6 +69,15 @@
   ],
   "reviewed_assets": {
     "docs/assets/fluxnova-logo.png": "2f989041af4b4237dff14316e011b4afc93fa5962c8f041728a5a7dd8845b177",
-    "docs/assets/fluxnova-research-brief-20261028.pdf": "39170a4508f8edef2ae335400cb0a1ea1598ddfb7cafc1fa6dbc66c726d64e55"
+    "docs/assets/fluxnova-research-brief-20261028.pdf": "39170a4508f8edef2ae335400cb0a1ea1598ddfb7cafc1fa6dbc66c726d64e55",
+    "docs/assets/workflows/01-w01-worker-pacing.png": "076d3e8ef5758d40e8f56c14a64851fd1fd733c4fb3d99925f73682c7b51ed69",
+    "docs/assets/workflows/02-w02-parallel-checks.png": "3fb9f0b6e2378fc1e53c504d83f4bbb4083c9d3905445c1e1a190540192660b3",
+    "docs/assets/workflows/03-w03-review-routing.png": "13626b8f2be1fd52b898881b9cb472519275b3b1dfd85a46b38725c3f646f026",
+    "docs/assets/workflows/04-basic-minimal.png": "41dd52a925751283e37c30fb954d276fdbbf840ac95823796f39ece80cae6f30",
+    "docs/assets/workflows/05-basic-variables.png": "2df1baa44bed79a91c7a11344289bc75578092b04ed8ca61299e21da69349ebb",
+    "docs/assets/workflows/06-basic-async.png": "cd2f4961a991a23725b133277bfabb3a3393cc934bf7339c83c2980fed971fd8",
+    "docs/assets/workflows/07-basic-kyc.png": "be90cce83c7d87d5ae2637ce6ee954b542ce29a2d462ba86a0b6f5b290cf0cd5",
+    "docs/assets/workflows/08-basic-risk.png": "07873b9bd1c6a0d2bc4d06fdbb52293cbb72360a7e3ec42b8961abdb8903df23",
+    "docs/assets/workflows/09-basic-settlement.png": "b59b0111e290a56cfe6081de36532bfed26d76c69c5505600f2624f07ad3f5d7"
   }
 }

@@ -6,6 +6,18 @@ from .runner import run_k6
 from .analysis import analyze_run
 from .report import write_reports
 from .util import write_json
+from .contracts import is_number
+
+
+def discovery_rates(config):
+    """Validate the entire frozen ladder before any rate can start."""
+    rates = config.get("campaign", {}).get("discovery_rates", [1, 2, 5, 10, 20, 50, 100])
+    if (not isinstance(rates, list) or not 1 <= len(rates) <= 16
+            or any(type(rate) is not int or not 1 <= rate <= 1000 for rate in rates)
+            or any(left >= right for left, right in zip(rates, rates[1:]))):
+        raise ValueError("campaign.discovery_rates must contain 1-16 strictly increasing integer rates from 1 to 1000")
+    return list(rates)
+
 
 def planned_wall_seconds(config):
     work, execution, evidence = config["workload"], config.get("execution", {}), config.get("evidence", {})
@@ -19,6 +31,8 @@ def planned_wall_seconds(config):
     return total
 
 def planned_runs(config, profile):
+    if profile not in {"smoke", "discovery", "baseline", "soak", "acceptance"}:
+        raise ValueError("Unknown campaign profile")
     base = copy.deepcopy(config)
     if profile == "smoke":
         for scenario in ("minimal", "variables", "async"):
@@ -26,7 +40,7 @@ def planned_runs(config, profile):
             run["workload"].update(scenario=scenario, rate=1, duration_s=10, warmup_s=0, drain_s=30, deadline_s=1 if scenario == "minimal" else 2)
             yield run
     elif profile == "discovery":
-        for rate in (1, 2, 5, 10, 20, 50, 100):
+        for rate in discovery_rates(base):
             run = copy.deepcopy(base)
             run["workload"].update(rate=rate, duration_s=300)
             yield run
@@ -48,34 +62,57 @@ def execute_campaign(config, profile, output_root, local=False):
     wall_seconds = sum(planned_wall_seconds(c) for c in series)
     if not local:
         reserved = config.get("estimated_cost", {}).get("duration_hours")
-        if not isinstance(reserved, (int, float)) or reserved * 3600 < wall_seconds:
+        if not is_number(reserved) or reserved * 3600 < wall_seconds:
             raise ValueError("estimated_cost.duration_hours must cover the full campaign including calibration, reset, collection and bounded run overhead")
     if profile == "baseline" and not local:
         reset = config.get("execution", {}).get("reset_command")
         if not reset or not isinstance(reset, list):
             raise ValueError("Cloud baselines require execution.reset_command as argv to restore identical seeded state before every run")
     campaign_id = "campaign-" + str(time.time_ns())
-    results = []
-    last_valid_rate = None
-    for number, item in enumerate(series):
-        # Runner executes the reset after creating the evidence directory so
-        # reset.json/log survive failure and enter the checksum seal.
-        if pair_plan is not None:
-            item.setdefault("comparison", {}).update(pair_plan[number])
-        item["run"] = {"mode": "local-functional" if local else "live"}
-        work = item["workload"]
-        item.setdefault("execution", {})["max_run_seconds"] = sum(work.get(k, 0) for k in ("warmup_s", "duration_s", "drain_s")) + 120
-        directory = run_k6(item, f"{campaign_id}-{number:02d}", output_root)
-        write_reports(directory)
-        result = analyze_run(directory)
-        results.append({"run": str(directory), "rate": work["rate"], "status": result.get("status"), "scenario": work["scenario"]})
-        if result.get("status") == "pass" and not local:
-            last_valid_rate = work["rate"]
-        if result.get("status") != "pass" and not (local and profile == "smoke"):
-            break
-    summary = {"campaign_id": campaign_id, "profile": profile, "results": results, "last_valid_rate": last_valid_rate,
+    summary = {"campaign_id": campaign_id, "profile": profile, "results": [], "last_valid_rate": None,
+               "status": "running", "current_attempt": None,
+               "planned_rates": [item["workload"]["rate"] for item in series],
                "capacity_claim": "not established; fixed-arrival observations require repeated steady-state and backlog analysis",
                "budgeted_maximum_wall_seconds": wall_seconds,
                "scope": "local-functional" if local else "cloud"}
-    write_json(Path(output_root) / (campaign_id + ".json"), summary)
+    destination = Path(output_root) / (campaign_id + ".json")
+
+    def retain():
+        attempted = len(summary["results"]) + (summary["current_attempt"] is not None)
+        summary["unattempted_rates"] = summary["planned_rates"][attempted:]
+        write_json(destination, summary)
+
+    retain()
+    try:
+        for number, item in enumerate(series):
+            # Runner seals reset failures, interrupted load and incomplete evidence.
+            if pair_plan is not None:
+                item.setdefault("comparison", {}).update(pair_plan[number])
+            item["run"] = {"mode": "local-functional" if local else "live"}
+            work = item["workload"]
+            item.setdefault("execution", {})["max_run_seconds"] = sum(work.get(k, 0) for k in ("warmup_s", "duration_s", "drain_s")) + 120
+            run_id = f"{campaign_id}-{number:02d}"
+            summary["current_attempt"] = {"run_id": run_id, "run": str(Path(output_root) / run_id),
+                                          "rate": work["rate"], "scenario": work["scenario"]}
+            retain()
+            directory = run_k6(item, run_id, output_root)
+            write_reports(directory)
+            result = analyze_run(directory)
+            summary["results"].append({"run": str(directory), "rate": work["rate"],
+                                       "status": result.get("status"), "scenario": work["scenario"]})
+            summary["current_attempt"] = None
+            if result.get("status") == "pass" and not local:
+                summary["last_valid_rate"] = work["rate"]
+            if result.get("status") != "pass" and not (local and profile == "smoke"):
+                summary["status"] = "stopped"
+                break
+            retain()
+        else:
+            summary["status"] = "completed"
+    except BaseException as error:
+        summary["status"] = "interrupted" if isinstance(error, (KeyboardInterrupt, SystemExit)) else "error"
+        summary["error_type"] = type(error).__name__
+        raise
+    finally:
+        retain()
     return summary
