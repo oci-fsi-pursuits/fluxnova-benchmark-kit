@@ -11,6 +11,7 @@ permissions:
   contents: read
 jobs:
   native:
+    name: Java ${{ matrix.java }} engine qualification
     runs-on: ubuntu-24.04
     timeout-minutes: 65
     strategy:
@@ -28,10 +29,19 @@ jobs:
       JAVA_MAJOR: ${{ matrix.java }}
       JAVA_URL: ${{ matrix.url }}
       JAVA_SHA256: ${{ matrix.sha256 }}
+      MAVEN_URL: https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.8/apache-maven-3.8.8-bin.tar.gz
+      MAVEN_SHA256: 17811e108701af5985bf5167abbd47c06e92c6c6bd1c13a1a1c095c9b4ecc32a
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
+      - name: Install the verified upstream Maven version
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/native-maven"
+          curl --fail --location --retry 2 --max-time 300 "$MAVEN_URL" -o "$RUNNER_TEMP/native-maven.tar.gz"
+          printf '%s  %s\n' "$MAVEN_SHA256" "$RUNNER_TEMP/native-maven.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/native-maven.tar.gz" --strip-components=1 -C "$RUNNER_TEMP/native-maven"
       - name: Install the verified JDK archive
         shell: bash
         run: |
@@ -44,8 +54,9 @@ jobs:
           python3 - <<'PY'
           import json, os
           from pathlib import Path
-          record = {key: os.environ[key] for key in ('SOURCE_RELEASE', 'JAVA_MAJOR', 'JAVA_URL', 'JAVA_SHA256', 'GITHUB_SHA', 'GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT')}
+          record = {key: os.environ[key] for key in ('SOURCE_RELEASE', 'JAVA_MAJOR', 'JAVA_URL', 'JAVA_SHA256', 'MAVEN_URL', 'MAVEN_SHA256', 'GITHUB_SHA', 'GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT')}
           record['jdk_archive_sha256_verified'] = True
+          record['maven_archive_sha256_verified'] = True
           record['scope'] = 'Selected engine tests on isolated hosted runners; not OCI performance or upstream Java 25 support.'
           Path('dist/native-compatibility/toolchain.json').write_text(json.dumps(record, indent=2) + '\n')
           PY
@@ -60,6 +71,7 @@ jobs:
           python3 scripts/build_native.py \
             --sha "$upstream_sha" --java-major "$JAVA_MAJOR" \
             --database h2 --history full --threads 2 --runs 100 \
+            --maven "$RUNNER_TEMP/native-maven/bin/mvn" \
             --command-timeout-seconds 1500 \
             --maven-repository "$RUNNER_TEMP/native-maven-repository" \
             --workspace "$RUNNER_TEMP/native-source" \

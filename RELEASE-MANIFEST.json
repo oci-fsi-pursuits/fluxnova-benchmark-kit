@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "121565ff75e485597ad56ad2f0dc4f2097c6b840",
+  "source_commit": "6fb1abbd98fa50b6c56e1f6550560985620c450f",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -28,8 +28,8 @@
     },
     {
       "path": ".github/workflows/native-compatibility.yml",
-      "source_sha256": "6f842f8dc45752873d12934b1f0d8c4ad42ae2b4b7f053db3c1b5e1b364fb5bb",
-      "candidate_sha256": "6f842f8dc45752873d12934b1f0d8c4ad42ae2b4b7f053db3c1b5e1b364fb5bb"
+      "source_sha256": "5c1eb3603729b4aaf4608162b30c347620218af9dc2df121d4e0e89656f4a849",
+      "candidate_sha256": "5c1eb3603729b4aaf4608162b30c347620218af9dc2df121d4e0e89656f4a849"
     },
     {
       "path": ".gitignore",
@@ -548,8 +548,8 @@
     },
     {
       "path": "docs/workloads.md",
-      "source_sha256": "4cfec155378c1d0190fa08ea81229ff9b61dbec3905b6cac93d5e42ee8cca84c",
-      "candidate_sha256": "a9518c18166ca0580656a0163fac4c2a1ff1d75b8aea4786345258ccc76ed4f0"
+      "source_sha256": "591afaee080ac5100de93e5f8c11ad2f611cdc9c22afdc0b72f1be816f8c609f",
+      "candidate_sha256": "d4fa02fd0a8587f604beaa2c604d4aa89ce871676189da2e7571d4a169dfb585"
     },
     {
       "path": "infra/oci-evidence/.terraform.lock.hcl",
