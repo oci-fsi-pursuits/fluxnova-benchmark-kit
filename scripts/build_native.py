@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
+import xml.sax
 from datetime import datetime, timezone
 
 
@@ -34,13 +35,29 @@ def retain_results(work, output):
 def validate_results(output):
     """A successful Maven exit alone does not prove that tests ran."""
     counts = {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0}
+    class Counter(xml.sax.ContentHandler):
+        def __init__(self):
+            super().__init__()
+            self.in_case = False
+
+        def startElement(self, name, attrs):
+            if name == 'testcase':
+                self.in_case = True
+                counts['tests'] += 1
+            elif self.in_case and name in ('failure', 'error', 'skipped'):
+                counts[{'failure': 'failures', 'error': 'errors', 'skipped': 'skipped'}[name]] += 1
+
+        def endElement(self, name):
+            if name == 'testcase':
+                self.in_case = False
+
     xml_files = sorted((output / 'surefire-reports').glob('TEST-*.xml'))
     for path in xml_files:
-        for case in ET.parse(path).getroot().iter('testcase'):
-            counts['tests'] += 1
-            for field, element in (('failures', 'failure'), ('errors', 'error'),
-                                   ('skipped', 'skipped')):
-                counts[field] += case.find(element) is not None
+        parser = xml.sax.make_parser()
+        parser.setFeature(xml.sax.handler.feature_external_ges, False)
+        parser.setContentHandler(Counter())
+        with path.open('rb') as stream:
+            parser.parse(stream)
     if (not xml_files or counts['tests'] <= counts['skipped']
             or counts['failures'] or counts['errors']):
         raise RuntimeError('Native tests missing, all skipped, or unsuccessful')
@@ -56,6 +73,67 @@ def validate_results(output):
             raise RuntimeError('Incomplete native benchmark result')
     return {'junit': counts, 'junit_files': len(xml_files),
             'native_result_files': len(raw), 'html_reports': len(reports)}
+
+
+def file_sha256(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+def contains_marker(path, marker):
+    needle = marker.encode('utf-8')
+    if not needle:
+        raise ValueError('Marker must not be empty')
+    tail = b''
+    with path.open('rb') as stream:
+        while chunk := stream.read(65536):
+            data = tail + chunk
+            if needle in data:
+                return True
+            tail = data[-(len(needle) - 1):] if len(needle) > 1 else b''
+    return False
+
+
+def repair_legacy_feel_fixtures(work, output):
+    """Repair only the known invalid language declaration; retain before/after files."""
+    bad = 'http://www.omg .org/spec/FEEL/20140401'
+    good = 'http://www.omg.org/spec/FEEL/20140401'
+    malformed_uri = re.compile(rb'http://www\.omg[ \t\r\n]+\.org/spec/FEEL/20140401')
+    relative = Path('qa/performance-tests-engine/src/test/resources/org/finos/fluxnova/bpm/qa/performance/engine/dmn')
+    suffixes = ('fiveRules', 'fiveRulesTwoInputs', 'oneHundredRules', 'oneHundredRulesTwoInputs',
+                'tenRules', 'tenRulesTwoInputs', 'twoRules', 'twoRulesTwoInputs')
+    expected = {f'DmnEnginePerformanceTest.{suffix}.dmn' for suffix in suffixes}
+    root = work / relative
+    # Inspect every candidate before writing any file; unexpected scope fails closed.
+    pending = []
+    for path in sorted(root.glob('*.dmn')):
+        raw = path.read_bytes()
+        matches = list(malformed_uri.finditer(raw))
+        if not matches:
+            continue
+        language = ET.fromstring(raw).get('expressionLanguage', '')
+        if (path.name not in expected or len(matches) != 1
+                or re.fullmatch(r'http://www\.omg\s+\.org/spec/FEEL/20140401', language) is None):
+            raise ValueError('Unexpected malformed FEEL fixture; review the source before repair')
+        changed = malformed_uri.sub(good.encode(), raw)
+        pending.append((path, raw, changed))
+    if pending and {p.name for p, _, _ in pending} != expected:
+        raise ValueError('Incomplete known FEEL fixture set; no source changed')
+    if not all((root / name).is_file() for name in expected):
+        raise ValueError('Missing expected native DMN fixtures')
+    evidence = output / 'fixture/legacy-feel-uri'
+    records = []
+    for path, raw, changed in pending:
+        evidence.mkdir(parents=True, exist_ok=True)
+        (evidence / (path.name + '.before')).write_bytes(raw)
+        (evidence / (path.name + '.after')).write_bytes(changed)
+        path.write_bytes(changed)
+        records.append({'path': (relative / path.name).as_posix(),
+                        'before_sha256': hashlib.sha256(raw).hexdigest(),
+                        'after_sha256': hashlib.sha256(changed).hexdigest()})
+    return {'repair': 'legacy-feel-uri-v1', 'status': 'applied' if records else 'not_needed',
+            'before_uri': bad, 'after_uri': good, 'files': records,
+            'scope': 'Only the expressionLanguage URI changed; decision rules and test selection unchanged'}
 
 
 def add_history_fixture(work, output, days):
@@ -113,6 +191,8 @@ def main():
     parser.add_argument('--command-timeout-seconds', type=int, default=1800)
     parser.add_argument('--history-ttl-days', type=int,
                         help='Explicit test-fixture default; omit to reproduce upstream configuration')
+    parser.add_argument('--repair-legacy-feel-uri', action='store_true',
+                        help='Declare the exact eight-model FEEL URI fixture correction')
     args = parser.parse_args()
     if not re.fullmatch('[0-9a-f]{40}', args.sha) or min(args.threads, args.runs, args.command_timeout_seconds) < 1:
         parser.error('A full lowercase SHA and positive counts are required')
@@ -159,6 +239,9 @@ def main():
         if args.database != 'h2' and not args.settings:
             raise RuntimeError('Managed database runs require an explicit external Maven settings file')
         mvn = [args.maven, '--batch-mode', '--no-transfer-progress', *settings]
+        if args.repair_legacy_feel_uri:
+            metadata['fixture_model_repairs'] = repair_legacy_feel_fixtures(work, output)
+            metadata['limitations'].append('Declared legacy FEEL URI fixture repair; not an unmodified upstream fixture set')
         if args.history_ttl_days is not None:
             metadata['fixture_extension'] = add_history_fixture(work, output, args.history_ttl_days)
             mvn.append('-DprocessEnginePlugins=' + metadata['fixture_extension']['class'])
@@ -180,7 +263,7 @@ def main():
         metadata['test_evidence'] = validate_results(output)
         if args.history_ttl_days is not None:
             marker = f'BENCHMARK_FIXTURE history_ttl_days={args.history_ttl_days} enforcement=true'
-            if not any(marker in p.read_text(encoding='utf-8', errors='replace')
+            if not any(contains_marker(p, marker)
                        for p in (output / 'surefire-reports').iterdir() if p.is_file()):
                 raise RuntimeError('Missing runtime evidence of the declared history fixture')
             metadata['test_evidence']['history_fixture_runtime_marker_verified'] = True
@@ -192,7 +275,7 @@ def main():
     finally:
         if metadata['status'] != 'completed':
             retain_results(work, output)
-        metadata['evidence_sha256'] = {p.relative_to(output).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in output.rglob('*') if p.is_file() and p != manifest}
+        metadata['evidence_sha256'] = {p.relative_to(output).as_posix(): file_sha256(p) for p in output.rglob('*') if p.is_file() and p != manifest}
         metadata['finished_at'] = datetime.now(timezone.utc).isoformat()
         manifest.write_text(json.dumps(metadata, indent=2) + '\n', encoding='utf-8')
 

@@ -5,8 +5,10 @@ import tempfile
 import unittest
 from unittest.mock import patch
 import subprocess
+import xml.etree.ElementTree as ET
 
-from scripts.build_native import add_history_fixture, main, retain_results, validate_results
+from scripts.build_native import (add_history_fixture, contains_marker, main,
+                                 repair_legacy_feel_fixtures, retain_results, validate_results)
 
 
 class NativeEvidenceTests(unittest.TestCase):
@@ -122,6 +124,47 @@ class NativeEvidenceTests(unittest.TestCase):
             with self.subTest(days=days), self.assertRaises(ValueError):
                 add_history_fixture(work, self.output, days)
         self.assertFalse(work.exists())
+
+    def make_dmn_fixtures(self):
+        work = Path(self.folder.name) / 'dmn-source'
+        root = work / 'qa/performance-tests-engine/src/test/resources/org/finos/fluxnova/bpm/qa/performance/engine/dmn'
+        root.mkdir(parents=True)
+        for suffix in ('fiveRules', 'fiveRulesTwoInputs', 'oneHundredRules', 'oneHundredRulesTwoInputs',
+                       'tenRules', 'tenRulesTwoInputs', 'twoRules', 'twoRulesTwoInputs'):
+            whitespace = '\n' if 'TwoInputs' in suffix else ' '
+            (root / f'DmnEnginePerformanceTest.{suffix}.dmn').write_text(
+                f'<definitions expressionLanguage="http://www.omg{whitespace}.org/spec/FEEL/20140401">'
+                '<decision id="kept"><inputExpression>amount &gt; 100</inputExpression></decision></definitions>')
+        return work, root
+
+    def test_declared_feel_repair_preserves_decision_rules_and_retains_originals(self):
+        work, root = self.make_dmn_fixtures()
+        before = {p.name: p.read_bytes() for p in root.iterdir()}
+        receipt = repair_legacy_feel_fixtures(work, self.output)
+        self.assertEqual(len(receipt['files']), 8)
+        for path in root.iterdir():
+            original = ET.fromstring(before[path.name])
+            fixed = ET.fromstring(path.read_bytes())
+            self.assertEqual(fixed.get('expressionLanguage'), 'http://www.omg.org/spec/FEEL/20140401')
+            original.attrib.pop('expressionLanguage'); fixed.attrib.pop('expressionLanguage')
+            self.assertEqual(ET.tostring(original), ET.tostring(fixed))
+            self.assertEqual((self.output / 'fixture/legacy-feel-uri' / (path.name + '.before')).read_bytes(), before[path.name])
+        self.assertEqual(repair_legacy_feel_fixtures(work, self.output)['status'], 'not_needed')
+
+    def test_unexpected_feel_fixture_fails_before_any_model_is_changed(self):
+        work, root = self.make_dmn_fixtures()
+        (root / 'unexpected.dmn').write_bytes(next(root.glob('*.dmn')).read_bytes())
+        before = {p.name: p.read_bytes() for p in root.iterdir()}
+        with self.assertRaisesRegex(ValueError, 'Unexpected'):
+            repair_legacy_feel_fixtures(work, self.output)
+        self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+
+    def test_runtime_marker_is_found_across_stream_chunks(self):
+        marker = 'BENCHMARK_FIXTURE history_ttl_days=30 enforcement=true'
+        path = Path(self.folder.name) / 'streamed.log'
+        path.write_bytes(b'x' * 65525 + marker.encode() + b'x' * 65536)
+        self.assertTrue(contains_marker(path, marker))
+        self.assertFalse(contains_marker(path, marker + ' missing'))
 
 
 if __name__ == '__main__':
