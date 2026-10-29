@@ -73,6 +73,7 @@ jobs:
             --database h2 --history full --threads 2 --runs 100 \
             --history-ttl-days 30 \
             --repair-legacy-feel-uri \
+            --fork-native-report \
             --maven "$RUNNER_TEMP/native-maven/bin/mvn" \
             --command-timeout-seconds 1500 \
             --maven-repository "$RUNNER_TEMP/native-maven-repository" \

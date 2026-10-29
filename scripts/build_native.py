@@ -94,6 +94,42 @@ def contains_marker(path, marker):
     return False
 
 
+def fork_native_report(work, output):
+    """Run only the legacy report generator in a bounded child JVM."""
+    relative = Path('qa/performance-tests-engine/pom.xml')
+    path = work / relative
+    raw = path.read_bytes()
+    namespace = {'m': 'http://maven.apache.org/POM/4.0.0'}
+    root = ET.fromstring(raw)
+    profiles = [p for p in root.findall('m:profiles/m:profile', namespace)
+                if p.findtext('m:id', namespaces=namespace) == 'benchmark']
+    if len(profiles) != 1:
+        raise ValueError('Expected exactly one native benchmark profile')
+    classname = 'org.finos.fluxnova.bpm.qa.performance.engine.benchmark.BenchmarkReport'
+    tasks = [p for p in profiles[0].iter() if p.tag.rsplit('}', 1)[-1] == 'java'
+             and p.get('classname') == classname]
+    expected = {'classname': classname, 'classpathref': 'maven.test.classpath'}
+    if len(tasks) != 1 or tasks[0].attrib != expected or len(tasks[0]):
+        raise ValueError('Unexpected native report launcher; no POM changed')
+    original = ('<java classname="' + classname + '" classpathref="maven.test.classpath" />').encode()
+    blocks = [match for match in re.finditer(rb'<profile\b[^>]*>.*?</profile>', raw, re.S)
+              if re.match(rb'<profile\b[^>]*>\s*<id>benchmark</id>', match.group())]
+    if len(blocks) != 1 or blocks[0].group().count(original) != 1:
+        raise ValueError('Native report launcher bytes differ; no POM changed')
+    replacement = original[:-3] + b' fork="true" failonerror="true" dir="${basedir}" timeout="120000" />'
+    block = blocks[0]
+    changed = raw[:block.start()] + block.group().replace(original, replacement, 1) + raw[block.end():]
+    evidence = output / 'fixture/report-launcher'
+    evidence.mkdir(parents=True, exist_ok=False)
+    (evidence / 'pom.xml.before').write_bytes(raw)
+    (evidence / 'pom.xml.after').write_bytes(changed)
+    path.write_bytes(changed)
+    return {'path': relative.as_posix(), 'before_sha256': hashlib.sha256(raw).hexdigest(),
+            'after_sha256': hashlib.sha256(changed).hexdigest(),
+            'classname': classname, 'fork': True, 'fail_on_error': True, 'timeout_ms': 120000,
+            'scope': 'Only the report launcher changed; engine tests, workloads and result validation unchanged'}
+
+
 def repair_legacy_feel_fixtures(work, output):
     """Repair only the known invalid language declaration; retain before/after files."""
     bad = 'http://www.omg .org/spec/FEEL/20140401'
@@ -193,6 +229,8 @@ def main():
                         help='Explicit test-fixture default; omit to reproduce upstream configuration')
     parser.add_argument('--repair-legacy-feel-uri', action='store_true',
                         help='Declare the exact eight-model FEEL URI fixture correction')
+    parser.add_argument('--fork-native-report', action='store_true',
+                        help='Declare the bounded child-JVM launcher for the legacy HTML report')
     args = parser.parse_args()
     if not re.fullmatch('[0-9a-f]{40}', args.sha) or min(args.threads, args.runs, args.command_timeout_seconds) < 1:
         parser.error('A full lowercase SHA and positive counts are required')
@@ -242,6 +280,9 @@ def main():
         if args.repair_legacy_feel_uri:
             metadata['fixture_model_repairs'] = repair_legacy_feel_fixtures(work, output)
             metadata['limitations'].append('Declared legacy FEEL URI fixture repair; not an unmodified upstream fixture set')
+        if args.fork_native_report:
+            metadata['report_launcher_extension'] = fork_native_report(work, output)
+            metadata['limitations'].append('Declared child-JVM report launcher; before/after POM retained')
         if args.history_ttl_days is not None:
             metadata['fixture_extension'] = add_history_fixture(work, output, args.history_ttl_days)
             mvn.append('-DprocessEnginePlugins=' + metadata['fixture_extension']['class'])

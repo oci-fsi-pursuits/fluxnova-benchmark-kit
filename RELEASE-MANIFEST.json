@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "742f8ef73e7849d3a8a878cdd2351988fd098395",
+  "source_commit": "d08bd48d958fadf7d9fa99667fe63c387672d436",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -28,8 +28,8 @@
     },
     {
       "path": ".github/workflows/native-compatibility.yml",
-      "source_sha256": "da97f5973681db9642b5fa22d74c1c6074a199b7838315f2f40f8351c2e461b1",
-      "candidate_sha256": "da97f5973681db9642b5fa22d74c1c6074a199b7838315f2f40f8351c2e461b1"
+      "source_sha256": "ad51662700421da01a0f6d42f0956efa447ae395a9528e0bfc9d98fac192888b",
+      "candidate_sha256": "ad51662700421da01a0f6d42f0956efa447ae395a9528e0bfc9d98fac192888b"
     },
     {
       "path": ".gitignore",
@@ -548,8 +548,8 @@
     },
     {
       "path": "docs/workloads.md",
-      "source_sha256": "5d131d524c974883aab9a900296542eefc84d340a321f89d3d1f1580764b3843",
-      "candidate_sha256": "6a42881ab173aea70070911e08f30cbaec1cbe65deda4f5c251fdecb2da2868b"
+      "source_sha256": "d809c125906399b2d44d5edc840a5d5a5214294dedc96aa0d2840dece1a7a0d0",
+      "candidate_sha256": "7907dcbddbfd7174a28a9c79a4e5a5963dba8fd561bc1dcef42b8559ed067d56"
     },
     {
       "path": "infra/oci-evidence/.terraform.lock.hcl",
@@ -733,8 +733,8 @@
     },
     {
       "path": "scripts/build_native.py",
-      "source_sha256": "ec0d26bc3edc8403d81069ee869e675af65551a1f9146505a9a1480ed351a0e0",
-      "candidate_sha256": "ec0d26bc3edc8403d81069ee869e675af65551a1f9146505a9a1480ed351a0e0"
+      "source_sha256": "4edc5da544a1e6b19fc697216990ca78eb8bd625a7c057d6ce433ccb9dfc8f6a",
+      "candidate_sha256": "4edc5da544a1e6b19fc697216990ca78eb8bd625a7c057d6ce433ccb9dfc8f6a"
     },
     {
       "path": "scripts/build_presentation.ps1",
@@ -1243,8 +1243,8 @@
     },
     {
       "path": "tests/test_native_build.py",
-      "source_sha256": "f85b0b50d886da7bda6336529c6cb8e083d204efffb1dc39509f32fe4663eb4e",
-      "candidate_sha256": "f85b0b50d886da7bda6336529c6cb8e083d204efffb1dc39509f32fe4663eb4e"
+      "source_sha256": "6dd7e4645844ccce90a95ff9fafe229f9534f5029dcf9c2aad51ee83caa55ff5",
+      "candidate_sha256": "6dd7e4645844ccce90a95ff9fafe229f9534f5029dcf9c2aad51ee83caa55ff5"
     },
     {
       "path": "tests/test_network_binding.py",

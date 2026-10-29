@@ -8,7 +8,7 @@ import subprocess
 import xml.etree.ElementTree as ET
 
 from scripts.build_native import (add_history_fixture, contains_marker, main,
-                                 repair_legacy_feel_fixtures, retain_results, validate_results)
+                                 fork_native_report, repair_legacy_feel_fixtures, retain_results, validate_results)
 
 
 class NativeEvidenceTests(unittest.TestCase):
@@ -165,6 +165,44 @@ class NativeEvidenceTests(unittest.TestCase):
         path.write_bytes(b'x' * 65525 + marker.encode() + b'x' * 65536)
         self.assertTrue(contains_marker(path, marker))
         self.assertFalse(contains_marker(path, marker + ' missing'))
+
+    def report_pom(self, extra=''):
+        work = Path(self.folder.name) / 'report-source'
+        path = work / 'qa/performance-tests-engine/pom.xml'
+        path.parent.mkdir(parents=True)
+        launcher = ('<java classname="org.finos.fluxnova.bpm.qa.performance.engine.benchmark.BenchmarkReport" '
+                    'classpathref="maven.test.classpath" />')
+        path.write_text('<project xmlns="http://maven.apache.org/POM/4.0.0"><profiles><profile>'
+                        '<id>benchmark</id><build><plugins><plugin><configuration><tasks>'
+                        + launcher + extra + '</tasks></configuration></plugin></plugins></build>'
+                        '</profile><profile><id>other</id>' + launcher + '</profile>'
+                        '</profiles></project>')
+        return work, path
+
+    def test_report_launcher_change_preserves_the_rest_of_the_pom(self):
+        work, path = self.report_pom()
+        before = path.read_bytes()
+        receipt = fork_native_report(work, self.output)
+        original = ET.fromstring(before); changed = ET.fromstring(path.read_bytes())
+        task = next(p for p in changed.iter() if p.get('classname', '').endswith('.BenchmarkReport'))
+        self.assertEqual(task.get('fork'), 'true')
+        self.assertEqual(task.get('failonerror'), 'true')
+        self.assertEqual(task.get('dir'), '${basedir}')
+        self.assertEqual(task.get('timeout'), '120000')
+        for key in ('fork', 'failonerror', 'dir', 'timeout'):
+            task.attrib.pop(key)
+        self.assertEqual(ET.tostring(changed), ET.tostring(original))
+        self.assertEqual(receipt['before_sha256'], hashlib.sha256(before).hexdigest())
+        self.assertEqual((self.output / 'fixture/report-launcher/pom.xml.before').read_bytes(), before)
+
+    def test_unexpected_report_launchers_fail_without_modifying_the_pom(self):
+        work, path = self.report_pom()
+        original = path.read_bytes().replace(b'classpathref="maven.test.classpath"', b'classpathref="unreviewed"')
+        path.write_bytes(original)
+        with self.assertRaisesRegex(ValueError, 'Unexpected native report'):
+            fork_native_report(work, self.output)
+        self.assertEqual(path.read_bytes(), original)
+        self.assertFalse((self.output / 'fixture/report-launcher').exists())
 
 
 if __name__ == '__main__':
