@@ -157,15 +157,29 @@ class W02DriverIntegrationTests(unittest.TestCase):
         self.assertAlmostEqual(result['cohorts']['measurement']['on_time_settlements_per_s'],2/6)
         missing=assess(events,summary,code,calibration,final)
         self.assertIn('mixed_corpus_required',missing['issues'])
-        for event in events:
-            if event['event']=='completed':
-                event['latency_s']+=3;event['elapsed_s']+=3
-                event['details']['observed_complete_elapsed_s']+=3
-        late=assess(events,summary,code,calibration,final,corpus=corpus,require_deadlines=False)
-        self.assertEqual(late['status'],'passed',late['issues'])
-        self.assertEqual(late['cohorts']['measurement']['on_time_correct'],0)
-        strict=assess(events,summary,code,calibration,final,corpus=corpus)
-        self.assertIn('measurement_deadline_miss',strict['issues'])
+        # The live driver evidence above checks actual clocks and outcomes.
+        # Use declared synthetic clocks for the deadline-policy assertions:
+        # adding three seconds to six seconds of live arrivals made the
+        # backlog startup comparison depend on millisecond scheduling jitter.
+        for arrival_lag in (0, .05):
+            with self.subTest(synthetic_arrival_lag=arrival_lag):
+                late_events=copy.deepcopy(events)
+                for event in late_events:
+                    planned=int(event['logical_request_id'].rsplit(':',1)[1])
+                    if event['event']=='started':
+                        event['elapsed_s']=planned+arrival_lag
+                    elif event['event']=='accepted':
+                        event['elapsed_s']=planned+arrival_lag+.01
+                    elif event['event']=='completed':
+                        event['latency_s']=2.5
+                        event['elapsed_s']=planned+2.5
+                        event['details']['observed_complete_elapsed_s']=event['elapsed_s']
+                late=assess(late_events,summary,code,calibration,final,corpus=corpus,require_deadlines=False)
+                self.assertEqual(late['status'],'passed',late['issues'])
+                self.assertTrue(late['observed_backlog']['bounded_under_declared_guard'])
+                self.assertEqual(late['cohorts']['measurement']['on_time_correct'],0)
+                strict=assess(late_events,summary,code,calibration,final,corpus=corpus)
+                self.assertIn('measurement_deadline_miss',strict['issues'])
 
     def test_mixed_unexpected_effect_is_unsafe_even_when_refusal_was_expected(self):
         _,events,_=self.exercise('wrong_effect',{'W02_DURATION_S':'3'},corpus=self.mixed_fixture())

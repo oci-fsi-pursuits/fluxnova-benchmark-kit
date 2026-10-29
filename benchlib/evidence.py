@@ -195,6 +195,10 @@ def calibrate_generator(config, run_id, directory):
     multiplier = max(2, float(settings.get("calibration_headroom_multiplier", 2)))
     calls_per_workflow = max(2, int(settings.get("estimated_http_calls_per_workflow", 8)))
     requested_rate = math.ceil(work["rate"] * calls_per_workflow * multiplier)
+    # Keep the required completed volume unchanged. Offer a small explicit
+    # surplus so an arrival at the duration boundary does not decide validity.
+    # Downstream checks continue to use the lower requested calibration target.
+    scheduled_rate = requested_rate + max(1, math.ceil(requested_rate * .01))
     seconds = max(3, int(settings.get("calibration_duration_s", 10)))
     class Stub(BaseHTTPRequestHandler):
         # Content-Length below makes persistent connections safe. HTTP/1.0
@@ -219,7 +223,7 @@ def calibrate_generator(config, run_id, directory):
     script = directory / "generator-calibration.js"
     url = f"http://127.0.0.1:{server.server_port}/calibration"
     script.write_text("import http from 'k6/http';\n" +
-                      "export const options = {scenarios:{calibration:{executor:'constant-arrival-rate',rate:" + str(requested_rate) + ",timeUnit:'1s',duration:'" + str(seconds) + "s',preAllocatedVUs:256,maxVUs:256,gracefulStop:'5s'}},thresholds:{http_req_failed:['rate==0'],dropped_iterations:['count==0']}};\n" +
+                      "export const options = {scenarios:{calibration:{executor:'constant-arrival-rate',rate:" + str(scheduled_rate) + ",timeUnit:'1s',duration:'" + str(seconds) + "s',preAllocatedVUs:256,maxVUs:256,gracefulStop:'5s'}},thresholds:{http_req_failed:['rate==0'],dropped_iterations:['count==0']}};\n" +
                       "export default function(){http.get(" + json.dumps(url) + ",{timeout:'2s'});}\n" +
                       "export function handleSummary(data){return {[" + json.dumps(str(destination.resolve())) + "]:JSON.stringify(data)};}\n", encoding="utf-8")
     try:
@@ -235,7 +239,9 @@ def calibrate_generator(config, run_id, directory):
         dropped = metrics.get("dropped_iterations", {}).get("values", {}).get("count", 0)
         errors = metrics.get("http_req_failed", {}).get("values", {}).get("rate", 1)
         result.update(valid=completed.returncode == 0 and requests >= requested_rate * seconds and dropped == 0 and errors == 0,
-                      requested_http_rate=requested_rate, requests=requests, dropped=dropped, error_fraction=errors,
+                      requested_http_rate=requested_rate, scheduled_http_rate=scheduled_rate,
+                      minimum_completed_requests=requested_rate * seconds,
+                      calibration_protocol="http11-volume-margin-v1", requests=requests, dropped=dropped, error_fraction=errors,
                       duration_s=seconds, headroom_multiplier=multiplier, estimated_http_calls_per_workflow=calls_per_workflow,
                       stub_http_protocol=Stub.protocol_version, stub_accept_backlog=CalibrationServer.request_queue_size)
     except (OSError, ValueError, subprocess.SubprocessError) as exc:

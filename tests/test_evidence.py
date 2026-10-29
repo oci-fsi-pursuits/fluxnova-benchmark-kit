@@ -19,6 +19,28 @@ from benchlib.campaign import planned_wall_seconds, execute_campaign
 
 
 class EvidenceCollectorTests(unittest.TestCase):
+    def test_calibration_boundary_margin_preserves_the_full_required_volume(self):
+        # The retained cloud failure completed 38,399 of the required 38,400.
+        # Extra scheduled arrivals must not reduce that minimum or inflate
+        # the capacity credited by downstream validators.
+        for requests, expected in [(38399,False),(38400,True),(38799,True)]:
+            with self.subTest(requests=requests), tempfile.TemporaryDirectory() as temp:
+                cfg={'workload':{'rate':15},'evidence':{'calibrate_on_nonlinux':True,
+                    'calibration_duration_s':20,'estimated_http_calls_per_workflow':64}}
+                def run(argv,**kwargs):
+                    script=Path(argv[-1]).read_text()
+                    self.assertIn("rate:1940,timeUnit:'1s',duration:'20s'",script)
+                    (Path(temp)/'generator-calibration-summary.json').write_text(json.dumps({'metrics':{
+                        'http_reqs':{'values':{'count':requests}},'http_req_failed':{'values':{'rate':0}},
+                        'dropped_iterations':{'values':{'count':0}}}}))
+                    return SimpleNamespace(returncode=0)
+                with patch('benchlib.evidence.platform.system',return_value='Linux'), patch('benchlib.evidence.subprocess.run',side_effect=run):
+                    result=calibrate_generator(cfg,'boundary',temp)
+                self.assertEqual(result['valid'],expected)
+                self.assertEqual(result['minimum_completed_requests'],38400)
+                self.assertEqual(result['requested_http_rate'],1920)
+                self.assertEqual(result['scheduled_http_rate'],1940)
+
     def test_calibration_stub_reuses_a_connection_with_complete_responses(self):
         with tempfile.TemporaryDirectory() as temp:
             config = {'workload':{'rate':1}, 'evidence':{'calibrate_on_nonlinux':True, 'calibration_duration_s':3}}

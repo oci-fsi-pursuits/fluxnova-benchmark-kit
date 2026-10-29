@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "fb793ad22ca8514369e5959911367fd788b1598b",
+  "source_commit": "ed7d6c98bd9b084ca5700f972ce69e4094012a69",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -163,8 +163,8 @@
     },
     {
       "path": "benchlib/evidence.py",
-      "source_sha256": "17dbd35a9b1fd64661a6b40d5d353c44f6e2d871a71403e02c7ad0c599be87f2",
-      "candidate_sha256": "17dbd35a9b1fd64661a6b40d5d353c44f6e2d871a71403e02c7ad0c599be87f2"
+      "source_sha256": "500d9be4292eb10627a645e9ff1a5ca7e4d9ea16ef2b187a80c443977d0e8545",
+      "candidate_sha256": "500d9be4292eb10627a645e9ff1a5ca7e4d9ea16ef2b187a80c443977d0e8545"
     },
     {
       "path": "benchlib/fluxnova.py",
@@ -448,8 +448,8 @@
     },
     {
       "path": "docs/remote-deployment.md",
-      "source_sha256": "8b2d65d37b0f086ae57cf5ae1c562e563a06ca3566e8df7933e5da5103bc8fd6",
-      "candidate_sha256": "21cea42768e60b03ab18e5ea2697ed418bf13af785ecca6040c6732b79234776"
+      "source_sha256": "627b7e65dce53afa2a9aa543c044716f2e80f9f153cf797b868b29f39852a4b8",
+      "candidate_sha256": "a791983d18288a6c67fa05d377758bfbe6b9d7126fc491197bb217f4e0b2f141"
     },
     {
       "path": "docs/reproduce.md",
@@ -1193,8 +1193,8 @@
     },
     {
       "path": "tests/test_evidence.py",
-      "source_sha256": "a56a5e5032c0767a1d7dc5e46738c9557e264202f7d3bbc166630484e4da9993",
-      "candidate_sha256": "a56a5e5032c0767a1d7dc5e46738c9557e264202f7d3bbc166630484e4da9993"
+      "source_sha256": "407dbb487d753e0f755f2fafefd6a448c85f9c34b403cb3565db674a2a242e1a",
+      "candidate_sha256": "407dbb487d753e0f755f2fafefd6a448c85f9c34b403cb3565db674a2a242e1a"
     },
     {
       "path": "tests/test_instrumentation_mode.py",
@@ -1348,8 +1348,8 @@
     },
     {
       "path": "tests/test_w02_load.py",
-      "source_sha256": "323f5c3c6516be97803f7925489c6aeec59e7131ab31503efa8787d4f6804f42",
-      "candidate_sha256": "323f5c3c6516be97803f7925489c6aeec59e7131ab31503efa8787d4f6804f42"
+      "source_sha256": "c7d754eda00ff6a577cad0d8f3f86a48f8190fe277f5db9857ef58df40621ad1",
+      "candidate_sha256": "c7d754eda00ff6a577cad0d8f3f86a48f8190fe277f5db9857ef58df40621ad1"
     },
     {
       "path": "tests/test_w02_mixed_audit.py",
