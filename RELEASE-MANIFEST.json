@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "6a240bbda86f8a217a7275d35534617b624a825b",
+  "source_commit": "fb793ad22ca8514369e5959911367fd788b1598b",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -153,8 +153,8 @@
     },
     {
       "path": "benchlib/deployment.py",
-      "source_sha256": "c3cb29750d249e778cd0a4da3e2628d82627dee87e3cf340f3934bf40137ab20",
-      "candidate_sha256": "c3cb29750d249e778cd0a4da3e2628d82627dee87e3cf340f3934bf40137ab20"
+      "source_sha256": "92ad8cf37f69efb8705997e0744d523ffd9cfe6c56dffa09f222f75bdfb25e1d",
+      "candidate_sha256": "92ad8cf37f69efb8705997e0744d523ffd9cfe6c56dffa09f222f75bdfb25e1d"
     },
     {
       "path": "benchlib/environment.py",
@@ -163,8 +163,8 @@
     },
     {
       "path": "benchlib/evidence.py",
-      "source_sha256": "d33dce8cc65b80bf563ed61bb2f511b0b0c0284a55ff81cdee3848bea0ab31a4",
-      "candidate_sha256": "d33dce8cc65b80bf563ed61bb2f511b0b0c0284a55ff81cdee3848bea0ab31a4"
+      "source_sha256": "17dbd35a9b1fd64661a6b40d5d353c44f6e2d871a71403e02c7ad0c599be87f2",
+      "candidate_sha256": "17dbd35a9b1fd64661a6b40d5d353c44f6e2d871a71403e02c7ad0c599be87f2"
     },
     {
       "path": "benchlib/fluxnova.py",
@@ -448,8 +448,8 @@
     },
     {
       "path": "docs/remote-deployment.md",
-      "source_sha256": "2e2bf40970b35165c7d582b163e0eb008028ea3ba63558d854b66e95e3455853",
-      "candidate_sha256": "80430e38109388e6d4223aadbe99bc73628ad932149ea42c520c072d1b32f78f"
+      "source_sha256": "8b2d65d37b0f086ae57cf5ae1c562e563a06ca3566e8df7933e5da5103bc8fd6",
+      "candidate_sha256": "21cea42768e60b03ab18e5ea2697ed418bf13af785ecca6040c6732b79234776"
     },
     {
       "path": "docs/reproduce.md",
@@ -1188,13 +1188,13 @@
     },
     {
       "path": "tests/test_deployment.py",
-      "source_sha256": "ac2849c4295e5c8194c21c06901f8228b3ff4151dc2f2d33863d4bbabdbeda5b",
-      "candidate_sha256": "ac2849c4295e5c8194c21c06901f8228b3ff4151dc2f2d33863d4bbabdbeda5b"
+      "source_sha256": "93dbe9ec025c6dd1766654f191f0a6d9a2f48636da59946a9ff998db39fa7007",
+      "candidate_sha256": "93dbe9ec025c6dd1766654f191f0a6d9a2f48636da59946a9ff998db39fa7007"
     },
     {
       "path": "tests/test_evidence.py",
-      "source_sha256": "82dbd355f3b21dea8f5aed0ddbd843a475a00f772588067f7aecef89bb6e5bae",
-      "candidate_sha256": "82dbd355f3b21dea8f5aed0ddbd843a475a00f772588067f7aecef89bb6e5bae"
+      "source_sha256": "a56a5e5032c0767a1d7dc5e46738c9557e264202f7d3bbc166630484e4da9993",
+      "candidate_sha256": "a56a5e5032c0767a1d7dc5e46738c9557e264202f7d3bbc166630484e4da9993"
     },
     {
       "path": "tests/test_instrumentation_mode.py",

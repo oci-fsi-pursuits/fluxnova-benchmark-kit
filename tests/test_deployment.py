@@ -1,12 +1,40 @@
 import json
 import subprocess
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
-from benchlib.deployment import SERVICES_NETWORK, deploy_role, services_network
+from benchlib.deployment import SERVICES_NETWORK, deploy_role, run_container, services_network
 
 
 class DeploymentNetworkTests(unittest.TestCase):
+    def test_run_bounds_logs_and_preserves_private_environment_delivery(self):
+        calls = []
+        def docker(command, **kwargs):
+            calls.append(command)
+            if command[1:3] == ['container', 'inspect']:
+                return subprocess.CompletedProcess(command, 1)
+            self.assertIn('--env-file', command)
+            path = Path(command[command.index('--env-file') + 1])
+            self.assertEqual(path.read_text(), 'BENCH_PASSWORD=fixture-secret\n')
+            self.assertNotIn('fixture-secret', ' '.join(command))
+            self.assertEqual(command[command.index('--log-driver') + 1], 'json-file')
+            self.assertEqual([command[i+1] for i,x in enumerate(command) if x == '--log-opt'], ['max-size=100m', 'max-file=5'])
+            self.assertEqual(command[-3:], ['registry/test@sha256:' + 'a'*64, 'python', 'worker.py'])
+            return subprocess.CompletedProcess(command, 0, 'new-container\n')
+        with patch('benchlib.deployment.subprocess.run', side_effect=docker):
+            result = run_container('benchmark-worker', 'registry/test@sha256:'+'a'*64,
+                                   {'BENCH_PASSWORD':'fixture-secret'}, ['--cpus','2'], ['python','worker.py'])
+        self.assertEqual(result, 'new-container')
+        self.assertFalse(Path(calls[-1][calls[-1].index('--env-file')+1]).exists())
+
+    def test_unbounded_log_override_cannot_bypass_policy(self):
+        for options in (['--log-driver=none'], ['--log-opt','max-size=-1'], ['--log-opt=max-file=0']):
+            with patch('benchlib.deployment.subprocess.run') as run:
+                with self.assertRaisesRegex(ValueError, 'log overrides'):
+                    run_container('benchmark-worker', 'registry/test@sha256:'+'a'*64, {}, options)
+                run.assert_not_called()
+
     def test_does_not_adopt_an_unrelated_network(self):
         result = subprocess.CompletedProcess([], 0, json.dumps([{'Driver': 'bridge', 'Labels': {}}]))
         with patch('benchlib.deployment.subprocess.run', return_value=result) as run:

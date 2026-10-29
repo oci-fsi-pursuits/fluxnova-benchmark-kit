@@ -10,6 +10,8 @@ from .cloud import sdk_client
 from .util import ROOT, utc_now
 
 SERVICES_NETWORK = "fluxnova-benchmark-services"
+# Operational logs are a rolling buffer, not the sealed benchmark evidence.
+CONTAINER_LOG_OPTIONS = ("--log-driver", "json-file", "--log-opt", "max-size=100m", "--log-opt", "max-file=5")
 
 
 def services_network():
@@ -33,6 +35,8 @@ def secret(config, ocid):
 def run_container(name, image, env, options=(), args=()):
     if not re.fullmatch(r"[^\s@]+@sha256:[0-9a-f]{64}", image):
         raise ValueError(f"{name} requires a registry image pinned by digest")
+    if any(str(option).split("=", 1)[0] in ("--log-driver", "--log-opt") for option in options):
+        raise ValueError("Container logging is bounded by the deployment policy; log overrides are not allowed")
     # Refuse implicit replacement of an existing container, preserving an active run.
     exists = subprocess.run(["docker", "container", "inspect", name], capture_output=True)
     if exists.returncode == 0:
@@ -44,7 +48,7 @@ def run_container(name, image, env, options=(), args=()):
                 raise ValueError("Invalid container environment value")
         path.write_text("".join(f"{k}={v}\n" for k, v in env.items()), encoding="utf-8")
         os.chmod(path, 0o600)
-        command = ["docker", "run", "-d", "--name", name, "--restart", "unless-stopped", "--env-file", str(path), *options, image, *args]
+        command = ["docker", "run", "-d", "--name", name, "--restart", "unless-stopped", *CONTAINER_LOG_OPTIONS, "--env-file", str(path), *options, image, *args]
         result = subprocess.run(command, check=True, capture_output=True, text=True, timeout=300)
         return result.stdout.strip()
 

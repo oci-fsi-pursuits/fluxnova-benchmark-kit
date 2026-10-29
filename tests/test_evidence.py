@@ -1,9 +1,12 @@
 import io
 from datetime import datetime, timedelta, timezone
 import hashlib
+import http.client
 import json
 import tempfile
 import unittest
+import re
+from urllib.parse import urlsplit
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -16,6 +19,43 @@ from benchlib.campaign import planned_wall_seconds, execute_campaign
 
 
 class EvidenceCollectorTests(unittest.TestCase):
+    def test_calibration_stub_reuses_a_connection_with_complete_responses(self):
+        with tempfile.TemporaryDirectory() as temp:
+            config = {'workload':{'rate':1}, 'evidence':{'calibrate_on_nonlinux':True, 'calibration_duration_s':3}}
+            def run(argv, **kwargs):
+                script = Path(argv[-1]).read_text()
+                url = urlsplit(json.loads(re.search(r'http.get\(("[^"]+")', script).group(1)))
+                connection = http.client.HTTPConnection(url.hostname, url.port, timeout=2)
+                try:
+                    port = None
+                    for _ in range(2):
+                        connection.request('GET', url.path)
+                        response = connection.getresponse()
+                        self.assertEqual(response.status, 200)
+                        self.assertEqual(json.loads(response.read()), {'ok':True})
+                        self.assertIsNotNone(connection.sock, 'The stub closed the connection after one request')
+                        current = connection.sock.getsockname()[1]
+                        if port is not None:self.assertEqual(current, port)
+                        port = current
+                finally:connection.close()
+                (Path(temp)/'generator-calibration-summary.json').write_text(json.dumps({'metrics':{
+                    'http_reqs':{'values':{'count':48}},'http_req_failed':{'values':{'rate':0}}}}))
+                return SimpleNamespace(returncode=0)
+            with patch('benchlib.evidence.platform.system',return_value='Linux'), patch('benchlib.evidence.subprocess.run',side_effect=run):
+                self.assertTrue(calibrate_generator(config, 'keepalive', temp)['valid'])
+
+    def test_calibration_keeps_zero_error_drop_and_offered_volume_gates(self):
+        for requests, dropped, errors, code in [(47,0,0,0),(48,1,0,0),(48,0,.001,0),(48,0,0,1)]:
+            with self.subTest(requests=requests,dropped=dropped,errors=errors,code=code), tempfile.TemporaryDirectory() as temp:
+                def run(*args, **kwargs):
+                    (Path(temp)/'generator-calibration-summary.json').write_text(json.dumps({'metrics':{
+                        'http_reqs':{'values':{'count':requests}},'http_req_failed':{'values':{'rate':errors}},
+                        'dropped_iterations':{'values':{'count':dropped}}}}))
+                    return SimpleNamespace(returncode=code)
+                cfg={'workload':{'rate':1},'evidence':{'calibrate_on_nonlinux':True,'calibration_duration_s':3}}
+                with patch('benchlib.evidence.platform.system',return_value='Linux'), patch('benchlib.evidence.subprocess.run',side_effect=run):
+                    self.assertFalse(calibrate_generator(cfg,'failed',temp)['valid'])
+
     def test_file_metrics_reject_stale_failed_and_future_snapshots(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / 'snapshot.json'

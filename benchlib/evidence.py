@@ -197,6 +197,9 @@ def calibrate_generator(config, run_id, directory):
     requested_rate = math.ceil(work["rate"] * calls_per_workflow * multiplier)
     seconds = max(3, int(settings.get("calibration_duration_s", 10)))
     class Stub(BaseHTTPRequestHandler):
+        # Content-Length below makes persistent connections safe. HTTP/1.0
+        # otherwise forces every iteration to create a new TCP connection.
+        protocol_version = "HTTP/1.1"
         def do_GET(self):
             body = b'{"ok":true}'
             self.send_response(200)
@@ -206,7 +209,10 @@ def calibrate_generator(config, run_id, directory):
             self.wfile.write(body)
         def log_message(self, *args):
             pass
-    server = ThreadingHTTPServer(("127.0.0.1", 0), Stub)
+    class CalibrationServer(ThreadingHTTPServer):
+        # Cover simultaneous connection creation by all 256 calibration VUs.
+        request_queue_size = 512
+    server = CalibrationServer(("127.0.0.1", 0), Stub)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     destination = directory / "generator-calibration-summary.json"
@@ -230,7 +236,8 @@ def calibrate_generator(config, run_id, directory):
         errors = metrics.get("http_req_failed", {}).get("values", {}).get("rate", 1)
         result.update(valid=completed.returncode == 0 and requests >= requested_rate * seconds and dropped == 0 and errors == 0,
                       requested_http_rate=requested_rate, requests=requests, dropped=dropped, error_fraction=errors,
-                      duration_s=seconds, headroom_multiplier=multiplier, estimated_http_calls_per_workflow=calls_per_workflow)
+                      duration_s=seconds, headroom_multiplier=multiplier, estimated_http_calls_per_workflow=calls_per_workflow,
+                      stub_http_protocol=Stub.protocol_version, stub_accept_backlog=CalibrationServer.request_queue_size)
     except (OSError, ValueError, subprocess.SubprocessError) as exc:
         result["reason"] = type(exc).__name__
     finally:
