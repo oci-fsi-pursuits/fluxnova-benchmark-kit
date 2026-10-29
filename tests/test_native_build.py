@@ -1,11 +1,12 @@
 import json
+import hashlib
 from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
 import subprocess
 
-from scripts.build_native import main, retain_results, validate_results
+from scripts.build_native import add_history_fixture, main, retain_results, validate_results
 
 
 class NativeEvidenceTests(unittest.TestCase):
@@ -102,6 +103,25 @@ class NativeEvidenceTests(unittest.TestCase):
         self.assertEqual(receipt['stage'], 'native_benchmark_tests')
         self.assertIn('surefire-reports/TEST-failed.xml', receipt['evidence_sha256'])
         self.assertIn('native-build.log', receipt['evidence_sha256'])
+
+    def test_retention_fixture_records_exact_source_without_replacing_upstream(self):
+        work = Path(self.folder.name) / 'source'
+        fixture = add_history_fixture(work, self.output, 30)
+        source = work / fixture['added_source_path']
+        retained = self.output / 'fixture/BenchmarkHistoryRetentionPlugin.java'
+        self.assertEqual(source.read_bytes(), retained.read_bytes())
+        self.assertEqual(hashlib.sha256(source.read_bytes()).hexdigest(), fixture['source_sha256'])
+        before = source.read_bytes()
+        with self.assertRaisesRegex(ValueError, 'must not replace'):
+            add_history_fixture(work, self.output, 60)
+        self.assertEqual(source.read_bytes(), before)
+
+    def test_invalid_retention_cannot_create_a_fixture(self):
+        work = Path(self.folder.name) / 'invalid-retention'
+        for days in (0, -1, 36501, True, '30'):
+            with self.subTest(days=days), self.assertRaises(ValueError):
+                add_history_fixture(work, self.output, days)
+        self.assertFalse(work.exists())
 
 
 if __name__ == '__main__':

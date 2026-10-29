@@ -71,6 +71,7 @@ jobs:
           python3 scripts/build_native.py \
             --sha "$upstream_sha" --java-major "$JAVA_MAJOR" \
             --database h2 --history full --threads 2 --runs 100 \
+            --history-ttl-days 30 \
             --maven "$RUNNER_TEMP/native-maven/bin/mvn" \
             --command-timeout-seconds 1500 \
             --maven-repository "$RUNNER_TEMP/native-maven-repository" \

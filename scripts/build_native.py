@@ -58,6 +58,43 @@ def validate_results(output):
             'native_result_files': len(raw), 'html_reports': len(reports)}
 
 
+def add_history_fixture(work, output, days):
+    """Supply a declared retention default through the upstream plugin hook."""
+    if type(days) is not int or not 1 <= days <= 36500:
+        raise ValueError('History retention must be a positive number of days, at most 36500')
+    package = 'org.finos.fluxnova.bpm.qa.performance.engine.benchmarkkit'
+    name = 'BenchmarkHistoryRetentionPlugin'
+    relative = Path('qa/performance-tests-engine/src/test/java') / package.replace('.', '/') / (name + '.java')
+    target = work / relative
+    if target.exists():
+        raise ValueError('History fixture must not replace an upstream source file')
+    source = f'''// Benchmark-kit fixture extension, licensed under Apache-2.0.
+package {package};
+
+import org.finos.fluxnova.bpm.engine.impl.cfg.AbstractProcessEnginePlugin;
+import org.finos.fluxnova.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+
+public final class {name} extends AbstractProcessEnginePlugin {{
+  @Override
+  public void preInit(ProcessEngineConfigurationImpl configuration) {{
+    configuration.setHistoryTimeToLive("{days}");
+    configuration.setEnforceHistoryTimeToLive(true);
+    System.out.println("BENCHMARK_FIXTURE history_ttl_days={days} enforcement=true");
+  }}
+}}
+'''.encode('utf-8')
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with target.open('xb') as stream:
+        stream.write(source)
+    evidence = output / 'fixture' / (name + '.java')
+    evidence.parent.mkdir(parents=True, exist_ok=True)
+    evidence.write_bytes(source)
+    return {'class': package + '.' + name, 'history_ttl_days': days,
+            'enforce_history_ttl': True, 'added_source_path': relative.as_posix(),
+            'source_sha256': hashlib.sha256(source).hexdigest(),
+            'scope': 'One added test plugin; no tracked upstream source file edited'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--sha', required=True, help='Full 40-character upstream commit, including for a release')
@@ -74,9 +111,13 @@ def main():
                         help='Required runtime; Java 25 is an experimental qualification lane')
     parser.add_argument('--maven-repository', help='New isolated Maven repository directory')
     parser.add_argument('--command-timeout-seconds', type=int, default=1800)
+    parser.add_argument('--history-ttl-days', type=int,
+                        help='Explicit test-fixture default; omit to reproduce upstream configuration')
     args = parser.parse_args()
     if not re.fullmatch('[0-9a-f]{40}', args.sha) or min(args.threads, args.runs, args.command_timeout_seconds) < 1:
         parser.error('A full lowercase SHA and positive counts are required')
+    if args.history_ttl_days is not None and not 1 <= args.history_ttl_days <= 36500:
+        parser.error('history-ttl-days must be between 1 and 36500')
     output = Path(args.output_dir).resolve()
     if output.exists():
         parser.error('output-dir must be new; existing run evidence is never overwritten')
@@ -118,6 +159,10 @@ def main():
         if args.database != 'h2' and not args.settings:
             raise RuntimeError('Managed database runs require an explicit external Maven settings file')
         mvn = [args.maven, '--batch-mode', '--no-transfer-progress', *settings]
+        if args.history_ttl_days is not None:
+            metadata['fixture_extension'] = add_history_fixture(work, output, args.history_ttl_days)
+            mvn.append('-DprocessEnginePlugins=' + metadata['fixture_extension']['class'])
+            metadata['limitations'].append('Declared history-retention fixture extension; not unmodified upstream test configuration')
         if args.maven_repository:
             repository = Path(args.maven_repository).resolve()
             repository.mkdir(parents=True, exist_ok=False)
@@ -133,6 +178,12 @@ def main():
         run([*mvn, 'clean', 'install', '-Pbenchmark,' + args.database + ',history-level-' + args.history, '-DnumberOfThreads=' + str(args.threads), '-DnumberOfRuns=' + str(args.runs)], work / 'qa/performance-tests-engine', log, args.command_timeout_seconds)
         retain_results(work, output)
         metadata['test_evidence'] = validate_results(output)
+        if args.history_ttl_days is not None:
+            marker = f'BENCHMARK_FIXTURE history_ttl_days={args.history_ttl_days} enforcement=true'
+            if not any(marker in p.read_text(encoding='utf-8', errors='replace')
+                       for p in (output / 'surefire-reports').iterdir() if p.is_file()):
+                raise RuntimeError('Missing runtime evidence of the declared history fixture')
+            metadata['test_evidence']['history_fixture_runtime_marker_verified'] = True
         metadata['status'] = 'completed'
     except Exception as error:
         metadata['status'] = 'failed'
