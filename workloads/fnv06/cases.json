@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "study_id": "FNV-06",
+  "corpus_revision": 1,
+  "scope": "Local functional routing and batch qualification; no performance, payment-effect or general exactly-once delivery claim.",
+  "engine_release": "3.0.1",
+  "reviewed_engine_source": "c465509aa71f76508274d9f464a2a90f83667525",
+  "cases": [
+    {
+      "id": "M01", "kind": "message", "description": "One matching business key; two unrelated controls",
+      "instances": {"a": {"key": "one", "event": "match", "tenant": null}, "b": {"key": "two", "event": "match", "tenant": null}, "c": {"key": "three", "event": "match", "tenant": null}},
+      "steps": [{"path": "/message", "body": {"messageName": "@event:match", "businessKey": "@key:one", "withoutTenantId": true, "resultEnabled": true, "processVariables": {"delivery": {"value": "@delivery", "type": "String"}}}, "http_status": 200, "completed": ["a"], "delivered": ["a"], "suspended": []}]
+    },
+    {
+      "id": "M02", "kind": "message", "description": "Unmatched key must leave every subscription unchanged",
+      "instances": {"a": {"key": "one", "event": "match", "tenant": null}, "b": {"key": "two", "event": "match", "tenant": null}, "c": {"key": "three", "event": "match", "tenant": null}},
+      "steps": [{"path": "/message", "body": {"messageName": "@event:match", "businessKey": "@key:missing", "withoutTenantId": true, "resultEnabled": true, "processVariables": {"delivery": {"value": "@delivery", "type": "String"}}}, "http_status": 400, "completed": [], "delivered": [], "suspended": []}]
+    },
+    {
+      "id": "M03", "kind": "message", "description": "Ambiguous single-result correlation must advance neither match",
+      "instances": {"a": {"key": "same", "event": "match", "tenant": null}, "b": {"key": "same", "event": "match", "tenant": null}, "c": {"key": "other", "event": "match", "tenant": null}},
+      "steps": [{"path": "/message", "body": {"messageName": "@event:match", "businessKey": "@key:same", "withoutTenantId": true, "all": false, "resultEnabled": true}, "http_status": 400, "completed": [], "delivered": [], "suspended": []}]
+    },
+    {
+      "id": "M04", "kind": "message", "description": "A consumed intermediate message cannot complete the process again",
+      "instances": {"a": {"key": "one", "event": "match", "tenant": null}, "b": {"key": "two", "event": "match", "tenant": null}, "c": {"key": "three", "event": "match", "tenant": null}},
+      "steps": [
+        {"path": "/message", "body": {"messageName": "@event:match", "businessKey": "@key:one", "withoutTenantId": true, "resultEnabled": true, "processVariables": {"delivery": {"value": "@delivery", "type": "String"}}}, "http_status": 200, "completed": ["a"], "delivered": ["a"], "suspended": []},
+        {"path": "/message", "body": {"messageName": "@event:match", "businessKey": "@key:one", "withoutTenantId": true, "resultEnabled": true, "processVariables": {"delivery": {"value": "@delivery", "type": "String"}}}, "http_status": 400, "completed": ["a"], "delivered": ["a"], "suspended": []}
+      ]
+    },
+    {
+      "id": "M05", "kind": "message", "description": "Explicit tenant selection with identical keys across three tenant scopes",
+      "instances": {"a": {"key": "same", "event": "match", "tenant": "alpha"}, "b": {"key": "same", "event": "match", "tenant": "beta"}, "c": {"key": "same", "event": "match", "tenant": null}},
+      "steps": [{"path": "/message", "body": {"messageName": "@event:match", "businessKey": "@key:same", "tenantId": "@tenant:alpha", "resultEnabled": true, "processVariables": {"delivery": {"value": "@delivery", "type": "String"}}}, "http_status": 200, "completed": ["a"], "delivered": ["a"], "suspended": []}]
+    },
+    {
+      "id": "M06", "kind": "message", "description": "All-matches correlation advances exactly both intended matches",
+      "instances": {"a": {"key": "same", "event": "match", "tenant": null}, "b": {"key": "same", "event": "match", "tenant": null}, "c": {"key": "other", "event": "match", "tenant": null}},
+      "steps": [{"path": "/message", "body": {"messageName": "@event:match", "businessKey": "@key:same", "withoutTenantId": true, "all": true, "resultEnabled": true, "processVariables": {"delivery": {"value": "@delivery", "type": "String"}}}, "http_status": 200, "completed": ["a", "b"], "delivered": ["a", "b"], "suspended": []}]
+    },
+    {
+      "id": "S01", "kind": "signal", "description": "Broadcast reaches both matching subscribers and leaves another signal name untouched",
+      "instances": {"a": {"key": "one", "event": "match", "tenant": null}, "b": {"key": "two", "event": "match", "tenant": null}, "c": {"key": "three", "event": "other", "tenant": null}},
+      "steps": [{"path": "/signal", "body": {"name": "@event:match", "withoutTenantId": true, "variables": {"delivery": {"value": "@delivery", "type": "String"}}}, "http_status": 204, "completed": ["a", "b"], "delivered": ["a", "b"], "suspended": []}]
+    },
+    {
+      "id": "S02", "kind": "signal", "description": "Execution-targeted signal must not become a broadcast",
+      "instances": {"a": {"key": "one", "event": "match", "tenant": null}, "b": {"key": "two", "event": "match", "tenant": null}, "c": {"key": "three", "event": "other", "tenant": null}},
+      "steps": [{"path": "/signal", "body": {"name": "@event:match", "executionId": "@execution:a", "variables": {"delivery": {"value": "@delivery", "type": "String"}}}, "http_status": 204, "completed": ["a"], "delivered": ["a"], "suspended": []}]
+    },
+    {
+      "id": "S03", "kind": "signal", "description": "Missing execution returns the pinned REST error without fallback broadcast",
+      "instances": {"a": {"key": "one", "event": "match", "tenant": null}, "b": {"key": "two", "event": "match", "tenant": null}, "c": {"key": "three", "event": "other", "tenant": null}},
+      "steps": [{"path": "/signal", "body": {"name": "@event:match", "executionId": "@missing_execution"}, "http_status": 500, "completed": [], "delivered": [], "suspended": []}]
+    },
+    {
+      "id": "S04", "kind": "signal", "description": "Explicit tenant filter narrows broadcast membership",
+      "instances": {"a": {"key": "same", "event": "match", "tenant": "alpha"}, "b": {"key": "same", "event": "match", "tenant": "beta"}, "c": {"key": "same", "event": "match", "tenant": null}},
+      "steps": [{"path": "/signal", "body": {"name": "@event:match", "tenantId": "@tenant:alpha", "variables": {"delivery": {"value": "@delivery", "type": "String"}}}, "http_status": 204, "completed": ["a"], "delivered": ["a"], "suspended": []}]
+    },
+    {
+      "id": "B01", "kind": "message", "description": "Asynchronous message batch changes exactly four explicit members",
+      "instances": {"a": {"key": "one", "event": "match", "tenant": null}, "b": {"key": "two", "event": "match", "tenant": null}, "c": {"key": "three", "event": "match", "tenant": null}, "d": {"key": "four", "event": "match", "tenant": null}, "e": {"key": "excluded", "event": "match", "tenant": null}, "f": {"key": "other", "event": "other", "tenant": null}},
+      "steps": [{"path": "/process-instance/message-async", "body": {"messageName": "@event:match", "processInstanceIds": ["@pid:a", "@pid:b", "@pid:c", "@pid:d"], "variables": {"delivery": {"value": "@delivery", "type": "String"}}}, "http_status": 200, "batch": true, "completed": ["a", "b", "c", "d"], "delivered": ["a", "b", "c", "d"], "suspended": []}]
+    },
+    {
+      "id": "B02", "kind": "message", "description": "Asynchronous suspension and reactivation preserve four members and two controls",
+      "instances": {"a": {"key": "one", "event": "match", "tenant": null}, "b": {"key": "two", "event": "match", "tenant": null}, "c": {"key": "three", "event": "match", "tenant": null}, "d": {"key": "four", "event": "match", "tenant": null}, "e": {"key": "excluded", "event": "match", "tenant": null}, "f": {"key": "other", "event": "other", "tenant": null}},
+      "steps": [
+        {"path": "/process-instance/suspended-async", "body": {"processInstanceIds": ["@pid:a", "@pid:b", "@pid:c", "@pid:d"], "suspended": true}, "http_status": 200, "batch": true, "completed": [], "delivered": [], "suspended": ["a", "b", "c", "d"]},
+        {"path": "/process-instance/suspended-async", "body": {"processInstanceIds": ["@pid:a", "@pid:b", "@pid:c", "@pid:d"], "suspended": false}, "http_status": 200, "batch": true, "completed": [], "delivered": [], "suspended": []}
+      ]
+    }
+  ]
+}

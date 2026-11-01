@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks/fnv06">
+  <message id="event_definition" name="FNV06_EVENT" />
+  <process id="bench_fnv06_message" name="Wait for a targeted message" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start" />
+    <intermediateCatchEvent id="waiting"><messageEventDefinition messageRef="event_definition" /></intermediateCatchEvent>
+    <endEvent id="received" />
+    <sequenceFlow id="start_wait" sourceRef="start" targetRef="waiting" />
+    <sequenceFlow id="wait_end" sourceRef="waiting" targetRef="received" />
+  </process>
+</definitions>

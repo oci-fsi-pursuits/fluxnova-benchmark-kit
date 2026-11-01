@@ -30,6 +30,10 @@ The frozen corpus crosses ten policy/fault cases with five delay profiles. Both 
 
 The ten cases cover approval, sanctions refusal, risk refusal, unauthorized action, required review, unknown KYC, unknown risk, retry before a receipt, reconciliation after a receipt and concurrent completion. Equal coverage is a synthetic test design, not a customer frequency distribution. The [full aggregate audit](../validation/oci-20261028-w02-mixed-comparison/summary.json) retains all outcomes, per-pair changes, profiles and telemetry.
 
+## Local event and batch qualification
+
+The separate [FNV-06 pattern](fnv06-events-and-batches.md) passed twelve local case families across 42 workflow instances, with fourteen operations and three completed asynchronous batches. There were no unintended transitions or duplicate end events. This closes the initial local functional gate only; OCI/PostgreSQL, burst/fan-in, batch-size and recovery testing remain open.
+
 ## Evidence and cleanup
 
 All ten mixed arms passed independent audit. The audit checked 527 exported files and original stores, including 7,000 cases with warmup, source/control hashes, reset evidence and exact effects. Browser checks passed six outcome rows, fifteen paired rows and fifty profile rows; the saved report passed visual review.

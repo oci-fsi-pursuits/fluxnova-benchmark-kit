@@ -1,0 +1,360 @@
+{
+  "status": "passed",
+  "study_id": "FNV-06",
+  "scope": "Local functional routing and batch qualification; no performance, payment-effect or general exactly-once delivery claim.",
+  "source_checksums_sha256": "3b5a67f141e82c4e453a2e3319eb08f53a3b5b3167d531a4c1ada40773836595",
+  "auditor_sha256": "25ed64981c4273fe8368f60578286e30d6b1d36de40f1db6cf8a05d9501c6de7",
+  "sealed_files_verified": 52,
+  "case_families": 12,
+  "cases": [
+    {
+      "id": "M01",
+      "status": "passed",
+      "instances": 3,
+      "completed": 1,
+      "operations": 1
+    },
+    {
+      "id": "M02",
+      "status": "passed",
+      "instances": 3,
+      "completed": 0,
+      "operations": 1
+    },
+    {
+      "id": "M03",
+      "status": "passed",
+      "instances": 3,
+      "completed": 0,
+      "operations": 1
+    },
+    {
+      "id": "M04",
+      "status": "passed",
+      "instances": 3,
+      "completed": 1,
+      "operations": 2
+    },
+    {
+      "id": "M05",
+      "status": "passed",
+      "instances": 3,
+      "completed": 1,
+      "operations": 1
+    },
+    {
+      "id": "M06",
+      "status": "passed",
+      "instances": 3,
+      "completed": 2,
+      "operations": 1
+    },
+    {
+      "id": "S01",
+      "status": "passed",
+      "instances": 3,
+      "completed": 2,
+      "operations": 1
+    },
+    {
+      "id": "S02",
+      "status": "passed",
+      "instances": 3,
+      "completed": 1,
+      "operations": 1
+    },
+    {
+      "id": "S03",
+      "status": "passed",
+      "instances": 3,
+      "completed": 0,
+      "operations": 1
+    },
+    {
+      "id": "S04",
+      "status": "passed",
+      "instances": 3,
+      "completed": 1,
+      "operations": 1
+    },
+    {
+      "id": "B01",
+      "status": "passed",
+      "instances": 6,
+      "completed": 4,
+      "operations": 1
+    },
+    {
+      "id": "B02",
+      "status": "passed",
+      "instances": 6,
+      "completed": 0,
+      "operations": 2
+    }
+  ],
+  "workflow_instances": 42,
+  "functional_operations": 14,
+  "completed_event_transitions": 13,
+  "waiting_controls_before_cleanup": 29,
+  "asynchronous_batches": 3,
+  "unintended_transitions": 0,
+  "duplicate_end_events": 0,
+  "owned_engine_stopped": true,
+  "cloud_resources_accessed": false,
+  "model_calls": 0,
+  "performance_comparison_complete": false,
+  "evidence_boundary": "Retained REST request journal, complete counted inventories and deployed XML; not an independent SQL/H2 store audit or a workload-performance result.",
+  "recorded_at": "2026-11-01T04:05:13.446705+00:00",
+  "runtime": {
+    "engine": {
+      "release": "3.0.1",
+      "distribution_sha256": "ced4311c541faf1a7248d88e37ba53bd8c659fefe8387d2f78c21c30a117d7cf",
+      "loaded_jars": [
+        {
+          "path": "internal/fluxnova-bpm-run-core.jar",
+          "sha256": "0ecb65bf04e787360f4849a754d49a0202e7564f4e70415b9f77138a5fc58d61"
+        },
+        {
+          "path": "internal/rest/commons-fileupload-1.6.0.jar",
+          "sha256": "9383272c93569afeabedb16923a94a6dc8a5bd7a2f9f83bf326af4ee68434629"
+        },
+        {
+          "path": "internal/rest/commons-fileupload2-core-2.0.0-M4.jar",
+          "sha256": "d285cd8cdde3d9466208b37c7750454b0b280ea773b19b050ae1e2ddb09e6991"
+        },
+        {
+          "path": "internal/rest/commons-fileupload2-jakarta-servlet6-2.0.0-M4.jar",
+          "sha256": "af35ced3bc2caacdcccda520dcf7ae4185f45de22ca2ca8b15145017b97ea02f"
+        },
+        {
+          "path": "internal/rest/commons-io-2.17.0.jar",
+          "sha256": "4aa4ca48f3dfd30b78220b7881d8cb93eac4093ec94361b6befa9487998a550b"
+        },
+        {
+          "path": "internal/rest/fluxnova-bpm-spring-boot-starter-rest-3.0.1.jar",
+          "sha256": "90d0287dd6cf62e55a780cabb27ae5dd28700f61092c1452e07ce0a3a7a50c6a"
+        },
+        {
+          "path": "internal/rest/fluxnova-engine-rest-core-jakarta-3.0.1.jar",
+          "sha256": "c588cdf9eaa90ec95733c92ff4754af1408cee8890bf65c57ea3e785b0e6d356"
+        },
+        {
+          "path": "internal/rest/jackson-annotations-2.21.jar",
+          "sha256": "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+        },
+        {
+          "path": "internal/rest/jackson-core-3.1.0.jar",
+          "sha256": "4dd383f96b51b9b9ac4b74bdf1c150df0100443e1da1fba480f57da09a2dcef7"
+        },
+        {
+          "path": "internal/rest/jackson-databind-3.1.0.jar",
+          "sha256": "1bf5454a1d589a27ddbb91ee16f31f169b08530843f52f5e83f62c650c64516b"
+        },
+        {
+          "path": "internal/rest/jackson-datatype-jsr310-3.0.0-rc2.jar",
+          "sha256": "48a82b741da7c079c130c1d6063f24c704865f82d02252dbda1d689ac918dcb5"
+        },
+        {
+          "path": "internal/rest/jackson-jakarta-rs-base-3.1.0.jar",
+          "sha256": "21e5cba8eeb60d6715b95cb7d717d229e3259e143ef1244aab100e1238a07065"
+        },
+        {
+          "path": "internal/rest/jackson-jakarta-rs-json-provider-3.1.0.jar",
+          "sha256": "e1602a76491e290486d6f90916927ba06b5faefdde2c9d4d129b0fb7bf93fec8"
+        },
+        {
+          "path": "internal/rest/jboss-jaxrs-api_2.1_spec-2.0.1.Final.jar",
+          "sha256": "3518db0a3980aacfdae916f0eb081d0fcefaa2076d2ba603edc779a601d2d1a4"
+        },
+        {
+          "path": "internal/rest/jcip-annotations-1.0-1.jar",
+          "sha256": "4fccff8382aafc589962c4edb262f6aa595e34f1e11e61057d1c6a96e8fc7323"
+        },
+        {
+          "path": "internal/rest/nimbus-jose-jwt-9.37.4.jar",
+          "sha256": "8fcf4a978bbee7548e8dee6e0528bc85b0ffa84c0f8517c94dd29e590e459449"
+        },
+        {
+          "path": "internal/webapps/commons-fileupload-1.6.0.jar",
+          "sha256": "9383272c93569afeabedb16923a94a6dc8a5bd7a2f9f83bf326af4ee68434629"
+        },
+        {
+          "path": "internal/webapps/commons-fileupload2-core-2.0.0-M4.jar",
+          "sha256": "d285cd8cdde3d9466208b37c7750454b0b280ea773b19b050ae1e2ddb09e6991"
+        },
+        {
+          "path": "internal/webapps/commons-fileupload2-jakarta-servlet6-2.0.0-M4.jar",
+          "sha256": "af35ced3bc2caacdcccda520dcf7ae4185f45de22ca2ca8b15145017b97ea02f"
+        },
+        {
+          "path": "internal/webapps/commons-io-2.17.0.jar",
+          "sha256": "4aa4ca48f3dfd30b78220b7881d8cb93eac4093ec94361b6befa9487998a550b"
+        },
+        {
+          "path": "internal/webapps/fluxnova-bpm-spring-boot-starter-webapp-3.0.1.jar",
+          "sha256": "9ea597d0e8619eedb2906854fcf95c776abb4b1a28c53a625952e9b6d0617575"
+        },
+        {
+          "path": "internal/webapps/fluxnova-bpm-spring-boot-starter-webapp-core-3.0.1.jar",
+          "sha256": "5a56db97356017a5dd4df860fa5b67321fc3f217adeac2dbc3a302a10dfdc7db"
+        },
+        {
+          "path": "internal/webapps/fluxnova-commons-logging-3.0.1.jar",
+          "sha256": "48ec7900bf7e976dc009c6f2ad94cabd16c7480ad8bfd5edea65b7bbdeac127f"
+        },
+        {
+          "path": "internal/webapps/fluxnova-engine-rest-core-jakarta-3.0.1.jar",
+          "sha256": "c588cdf9eaa90ec95733c92ff4754af1408cee8890bf65c57ea3e785b0e6d356"
+        },
+        {
+          "path": "internal/webapps/fluxnova-webapp-jakarta-3.0.1-classes.jar",
+          "sha256": "e38916b91789abb75e43a3eab289955d7fbe8337225946907ba25cc5223bc891"
+        },
+        {
+          "path": "internal/webapps/fluxnova-webapp-webjar-3.0.1.jar",
+          "sha256": "29fed4bcc53fe5e150364272f2855cf05eb60433a095bcb47ecdfeb04e37802b"
+        },
+        {
+          "path": "internal/webapps/jackson-annotations-2.21.jar",
+          "sha256": "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+        },
+        {
+          "path": "internal/webapps/jackson-core-3.1.0.jar",
+          "sha256": "4dd383f96b51b9b9ac4b74bdf1c150df0100443e1da1fba480f57da09a2dcef7"
+        },
+        {
+          "path": "internal/webapps/jackson-databind-3.1.0.jar",
+          "sha256": "1bf5454a1d589a27ddbb91ee16f31f169b08530843f52f5e83f62c650c64516b"
+        },
+        {
+          "path": "internal/webapps/jackson-datatype-jsr310-3.0.0-rc2.jar",
+          "sha256": "48a82b741da7c079c130c1d6063f24c704865f82d02252dbda1d689ac918dcb5"
+        },
+        {
+          "path": "internal/webapps/jackson-jakarta-rs-base-3.1.0.jar",
+          "sha256": "21e5cba8eeb60d6715b95cb7d717d229e3259e143ef1244aab100e1238a07065"
+        },
+        {
+          "path": "internal/webapps/jackson-jakarta-rs-json-provider-3.1.0.jar",
+          "sha256": "e1602a76491e290486d6f90916927ba06b5faefdde2c9d4d129b0fb7bf93fec8"
+        },
+        {
+          "path": "internal/webapps/jakarta.activation-api-2.1.4.jar",
+          "sha256": "c9db52100ce6c8aac95cc39075f95720d2e561b11f8051b81c121ad4effd7004"
+        },
+        {
+          "path": "internal/webapps/jakarta.xml.bind-api-4.0.4.jar",
+          "sha256": "c507ca69a8c6dd11bf4afeec9e0d412c4fa3933fffb0a84680ea5727e8472124"
+        },
+        {
+          "path": "internal/webapps/jboss-jaxrs-api_2.1_spec-2.0.1.Final.jar",
+          "sha256": "3518db0a3980aacfdae916f0eb081d0fcefaa2076d2ba603edc779a601d2d1a4"
+        },
+        {
+          "path": "internal/webapps/jcip-annotations-1.0-1.jar",
+          "sha256": "4fccff8382aafc589962c4edb262f6aa595e34f1e11e61057d1c6a96e8fc7323"
+        },
+        {
+          "path": "internal/webapps/nimbus-jose-jwt-9.37.4.jar",
+          "sha256": "8fcf4a978bbee7548e8dee6e0528bc85b0ffa84c0f8517c94dd29e590e459449"
+        },
+        {
+          "path": "internal/webapps/spring-boot-4.0.5.jar",
+          "sha256": "0917158c40a5a12f5c8a2a793ace2e556af4d04b3632a3a93210ee6a2de7eecb"
+        },
+        {
+          "path": "internal/webapps/spring-boot-http-converter-4.0.5.jar",
+          "sha256": "e5b092d51728c6b064b9108b3c749afda86aa354900c164aae222f2105177156"
+        },
+        {
+          "path": "internal/webapps/spring-boot-jackson-4.0.5.jar",
+          "sha256": "83776e8355c60bf52cfa5c6f8271291b54394c8a9e2719b1819365c4d515c6da"
+        },
+        {
+          "path": "internal/webapps/spring-boot-servlet-4.0.5.jar",
+          "sha256": "2fe785587110a0f2808a004dbfb31d909da6a92fef0abb14beb1f085b80dbe76"
+        },
+        {
+          "path": "internal/webapps/spring-boot-starter-jackson-4.0.5.jar",
+          "sha256": "2952761d6d312eecd20d19990f7eaae6e610d7743d40537eecead65a685a46d0"
+        },
+        {
+          "path": "internal/webapps/spring-boot-starter-webmvc-4.0.5.jar",
+          "sha256": "a59ed2815e5531957726620a5f6c80d2e46f8c3ef2b8b35c849c661e73b7ca06"
+        },
+        {
+          "path": "internal/webapps/spring-boot-webmvc-4.0.5.jar",
+          "sha256": "3605f6ff8ba765a57da2287a2eedab9ccde54777086497bd8a3e5e3819fe8707"
+        },
+        {
+          "path": "configuration/userlib/groovy-5.0.5.jar",
+          "sha256": "717fe7d8935387c65f6833ebd2dae8d316ce84799aa8a93e029943626b6e5143"
+        },
+        {
+          "path": "configuration/userlib/groovy-datetime-5.0.5.jar",
+          "sha256": "1b0e0f8952018663b72cb45ce0f594e51e00a98cad3221ef0027efa5d3cd0647"
+        },
+        {
+          "path": "configuration/userlib/groovy-dateutil-5.0.5.jar",
+          "sha256": "33a278ad8514237be5468b3e494b2aef4e6add088cbad7d5f19fc373d0cf3688"
+        },
+        {
+          "path": "configuration/userlib/groovy-json-5.0.5.jar",
+          "sha256": "224f19a0edcc233b830305743caf25111c952dae1d16152f2a6df300be43d082"
+        },
+        {
+          "path": "configuration/userlib/groovy-jsr223-5.0.5.jar",
+          "sha256": "b4076194f01bd2f5fb3bab29c9460d10476eaf3b8479d714b555fb597ad4735f"
+        },
+        {
+          "path": "configuration/userlib/groovy-templates-5.0.5.jar",
+          "sha256": "d8e204c4f07c58f3f94362655531520ab3f20822ac4eea119e59e602366cf45b"
+        },
+        {
+          "path": "configuration/userlib/groovy-xml-5.0.5.jar",
+          "sha256": "9d808244325aacf6a211f53a789f8b083830da6299b5785a18648f17ae89ea06"
+        },
+        {
+          "path": "configuration/userlib/h2-2.3.232.jar",
+          "sha256": "8dae62d22db8982c3dcb3826edb9c727c5d302063a67eef7d63d82de401f07d3"
+        },
+        {
+          "path": "configuration/userlib/postgresql-42.5.5.jar",
+          "sha256": "922e9e9b1a14e463f669c168ec6041e712f5a841b82f3d07b4f09b6e66e05d50"
+        }
+      ]
+    },
+    "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+    "java_executable_sha256": "82051fdab26319d77d20cc0065045d05ec00b3e3d05f44935d7c06b96b621d55",
+    "database": "fresh embedded H2",
+    "host_os": "win32"
+  },
+  "corpus_sha256": "f85df6c9b7521dfc67b7ef062d8a5e37202932c8dfd87bfd1da2b65707f7c5fd",
+  "collector_source_sha256": {
+    "benchlib/fnv06_functional.py": "15e1a1f8b434e8b59e6d912886e0fc670483a2c8e19d67e5d772df10db3632f2",
+    "benchlib/fluxnova.py": "02f9e4cff23937dc82f3da2ddf53e860d0e827cda299d520f2d61606d7d15679",
+    "scripts/run_fnv06_functional.py": "aae47796e9b81b14ce5b3b1bf356cec2bd72c7fa7b5a2bfdbfec7f0b5ecd8e3a",
+    "scripts/audit_fnv06_functional.py": "58159342ed39524e70bed3fef3948b3a2f0f5c2231a95acb5acb267cb050a62d",
+    "scripts/run_w02_functional.py": "d204533ba5cdf8dcb9bb15c2e750c3bff3f6652ff66f52c3996b43475a341043",
+    "workloads/fnv06/cases.json": "f85df6c9b7521dfc67b7ef062d8a5e37202932c8dfd87bfd1da2b65707f7c5fd",
+    "workloads/fnv06/message.bpmn": "cdf6ee28620761eadb46bd14b6ec5c0be4d871a3e856c16d6161d8d6e05008fa",
+    "workloads/fnv06/signal.bpmn": "246778ee29e580ce552777079db5955e2bc9ba8234ae41c37b104426c3c56c72"
+  },
+  "expected_error_operations": 4,
+  "prior_attempt": {
+    "status": "setup_failed_before_any_workflow",
+    "reason": "Default engine identity validator rejected hyphenated tenant IDs; fresh attempt used alphanumeric IDs.",
+    "owned_engine_stopped": true,
+    "active_workflows": 0,
+    "source_checksums_sha256": "b089568769dd7a59aadf7b2ac8895ee472dff7145a9f7326006f1ec86ee586f1"
+  },
+  "final_engine_counts": {
+    "/process-instance": 0,
+    "/event-subscription": 0,
+    "/incident": 0,
+    "/external-task": 0,
+    "/batch": 0
+  },
+  "raw_evidence_private": true,
+  "next_gate": "Isolated OCI/PostgreSQL functional qualification before declaring fan-in/fan-out and batch-size performance studies."
+}

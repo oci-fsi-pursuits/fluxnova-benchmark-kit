@@ -51,7 +51,8 @@
     "docs/assets/workflows/07-basic-kyc.png",
     "docs/assets/workflows/08-basic-risk.png",
     "docs/assets/workflows/09-basic-settlement.png",
-    "docs/pay05-fx-quotes.md"
+    "docs/pay05-fx-quotes.md",
+    "docs/fnv06-events-and-batches.md"
   ],
   "evidence_directories": [
     "validation/oci-20261027-w01-comparison",
@@ -66,7 +67,8 @@
     "validation/local-20261031-pay05",
     "validation/oci-20261031-pay05-qualification",
     "validation/oci-20261031-pay05-load-qualification",
-    "validation/oci-20261031-pay05-comparison"
+    "validation/oci-20261031-pay05-comparison",
+    "validation/local-20261101-fnv06"
   ],
   "evidence_filenames": [
     "README.md",

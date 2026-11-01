@@ -38,6 +38,8 @@ Imagine you build a payment workflow and want to know whether a change helps. Th
 
 An **endurance run** holds one configuration and request rate steady for hours. It checks whether correctness, response times, queues, memory, storage and telemetry remain healthy as work accumulates. Its results need a final outcome audit and a review of resource growth before acceptance.
 
+The separate [FNV-06 event and batch qualification](docs/fnv06-events-and-batches.md) checks who receives messages, signals and bulk changes. Twelve local case families passed across 42 workflow instances; cloud qualification and performance measurements remain open.
+
 ## Three changes you can see
 
 ### 1. Keep the worker moving

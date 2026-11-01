@@ -62,6 +62,7 @@ config.ready.json
 !/docs/bound-payment.md
 !/docs/browser-automation.md
 !/docs/campaign-runbook.md
+!/docs/fnv06-events-and-batches.md
 !/docs/getting-started.md
 !/docs/measurement-contract.md
 !/docs/oci.md
