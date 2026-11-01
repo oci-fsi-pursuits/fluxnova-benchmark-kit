@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "173f31e95b6496905830a084fcb7bd5bb6aef470",
+  "source_commit": "c1ca2b645c5fc87c6f59d8207109c0dcd59ce5a7",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -177,6 +177,11 @@
       "candidate_sha256": "02f9e4cff23937dc82f3da2ddf53e860d0e827cda299d520f2d61606d7d15679"
     },
     {
+      "path": "benchlib/fnv06_campaign.py",
+      "source_sha256": "4ecf696404305a0b5d053c12d62133f7e2004c127a52d52b209f9ebb2e1e4e19",
+      "candidate_sha256": "4ecf696404305a0b5d053c12d62133f7e2004c127a52d52b209f9ebb2e1e4e19"
+    },
+    {
       "path": "benchlib/fnv06_cloud.py",
       "source_sha256": "6a62fc477ad980ceca6cb256329dc790f90f858203924779d9b70d27d1c62271",
       "candidate_sha256": "6a62fc477ad980ceca6cb256329dc790f90f858203924779d9b70d27d1c62271"
@@ -188,8 +193,8 @@
     },
     {
       "path": "benchlib/fnv06_load_qualification.py",
-      "source_sha256": "38502c011da48260047227979d0a7b0086cf85d5600f1df16ffddbffbb4746eb",
-      "candidate_sha256": "38502c011da48260047227979d0a7b0086cf85d5600f1df16ffddbffbb4746eb"
+      "source_sha256": "ca5f0a541f0bfc208a20830e3afbdda4a566d61d8c7d68057eda152f02ad4181",
+      "candidate_sha256": "ca5f0a541f0bfc208a20830e3afbdda4a566d61d8c7d68057eda152f02ad4181"
     },
     {
       "path": "benchlib/fnv06_pagination.py",
@@ -203,8 +208,8 @@
     },
     {
       "path": "benchlib/fnv06_reset.py",
-      "source_sha256": "05af1e2fdfc88348c5c6b0323baa9af7a4b7846055dc29ca43bb5faa1786374a",
-      "candidate_sha256": "05af1e2fdfc88348c5c6b0323baa9af7a4b7846055dc29ca43bb5faa1786374a"
+      "source_sha256": "19de4d248989cd82fa4ebd868af3cd299075829ab626634ce6e5a853b9f19837",
+      "candidate_sha256": "19de4d248989cd82fa4ebd868af3cd299075829ab626634ce6e5a853b9f19837"
     },
     {
       "path": "benchlib/fnv06_resources.py",
@@ -493,8 +498,8 @@
     },
     {
       "path": "docs/fnv06-population-scaling.md",
-      "source_sha256": "e79c63af62d89add43ef9bf3222eba8e4b7cc23b573152d36ecc2c58ee04a705",
-      "candidate_sha256": "e79c63af62d89add43ef9bf3222eba8e4b7cc23b573152d36ecc2c58ee04a705"
+      "source_sha256": "43631d7b6cc4e78ed8dcf29cc698a78b01cf7a622f0380e6411e39b541b656a4",
+      "candidate_sha256": "43631d7b6cc4e78ed8dcf29cc698a78b01cf7a622f0380e6411e39b541b656a4"
     },
     {
       "path": "docs/fnv06-repeated-cells.md",
@@ -718,8 +723,8 @@
     },
     {
       "path": "load/fnv06_events.js",
-      "source_sha256": "55d4891f22419bde15c4f08669a2d634646e42e172db75de0b80b4dd136e45e1",
-      "candidate_sha256": "55d4891f22419bde15c4f08669a2d634646e42e172db75de0b80b4dd136e45e1"
+      "source_sha256": "b0188400a3b6f1cb0b222af30aa348c5afde3d9f9ce8188c4d9b270e739f9a9e",
+      "candidate_sha256": "b0188400a3b6f1cb0b222af30aa348c5afde3d9f9ce8188c4d9b270e739f9a9e"
     },
     {
       "path": "load/pay05_quotes.js",
@@ -787,6 +792,11 @@
       "candidate_sha256": "549fad75450c55a4a1e767ee6b34d8ae33f0ae00b7b269fe79222554d6117577"
     },
     {
+      "path": "scripts/audit_fnv06_campaign.py",
+      "source_sha256": "144518238f346a3ef052d309ee79994062e65ba2445f43993f2b3d8da7844c1f",
+      "candidate_sha256": "144518238f346a3ef052d309ee79994062e65ba2445f43993f2b3d8da7844c1f"
+    },
+    {
       "path": "scripts/audit_fnv06_cloud.py",
       "source_sha256": "6f62abcc6ef773001674fcd126b2feb59d2cdffa728a8adf57fb9ff06c67881e",
       "candidate_sha256": "6f62abcc6ef773001674fcd126b2feb59d2cdffa728a8adf57fb9ff06c67881e"
@@ -798,8 +808,8 @@
     },
     {
       "path": "scripts/audit_fnv06_load_qualification.py",
-      "source_sha256": "4d71923ead7670dad9ea8a2f4023794e51c80c4c3eac2305ba481a6761eef720",
-      "candidate_sha256": "4d71923ead7670dad9ea8a2f4023794e51c80c4c3eac2305ba481a6761eef720"
+      "source_sha256": "1e27341f40d6c25ff8da66c604ef1ff678b46c5983320c0eca127bd10fcf1b68",
+      "candidate_sha256": "1e27341f40d6c25ff8da66c604ef1ff678b46c5983320c0eca127bd10fcf1b68"
     },
     {
       "path": "scripts/audit_fnv06_outcomes.py",
@@ -973,8 +983,8 @@
     },
     {
       "path": "scripts/fnv06_outcome_accounting.py",
-      "source_sha256": "aab7b9794edc1522a31328fdf8a644b7ac2cf06856b1c4f07aafa3893a252b0a",
-      "candidate_sha256": "aab7b9794edc1522a31328fdf8a644b7ac2cf06856b1c4f07aafa3893a252b0a"
+      "source_sha256": "f5a46cde17827b9e5b16a5171826d63bc31bb979689f1ccbbcc48e5725402297",
+      "candidate_sha256": "f5a46cde17827b9e5b16a5171826d63bc31bb979689f1ccbbcc48e5725402297"
     },
     {
       "path": "scripts/fnv06_timeout_evidence.py",
@@ -1118,8 +1128,8 @@
     },
     {
       "path": "scripts/run_fnv06_load_cloud.py",
-      "source_sha256": "71a6fa88d24409cc4a67cd62123458f3467ea7dcaf394360c3b6a61d8f7ce2a1",
-      "candidate_sha256": "71a6fa88d24409cc4a67cd62123458f3467ea7dcaf394360c3b6a61d8f7ce2a1"
+      "source_sha256": "babd8ddd47afff3f1e0ddc92a2f917dd5cd8b53bfaaefaef087b7e6c85198e7a",
+      "candidate_sha256": "babd8ddd47afff3f1e0ddc92a2f917dd5cd8b53bfaaefaef087b7e6c85198e7a"
     },
     {
       "path": "scripts/run_fnv06_load_qualification.py",
@@ -1432,6 +1442,11 @@
       "candidate_sha256": "3c6608b6d450a255af27b317a1033c1bbaf2ceb35a145c1e6c5e757b81289bfa"
     },
     {
+      "path": "tests/test_fnv06_campaign.py",
+      "source_sha256": "8cc94237dcbb72ccd29fde99d723713db70f1e42bc2a0a41750e75689b5754fa",
+      "candidate_sha256": "8cc94237dcbb72ccd29fde99d723713db70f1e42bc2a0a41750e75689b5754fa"
+    },
+    {
       "path": "tests/test_fnv06_cloud.py",
       "source_sha256": "c96d18c97bc4961506508b104477f87e0eca4d6928d33858f8f0a3b298ceb91d",
       "candidate_sha256": "c96d18c97bc4961506508b104477f87e0eca4d6928d33858f8f0a3b298ceb91d"
@@ -1443,8 +1458,8 @@
     },
     {
       "path": "tests/test_fnv06_load.py",
-      "source_sha256": "3142c83b265f11da51ae7398955a369a2f4fdd0b8410e18ee51030b9c4827c41",
-      "candidate_sha256": "3142c83b265f11da51ae7398955a369a2f4fdd0b8410e18ee51030b9c4827c41"
+      "source_sha256": "596c508ed5420e35531b125a0d9851e4d9beab3c5b260e350d9bd8c4d53a3540",
+      "candidate_sha256": "596c508ed5420e35531b125a0d9851e4d9beab3c5b260e350d9bd8c4d53a3540"
     },
     {
       "path": "tests/test_fnv06_outcomes.py",
@@ -1990,6 +2005,11 @@
       "path": "workloads/fnv06/population-scaling-design.json",
       "source_sha256": "4531874e518c9a6d3984bff5bc7fb74953202636599f5609c87be1482bbb70e4",
       "candidate_sha256": "4531874e518c9a6d3984bff5bc7fb74953202636599f5609c87be1482bbb70e4"
+    },
+    {
+      "path": "workloads/fnv06/population-scaling-execution.json",
+      "source_sha256": "3a3ceb9b78f0fc742d5ee088c466b86350aa496a1c1bd24a54b50a41fe1a4667",
+      "candidate_sha256": "3a3ceb9b78f0fc742d5ee088c466b86350aa496a1c1bd24a54b50a41fe1a4667"
     },
     {
       "path": "workloads/fnv06/repeat-qualification.json",

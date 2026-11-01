@@ -109,8 +109,9 @@ class Fnv06LoadAuditTests(unittest.TestCase):
 
 @unittest.skipUnless(os.environ.get('BENCH_TEST_K6_BINARY'),'requires an explicit real k6 executable')
 class Fnv06NativeDriverTests(unittest.TestCase):
-    def exercise(self,kind,population=4,fail=False,scale=False):
+    def exercise(self,kind,population=4,fail=False,scale=False,campaign=False):
         fixture,_,_,wanted=driver_fixture(kind,population,scale);seen=[]
+        if campaign:fixture.update(study_id='FNV-06-SCALING-1',observation_id='C001M')
         class Handler(BaseHTTPRequestHandler):
             def log_message(self,*_):pass
             def do_POST(self):
@@ -154,6 +155,13 @@ class Fnv06NativeDriverTests(unittest.TestCase):
             with self.subTest(kind=kind):
                 f,a,s,w,b=self.exercise(kind,1000,scale=True)
                 check_driver(f,a,s,expected=w,engine_url=b)
+
+    def test_real_campaign_requests_preserve_success_and_failure(self):
+        for kind,fail in [('message',False),('signal',True),('batch',False)]:
+            with self.subTest(kind=kind):
+                f,a,s,w,b=self.exercise(kind,100,scale=True,campaign=True,fail=fail)
+                result=check_driver(f,a,s,expected=w,engine_url=b,account_failures=True)
+                self.assertEqual(result['request_accounting']['failed'],1 if fail else 0)
 
 
 if __name__=='__main__':unittest.main()

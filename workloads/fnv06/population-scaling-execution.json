@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "study_id": "FNV-06-SCALING-1",
+  "execution_phase": "population_campaign_v1",
+  "execution_enabled": true,
+  "design_sha256": "4531874e518c9a6d3984bff5bc7fb74953202636599f5609c87be1482bbb70e4",
+  "outcome_protocol_sha256": "aa26567508ae73dd4cd73da8b2b7d05d9c83ba1e2c09d5476d73fdb716239e74",
+  "resource_protocol_sha256": "93d83ed9c0edd10b2c3996a1c57d866eb03ac64d893e31f197d6b4d2191da7ad",
+  "order": "repeat, declared pattern order, declared population order",
+  "cell_id_format": "C001 through C045; fixed width preserves variable lengths",
+  "request_failures_remain_failed": true,
+  "unknown_outcomes_stop_campaign": true,
+  "missing_resource_evidence_stops_campaign": true,
+  "generator_constraints_remain_reported": true,
+  "no_replacement_or_retry": true,
+  "all_planned_cells_in_report": true,
+  "historical_design_file_unchanged": true,
+  "required_qualification_evidence": [
+    "validation/oci-20261101-fnv06-outcomes/summary.json",
+    "validation/oci-20261101-fnv06-telemetry/summary.json"
+  ]
+}

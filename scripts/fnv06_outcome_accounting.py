@@ -55,4 +55,9 @@ def declared_for_reset(folder,identity,source):
     path=Path(folder)/'inputs/workloads/fnv06/outcome-accounting.json'
     assert path.read_bytes()==PROTOCOL.read_bytes().replace(b'\r\n',b'\n')
     assert hashlib.sha256(path.read_bytes()).hexdigest()==source['files']['workloads/fnv06/outcome-accounting.json']==identity['outcome_protocol_sha256']==digest
+    if identity.get('qualification_protocol')=='campaign':
+        from benchlib.fnv06_campaign import require_binding,DESIGN,EXECUTION
+        require_binding(identity,root=Path(folder)/'inputs')
+        for name,key in [(DESIGN,'campaign_design_sha256'),(EXECUTION,'campaign_execution_sha256')]:
+            assert hashlib.sha256((Path(folder)/'inputs'/name).read_bytes()).hexdigest()==source['files'][name]==identity[key]
     return True

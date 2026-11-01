@@ -38,11 +38,11 @@ def check_driver(fixture, actions, summary, *, expected, engine_url, max_first_l
     assert type(account_failures) is bool and not (account_failures and timeout_indices)
     if account_failures:
         from scripts.fnv06_outcome_accounting import request_result
-        assert fixture['study_id']=='FNV-06-REPEAT-QUAL' and fixture['observation_id'].endswith('M')
+        assert fixture['study_id'] in ('FNV-06-REPEAT-QUAL','FNV-06-SCALING-1') and fixture['observation_id'].endswith('M')
     if timeout_indices:
         assert fixture['study_id']=='FNV-06-REPEAT-QUAL' and fixture['observation_id']=='C01M'
         assert fixture['kind']=='message' and fixture['population']==10
-    assert fixture['requests']==expected and fixture['study_id'] in ('FNV-06-LQ','FNV-06-LQ-SCALE','FNV-06-REPEAT-QUAL')
+    assert fixture['requests']==expected and fixture['study_id'] in ('FNV-06-LQ','FNV-06-LQ-SCALE','FNV-06-REPEAT-QUAL','FNV-06-SCALING-1')
     assert fixture['population'] in ([1,4,16] if fixture['study_id']=='FNV-06-LQ' else [10,100,1000])
     assert fixture['vus']==(min(4,fixture['population']) if fixture['kind']=='message' else 1)
     assert summary['engine_url']==engine_url and summary['run_id']==fixture['run_id']
@@ -117,10 +117,16 @@ def audit(folder,*,timeout_control=None,outcome_accounting=False):
     for name,digest in seal['files'].items():
         p=folder/name;assert p.resolve().is_relative_to(folder) and not p.is_symlink() and sha(p)==digest
     manifest=read(folder/'manifest.json');summary=read(folder/'summary.json')
-    study=manifest['study_id'];assert study in ('FNV-06-LQ','FNV-06-LQ-SCALE','FNV-06-REPEAT-QUAL')
-    repeat=study=='FNV-06-REPEAT-QUAL';scaled=study!='FNV-06-LQ'
+    study=manifest['study_id'];assert study in ('FNV-06-LQ','FNV-06-LQ-SCALE','FNV-06-REPEAT-QUAL','FNV-06-SCALING-1')
+    campaign=study=='FNV-06-SCALING-1'
+    repeat=study in ('FNV-06-REPEAT-QUAL','FNV-06-SCALING-1');scaled=study!='FNV-06-LQ'
     if outcome_accounting:assert repeat
-    protocol=read(folder/'inputs/workloads/fnv06'/('repeat-qualification.json' if repeat else 'scale-qualification.json' if scaled else 'load-qualification.json'))
+    if campaign:
+        from benchlib.fnv06_campaign import protocol as campaign_protocol,require_binding
+        protocol=campaign_protocol(folder/'inputs')
+        assert outcome_accounting and manifest['cloud_resources_accessed'] is True
+    else:
+        protocol=read(folder/'inputs/workloads/fnv06'/('repeat-qualification.json' if repeat else 'scale-qualification.json' if scaled else 'load-qualification.json'))
     assert study==summary['study_id']==protocol['study_id']
     fault=None
     if timeout_control is not None:
@@ -137,8 +143,12 @@ def audit(folder,*,timeout_control=None,outcome_accounting=False):
     if cloud:
         from scripts.audit_fnv06_cloud import check_runtime,check_database,instant
         identity=read(folder/'identity.json');runtime=read(folder/'runtime.json')
-        assert identity.get('qualification_protocol','small')==('repeat' if repeat else 'scale' if scaled else 'small')
+        assert identity.get('qualification_protocol','small')==('campaign' if campaign else 'repeat' if repeat else 'scale' if scaled else 'small')
         if repeat: assert identity['qualification_cell']==manifest['qualification_cell']
+        if campaign:
+            assert require_binding(identity,root=folder/'inputs')==protocol
+            assert manifest['campaign_design_sha256']==protocol['design_sha256']
+            assert manifest['campaign_execution_sha256']==protocol['execution_sha256']
         window=check_runtime(manifest,summary,identity,runtime,read(folder/'isolation.json'),
             read(folder/'engine-closeout.json'),read(folder/'source-manifest.json'),runtime_script='scripts/run_fnv06_load_cloud.py',
             expected_job_exit_code=1 if failed else 0)
@@ -156,7 +166,7 @@ def audit(folder,*,timeout_control=None,outcome_accounting=False):
     populations=(10,100,1000) if scaled else (1,4,16)
     fixed=[{'id':prefix+str(n).zfill(3),'kind':kind,'population':n} for n in populations for prefix,kind in [('M','message'),('S','signal'),('B','batch')]]
     if repeat:
-        cells=[{'id':'C'+str(i+1).zfill(2),'kind':kind,'population':n} for i,(kind,n) in
+        cells=protocol['cells'] if campaign else [{'id':'C'+str(i+1).zfill(2),'kind':kind,'population':n} for i,(kind,n) in
                enumerate((kind,n) for kind in ('message','signal','batch') for n in (10,1000))]
         assert protocol['cells']==cells and protocol['warmup_recipients']==100
         cell=manifest['qualification_cell'];assert cell in cells
@@ -275,7 +285,7 @@ def audit(folder,*,timeout_control=None,outcome_accounting=False):
             timing['batch_terminal_observed_s']=(epoch(requests[last]['finished_at'])-fixture['release_epoch_ms'])/1000
             assert timing['batch_terminal_observed_s']>=timing['completion_observed_s']
         diagnostics.append({'id':case_id,'kind':spec['kind'],'population':spec['population'],
-                            'planned_actions':len(intended),'diagnostic_only':True,**timing})
+                            'planned_actions':len(intended),'diagnostic_only':not campaign or case_id.endswith('W'),**timing})
     before_cleanup=check_snapshot(record['after'] if failed else read(folder/'before-cleanup.json'),expected,requests,jobs,batches)
     total=sum(s['population']+2 for s in fixed);batch_count=sum(s['kind']=='batch' for s in fixed)
     assert set(summary['owned_process_ids'])==set(expected) and len(expected)==total and len(summary['owned_process_ids'])==total
@@ -337,6 +347,10 @@ def audit(folder,*,timeout_control=None,outcome_accounting=False):
             accounting_protocol_sha256=protocol_digest,
             outcome_accounting_auditor_sha256=sha(Path(__file__).with_name('fnv06_outcome_accounting.py')),
             warmup_and_test_deadlines_separate=True,unverified_or_unfinished_completions=0)
+    if campaign:
+        result.update(campaign_design_sha256=protocol['design_sha256'],campaign_execution_sha256=protocol['execution_sha256'],
+            scope=manifest['scope'],
+            evidence_boundary='One declared population campaign cell with separately audited warmup and final outcomes. Resource evidence and all 45 planned attempts are required for the campaign report; no cross-pattern ranking or capacity claim.')
     return result
 
 

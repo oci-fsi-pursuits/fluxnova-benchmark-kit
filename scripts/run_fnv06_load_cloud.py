@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Small real-k6 event qualification in an owned OCI PostgreSQL cell.
+"""Real-k6 event evidence in an owned OCI PostgreSQL cell.
 
 Stage as runtime.py beside identity.json and source/. Allocation and deletion
-remain separate guarded operator actions. No larger campaign is started here.
+remain separate guarded operator actions. Campaign mode requires a frozen plan.
 """
 import os
 from datetime import datetime, timezone
@@ -30,17 +30,22 @@ class LoadCell(Cell):
             selected=cell_protocol(read(self.stage/'source/workloads/fnv06/repeat-qualification.json'),self.meta['qualification_cell']['id'])
             assert selected['qualification_cell']==self.meta['qualification_cell']
             self.output=self.stage/'cells'/self.meta['qualification_cell']['id']
+        elif self.meta.get('qualification_protocol') == 'campaign':
+            from benchlib.fnv06_campaign import require_binding
+            require_binding(self.meta,root=self.stage/'source')
+            self.output=self.stage/'cells'/self.meta['qualification_cell']['id']
 
     def setup(self):
         self.bound()
-        repeated=self.meta.get('qualification_protocol')=='repeat'
+        repeated=self.meta.get('qualification_protocol') in ('repeat','campaign')
+        first_cell='C001' if self.meta.get('qualification_protocol')=='campaign' else 'C01'
         if repeated:
             from benchlib.fnv06_reset import verify_seal
             self.output.parent.mkdir(mode=0o700,exist_ok=True)
             cell_id=self.meta['qualification_cell']['id']
             assert not self.output.exists()
-            if cell_id!='C01':
-                previous='C'+str(int(cell_id[1:])-1).zfill(2)
+            if cell_id!=first_cell:
+                previous='C'+str(int(cell_id[1:])-1).zfill(len(first_cell)-1)
                 receipt=self.stage/'operator-receipts'/previous/'reset.json'
                 reset=read(receipt)
                 assert sha(receipt)==self.meta['reset_receipt_sha256']
@@ -52,7 +57,7 @@ class LoadCell(Cell):
         # are mounted into it. Never extract arbitrary archive paths or links.
         tools = self.stage / 'generator'
         reused=tools.exists()
-        if reused: assert repeated and self.meta['qualification_cell']['id']!='C01'
+        if reused: assert repeated and self.meta['qualification_cell']['id']!=first_cell
         else: tools.mkdir(mode=0o700)
         name, digest, member = ASSETS['Linux']
         archive = tools / name
@@ -87,15 +92,15 @@ class LoadCell(Cell):
         return ['--mount', 'type=bind,src=' + str(self.stage / 'generator/k6') + ',dst=/run/k6,readonly']
 
     def cleanup_recorder(self, engine, directory):
-        if self.meta.get('qualification_protocol', 'small') in ('scale','repeat'):
+        if self.meta.get('qualification_protocol', 'small') in ('scale','repeat','campaign'):
             from benchlib.fnv06_pagination import PaginatedRecorder
             return PaginatedRecorder(engine, directory)
         return super().cleanup_recorder(engine, directory)
 
     def reset(self):
-        """Advance exactly one qualification cell after a fresh signed-GET operator guard."""
+        """Advance exactly one declared cell after a fresh signed-GET operator guard."""
         from benchlib.fnv06_reset import reset_owned_schema,verify_seal,require_failure_marker
-        self.bound();assert self.meta.get('qualification_protocol')=='repeat'
+        self.bound();assert self.meta.get('qualification_protocol') in ('repeat','campaign')
         request=read(self.stage/'reset-request.json');issued=datetime.fromisoformat(request['issued_at'])
         assert issued.tzinfo and 0<=(datetime.now(timezone.utc)-issued).total_seconds()<120
         inventory=read(self.stage/'source-manifest.json')
@@ -114,6 +119,15 @@ class LoadCell(Cell):
         if self.meta.get('qualification_phase')=='outcome_accounting_v1':
             assert audit['outcome_accounting_auditor_sha256']==sha(self.stage/'source/scripts/fnv06_outcome_accounting.py')
             assert audit['accounting_protocol_sha256']==self.meta['outcome_protocol_sha256']==sha(self.stage/'source/workloads/fnv06/outcome-accounting.json')
+        if self.meta.get('qualification_protocol')=='campaign':
+            from benchlib.fnv06_campaign import require_binding
+            require_binding(self.meta,root=self.stage/'source')
+            resource=request['resource_audit']
+            assert resource['resource_evidence_verified'] is True
+            assert resource['source_checksums_sha256']==seal and resource['source_commit']==self.meta['source_commit']
+            assert resource['resource_protocol_sha256']==self.meta['resource_protocol_sha256']
+            assert resource['auditor_sha256']==sha(self.stage/'source/scripts/audit_fnv06_telemetry.py')
+            assert resource['resource_window_auditor_sha256']==sha(self.stage/'source/scripts/audit_fnv06_resources.py')
         summary=read(self.output/'summary.json')
         assert not any(read(self.output/'final-engine-counts.json').values())
         failure_file=self.stage/'failure.json'
@@ -168,26 +182,33 @@ def job():
     assert sha(Path('/run/k6')) == generator['executable_sha256']
     assert subprocess.check_output(['/run/k6', 'version'], text=True, timeout=10).strip() == generator['version']
     save(output / 'generator-check.json', generator)
-    mode=meta.get('qualification_protocol', 'small');assert mode in ('small','scale','repeat')
-    protocol = read(output / 'inputs/workloads/fnv06' / ('repeat-qualification.json' if mode=='repeat' else 'scale-qualification.json' if mode=='scale' else 'load-qualification.json'))
+    mode=meta.get('qualification_protocol', 'small');assert mode in ('small','scale','repeat','campaign')
+    if mode=='campaign':
+        from benchlib.fnv06_campaign import require_binding,cell_protocol
+        protocol=cell_protocol(require_binding(meta,root=source),meta['qualification_cell']['id'])
+    else:
+        protocol = read(output / 'inputs/workloads/fnv06' / ('repeat-qualification.json' if mode=='repeat' else 'scale-qualification.json' if mode=='scale' else 'load-qualification.json'))
     if mode=='repeat':
         from benchlib.fnv06_repeat import cell_protocol
         protocol=cell_protocol(protocol,meta['qualification_cell']['id'])
         assert protocol['qualification_cell']==meta['qualification_cell']
     url, user = 'http://engine:8080/engine-rest', 'fnv06bench'
     scope = 'OCI PostgreSQL driver and observer qualification; no performance or capacity claim.'
+    if mode=='campaign':scope='Declared finite-burst population campaign cell; population comparisons require the complete attempt ledger and resource audits.'
     manifest = {'study_id': protocol['study_id'], 'scope': scope, 'run_id': meta['run_id'], 'runtime': runtime,
         'database': 'OCI managed PostgreSQL', 'generator': generator, 'engine_url': url,
         'functional_batch_wait_timeout_s': protocol['batch_terminal_timeout_s'], 'batch_poll_interval_s': .5,
         'source_sha256': inventory['files'], 'source_commit': meta['source_commit'],
         'model_calls': 0, 'cloud_resources_accessed': True, 'performance_comparison_complete': False}
-    if mode=='repeat':manifest['qualification_cell']=protocol['qualification_cell']
+    if mode in ('repeat','campaign'):manifest['qualification_cell']=protocol['qualification_cell']
+    if mode=='campaign':
+        manifest.update(campaign_design_sha256=protocol['design_sha256'],campaign_execution_sha256=protocol['execution_sha256'])
     save(output / 'manifest.json', manifest)
     summary = {'study_id': protocol['study_id'], 'scope': scope, 'run_id': meta['run_id'], 'status': 'running',
         'cases_collected': [], 'owned_process_ids': [], 'owned_batch_ids': [], 'model_calls': 0,
         'cloud_resources_accessed': True, 'performance_comparison_complete': False,
         'owned_engine_stopped': False, 'cleanup_errors': []}
-    class BoundedRecorder(PaginatedRecorder if mode in ('scale','repeat') else Recorder):
+    class BoundedRecorder(PaginatedRecorder if mode in ('scale','repeat','campaign') else Recorder):
         def call(self, *args, **kwargs):
             require_stage(meta, meta['stage'])
             return super().call(*args, **kwargs)

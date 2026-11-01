@@ -83,7 +83,14 @@ def require_previous(meta,target,summary,audit,seal_sha256):
     cells=[{'id':'C'+str(i+1).zfill(2),'kind':kind,'population':n} for i,(kind,n) in
            enumerate((kind,n) for kind in ('message','signal','batch') for n in (10,1000))]
     previous=meta.get('qualification_cell')
-    if meta.get('qualification_protocol')!='repeat' or previous not in cells[:-1]:
+    study='FNV-06-REPEAT-QUAL'
+    if meta.get('qualification_protocol')=='campaign':
+        from benchlib.fnv06_campaign import require_binding
+        campaign=require_binding(meta);cells=campaign['cells'];study=campaign['study_id']
+        if (audit.get('campaign_design_sha256')!=campaign['design_sha256']
+                or audit.get('campaign_execution_sha256')!=campaign['execution_sha256']):
+            raise ValueError('Campaign audit does not match execution contract')
+    if meta.get('qualification_protocol') not in ('repeat','campaign') or previous not in cells[:-1]:
         raise ValueError('No eligible next qualification cell')
     count=100+previous['population']+4
     expected_summary='collected_pending_independent_audit';expected_audit='passed'
@@ -110,12 +117,12 @@ def require_previous(meta,target,summary,audit,seal_sha256):
                 or failed and (previous['kind']=='batch' or summary.get('error_type')!='RuntimeError'
                     or summary.get('failed_observation')!={'id':previous['id']+'M','phase':'request_result','error_type':'RuntimeError','snapshot_available':True})):
             raise ValueError('Request failure and collector status differ')
-    if (summary.get('study_id')!='FNV-06-REPEAT-QUAL' or summary.get('run_id')!=run_id
+    if (summary.get('study_id')!=study or summary.get('run_id')!=run_id
             or summary.get('status')!=expected_summary
             or summary.get('owned_engine_stopped') is not True or summary.get('cleanup_errors')!=[]
             or len(summary.get('owned_process_ids',[]))!=count
             or len(set(summary['owned_process_ids']))!=count
-            or audit.get('study_id')!='FNV-06-REPEAT-QUAL' or audit.get('status')!=expected_audit
+            or audit.get('study_id')!=study or audit.get('status')!=expected_audit
             or audit.get('qualification_cell')!=previous or audit.get('workflow_instances')!=count
             or audit.get('expected_completions')!=count-4 or audit.get('unchanged_waiting_controls')!=4
             or audit.get('cloud_resources_accessed') is not True

@@ -90,11 +90,14 @@ def run_driver(api, folder, fixture, k6, script, protocol, definition_id, *, bou
 def exercise(api, protocol, run_id, username, summary, k6, *, bound=lambda: None):
     output = api.output
     populations = {'FNV-06-LQ': [1,4,16], 'FNV-06-LQ-SCALE': [10,100,1000],
-                   'FNV-06-REPEAT-QUAL': [10,100,1000]}
+                   'FNV-06-REPEAT-QUAL': [10,100,1000], 'FNV-06-SCALING-1': [10,100,1000]}
     if protocol['study_id'] not in populations or protocol['population_sizes'] != populations[protocol['study_id']]:
         raise ValueError('Only the fixed qualification protocols are supported')
-    if protocol['study_id'] == 'FNV-06-REPEAT-QUAL':
-        from benchlib.fnv06_repeat import cell_protocol
+    if protocol['study_id'] in ('FNV-06-REPEAT-QUAL','FNV-06-SCALING-1'):
+        if protocol['study_id']=='FNV-06-SCALING-1':
+            from benchlib.fnv06_campaign import cell_protocol
+        else:
+            from benchlib.fnv06_repeat import cell_protocol
         if cell_protocol(protocol, protocol['qualification_cell']['id']) != protocol:
             raise ValueError('Warmup qualification cell differs from the fixed protocol')
     (output/'models').mkdir(); (output/'observations').mkdir()
@@ -159,7 +162,7 @@ def exercise(api, protocol, run_id, username, summary, k6, *, bound=lambda: None
             batch = actions[0]['response']
             record['batch'] = await_batch(api,batch,protocol['batch_terminal_timeout_s'])
         record['after'] = api.snapshot(); save(path, record)
-        if protocol['study_id'] == 'FNV-06-REPEAT-QUAL' and case_id.endswith('W'):
+        if protocol['study_id'] in ('FNV-06-REPEAT-QUAL','FNV-06-SCALING-1') and case_id.endswith('W'):
             # This is a retained observation, not a collector-declared pass.
             # The separate auditor checks every history, variable and control.
             save(output/'warmup-state.json', {'case_id': case_id, 'state': record['after']})
