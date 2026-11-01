@@ -1,0 +1,135 @@
+{
+  "status": "passed",
+  "study_id": "FNV-06",
+  "scope": "OCI MANAGED POSTGRESQL FUNCTIONAL QUALIFICATION - NOT PERFORMANCE",
+  "source_checksums_sha256": "06a54abc0a415db42b6dfc94182137260e245e23170166982d0e27bfef675b1b",
+  "auditor_sha256": "974af766f96d730a433226809d75e08daf3d78eb7e100cd69d1b8ec7979feaf3",
+  "sealed_files_verified": 244,
+  "case_families": 12,
+  "cases": [
+    {
+      "id": "M01",
+      "status": "passed",
+      "instances": 3,
+      "completed": 1,
+      "operations": 1
+    },
+    {
+      "id": "M02",
+      "status": "passed",
+      "instances": 3,
+      "completed": 0,
+      "operations": 1
+    },
+    {
+      "id": "M03",
+      "status": "passed",
+      "instances": 3,
+      "completed": 0,
+      "operations": 1
+    },
+    {
+      "id": "M04",
+      "status": "passed",
+      "instances": 3,
+      "completed": 1,
+      "operations": 2
+    },
+    {
+      "id": "M05",
+      "status": "passed",
+      "instances": 3,
+      "completed": 1,
+      "operations": 1
+    },
+    {
+      "id": "M06",
+      "status": "passed",
+      "instances": 3,
+      "completed": 2,
+      "operations": 1
+    },
+    {
+      "id": "S01",
+      "status": "passed",
+      "instances": 3,
+      "completed": 2,
+      "operations": 1
+    },
+    {
+      "id": "S02",
+      "status": "passed",
+      "instances": 3,
+      "completed": 1,
+      "operations": 1
+    },
+    {
+      "id": "S03",
+      "status": "passed",
+      "instances": 3,
+      "completed": 0,
+      "operations": 1
+    },
+    {
+      "id": "S04",
+      "status": "passed",
+      "instances": 3,
+      "completed": 1,
+      "operations": 1
+    },
+    {
+      "id": "B01",
+      "status": "passed",
+      "instances": 6,
+      "completed": 4,
+      "operations": 1
+    },
+    {
+      "id": "B02",
+      "status": "passed",
+      "instances": 6,
+      "completed": 0,
+      "operations": 2
+    }
+  ],
+  "cloud_auditor_sha256": "2178e38d0ad495393e66ed7c5c44ca5ebe51476800817059c1fafb86464fb4d5",
+  "workflow_instances": 42,
+  "functional_operations": 14,
+  "completed_event_transitions": 13,
+  "waiting_controls_before_cleanup": 29,
+  "asynchronous_batches": 3,
+  "unintended_transitions": 0,
+  "duplicate_end_events": 0,
+  "owned_engine_stopped": true,
+  "cloud_resources_accessed": true,
+  "model_calls": 0,
+  "performance_comparison_complete": false,
+  "database_audit": {
+    "tables_reconciled": 9,
+    "process_histories": 42,
+    "active_processes": 29,
+    "catch_scope_executions": 29,
+    "read_only_transaction": true,
+    "execution_scope_source_revision": "c465509aa71f76508274d9f464a2a90f83667525",
+    "scope": "Final durable state before cleanup; intermediate suspension states remain REST-observed."
+  },
+  "evidence_boundary": "Retained REST evidence and independent read-only PostgreSQL final-state reconciliation; intermediate states remain REST-observed. No workload-performance result.",
+  "qualified_source_commit": "2cb04d812020e26cf9cc2485bdc01a9d7c592bc9",
+  "accepted_at": "2026-11-01T05:14:00.445064+00:00",
+  "raw_archive_sha256": "5bc34daf012902c491f5a52748dd065e0445ebd60ecc2b9a49e43e82d359e06f",
+  "raw_evidence_uploaded": false,
+  "source_preserved_except_verified_idle_metering": true,
+  "source_unchanged_nonmetering_tables": 48,
+  "source_prior_metering_rows_unchanged": 17724,
+  "source_idle_metering_rows_appended": 12,
+  "temporary_database_deleted": true,
+  "temporary_access_closed": true,
+  "post_collection_auditor_correction": {
+    "initial_rejection": "The first SQL checker incorrectly assumed one execution row per waiting process.",
+    "correction": "Require exactly one inactive process root and one active catch-scope child, with matching definition, tenant, suspension and subscription ownership.",
+    "verified_against_engine_revision": "c465509aa71f76508274d9f464a2a90f83667525",
+    "raw_evidence_modified": false,
+    "collector_or_corpus_modified": false,
+    "cloud_workload_rerun": false
+  }
+}

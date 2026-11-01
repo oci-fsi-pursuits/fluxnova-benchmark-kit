@@ -7,7 +7,10 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import sys
 import xml.etree.ElementTree as ET
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 BPMN='http://www.omg.org/spec/BPMN/20100524/MODEL'
 INVENTORIES={'instances':'/process-instance','history':'/history/process-instance','activities':'/history/activity-instance',
@@ -159,10 +162,21 @@ def audit(folder):
     manifest=read(folder/'manifest.json');summary=read(folder/'summary.json');corpus=read(folder/'inputs/workloads/fnv06/cases.json')
     assert summary['status']=='collected_pending_independent_audit' and summary['owned_engine_stopped'] and not summary['cleanup_errors']
     assert manifest['study_id']==summary['study_id']==corpus['study_id']=='FNV-06'
-    assert manifest['run_id']==summary['run_id'] and not manifest['cloud_resources_accessed'] and not manifest['model_calls']
-    assert not summary['cloud_resources_accessed'] and not summary['performance_comparison_complete']
-    assert read(folder/'engine-version.json')['version']==manifest['runtime']['release']=='3.0.1'
-    assert manifest['runtime']['distribution_sha256']=='ced4311c541faf1a7248d88e37ba53bd8c659fefe8387d2f78c21c30a117d7cf'
+    assert manifest['run_id']==summary['run_id'] and not manifest['model_calls'] and not summary['model_calls']
+    assert not summary['performance_comparison_complete'] and not manifest['performance_comparison_complete']
+    assert type(manifest['cloud_resources_accessed']) is bool
+    cloud = manifest['cloud_resources_accessed']
+    if cloud:
+        from scripts.audit_fnv06_cloud import check_runtime, check_database, instant
+        identity=read(folder/'identity.json'); runtime=read(folder/'runtime.json')
+        window=check_runtime(manifest,summary,identity,runtime,read(folder/'isolation.json'),
+                             read(folder/'engine-closeout.json'),read(folder/'source-manifest.json'))
+        assert read(folder/'engine-version.json')==runtime['engine']
+        assert sha(folder/'inputs/workloads/fnv06/cases.json')=='f85df6c9b7521dfc67b7ef062d8a5e37202932c8dfd87bfd1da2b65707f7c5fd'
+    else:
+        assert summary['cloud_resources_accessed'] is False
+        assert read(folder/'engine-version.json')['version']==manifest['runtime']['release']=='3.0.1'
+        assert manifest['runtime']['distribution_sha256']=='ced4311c541faf1a7248d88e37ba53bd8c659fefe8387d2f78c21c30a117d7cf'
     for name,digest in manifest['source_sha256'].items():assert sha(folder/'inputs'/name)==digest
     requests=[json.loads(line) for line in (folder/'requests.ndjson').read_text().splitlines()]
     assert all(r['index']==i and r['status'] is not None and r['elapsed_s']>=0 for i,r in enumerate(requests))
@@ -219,22 +233,43 @@ def audit(folder):
             assert min(after_indices)>request['index'];previous_snapshot_end=max(after_indices);operations+=1
         rows.append({'id':case['id'],'status':'passed','instances':len(case['instances']),
                      'completed':len(case['steps'][-1]['completed']),'operations':len(case['steps'])})
-    check_snapshot(read(folder/'before-cleanup.json'),expected,requests,baseline_jobs,batch_ids)
+    before_cleanup=check_snapshot(read(folder/'before-cleanup.json'),expected,requests,baseline_jobs,batch_ids)
     assert set(summary['owned_process_ids'])==set(expected) and len(summary['owned_process_ids'])==len(expected)==42
     assert summary['owned_batch_ids']==batch_ids and len(batch_ids)==3
     waiting={pid for pid,e in expected.items() if not e['completed']}
-    deletions=[r for r in requests if r['method']=='DELETE' and r['path'].startswith('/process-instance/')]
+    cleanup_requests=requests
+    database_audit=None
+    if cloud:
+        cleanup_requests=[json.loads(line) for line in (folder/'cleanup/requests.ndjson').read_text().splitlines()]
+        assert all(r['index']==i and r['status'] is not None and r['elapsed_s']>=0 for i,r in enumerate(cleanup_requests))
+        sql=read(folder/'database-before-cleanup.json')
+        assert all(window[0]<=instant(r['started_at'])<=instant(r['finished_at'])<window[1] for r in requests)
+        assert max(instant(r['finished_at']) for r in requests)<=instant(sql['started_at'])
+        assert instant(sql['finished_at'])<window[1]
+        assert instant(sql['finished_at'])<=min(instant(r['started_at']) for r in cleanup_requests)
+        database_audit=check_database(sql,before_cleanup,run_id=manifest['run_id'],target_id=identity['target_id'],
+                                     database_user=runtime['database_role'])
+        assert not any(r['method']=='DELETE' for r in requests)
+    deletions=[r for r in cleanup_requests if r['method']=='DELETE' and r['path'].startswith('/process-instance/')]
     assert len(deletions)==len(waiting) and all(r['status']==204 for r in deletions)
     assert {r['path'].split('?')[0].rsplit('/',1)[1] for r in deletions}==waiting
-    assert all(v==0 for v in read(folder/'final-engine-counts.json').values())
+    counts=read(folder/'final-engine-counts.json')
+    assert set(counts)=={'/process-instance','/event-subscription','/incident','/external-task','/batch'} and all(v==0 for v in counts.values())
+    for path in counts:
+        count_rows=[r for r in cleanup_requests if r['method']=='GET' and r['path']==path+'/count']
+        assert count_rows and count_rows[-1]['status']==200 and count_rows[-1]['response']=={'count':0}
+        assert count_rows[-1]['index']>max(r['index'] for r in deletions)
     assert all(sha(folder/name)==digest for name,digest in seal['files'].items())
-    return {'status':'passed','study_id':'FNV-06','scope':corpus['scope'],'source_checksums_sha256':sha(folder/'checksums.json'),
+    return {'status':'passed','study_id':'FNV-06','scope':manifest['scope'] if cloud else corpus['scope'],'source_checksums_sha256':sha(folder/'checksums.json'),
         'auditor_sha256':sha(Path(__file__)),'sealed_files_verified':len(actual),'case_families':len(rows),'cases':rows,
+        'cloud_auditor_sha256':sha(Path(__file__).with_name('audit_fnv06_cloud.py')) if cloud else None,
         'workflow_instances':len(expected),'functional_operations':operations,'completed_event_transitions':sum(e['completed'] for e in expected.values()),
         'waiting_controls_before_cleanup':len(waiting),'asynchronous_batches':len(batch_ids),
         'unintended_transitions':0,'duplicate_end_events':0,'owned_engine_stopped':True,
-        'cloud_resources_accessed':False,'model_calls':0,'performance_comparison_complete':False,
-        'evidence_boundary':'Retained REST request journal, complete counted inventories and deployed XML; not an independent SQL/H2 store audit or a workload-performance result.'}
+        'cloud_resources_accessed':cloud,'model_calls':0,'performance_comparison_complete':False,
+        'database_audit':database_audit,
+        'evidence_boundary':('Retained REST evidence and independent read-only PostgreSQL final-state reconciliation; intermediate states remain REST-observed. No workload-performance result.' if cloud else
+                            'Retained REST request journal, complete counted inventories and deployed XML; not an independent SQL/H2 store audit or a workload-performance result.')}
 
 
 def main():

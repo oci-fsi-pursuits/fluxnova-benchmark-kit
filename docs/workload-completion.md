@@ -32,7 +32,7 @@ The ten cases cover approval, sanctions refusal, risk refusal, unauthorized acti
 
 ## Local event and batch qualification
 
-The separate [FNV-06 pattern](fnv06-events-and-batches.md) passed twelve local case families across 42 workflow instances, with fourteen operations and three completed asynchronous batches. There were no unintended transitions or duplicate end events. This closes the initial local functional gate only; OCI/PostgreSQL, burst/fan-in, batch-size and recovery testing remain open.
+The separate [FNV-06 pattern](fnv06-events-and-batches.md) passed twelve local case families across 42 workflow instances, with fourteen operations and three completed asynchronous batches. There were no unintended transitions or duplicate end events. The same cases also passed a separate [OCI/PostgreSQL qualification](../validation/oci-20261101-fnv06/README.md), with final durable-state SQL reconciliation and owned cleanup. Burst/fan-in, batch-size and recovery testing remain open.
 
 ## Evidence and cleanup
 

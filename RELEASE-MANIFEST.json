@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "584ccd072956901b1bea729fe23afe5fd6a96d6d",
+  "source_commit": "2eed381f6a6a3af8336b6b9ce53062358309b21c",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -63,8 +63,8 @@
     },
     {
       "path": "README.md",
-      "source_sha256": "0386f851cb7f081d0c7aeca2260beabf12c9f7b9ea36a8945684e8c171a296e5",
-      "candidate_sha256": "0386f851cb7f081d0c7aeca2260beabf12c9f7b9ea36a8945684e8c171a296e5"
+      "source_sha256": "5adec5e1792b0c8cbd4c4fe305c124561c74c53a55350679e821896378535cb3",
+      "candidate_sha256": "5adec5e1792b0c8cbd4c4fe305c124561c74c53a55350679e821896378535cb3"
     },
     {
       "path": "SECURITY.md",
@@ -177,9 +177,19 @@
       "candidate_sha256": "02f9e4cff23937dc82f3da2ddf53e860d0e827cda299d520f2d61606d7d15679"
     },
     {
+      "path": "benchlib/fnv06_cloud.py",
+      "source_sha256": "6a62fc477ad980ceca6cb256329dc790f90f858203924779d9b70d27d1c62271",
+      "candidate_sha256": "6a62fc477ad980ceca6cb256329dc790f90f858203924779d9b70d27d1c62271"
+    },
+    {
       "path": "benchlib/fnv06_functional.py",
       "source_sha256": "15e1a1f8b434e8b59e6d912886e0fc670483a2c8e19d67e5d772df10db3632f2",
       "candidate_sha256": "15e1a1f8b434e8b59e6d912886e0fc670483a2c8e19d67e5d772df10db3632f2"
+    },
+    {
+      "path": "benchlib/fnv06_sql.py",
+      "source_sha256": "2ada993fe61be06114fb29b0fa5e8879d8766e55991330cb17fe09b90a2d611a",
+      "candidate_sha256": "2ada993fe61be06114fb29b0fa5e8879d8766e55991330cb17fe09b90a2d611a"
     },
     {
       "path": "benchlib/fx_quotes.py",
@@ -443,8 +453,8 @@
     },
     {
       "path": "docs/fnv06-events-and-batches.md",
-      "source_sha256": "a27d5274ed5c18e5d8905c7bf2e5c31c1751492fdea5d8f652af702d6f34c2e1",
-      "candidate_sha256": "a27d5274ed5c18e5d8905c7bf2e5c31c1751492fdea5d8f652af702d6f34c2e1"
+      "source_sha256": "297724cc4bffbfeac1d39b5ba4addc5e2434cc36c252c993264eba5547f42ffc",
+      "candidate_sha256": "297724cc4bffbfeac1d39b5ba4addc5e2434cc36c252c993264eba5547f42ffc"
     },
     {
       "path": "docs/getting-started.md",
@@ -583,13 +593,13 @@
     },
     {
       "path": "docs/workload-completion.md",
-      "source_sha256": "2750498cf21a12eaeb094bddb648a7eb14b81a0232b28eb0358147eec7b800e3",
-      "candidate_sha256": "2750498cf21a12eaeb094bddb648a7eb14b81a0232b28eb0358147eec7b800e3"
+      "source_sha256": "b62cd519236d9b5c3d88b028544098d8d4c9488451cc8f8553bcaff67e4ed633",
+      "candidate_sha256": "b62cd519236d9b5c3d88b028544098d8d4c9488451cc8f8553bcaff67e4ed633"
     },
     {
       "path": "docs/workloads.md",
-      "source_sha256": "03eccae1eb8e27c096ee043f1272cf39f3edb7dc341798867d3a61eaeffbaad4",
-      "candidate_sha256": "11d394cdb27f1544498978bd083364140a1fb08eab48fda6366fc5db2f2a289c"
+      "source_sha256": "a41f75cb4199d57d0b7dd57e38cdb929b551d49c1187155947d49f2f531a5bcb",
+      "candidate_sha256": "d600fdb5bb16d2a05df777bc4140ef173059c0ad78e2b35b171bf30328e7a8d8"
     },
     {
       "path": "infra/oci-evidence/.terraform.lock.hcl",
@@ -688,8 +698,8 @@
     },
     {
       "path": "release/public-files.json",
-      "source_sha256": "2a26f96e44ff07e7d978cd355ffa86f13c097dc389ea45d532bfb3d22be16896",
-      "candidate_sha256": "2a26f96e44ff07e7d978cd355ffa86f13c097dc389ea45d532bfb3d22be16896"
+      "source_sha256": "98e9157e4f420d6371cbfe826bf49a3af69bd5ca1b6967b212e932d9473428d9",
+      "candidate_sha256": "98e9157e4f420d6371cbfe826bf49a3af69bd5ca1b6967b212e932d9473428d9"
     },
     {
       "path": "requirements-cloud.txt",
@@ -727,9 +737,14 @@
       "candidate_sha256": "549fad75450c55a4a1e767ee6b34d8ae33f0ae00b7b269fe79222554d6117577"
     },
     {
+      "path": "scripts/audit_fnv06_cloud.py",
+      "source_sha256": "2178e38d0ad495393e66ed7c5c44ca5ebe51476800817059c1fafb86464fb4d5",
+      "candidate_sha256": "2178e38d0ad495393e66ed7c5c44ca5ebe51476800817059c1fafb86464fb4d5"
+    },
+    {
       "path": "scripts/audit_fnv06_functional.py",
-      "source_sha256": "25ed64981c4273fe8368f60578286e30d6b1d36de40f1db6cf8a05d9501c6de7",
-      "candidate_sha256": "25ed64981c4273fe8368f60578286e30d6b1d36de40f1db6cf8a05d9501c6de7"
+      "source_sha256": "974af766f96d730a433226809d75e08daf3d78eb7e100cd69d1b8ec7979feaf3",
+      "candidate_sha256": "974af766f96d730a433226809d75e08daf3d78eb7e100cd69d1b8ec7979feaf3"
     },
     {
       "path": "scripts/audit_pay05_functional.py",
@@ -1005,6 +1020,11 @@
       "path": "scripts/run_browser_review_checks.py",
       "source_sha256": "aaa42fd07ef56acea90547d372114712277037eb52352def1be499d5748c8ffc",
       "candidate_sha256": "aaa42fd07ef56acea90547d372114712277037eb52352def1be499d5748c8ffc"
+    },
+    {
+      "path": "scripts/run_fnv06_cloud.py",
+      "source_sha256": "b163c512ce3f83fc2957352591978134cf419c929498dc38284f6bbdeef75875",
+      "candidate_sha256": "b163c512ce3f83fc2957352591978134cf419c929498dc38284f6bbdeef75875"
     },
     {
       "path": "scripts/run_fnv06_functional.py",
@@ -1310,6 +1330,11 @@
       "path": "tests/test_fnv06.py",
       "source_sha256": "3c6608b6d450a255af27b317a1033c1bbaf2ceb35a145c1e6c5e757b81289bfa",
       "candidate_sha256": "3c6608b6d450a255af27b317a1033c1bbaf2ceb35a145c1e6c5e757b81289bfa"
+    },
+    {
+      "path": "tests/test_fnv06_cloud.py",
+      "source_sha256": "0e80c46ba3ae51e92c2130909cefa4eb0d42ac6d45033b18def9e4b6b4f69281",
+      "candidate_sha256": "0e80c46ba3ae51e92c2130909cefa4eb0d42ac6d45033b18def9e4b6b4f69281"
     },
     {
       "path": "tests/test_fx_quotes.py",
@@ -1670,6 +1695,16 @@
       "path": "validation/oci-20261031-pay05-qualification/summary.json",
       "source_sha256": "7e3974894148f04442fe827dc0ed3a13759f3c51377077c69c4724611f006ea4",
       "candidate_sha256": "7e3974894148f04442fe827dc0ed3a13759f3c51377077c69c4724611f006ea4"
+    },
+    {
+      "path": "validation/oci-20261101-fnv06/README.md",
+      "source_sha256": "316c219a0d66e3d9b9babfa7829e2822c3702099f3ef6d0e3017f03a1dad79de",
+      "candidate_sha256": "e11e884cdf5a399ccceab56093e5c73a6e1d26823ccd10e685c7714a0c679f62"
+    },
+    {
+      "path": "validation/oci-20261101-fnv06/summary.json",
+      "source_sha256": "ee276a72bd7366e5106791efb1bbd0f6b0dc5ef1a6ec5c2aeb42d6e5f4a53189",
+      "candidate_sha256": "ee276a72bd7366e5106791efb1bbd0f6b0dc5ef1a6ec5c2aeb42d6e5f4a53189"
     },
     {
       "path": "workloads/agent-direct.bpmn",

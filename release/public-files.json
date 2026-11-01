@@ -68,7 +68,8 @@
     "validation/oci-20261031-pay05-qualification",
     "validation/oci-20261031-pay05-load-qualification",
     "validation/oci-20261031-pay05-comparison",
-    "validation/local-20261101-fnv06"
+    "validation/local-20261101-fnv06",
+    "validation/oci-20261101-fnv06"
   ],
   "evidence_filenames": [
     "README.md",
