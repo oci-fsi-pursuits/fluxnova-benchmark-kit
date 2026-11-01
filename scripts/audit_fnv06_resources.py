@@ -58,7 +58,8 @@ def host(raw):
     return sum(ticks),ticks[3]+ticks[4],values['MemAvailable']/values['MemTotal']
 
 
-def audit_window(rows,*,start_epoch_ms,finish_epoch_ms,generator_role='generator'):
+def audit_window(rows,*,start_epoch_ms,finish_epoch_ms,generator_role='generator',role_kind='generator'):
+    assert role_kind in ('generator','engine')
     assert number(start_epoch_ms) and number(finish_epoch_ms) and start_epoch_ms<finish_epoch_ms
     assert len(rows)>=3
     origin=rows[0]['started_epoch_ms']/1000-rows[0]['started_monotonic_s']
@@ -96,20 +97,20 @@ def audit_window(rows,*,start_epoch_ms,finish_epoch_ms,generator_role='generator
                 assert set(left[name][group])==set(right[name][group])
                 assert all(right[name][group][k]>=v for k,v in left[name][group].items()),'Resource counters decreased'
         if any(last['cpu'].get(k,0)>first['cpu'].get(k,0) for k in ('nr_throttled','throttled_usec')):
-            issues.append('generator_or_ancestor_cpu_throttled:'+name)
+            issues.append(role_kind+'_or_ancestor_cpu_throttled:'+name)
         if any(last['events'].get(k,0)>first['events'].get(k,0) for k in ('high','max','oom','oom_kill','oom_group_kill')):
-            issues.append('generator_or_ancestor_memory_pressure:'+name)
+            issues.append(role_kind+'_or_ancestor_memory_pressure:'+name)
         if first['memory_max'] is not None:
             peaks=[r[name]['memory_peak'] for r in decoded]
             if any(v is None for v in peaks):issues.append('lifetime_memory_peak_unavailable:'+name)
-            elif max(peaks)>=.8*first['memory_max']:issues.append('generator_or_ancestor_memory_headroom_low:'+name)
+            elif max(peaks)>=.8*first['memory_max']:issues.append(role_kind+'_or_ancestor_memory_headroom_low:'+name)
     busy=[]
     for a,b in zip(hosts,hosts[1:]):
         total=b[0]-a[0];idle=b[1]-a[1];assert total>0 and 0<=idle<=total
         busy.append(1-idle/total)
     if max(busy)>=.8:issues.append('sampled_host_cpu_headroom_low')
     if min(v[2] for v in hosts)<.2:issues.append('sampled_host_memory_headroom_low')
-    return {'status':'passed' if not issues else 'resource_constrained','evidence_complete':True,
+    result = {'status':'passed' if not issues else 'resource_constrained','evidence_complete':True,
         'generator_headroom_passed':not issues,'issues':issues,'samples_covering_window':len(selected),
         'bracket_epoch_ms':[selected[0]['started_epoch_ms'],selected[-1]['finished_epoch_ms']],
         'generator_cpu_usage_delta_usec':decoded[-1]['leaf']['cpu']['usage_usec']-decoded[0]['leaf']['cpu']['usage_usec'],
@@ -118,3 +119,10 @@ def audit_window(rows,*,start_epoch_ms,finish_epoch_ms,generator_role='generator
         'limits':{'max_sample_gap_s':.25,'max_read_duration_s':.1,'clock_tolerance_s':.05,'max_sampled_host_cpu_fraction':.8,
                   'min_host_available_memory_fraction':.2,'max_lifetime_container_memory_fraction':.8},
         'scope':'Raw counters bracketing finite work, including ancestor throttling; sampled host utilization and lifetime container memory peak. No peak CPU-capacity or database-CPU claim.'}
+    if role_kind == 'engine':
+        result.pop('generator_headroom_passed')
+        result['engine_constraints_observed'] = bool(issues)
+        for key in ('cpu_usage_delta_usec','throttled_delta_usec'):
+            result['engine_'+key] = result.pop('generator_'+key)
+        result['scope'] = 'Owned engine resource observations. Constraints are system outcomes and do not decide generator validity. No peak capacity claim.'
+    return result

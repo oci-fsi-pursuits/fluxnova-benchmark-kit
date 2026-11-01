@@ -79,6 +79,11 @@ class Cell:
 
     def runtime_extension(self): return {}
 
+    def execute_job(self):
+        self.docker('start', self.names['job'])
+        while self.inspect('job')['State']['Running']:
+            self.bound(); time.sleep(2)
+
     def cleanup_recorder(self, engine, directory):
         from benchlib.fnv06_functional import Recorder
         return Recorder(engine, directory)
@@ -326,9 +331,7 @@ class Cell:
     def run(self):
         self.bound(); failure = None
         try:
-            self.setup(); self.bound(); self.docker('start', self.names['job'])
-            while self.inspect('job')['State']['Running']:
-                self.bound(); time.sleep(2)
+            self.setup(); self.bound(); self.execute_job()
             state = self.inspect('job')['State']
             if state['ExitCode'] != 0 or state['OOMKilled']:
                 self.capture_failed_job()

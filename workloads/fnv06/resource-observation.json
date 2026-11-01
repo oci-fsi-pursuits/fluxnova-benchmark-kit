@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "study_id": "FNV-06-RESOURCE-OBSERVATION",
+  "phase": "workload_resources_v1",
+  "container_sample_interval_s": 0.1,
+  "maximum_container_sample_gap_s": 0.25,
+  "maximum_container_read_s": 0.1,
+  "database_sample_interval_s": 0.5,
+  "maximum_database_sample_gap_s": 1,
+  "maximum_database_read_s": 0.9,
+  "clock_tolerance_s": 0.05,
+  "handshake_timeout_s": 30,
+  "generator_scope": "Combined k6 and Python observer job container; not isolated k6 CPU",
+  "engine_scope": "Owned engine container and its ancestors; constraints are outcomes, not generator-validity failures",
+  "database_scope": "Read-only activity counts for the owned role and cumulative statistics for the trial database. Statistics can lag and include observer overhead. No database host CPU or memory headroom claim.",
+  "work_window": "Scheduled release through the later of final recipient observation and final request return. Batch terminal bookkeeping remains separate.",
+  "qualification_only": true
+}

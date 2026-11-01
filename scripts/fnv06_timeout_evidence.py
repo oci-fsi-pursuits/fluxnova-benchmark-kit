@@ -23,7 +23,7 @@ def check_protocol(p):
     assert p['expected_timeout_request_indices']==[0,1,2,3] and p['expected_successful_test_requests']==6
     assert p['expected_workflow_completions']==110 and p['expected_waiting_controls']==4 and p['expected_job_exit_code']==1
 
-def verify_control(control,cell):
+def verify_control(control,cell,*,for_outcome_reset=False):
     control=Path(control).resolve();cell=Path(cell).resolve();seal=read(control/'checksums.json')
     assert seal['algorithm']=='sha256'
     names={p.relative_to(control).as_posix() for p in control.rglob('*') if p.is_file() and p.name!='checksums.json'}
@@ -32,7 +32,11 @@ def verify_control(control,cell):
         p=control/name;assert p.resolve().is_relative_to(control) and not p.is_symlink() and sha(p)==digest
     identity=read(cell/'identity.json');manifest=read(cell/'manifest.json');source=read(cell/'source-manifest.json')
     assert identity['qualification_protocol']=='repeat' and identity['qualification_cell']==CELL
-    assert identity['qualification_phase']=='timeout_capture' and identity['target_id']!=identity['source_id']
+    assert type(for_outcome_reset) is bool
+    if for_outcome_reset:
+        assert identity['qualification_phase']=='outcome_accounting_v1' and identity['controlled_fault']=='timeout_capture_C01'
+    else: assert identity['qualification_phase']=='timeout_capture'
+    assert identity['target_id']!=identity['source_id']
     assert identity['source_commit']==manifest['source_commit']==source['commit']
     protocol_path=cell/'inputs/workloads/fnv06/timeout-capture.json';protocol=read(protocol_path);check_protocol(protocol)
     assert sha(protocol_path)==source['files']['workloads/fnv06/timeout-capture.json']==identity['fault_protocol_sha256']

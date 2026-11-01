@@ -77,6 +77,12 @@ class LoadCell(Cell):
 
     def runtime_extension(self): return {'generator': self.generator}
 
+    def execute_job(self):
+        from benchlib.fnv06_telemetry import declaration, execute_observed_job
+        if declaration(self.meta, self.stage/'source') is None:
+            return super().execute_job()
+        return execute_observed_job(self)
+
     def job_mounts(self):
         return ['--mount', 'type=bind,src=' + str(self.stage / 'generator/k6') + ',dst=/run/k6,readonly']
 
@@ -143,6 +149,7 @@ class LoadCell(Cell):
 
 
 def job():
+    from benchlib.fnv06_telemetry import job_start, job_finish
     from benchlib.fluxnova import FluxnovaClient
     from benchlib.fnv06_cloud import require_stage
     from benchlib.fnv06_functional import Recorder
@@ -186,7 +193,9 @@ def job():
             return super().call(*args, **kwargs)
     engine = FluxnovaClient(url, user, os.environ['BENCH_PASSWORD'])
     api = BoundedRecorder(engine, output)
+    resource_folder = None
     try:
+        resource_folder = job_start(meta, output, source, bound=lambda: require_stage(meta, meta['stage']))
         save(output / 'engine-version.json', engine.readiness())
         exercise(api, protocol, meta['run_id'], user, summary, Path('/run/k6'),
                  bound=lambda: require_stage(meta, meta['stage']))
@@ -194,7 +203,9 @@ def job():
     except BaseException as error:
         summary.update(status='failed', error_type=type(error).__name__)
         raise
-    finally: save(output / 'summary.json', summary)
+    finally:
+        save(output / 'summary.json', summary)
+        job_finish(meta, resource_folder, bound=lambda: require_stage(meta, meta['stage']))
 
 
 if __name__ == '__main__':

@@ -34,8 +34,11 @@ def retain_failure_state(api, path, record, summary, error, phase):
 
 def run_driver(api, folder, fixture, k6, script, protocol, definition_id, *, bound=lambda: None):
     """Observe completion concurrently with k6; retain the acknowledgment separately."""
-    release = int(time.time() * 1000) + protocol['release_lead_ms']
-    release_clock = time.monotonic() + release / 1000 - time.time()
+    clock_start = time.monotonic()
+    clock_epoch = time.time() * 1000
+    clock_finish = time.monotonic()
+    release = int(clock_epoch) + protocol['release_lead_ms']
+    release_clock = (clock_start + clock_finish) / 2 + (release - clock_epoch) / 1000
     fixture['release_epoch_ms'] = release
     save(folder/'driver-input.json', fixture)
     env = dict(os.environ, FNV06_CASE_FILE=str((folder/'driver-input.json').resolve()),
@@ -43,7 +46,9 @@ def run_driver(api, folder, fixture, k6, script, protocol, definition_id, *, bou
         FNV06_AUTH=api.engine.auth, FNV06_SUMMARY=str((folder/'k6-summary.json').resolve()),
         K6_NO_USAGE_REPORT='true')
     poll_path = '/history/process-instance/count?processDefinitionId=' + definition_id + '&finished=true'
-    record = {'poll_path': poll_path, 'polls': [], 'release_epoch_ms': release, 'exit_code': None}
+    record = {'poll_path': poll_path, 'polls': [], 'release_epoch_ms': release, 'exit_code': None,
+              'clock_origin': {'started_monotonic_s': clock_start, 'epoch_ms': clock_epoch,
+                               'finished_monotonic_s': clock_finish, 'release_monotonic_s': release_clock}}
     process = None; first_complete = None
     try:
         with (folder/'k6.log').open('xb') as log:
@@ -74,6 +79,7 @@ def run_driver(api, folder, fixture, k6, script, protocol, definition_id, *, bou
             except subprocess.TimeoutExpired: process.kill(); process.wait(timeout=10)
         if process: record['exit_code'] = process.returncode
         record['owned_generator_stopped'] = bool(process and process.poll() is not None)
+        record['finished_clock'] = {'epoch_ms': time.time() * 1000, 'monotonic_s': time.monotonic()}
         save(folder/'observer.json', record)
         if (folder/'k6.log').exists():
             actions = parse_actions((folder/'k6.log').read_text(errors='replace'))

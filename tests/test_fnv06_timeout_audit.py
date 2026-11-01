@@ -81,6 +81,15 @@ class TimeoutEvidenceTests(unittest.TestCase):
             c,cell=control_fixture(Path(d));result=verify_control(c,cell)
             self.assertTrue(result['four_owned_waiters_observed'] and result['transaction_released'])
             self.assertEqual(result['actual_lock_release_elapsed_s'],36)
+    def test_outcome_reset_control_requires_explicit_phase_and_fault_declaration(self):
+        with tempfile.TemporaryDirectory() as d:
+            c,cell=control_fixture(Path(d));path=cell/'identity.json';identity=json.loads(path.read_text())
+            with self.assertRaises(AssertionError):verify_control(c,cell,for_outcome_reset=True)
+            identity.update(qualification_phase='outcome_accounting_v1',controlled_fault='timeout_capture_C01');save(path,identity)
+            self.assertTrue(verify_control(c,cell,for_outcome_reset=True)['transaction_released'])
+            with self.assertRaises(AssertionError):verify_control(c,cell)
+            identity['controlled_fault']='undeclared';save(path,identity)
+            with self.assertRaises(AssertionError):verify_control(c,cell,for_outcome_reset=True)
     def test_internally_resealed_wrong_target_clock_or_contention_cannot_pass(self):
         for change in ('target','stale','release','owner','missing_waiters','clock','gap','fixture','lock_remains'):
             with self.subTest(change=change),tempfile.TemporaryDirectory() as d:
