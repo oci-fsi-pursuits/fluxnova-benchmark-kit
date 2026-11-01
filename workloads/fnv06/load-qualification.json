@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "study_id": "FNV-06-LQ",
+  "purpose": "Qualify the real load driver, completion observer and recipient accounting before any performance comparison.",
+  "engine_release": "3.0.1",
+  "population_sizes": [1, 4, 16],
+  "controls_per_observation": 2,
+  "message_client_ceiling": 4,
+  "release_lead_ms": 3000,
+  "maximum_first_dispatch_lag_ms": 1000,
+  "completion_poll_ms": 100,
+  "completion_timeout_s": 30,
+  "batch_terminal_timeout_s": 120,
+  "observations": [
+    {"id": "M001", "kind": "message", "population": 1},
+    {"id": "S001", "kind": "signal", "population": 1},
+    {"id": "B001", "kind": "batch", "population": 1},
+    {"id": "M004", "kind": "message", "population": 4},
+    {"id": "S004", "kind": "signal", "population": 4},
+    {"id": "B004", "kind": "batch", "population": 4},
+    {"id": "M016", "kind": "message", "population": 16},
+    {"id": "S016", "kind": "signal", "population": 16},
+    {"id": "B016", "kind": "batch", "population": 16}
+  ],
+  "reporting": {
+    "claim": "Driver and observer qualification only; local timings are diagnostic, not performance or capacity evidence.",
+    "separate_clocks": ["HTTP acknowledgment", "all intended recipients observed complete", "asynchronous batch terminal bookkeeping"],
+    "completion_interval": "Last incomplete count request start to first complete count response end; both raw observations are retained.",
+    "failure_rule": "Every planned action and recipient must be accounted for. Errors, missing events, wrong recipients, incomplete batches and changed controls cannot pass. No mutation is retried."
+  },
+  "subsequent_performance_gate": {
+    "candidate_populations": [10, 100, 1000],
+    "repetitions_per_cell": 5,
+    "required_before_execution": ["fresh equivalent state per observation", "counterbalanced level order", "declared warmup", "generator headroom", "resource telemetry", "fixed deadline and drain", "isolated PostgreSQL qualification", "fresh bounded cost reservation"],
+    "not_authorized_by_this_file": "This qualification runner must not automatically execute the candidate performance matrix or claim a speedup across different routing semantics."
+  }
+}

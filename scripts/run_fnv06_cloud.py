@@ -73,6 +73,12 @@ def job():
 
 
 class Cell:
+    job_script = 'scripts/run_fnv06_cloud.py'
+
+    def job_mounts(self): return []
+
+    def runtime_extension(self): return {}
+
     def __init__(self, stage, *, cleanup_only=False):
         self.stage = stage.resolve(); self.meta = read(self.stage / 'identity.json')
         sys.path.insert(0, str(self.stage / 'source'))
@@ -197,6 +203,7 @@ class Cell:
                    'jdbc_tls_verify_full': True, 'engine_image': self.meta['images']['engine'],
                    'services_image': self.meta['images']['services'], 'internal_network': True,
                    'jvm_timezone': 'UTC', 'database_role': self.dbuser}
+        runtime.update(self.runtime_extension())
         save(self.stage / 'runtime.json', runtime)
         self.output.mkdir(mode=0o700); os.chown(self.output, 65532, 65532)
         # Exact metadata mounts are readable only inside the isolated job.
@@ -204,12 +211,13 @@ class Cell:
             os.chown(self.stage / name, 65532, 65532)
         mounts = ['--mount', 'type=bind,src=' + str(self.stage / 'source') + ',dst=/source,readonly',
                   '--mount', 'type=bind,src=' + str(self.output) + ',dst=/evidence']
+        mounts.extend(self.job_mounts())
         for name in ('identity.json', 'source-manifest.json', 'runtime.json'):
             mounts.extend(['--mount', 'type=bind,src=' + str(self.stage / name) + ',dst=/run/' + name + ',readonly'])
         env, options = self.envopts({'BENCH_PASSWORD': self.credentials['admin'], 'PYTHONDONTWRITEBYTECODE': '1'})
         self.docker('create', '--name', self.names['job'], *common, '--user', '65532:65532', '--read-only',
             '--memory', '512m', '--cpus', '1', '--pids-limit', '64', *mounts, '--workdir', '/source', *options,
-            self.meta['images']['services'], 'python', 'scripts/run_fnv06_cloud.py', 'job', env=env)
+            self.meta['images']['services'], 'python', self.job_script, 'job', env=env)
         # Resolve outside the restricted network; DNS failure cannot count as isolation.
         targets = [(socket.gethostbyname(h), p) for h, p in self.meta['forbidden_endpoints']]
         probe = 'import socket,json;r=[]\nfor h,p in ' + repr(targets) + ':\n s=socket.socket();s.settimeout(1);v=s.connect_ex((h,p));s.close();assert v!=0;r.append({"port":p,"blocked":True})\nprint(json.dumps(r))'
@@ -332,8 +340,10 @@ class Cell:
             if failure: save(self.stage / 'failure.json', {'error_type': type(failure).__name__, 'reason': str(failure)[:200]})
         if failure: raise failure
         assert not closeout['cleanup_errors'] and closeout['owned_engine_stopped']
-        print(json.dumps({'status': 'collected_pending_independent_audit', 'workflow_instances': 42,
-                          'case_families': 12, 'performance_comparison_complete': False}), flush=True)
+        print(json.dumps({'status': 'collected_pending_independent_audit',
+                          'workflow_instances': len(summary['owned_process_ids']),
+                          'case_families': len(summary['cases_collected']),
+                          'performance_comparison_complete': False}), flush=True)
 
 
 if __name__ == '__main__':

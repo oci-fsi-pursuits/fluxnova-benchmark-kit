@@ -1,0 +1,129 @@
+"""Collect a small real-k6 FNV-06 qualification; no performance claim is made."""
+from datetime import datetime, timezone
+import json
+import os
+from pathlib import Path
+import subprocess
+import time
+
+from benchlib.fnv06_functional import deploy, render_model, await_batch, save, sha
+
+
+def parse_actions(log):
+    result = []
+    for line in log.splitlines():
+        try: item = json.loads(line)
+        except (json.JSONDecodeError, ValueError): continue
+        message = item.get('msg', '')
+        if message.startswith('FNV06_ACTION '): result.append(json.loads(message[len('FNV06_ACTION '):]))
+    return result
+
+
+def run_driver(api, folder, fixture, k6, script, protocol, definition_id, *, bound=lambda: None):
+    """Observe completion concurrently with k6; retain the acknowledgment separately."""
+    release = int(time.time() * 1000) + protocol['release_lead_ms']
+    release_clock = time.monotonic() + release / 1000 - time.time()
+    fixture['release_epoch_ms'] = release
+    save(folder/'driver-input.json', fixture)
+    env = dict(os.environ, FNV06_CASE_FILE=str((folder/'driver-input.json').resolve()),
+        FNV06_CASE_SHA256=sha(folder/'driver-input.json'), FNV06_ENGINE_URL=api.engine.base_url,
+        FNV06_AUTH=api.engine.auth, FNV06_SUMMARY=str((folder/'k6-summary.json').resolve()),
+        K6_NO_USAGE_REPORT='true')
+    poll_path = '/history/process-instance/count?processDefinitionId=' + definition_id + '&finished=true'
+    record = {'poll_path': poll_path, 'polls': [], 'release_epoch_ms': release, 'exit_code': None}
+    process = None; first_complete = None
+    try:
+        with (folder/'k6.log').open('xb') as log:
+            process = subprocess.Popen([str(k6), 'run', '--log-format', 'json', '--no-color', str(script)],
+                env=env, stdout=log, stderr=subprocess.STDOUT, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+            while True:
+                bound()
+                if first_complete is None:
+                    start = time.monotonic() - release_clock
+                    row = api.get(poll_path)
+                    observation = {'request_index': row['index'], 'count': row['response']['count'],
+                        'start_elapsed_s': start, 'finish_elapsed_s': time.monotonic() - release_clock}
+                    record['polls'].append(observation); save(folder/'observer.json', record)
+                    if observation['count'] > fixture['population']: raise RuntimeError('Unexpected extra completion')
+                    if observation['count'] == fixture['population']: first_complete = observation
+                code = process.poll()
+                if code is not None:
+                    record['exit_code'] = code
+                    if code != 0: raise RuntimeError('k6 failed; retain all evidence')
+                    if first_complete is not None: break
+                if time.monotonic() - release_clock > protocol['completion_timeout_s']:
+                    raise TimeoutError('Recipients did not complete within the qualification bound')
+                time.sleep(protocol['completion_poll_ms']/1000)
+    finally:
+        if process and process.poll() is None:
+            process.terminate()
+            try: process.wait(timeout=10)
+            except subprocess.TimeoutExpired: process.kill(); process.wait(timeout=10)
+        if process: record['exit_code'] = process.returncode
+        record['owned_generator_stopped'] = bool(process and process.poll() is not None)
+        save(folder/'observer.json', record)
+        if (folder/'k6.log').exists():
+            actions = parse_actions((folder/'k6.log').read_text(errors='replace'))
+            save(folder/'actions.json', actions)
+    return actions
+
+
+def exercise(api, protocol, run_id, username, summary, k6, *, bound=lambda: None):
+    output = api.output
+    if protocol['study_id'] != 'FNV-06-LQ' or protocol['population_sizes'] != [1,4,16]:
+        raise ValueError('Only the fixed small qualification protocol is supported')
+    (output/'models').mkdir(); (output/'observations').mkdir()
+    save(output/'baseline.json', api.snapshot())
+    for spec in protocol['observations']:
+        bound(); case_id = spec['id']; kind = 'signal' if spec['kind']=='signal' else 'message'
+        prefix = 'fnv06-' + run_id[:12] + '-' + case_id
+        folder = output/'observations'/case_id; folder.mkdir()
+        record = {'spec': spec, 'prefix': prefix, 'models': [], 'processes': {}, 'batch': None}
+        path = folder/'observation.json'; save(path, record)
+        models = {}
+        for event in ('match','other'):
+            model = output/'models'/(case_id+'-'+event+'.bpmn')
+            template = (output/'inputs/workloads/fnv06'/(kind+'.bpmn')).read_bytes()
+            model.write_bytes(render_model(template, 'bench_fnv06_'+case_id+'_'+event, prefix+'-event-'+event))
+            models[event] = deploy(api, model, None); record['models'].append(models[event])
+        aliases = ['m'+str(i).zfill(4) for i in range(spec['population'])] + ['excluded','other']
+        for alias in aliases:
+            event = 'other' if alias=='other' or (alias=='excluded' and spec['kind']=='signal') else 'match'
+            definition = models[event]['definition']
+            body = {'businessKey': prefix+'-key-'+alias, 'variables': {k:{'value':v,'type':'String'} for k,v in
+                    {'caseId':case_id,'alias':alias,'sentinel':prefix+'-'+alias}.items()}}
+            row = api.call('POST', '/process-definition/'+definition['id']+'/start', body)
+            if row['status'] != 200: raise RuntimeError('Instance start failed')
+            record['processes'][alias] = {'id':row['response']['id'], 'definition':definition,
+                'start_request':row['index'], 'input':body, 'event':event}
+            summary['owned_process_ids'].append(row['response']['id']); save(output/'progress.json', summary)
+        record['before'] = api.snapshot(); save(path, record)
+        variables = {'delivery':{'value':prefix+'-delivered','type':'String'}}
+        members = [record['processes'][a]['id'] for a in aliases[:-2]]
+        if spec['kind']=='message':
+            requests = [{'path':'/message','body':{'messageName':prefix+'-event-match','businessKey':prefix+'-key-'+a,
+                'withoutTenantId':True,'resultEnabled':True,'processVariables':variables}} for a in aliases[:-2]]
+        elif spec['kind']=='signal': requests = [{'path':'/signal','body':{'name':prefix+'-event-match','variables':variables}}]
+        else: requests = [{'path':'/process-instance/message-async','body':{'messageName':prefix+'-event-match',
+                'processInstanceIds':members,'variables':variables}}]
+        fixture = {'study_id':'FNV-06-LQ','run_id':run_id,'observation_id':case_id,'kind':spec['kind'],
+            'population':spec['population'],'vus':min(4,spec['population']) if spec['kind']=='message' else 1,'requests':requests}
+        try:
+            actions = run_driver(api,folder,fixture,k6,output/'inputs/load/fnv06_events.js',protocol,
+                                 models['match']['definition']['id'],bound=bound)
+        finally:
+            if spec['kind']=='batch' and (folder/'actions.json').exists():
+                for action in json.loads((folder/'actions.json').read_text()):
+                    if action['request']==requests[0] and action['status']==200 and isinstance(action['response'],dict) and action['response'].get('id'):
+                        batch_id=action['response']['id']
+                        if batch_id not in summary['owned_batch_ids']:summary['owned_batch_ids'].append(batch_id)
+                save(output/'progress.json',summary)
+        expected_status = 204 if spec['kind']=='signal' else 200
+        if len(actions)!=len(requests) or any(a['status']!=expected_status for a in actions):
+            raise RuntimeError('Missing or unsuccessful load action')
+        if spec['kind']=='batch':
+            batch = actions[0]['response']
+            record['batch'] = await_batch(api,batch,protocol['batch_terminal_timeout_s'])
+        record['after'] = api.snapshot(); save(path, record)
+        summary['cases_collected'].append(case_id); save(output/'progress.json', summary)
+    save(output/'before-cleanup.json',api.snapshot())

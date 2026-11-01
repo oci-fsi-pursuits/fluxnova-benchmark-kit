@@ -13,7 +13,8 @@ def instant(value):
     return result.astimezone(timezone.utc)
 
 
-def check_runtime(manifest, summary, identity, runtime, isolation, closeout, source):
+def check_runtime(manifest, summary, identity, runtime, isolation, closeout, source,
+                  *, runtime_script='scripts/run_fnv06_cloud.py'):
     run_id = manifest['run_id']
     assert re.fullmatch('[0-9a-f]{32}', run_id)
     assert identity['study_id'] == 'FNV-06' and identity['run_id'] == closeout['run_id'] == run_id
@@ -28,7 +29,8 @@ def check_runtime(manifest, summary, identity, runtime, isolation, closeout, sou
     assert identity['source_commit'] == manifest['source_commit'] == source['commit']
     assert re.fullmatch('[0-9a-f]{40}', source['commit'])
     assert source['files'] == manifest['source_sha256']
-    assert source['runtime_sha256'] == source['files']['scripts/run_fnv06_cloud.py']
+    assert runtime_script in ('scripts/run_fnv06_cloud.py', 'scripts/run_fnv06_load_cloud.py')
+    assert source['runtime_sha256'] == source['files'][runtime_script]
     assert manifest['runtime'] == runtime and manifest['database'] == 'OCI managed PostgreSQL'
     assert runtime['engine'] == {'version': '3.0.1'}
     assert runtime['jdbc_tls_verify_full'] is True and runtime['internal_network'] is True

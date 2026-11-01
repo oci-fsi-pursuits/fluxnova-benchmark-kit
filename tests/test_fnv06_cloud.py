@@ -206,6 +206,16 @@ class DurableEvidenceTests(unittest.TestCase):
                                    for role in ('engine', 'job')}}
         args = [manifest, summary, identity, runtime, isolation, closeout, source]
         self.assertEqual(check_runtime(*args)[0], NOW)
+        # A load runner must bind to its own source, not borrow the functional
+        # runner's otherwise-valid runtime receipt.
+        loaded = copy.deepcopy(args)
+        loaded[-1]['files']['scripts/run_fnv06_load_cloud.py'] = 'e' * 64
+        loaded[0]['source_sha256'] = loaded[-1]['files']
+        with self.assertRaises(AssertionError):
+            check_runtime(*loaded, runtime_script='scripts/run_fnv06_load_cloud.py')
+        loaded[-1]['runtime_sha256'] = 'e' * 64
+        self.assertEqual(check_runtime(*loaded, runtime_script='scripts/run_fnv06_load_cloud.py')[0], NOW)
+        with self.assertRaises(AssertionError): check_runtime(*loaded)
         for change in ('source', 'image', 'shutdown', 'label', 'tls', 'network', 'commit', 'failed_job'):
             m, s, i, r, n, c, f = copy.deepcopy(args)
             if change == 'source': i['target_id'] = i['source_id']
