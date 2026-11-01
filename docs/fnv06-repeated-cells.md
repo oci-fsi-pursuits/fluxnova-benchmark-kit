@@ -22,4 +22,16 @@ The reset runs in one transaction and checks catalogs outside the trial schema b
 
 The [native Linux probe](../validation/native-20261101-fnv06-resources/README.md) passed both an idle control and deliberate throttling detection. The reader keeps raw cgroup-v2 and host counters. Its independent auditor requires samples on both sides of the work interval, checks stable process identity and limits, and examines ancestor throttling too. Sample gaps, clock disagreement and counter resets cannot be converted into a pass.
 
-This is a reader qualification, not yet a workload-headroom result. Before the [declared 45-cell comparison](fnv06-population-scaling.md), qualify the new failure-state/SQL capture path, complete the cloud reset/warmup checks, integrate resource sampling with the actual generator and engine, add database observations, calibrate the generator and retain failures and deadline misses in the final accounting. Keep the frozen populations, client counts and separate pattern semantics unchanged.
+This is a reader qualification, not yet a workload-headroom result. Before the [declared 45-cell comparison](fnv06-population-scaling.md), complete the cloud reset/warmup checks, integrate resource sampling with the actual generator and engine, add database observations, calibrate the generator and retain failures and deadline misses in the final accounting. Keep the frozen populations, client counts and separate pattern semantics unchanged.
+
+## Deliberate timeout capture check
+
+The [fixed fault protocol](../workloads/fnv06/timeout-capture.json) checks the evidence collector separately from performance. On a fresh owned trial database, it runs the normal 100-recipient message warmup, then briefly holds a SHARE lock on the trial event-subscription table during a ten-recipient message burst. The first four requests retain the unchanged 30-second timeout. The lock is released 36 seconds after scheduled dispatch, allowing final workflow state to be captured. This does not diagnose the earlier signal timeout or replace that failed attempt.
+
+The separate auditor requires four native timeouts, six successful test requests, all 110 completed warmup/test workflows, four unchanged waiting controls, full REST inventories and reconciliation against nine SQL tables. It also verifies sealed lock samples, transaction release and the owned database identity. The ordinary qualification auditor must reject this failed job. A successful fault check is labeled `expected_timeout_evidence_passed`; it cannot authorize a schema reset or count as a passing performance run.
+
+```powershell
+python scripts/audit_fnv06_timeout.py --source PRIVATE_CELL --control PRIVATE_CONTROL --output dist/timeout-audit-NEW
+```
+
+The command audits saved evidence offline. It does not inject a fault, allocate resources or connect to a database. The [controlled cloud timeout check](../validation/oci-20261101-fnv06-timeout-capture/README.md) passed: four timed-out requests remained failed, while all 110 intended workflows and four waiting controls reconciled against REST and nine SQL tables. This qualifies the controlled request-failure capture path; other failure modes and general deadline accounting remain separate work.

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "study_id": "FNV-06-TIMEOUT-CAPTURE",
+  "underlying_study": "FNV-06-REPEAT-QUAL",
+  "cell": {"id": "C01", "kind": "message", "population": 10},
+  "warmup_observation": "C01W",
+  "fault_observation": "C01M",
+  "warmup_recipients": 100,
+  "test_recipients": 10,
+  "message_clients": 4,
+  "request_timeout_s": 30,
+  "recipient_drain_s": 120,
+  "fault": {
+    "table": "fluxnova.act_ru_event_subscr",
+    "mode": "SHARE",
+    "release_after_scheduled_dispatch_s": 36,
+    "maximum_release_error_s": 1,
+    "minimum_pre_dispatch_lock_lead_s": 0.1,
+    "maximum_pre_dispatch_lock_lead_s": 3,
+    "idle_transaction_timeout_s": 45
+  },
+  "expected_timeout_request_indices": [0, 1, 2, 3],
+  "expected_successful_test_requests": 6,
+  "expected_workflow_completions": 110,
+  "expected_waiting_controls": 4,
+  "expected_job_exit_code": 1,
+  "scope": "Deliberate failure-capture qualification in a fresh owned database. Request failures remain failures; no performance, capacity or payment-effect claim."
+}

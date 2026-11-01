@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "e7dd71cfd15258e7bd660fab222a2a1066f04908",
+  "source_commit": "3a35877c86154f570362fb29172b9f3180d25a42",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -478,8 +478,8 @@
     },
     {
       "path": "docs/fnv06-events-and-batches.md",
-      "source_sha256": "39f3e672ba42d2265b94e7e5b67525bc1a614b0ee45e388e8631a192a9c767cd",
-      "candidate_sha256": "39f3e672ba42d2265b94e7e5b67525bc1a614b0ee45e388e8631a192a9c767cd"
+      "source_sha256": "34a083ecef96ef3ea83f83a60e291a067cb87fd5ea7596c58398c7df2106affa",
+      "candidate_sha256": "34a083ecef96ef3ea83f83a60e291a067cb87fd5ea7596c58398c7df2106affa"
     },
     {
       "path": "docs/fnv06-load-driver.md",
@@ -488,13 +488,13 @@
     },
     {
       "path": "docs/fnv06-population-scaling.md",
-      "source_sha256": "3a6c11d7955f8f36aaa44752376a1ada872fb8cc16848e79463856e7e496a70c",
-      "candidate_sha256": "3a6c11d7955f8f36aaa44752376a1ada872fb8cc16848e79463856e7e496a70c"
+      "source_sha256": "57ccd4db2e4b49d3afe09c5254d3e0df5c57db4ccb3c47c042b476d4c497150c",
+      "candidate_sha256": "57ccd4db2e4b49d3afe09c5254d3e0df5c57db4ccb3c47c042b476d4c497150c"
     },
     {
       "path": "docs/fnv06-repeated-cells.md",
-      "source_sha256": "a7d4c282789a220aae2711eab899492688d9de0028604695a84291c03cceb97f",
-      "candidate_sha256": "a7d4c282789a220aae2711eab899492688d9de0028604695a84291c03cceb97f"
+      "source_sha256": "bd4ed63560671b4b2239f89e27b09974d391df382cf31d59bdb69874d69cff87",
+      "candidate_sha256": "bd4ed63560671b4b2239f89e27b09974d391df382cf31d59bdb69874d69cff87"
     },
     {
       "path": "docs/getting-started.md",
@@ -633,13 +633,13 @@
     },
     {
       "path": "docs/workload-completion.md",
-      "source_sha256": "66093342356b879af897c832b5526df83a00763186004e800d2e2d51638d9317",
-      "candidate_sha256": "66093342356b879af897c832b5526df83a00763186004e800d2e2d51638d9317"
+      "source_sha256": "f64dceccee455bd6d33272ac963519e1ad9da0a2991f5668fb3ebe34d2d4c03b",
+      "candidate_sha256": "f64dceccee455bd6d33272ac963519e1ad9da0a2991f5668fb3ebe34d2d4c03b"
     },
     {
       "path": "docs/workloads.md",
-      "source_sha256": "d0ab3448ea79b9a17c6a2183c9b594d882d39c6b743a03969a2f9cc3e0893d3f",
-      "candidate_sha256": "5e7cd3c91731e366cb1a9495a301c432994b39fb9090a75f18f8bfc6e606380f"
+      "source_sha256": "6cf4346e1498a86209143ee26333ba59c8e919d13aadb128a416baafb8f7469c",
+      "candidate_sha256": "9cd275e2ad870ce2bfbac50afc23ac3239cad2e0e588461f2d448c991067e304"
     },
     {
       "path": "infra/oci-evidence/.terraform.lock.hcl",
@@ -743,8 +743,8 @@
     },
     {
       "path": "release/public-files.json",
-      "source_sha256": "07e782080591dba8ad485da3988f3c703ae908890a54b5914137245df7110fc9",
-      "candidate_sha256": "07e782080591dba8ad485da3988f3c703ae908890a54b5914137245df7110fc9"
+      "source_sha256": "92bcd58fbfcff6ec02ce01703fa9a2fc5c00c5ef6e06b79526a69e4d5214099a",
+      "candidate_sha256": "92bcd58fbfcff6ec02ce01703fa9a2fc5c00c5ef6e06b79526a69e4d5214099a"
     },
     {
       "path": "requirements-cloud.txt",
@@ -783,8 +783,8 @@
     },
     {
       "path": "scripts/audit_fnv06_cloud.py",
-      "source_sha256": "06b5eb9867fa305c2f8845ca0757da1dce7f86d2e38d5ae435bbf96864332e2d",
-      "candidate_sha256": "06b5eb9867fa305c2f8845ca0757da1dce7f86d2e38d5ae435bbf96864332e2d"
+      "source_sha256": "6f62abcc6ef773001674fcd126b2feb59d2cdffa728a8adf57fb9ff06c67881e",
+      "candidate_sha256": "6f62abcc6ef773001674fcd126b2feb59d2cdffa728a8adf57fb9ff06c67881e"
     },
     {
       "path": "scripts/audit_fnv06_functional.py",
@@ -793,13 +793,18 @@
     },
     {
       "path": "scripts/audit_fnv06_load_qualification.py",
-      "source_sha256": "f4dc5f0edc7f4f73eb522fdd28697c28a484b2042232a477c37fbd2db54f966b",
-      "candidate_sha256": "f4dc5f0edc7f4f73eb522fdd28697c28a484b2042232a477c37fbd2db54f966b"
+      "source_sha256": "4fe3b126ee10e1e60e58f7a05a37c09620efb2473725a88ae98fe27d8a69298b",
+      "candidate_sha256": "4fe3b126ee10e1e60e58f7a05a37c09620efb2473725a88ae98fe27d8a69298b"
     },
     {
       "path": "scripts/audit_fnv06_resources.py",
       "source_sha256": "9b49389ae28b9bdec587c446ceb21ddf8fa72c4649d7f98ad11036e43ae6a226",
       "candidate_sha256": "9b49389ae28b9bdec587c446ceb21ddf8fa72c4649d7f98ad11036e43ae6a226"
+    },
+    {
+      "path": "scripts/audit_fnv06_timeout.py",
+      "source_sha256": "0228dd1de7af281f715e0e045937e5dafe25d209672316b58cab9e12efd6de89",
+      "candidate_sha256": "0228dd1de7af281f715e0e045937e5dafe25d209672316b58cab9e12efd6de89"
     },
     {
       "path": "scripts/audit_pay05_functional.py",
@@ -950,6 +955,11 @@
       "path": "scripts/deploy_payment_review_form.py",
       "source_sha256": "2d8bff05d875e83a9ff90708ffa548efcecc48dedc818ed4d05b107d9a075159",
       "candidate_sha256": "2d8bff05d875e83a9ff90708ffa548efcecc48dedc818ed4d05b107d9a075159"
+    },
+    {
+      "path": "scripts/fnv06_timeout_evidence.py",
+      "source_sha256": "29f9e31f67cacbe827b54876323a6335604f0ebf9241dfefd911d16f256ee24b",
+      "candidate_sha256": "29f9e31f67cacbe827b54876323a6335604f0ebf9241dfefd911d16f256ee24b"
     },
     {
       "path": "scripts/infra-validate.ps1",
@@ -1403,8 +1413,8 @@
     },
     {
       "path": "tests/test_fnv06_cloud.py",
-      "source_sha256": "c78a2740049a0bfcd6d9f15455c5a998e151d6b8f5372e076616621a46523b41",
-      "candidate_sha256": "c78a2740049a0bfcd6d9f15455c5a998e151d6b8f5372e076616621a46523b41"
+      "source_sha256": "c96d18c97bc4961506508b104477f87e0eca4d6928d33858f8f0a3b298ceb91d",
+      "candidate_sha256": "c96d18c97bc4961506508b104477f87e0eca4d6928d33858f8f0a3b298ceb91d"
     },
     {
       "path": "tests/test_fnv06_failure_capture.py",
@@ -1430,6 +1440,11 @@
       "path": "tests/test_fnv06_resources.py",
       "source_sha256": "a4393bac210a18167ae15ff12e52543e60ec1530a562f668f73cd26d6919e9a8",
       "candidate_sha256": "a4393bac210a18167ae15ff12e52543e60ec1530a562f668f73cd26d6919e9a8"
+    },
+    {
+      "path": "tests/test_fnv06_timeout_audit.py",
+      "source_sha256": "7835e665f6fee08623e3eb508e50ff454c40c5ac6de3d4879334db24b17bb63a",
+      "candidate_sha256": "7835e665f6fee08623e3eb508e50ff454c40c5ac6de3d4879334db24b17bb63a"
     },
     {
       "path": "tests/test_fx_quotes.py",
@@ -1843,8 +1858,8 @@
     },
     {
       "path": "validation/oci-20261101-fnv06-repeat/README.md",
-      "source_sha256": "1c9ee81720fa545e824e258717aebf98df25014d768e80e92e63b47516b1180e",
-      "candidate_sha256": "3dea7c38174aa033469a2f3a82c8f9130e998e9e10721ea4dbfd42c057275047"
+      "source_sha256": "fe41a286b367410392a0789c9af004015663b96de7acabc515de9f9cdb7fa59e",
+      "candidate_sha256": "db157ba2fd13bc5976288afcabfd4f13b3999d256fa42ea9b923c993ce1bde69"
     },
     {
       "path": "validation/oci-20261101-fnv06-repeat/summary.json",
@@ -1860,6 +1875,16 @@
       "path": "validation/oci-20261101-fnv06-scale/summary.json",
       "source_sha256": "fa06615e456102114d5b5d361fb58fdd0ed7f93a9ef0dffd3265156bb67b4043",
       "candidate_sha256": "fa06615e456102114d5b5d361fb58fdd0ed7f93a9ef0dffd3265156bb67b4043"
+    },
+    {
+      "path": "validation/oci-20261101-fnv06-timeout-capture/README.md",
+      "source_sha256": "70437170c8b8d02328fbc062ec9c6b606df03073d9884c14de561acdf1de80e1",
+      "candidate_sha256": "70437170c8b8d02328fbc062ec9c6b606df03073d9884c14de561acdf1de80e1"
+    },
+    {
+      "path": "validation/oci-20261101-fnv06-timeout-capture/summary.json",
+      "source_sha256": "f61a090cd5ae1a824174fd5d5f8d438b92dae0efaf0082fbb11a2fc8d9e87b41",
+      "candidate_sha256": "f61a090cd5ae1a824174fd5d5f8d438b92dae0efaf0082fbb11a2fc8d9e87b41"
     },
     {
       "path": "validation/oci-20261101-fnv06/README.md",
@@ -1925,6 +1950,11 @@
       "path": "workloads/fnv06/signal.bpmn",
       "source_sha256": "246778ee29e580ce552777079db5955e2bc9ba8234ae41c37b104426c3c56c72",
       "candidate_sha256": "246778ee29e580ce552777079db5955e2bc9ba8234ae41c37b104426c3c56c72"
+    },
+    {
+      "path": "workloads/fnv06/timeout-capture.json",
+      "source_sha256": "ace629a0c3f83d64a89eec7df07e361e21ef2a4b8c8df77b7000faa2f3ec9cc9",
+      "candidate_sha256": "ace629a0c3f83d64a89eec7df07e361e21ef2a4b8c8df77b7000faa2f3ec9cc9"
     },
     {
       "path": "workloads/forms/payment-review.html",

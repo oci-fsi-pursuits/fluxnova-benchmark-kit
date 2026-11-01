@@ -14,7 +14,8 @@ def instant(value):
 
 
 def check_runtime(manifest, summary, identity, runtime, isolation, closeout, source,
-                  *, runtime_script='scripts/run_fnv06_cloud.py'):
+                  *, runtime_script='scripts/run_fnv06_cloud.py', expected_job_exit_code=0):
+    assert type(expected_job_exit_code) is int and expected_job_exit_code in (0,1)
     run_id = manifest['run_id']
     assert re.fullmatch('[0-9a-f]{32}', run_id)
     assert identity['study_id'] == 'FNV-06' and identity['run_id'] == closeout['run_id'] == run_id
@@ -49,7 +50,7 @@ def check_runtime(manifest, summary, identity, runtime, isolation, closeout, sou
     assert set(closeout['containers']) == {'engine', 'job'}
     for role, container in closeout['containers'].items():
         assert container['id'] and container['label'] == run_id and container['stopped'] is True and not container['oom_killed']
-        if role == 'job': assert container['exit_code'] == 0
+        if role == 'job': assert container['exit_code'] == expected_job_exit_code
     assert manifest['cloud_resources_accessed'] is summary['cloud_resources_accessed'] is True
     return start, stop
 

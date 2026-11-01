@@ -206,6 +206,10 @@ class DurableEvidenceTests(unittest.TestCase):
                                    for role in ('engine', 'job')}}
         args = [manifest, summary, identity, runtime, isolation, closeout, source]
         self.assertEqual(check_runtime(*args)[0], NOW)
+        failed=copy.deepcopy(args);failed[5]['containers']['job']['exit_code']=1
+        with self.assertRaises(AssertionError):check_runtime(*failed)
+        self.assertEqual(check_runtime(*failed,expected_job_exit_code=1)[0],NOW)
+        with self.assertRaises(AssertionError):check_runtime(*failed,expected_job_exit_code=2)
         # A load runner must bind to its own source, not borrow the functional
         # runner's otherwise-valid runtime receipt.
         loaded = copy.deepcopy(args)

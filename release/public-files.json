@@ -79,7 +79,8 @@
     "validation/oci-20261101-fnv06-scale",
     "validation/local-20261101-fnv06-repeat",
     "validation/native-20261101-fnv06-resources",
-    "validation/oci-20261101-fnv06-repeat"
+    "validation/oci-20261101-fnv06-repeat",
+    "validation/oci-20261101-fnv06-timeout-capture"
   ],
   "evidence_filenames": [
     "README.md",
