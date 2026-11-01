@@ -53,7 +53,8 @@
     "docs/assets/workflows/09-basic-settlement.png",
     "docs/pay05-fx-quotes.md",
     "docs/fnv06-events-and-batches.md",
-    "docs/fnv06-load-driver.md"
+    "docs/fnv06-load-driver.md",
+    "docs/fnv06-population-scaling.md"
   ],
   "evidence_directories": [
     "validation/oci-20261027-w01-comparison",
@@ -72,7 +73,9 @@
     "validation/local-20261101-fnv06",
     "validation/oci-20261101-fnv06",
     "validation/local-20261101-fnv06-load",
-    "validation/oci-20261101-fnv06-load"
+    "validation/oci-20261101-fnv06-load",
+    "validation/local-20261101-fnv06-scale",
+    "validation/oci-20261101-fnv06-scale"
   ],
   "evidence_filenames": [
     "README.md",

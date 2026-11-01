@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "study_id": "FNV-06-SCALING-1",
+  "status": "declared_design_pending_reset_and_telemetry_qualification",
+  "execution_enabled": false,
+  "question": "For each delivery pattern, how does time to finish all intended workflows change when a finite burst grows from 10 to 100 to 1000 recipients?",
+  "control_population": 10,
+  "changed_factor": "intended recipient population",
+  "patterns_analyzed_separately": ["message", "signal", "batch"],
+  "population_order_by_repeat": [[10,100,1000],[100,1000,10],[1000,10,100],[1000,100,10],[100,10,1000]],
+  "pattern_order_by_repeat": [["message","signal","batch"],["signal","batch","message"],["batch","message","signal"],["batch","signal","message"],["signal","message","batch"]],
+  "measured_cells": 45,
+  "repetitions_per_pattern_and_population": 5,
+  "state_per_cell": {
+    "fresh_owned_engine_schema": true,
+    "warmup_recipients": 100,
+    "warmup_controls": 2,
+    "warmup_pattern": "same as the measured cell",
+    "warmup_history": "Retain the same completed 100-recipient warmup within every cell; verify that state before measurement.",
+    "measured_controls": 2,
+    "unique_warmup_and_measured_event_names": true,
+    "require_prior_cell_sealed_and_independently_audited_before_reset": true,
+    "source_reference_must_not_be_reset": true
+  },
+  "fixed_controls": {
+    "engine_release": "3.0.1",
+    "message_clients": 4,
+    "signal_and_batch_requests_per_burst": 1,
+    "payload": "The same four String-variable names and value-length rules at every population.",
+    "completion_poll_ms": 100,
+    "release_lead_ms": 3000,
+    "maximum_first_dispatch_lag_ms": 1000,
+    "synthetic_reporting_deadline_s": 2,
+    "recipient_drain_s": 120,
+    "batch_terminal_limit_s": 240,
+    "http_timeout_s": 30,
+    "model_calls": 0,
+    "real_payment_effects": 0,
+    "compute_and_database": "Pinned images, fixed CPU/memory allocations and the same fresh single-node PostgreSQL shape for every cell. No autoscaling."
+  },
+  "denominators": {
+    "measured_recipients": 16650,
+    "warmup_recipients": 4500,
+    "waiting_controls": 180,
+    "total_workflow_instances": 21330
+  },
+  "primary_metric": "Interval containing completion of the entire intended recipient cohort, measured from the declared release. Report all five cell intervals at each population; compare populations within each repeat and pattern.",
+  "secondary_metrics": [
+    "HTTP acknowledgments, shown separately from recipient completion and batch bookkeeping",
+    "Conservative observed-correct count by the fixed two-second synthetic threshold, with any polling ambiguity retained",
+    "All planned requests, correct completions, wrong transitions, untouched controls, errors and outcomes unfinished at drain",
+    "Engine, generator and database resource use; generator CPU throttling and missed release times"
+  ],
+  "inference_limits": [
+    "These are finite bursts with at most four concurrent message clients, not an open arrival-rate capacity test.",
+    "Message, signal and batch semantics differ. No cross-pattern speedup ranking or replacement recommendation.",
+    "Five cohort observations are not a reliable cohort p99 estimate or production service-level guarantee.",
+    "The two-second threshold is inherited from the synthetic benchmark, not a customer payment requirement.",
+    "Do not pool warmup with measured work or replace an unfavorable valid cell. Preserve failures and incomplete cells."
+  ],
+  "required_before_execution": [
+    "Larger-population local and isolated PostgreSQL evidence qualification",
+    "Exact original-input and SQL/REST reconciliation after each measured cell",
+    "Owned schema reset with equal verified post-warmup starting state",
+    "Qualified resource telemetry and a generator-headroom check",
+    "Clock agreement and complete failure/deadline accounting",
+    "Immutable protocol/source hashes, complete local/CI tests and fresh cost reservation within the user's ceiling"
+  ]
+}

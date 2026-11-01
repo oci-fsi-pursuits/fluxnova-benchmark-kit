@@ -79,6 +79,10 @@ class Cell:
 
     def runtime_extension(self): return {}
 
+    def cleanup_recorder(self, engine, directory):
+        from benchlib.fnv06_functional import Recorder
+        return Recorder(engine, directory)
+
     def __init__(self, stage, *, cleanup_only=False):
         self.stage = stage.resolve(); self.meta = read(self.stage / 'identity.json')
         sys.path.insert(0, str(self.stage / 'source'))
@@ -245,10 +249,10 @@ class Cell:
         address = state['NetworkSettings']['Networks'][self.network]['IPAddress']
         engine = FluxnovaClient('http://' + address + ':8080/engine-rest', 'fnv06bench', self.credentials['admin'])
         directory = self.output / 'cleanup'; directory.mkdir()
-        api = Recorder(engine, directory); summary = read(self.output / 'summary.json')
+        api = self.cleanup_recorder(engine, directory); summary = read(self.output / 'summary.json')
         for endpoint, owned in (('/batch', summary['owned_batch_ids']),
                                 ('/process-instance', summary['owned_process_ids'])):
-            population = api.get(endpoint + '?maxResults=1000')['response']
+            population = api.collection(endpoint)['rows'] if hasattr(api, 'collection') else api.get(endpoint + '?maxResults=1000')['response']
             assert len(population) == api.get(endpoint + '/count')['response']['count']
             assert {r['id'] for r in population} <= set(owned), 'Unexpected cleanup owner'
             for row in population:

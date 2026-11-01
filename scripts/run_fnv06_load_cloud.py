@@ -50,11 +50,18 @@ class LoadCell(Cell):
     def job_mounts(self):
         return ['--mount', 'type=bind,src=' + str(self.stage / 'generator/k6') + ',dst=/run/k6,readonly']
 
+    def cleanup_recorder(self, engine, directory):
+        if self.meta.get('qualification_protocol', 'small') == 'scale':
+            from benchlib.fnv06_pagination import PaginatedRecorder
+            return PaginatedRecorder(engine, directory)
+        return super().cleanup_recorder(engine, directory)
+
 
 def job():
     from benchlib.fluxnova import FluxnovaClient
     from benchlib.fnv06_cloud import require_stage
     from benchlib.fnv06_functional import Recorder
+    from benchlib.fnv06_pagination import PaginatedRecorder
     from benchlib.fnv06_load_qualification import exercise
     source, output = Path('/source'), Path('/evidence')
     meta, inventory = read('/run/identity.json'), read('/run/source-manifest.json')
@@ -69,20 +76,21 @@ def job():
     assert sha(Path('/run/k6')) == generator['executable_sha256']
     assert subprocess.check_output(['/run/k6', 'version'], text=True, timeout=10).strip() == generator['version']
     save(output / 'generator-check.json', generator)
-    protocol = read(output / 'inputs/workloads/fnv06/load-qualification.json')
+    mode=meta.get('qualification_protocol', 'small');assert mode in ('small','scale')
+    protocol = read(output / 'inputs/workloads/fnv06' / ('scale-qualification.json' if mode=='scale' else 'load-qualification.json'))
     url, user = 'http://engine:8080/engine-rest', 'fnv06bench'
     scope = 'OCI PostgreSQL driver and observer qualification; no performance or capacity claim.'
-    manifest = {'study_id': 'FNV-06-LQ', 'scope': scope, 'run_id': meta['run_id'], 'runtime': runtime,
+    manifest = {'study_id': protocol['study_id'], 'scope': scope, 'run_id': meta['run_id'], 'runtime': runtime,
         'database': 'OCI managed PostgreSQL', 'generator': generator, 'engine_url': url,
-        'functional_batch_wait_timeout_s': 120, 'batch_poll_interval_s': .5,
+        'functional_batch_wait_timeout_s': protocol['batch_terminal_timeout_s'], 'batch_poll_interval_s': .5,
         'source_sha256': inventory['files'], 'source_commit': meta['source_commit'],
         'model_calls': 0, 'cloud_resources_accessed': True, 'performance_comparison_complete': False}
     save(output / 'manifest.json', manifest)
-    summary = {'study_id': 'FNV-06-LQ', 'scope': scope, 'run_id': meta['run_id'], 'status': 'running',
+    summary = {'study_id': protocol['study_id'], 'scope': scope, 'run_id': meta['run_id'], 'status': 'running',
         'cases_collected': [], 'owned_process_ids': [], 'owned_batch_ids': [], 'model_calls': 0,
         'cloud_resources_accessed': True, 'performance_comparison_complete': False,
         'owned_engine_stopped': False, 'cleanup_errors': []}
-    class BoundedRecorder(Recorder):
+    class BoundedRecorder(PaginatedRecorder if mode=='scale' else Recorder):
         def call(self, *args, **kwargs):
             require_stage(meta, meta['stage'])
             return super().call(*args, **kwargs)

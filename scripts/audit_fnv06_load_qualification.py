@@ -33,7 +33,8 @@ def expected_requests(spec, processes, prefix):
 
 
 def check_driver(fixture, actions, summary, *, expected, engine_url, max_first_lag_ms=1000):
-    assert fixture['requests']==expected and fixture['study_id']=='FNV-06-LQ'
+    assert fixture['requests']==expected and fixture['study_id'] in ('FNV-06-LQ','FNV-06-LQ-SCALE')
+    assert fixture['population'] in ([1,4,16] if fixture['study_id']=='FNV-06-LQ' else [10,100,1000])
     assert fixture['vus']==(min(4,fixture['population']) if fixture['kind']=='message' else 1)
     assert summary['engine_url']==engine_url and summary['run_id']==fixture['run_id']
     assert summary['observation_id']==fixture['observation_id'] and summary['fixed_vus']==fixture['vus']
@@ -56,7 +57,7 @@ def check_driver(fixture, actions, summary, *, expected, engine_url, max_first_l
             'http_ack_max_ms':max(r['elapsed_ms'] for r in actions),'first_dispatch_lag_ms':first-release}
 
 
-def check_observer(observer, requests, *, population, definition_id, release_epoch_ms, first_action_ms):
+def check_observer(observer, requests, *, population, definition_id, release_epoch_ms, first_action_ms, limit_s=30):
     assert observer['exit_code']==0 and observer['owned_generator_stopped'] is True
     assert observer['release_epoch_ms']==release_epoch_ms
     path='/history/process-instance/count?processDefinitionId='+definition_id+'&finished=true'
@@ -75,7 +76,7 @@ def check_observer(observer, requests, *, population, definition_id, release_epo
     assert observer['polls'][0]['count']==0 and epoch(requests[indices[0]]['finished_at'])<first_action_ms
     assert observer['polls'][-1]['count']==population and all(p['count']<population for p in observer['polls'][:-1])
     lower=observer['polls'][-2]['start_elapsed_s'];upper=observer['polls'][-1]['finish_elapsed_s']
-    assert lower<=upper and 0<=upper<=30
+    assert lower<=upper and 0<=upper<=limit_s
     return {'all_recipients_completion_interval_s':[max(0,lower),upper],
             'completion_observed_s':upper,'completion_poll_requests':len(indices)}
 
@@ -86,8 +87,11 @@ def audit(folder):
     assert actual==set(seal['files'])
     for name,digest in seal['files'].items():
         p=folder/name;assert p.resolve().is_relative_to(folder) and not p.is_symlink() and sha(p)==digest
-    manifest=read(folder/'manifest.json');summary=read(folder/'summary.json');protocol=read(folder/'inputs/workloads/fnv06/load-qualification.json')
-    assert manifest['study_id']==summary['study_id']==protocol['study_id']=='FNV-06-LQ'
+    manifest=read(folder/'manifest.json');summary=read(folder/'summary.json')
+    study=manifest['study_id'];assert study in ('FNV-06-LQ','FNV-06-LQ-SCALE')
+    scaled=study=='FNV-06-LQ-SCALE'
+    protocol=read(folder/'inputs/workloads/fnv06'/('scale-qualification.json' if scaled else 'load-qualification.json'))
+    assert study==summary['study_id']==protocol['study_id']
     assert manifest['run_id']==summary['run_id'] and summary['status']=='collected_pending_independent_audit'
     assert summary['owned_engine_stopped'] and not summary['cleanup_errors']
     assert type(manifest['cloud_resources_accessed']) is bool
@@ -97,6 +101,7 @@ def audit(folder):
     if cloud:
         from scripts.audit_fnv06_cloud import check_runtime,check_database,instant
         identity=read(folder/'identity.json');runtime=read(folder/'runtime.json')
+        assert identity.get('qualification_protocol','small')==('scale' if scaled else 'small')
         window=check_runtime(manifest,summary,identity,runtime,read(folder/'isolation.json'),
             read(folder/'engine-closeout.json'),read(folder/'source-manifest.json'),runtime_script='scripts/run_fnv06_load_cloud.py')
         assert read(folder/'engine-version.json')==runtime['engine']
@@ -110,11 +115,13 @@ def audit(folder):
     assert 'v2.3.0' in manifest['generator']['version']
     assert manifest['generator']['archive_sha256'] in ('112276d495e5741c968e2bc09ea6196099c1275bd6db9ee0875d173c7148ce43','39c3117b6af817592dcd0ce4242105c0a7af10948c2a425306f0be8f7a8a8ab1')
     for name,digest in manifest['source_sha256'].items():assert sha(folder/'inputs'/name)==digest
-    fixed=[{'id':prefix+str(n).zfill(3),'kind':kind,'population':n} for n in (1,4,16) for prefix,kind in [('M','message'),('S','signal'),('B','batch')]]
+    populations=(10,100,1000) if scaled else (1,4,16)
+    fixed=[{'id':prefix+str(n).zfill(3),'kind':kind,'population':n} for n in populations for prefix,kind in [('M','message'),('S','signal'),('B','batch')]]
     assert protocol['observations']==fixed and summary['cases_collected']==[r['id'] for r in fixed]
-    assert protocol['population_sizes']==[1,4,16] and protocol['message_client_ceiling']==4 and protocol['controls_per_observation']==2
+    assert protocol['population_sizes']==list(populations) and protocol['message_client_ceiling']==4 and protocol['controls_per_observation']==2
     assert protocol['release_lead_ms']==3000 and protocol['maximum_first_dispatch_lag_ms']==1000 and protocol['completion_poll_ms']==100
-    assert protocol['completion_timeout_s']==30 and protocol['batch_terminal_timeout_s']==120
+    assert protocol['completion_timeout_s']==(120 if scaled else 30) and protocol['batch_terminal_timeout_s']==(240 if scaled else 120)
+    assert manifest['functional_batch_wait_timeout_s']==protocol['batch_terminal_timeout_s'] and manifest['batch_poll_interval_s']==.5
     requests=[json.loads(l) for l in (folder/'requests.ndjson').read_text().splitlines()]
     assert all(r['index']==i and r['status'] is not None and r['elapsed_s']>=0 for i,r in enumerate(requests))
     baseline=inventory(read(folder/'baseline.json'),requests)
@@ -141,7 +148,7 @@ def audit(folder):
                 'completed':False,'delivered':False,'suspended':False}
         check_snapshot(record['before'],expected,requests,jobs,batches)
         fixture=read(directory/'driver-input.json');actions=read(directory/'actions.json');k6=read(directory/'k6-summary.json')
-        assert fixture['run_id']==manifest['run_id'] and fixture['observation_id']==case_id and fixture['kind']==spec['kind'] and fixture['population']==spec['population']
+        assert fixture['study_id']==study and fixture['run_id']==manifest['run_id'] and fixture['observation_id']==case_id and fixture['kind']==spec['kind'] and fixture['population']==spec['population']
         assert k6['fixture_sha256']==sha(directory/'driver-input.json')
         logged=[]
         for line in (directory/'k6.log').read_text().splitlines():
@@ -167,7 +174,7 @@ def audit(folder):
         definition=record['processes'][aliases[0]]['definition']['id']
         observer=read(directory/'observer.json')
         observed=check_observer(observer,requests,population=spec['population'],definition_id=definition,
-                                release_epoch_ms=fixture['release_epoch_ms'],first_action_ms=first)
+                                release_epoch_ms=fixture['release_epoch_ms'],first_action_ms=first,limit_s=120 if scaled else 30)
         assert min(p['request_index'] for p in observer['polls'])>before_end
         for alias in aliases[:-2]:
             pid=record['processes'][alias]['id'];expected[pid].update(completed=True,delivered=True)
@@ -183,7 +190,8 @@ def audit(folder):
         diagnostics.append({'id':case_id,'kind':spec['kind'],'population':spec['population'],
                             'planned_actions':len(intended),'diagnostic_only':True,**timing})
     before_cleanup=check_snapshot(read(folder/'before-cleanup.json'),expected,requests,jobs,batches)
-    assert set(summary['owned_process_ids'])==set(expected) and len(expected)==81 and len(summary['owned_process_ids'])==81
+    total=3*sum(populations)+18
+    assert set(summary['owned_process_ids'])==set(expected) and len(expected)==total and len(summary['owned_process_ids'])==total
     assert summary['owned_batch_ids']==batches and len(batches)==3
     waiting={pid for pid,e in expected.items() if not e['completed']}
     cleanup_requests=requests;database_audit=None
@@ -207,16 +215,17 @@ def audit(folder):
         last=[r for r in cleanup_requests if r['method']=='GET' and r['path']==path+'/count'][-1]
         assert last['index']>max(r['index'] for r in deletions) and last['status']==200 and last['response']=={'count':0}
     assert all(sha(folder/name)==digest for name,digest in seal['files'].items())
-    return {'study_id':'FNV-06-LQ','status':'passed','scope':manifest['scope'],
+    return {'study_id':study,'status':'passed','scope':manifest['scope'],
         'source_checksums_sha256':sha(folder/'checksums.json'),'auditor_sha256':sha(Path(__file__)),
         'shared_state_auditor_sha256':sha(Path(__file__).with_name('audit_fnv06_functional.py')),
         'sealed_files_verified':len(actual),'observations':9,'native_k6_actions':sum(r['planned_actions'] for r in diagnostics),
-        'workflow_instances':81,'expected_completions':63,'unchanged_waiting_controls':18,'asynchronous_batches':3,
+        'workflow_instances':total,'expected_completions':3*sum(populations),'unchanged_waiting_controls':18,'asynchronous_batches':3,
         'unintended_transitions':0,'owned_engine_stopped':True,'cloud_resources_accessed':cloud,
         'model_calls':0,'performance_comparison_complete':False,'diagnostics':diagnostics,
         'database_audit':database_audit,
         'cloud_auditor_sha256':sha(Path(__file__).with_name('audit_fnv06_cloud.py')) if cloud else None,
-        'evidence_boundary':('Real k6, original inputs, REST inventories, completion observations and independent final SQL reconciliation. Small-population driver qualification; no capacity or speedup claim.' if cloud else
+        'evidence_boundary':('Complete paginated REST inventories and batch job logs, real k6 and recipient observations; independent final SQL reconciliation is required for cloud runs. Fixed-population qualification, not a repeated performance or capacity result.' if scaled else
+            'Real k6, original inputs, REST inventories, completion observations and independent final SQL reconciliation. Small-population driver qualification; no capacity or speedup claim.' if cloud else
             'Real k6, original inputs, REST inventories and completion observations. Local small-population driver qualification; no independent SQL audit, capacity or speedup claim.')}
 
 

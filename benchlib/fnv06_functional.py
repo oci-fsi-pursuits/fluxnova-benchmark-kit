@@ -141,7 +141,10 @@ def await_batch(api, batch, timeout_s=120):
         time.sleep(.5)
     logs = []
     for definition in sorted(ids):
-        logs.append(api.get('/history/job-log?jobDefinitionId=' + definition + '&maxResults=1000'))
+        if hasattr(api, 'collection'):
+            logs.append(api.collection('/history/job-log', {'jobDefinitionId': definition}))
+        else:
+            logs.append(api.get('/history/job-log?jobDefinitionId=' + definition + '&maxResults=1000'))
     return {'observations': observations, 'final_history': history['response'][0], 'job_logs': logs}
 
 

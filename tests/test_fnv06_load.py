@@ -18,11 +18,11 @@ from scripts.audit_fnv06_load_qualification import check_driver,check_observer,e
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def driver_fixture(kind='message',population=4):
+def driver_fixture(kind='message',population=4,scale=False):
     spec={'kind':kind,'population':population}
     processes={'m'+str(i).zfill(4):{'id':'pid-'+str(i)} for i in range(population)}
     wanted=expected_requests(spec,processes,'fixture')
-    fixture={'study_id':'FNV-06-LQ','run_id':'a'*32,'observation_id':'fixture','kind':kind,
+    fixture={'study_id':'FNV-06-LQ-SCALE' if scale else 'FNV-06-LQ','run_id':'a'*32,'observation_id':'fixture','kind':kind,
              'population':population,'vus':min(4,population) if kind=='message' else 1,
              'release_epoch_ms':1000,'requests':wanted}
     actions=[{'study_id':fixture['study_id'],'run_id':fixture['run_id'],'observation_id':'fixture','index':i,
@@ -109,8 +109,8 @@ class Fnv06LoadAuditTests(unittest.TestCase):
 
 @unittest.skipUnless(os.environ.get('BENCH_TEST_K6_BINARY'),'requires an explicit real k6 executable')
 class Fnv06NativeDriverTests(unittest.TestCase):
-    def exercise(self,kind,population=4,fail=False):
-        fixture,_,_,wanted=driver_fixture(kind,population);seen=[]
+    def exercise(self,kind,population=4,fail=False,scale=False):
+        fixture,_,_,wanted=driver_fixture(kind,population,scale);seen=[]
         class Handler(BaseHTTPRequestHandler):
             def log_message(self,*_):pass
             def do_POST(self):
@@ -148,6 +148,12 @@ class Fnv06NativeDriverTests(unittest.TestCase):
     def test_real_http_failure_is_retained_and_rejected_despite_zero_exit(self):
         f,a,s,w,b=self.exercise('message',fail=True)
         with self.assertRaises(AssertionError):check_driver(f,a,s,expected=w,engine_url=b)
+
+    def test_real_large_protocol_accounts_for_one_thousand_requests_or_recipients(self):
+        for kind in ('message','signal','batch'):
+            with self.subTest(kind=kind):
+                f,a,s,w,b=self.exercise(kind,1000,scale=True)
+                check_driver(f,a,s,expected=w,engine_url=b)
 
 
 if __name__=='__main__':unittest.main()

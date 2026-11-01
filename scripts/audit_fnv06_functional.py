@@ -9,6 +9,7 @@ import math
 from pathlib import Path
 import sys
 import xml.etree.ElementTree as ET
+from urllib.parse import urlencode
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -28,11 +29,37 @@ def response(requests, index, method='GET'):
     return row['response']
 
 
+def paged_inventory(item, requests, path, parameters=None):
+    parameters=parameters or {}
+    assert item['format']=='counted-pages-v1' and item['path']==path and item['parameters']==parameters
+    assert item['page_size']==500 and type(item['count']) is int and 0<=item['count']<=100000
+    total=item['count'];rows=[];indices=[item['count_before_request']]
+    def query(base,extra=None):
+        values={**parameters,**(extra or {})}
+        return base+('?' + urlencode(values) if values else '')
+    for index in (item['count_before_request'],item['count_request']):
+        assert response(requests,index)=={'count':total} and requests[index]['path']==query(path+'/count')
+    assert len(item['list_requests'])==math.ceil(total/500)
+    for offset,index in zip(range(0,total,500),item['list_requests'],strict=True):
+        page=response(requests,index)
+        assert type(page) is list and len(page)==min(500,total-offset)
+        assert requests[index]['path']==query(path,{'firstResult':offset,'maxResults':500})
+        rows.extend(page);indices.append(index)
+    index=item['terminal_request'];indices.extend([index,item['count_request']])
+    assert response(requests,index)==[] and requests[index]['path']==query(path,{'firstResult':total,'maxResults':500})
+    assert indices==list(range(indices[0],indices[0]+len(indices)))
+    assert item['list_request']==(item['list_requests'][0] if total else item['terminal_request'])
+    assert rows==item['rows'] and len(rows)==len({r['id'] for r in rows})==total
+    return rows
+
+
 def inventory(snapshot, requests):
     assert set(snapshot['inventories'])==set(INVENTORIES)
     result={}
     for name,item in snapshot['inventories'].items():
         rows=item['rows'];assert type(rows) is list and len(rows)==item['count']
+        if item.get('format')=='counted-pages-v1':
+            result[name]=paged_inventory(item,requests,INVENTORIES[name]);continue
         assert response(requests,item['list_request'])==rows
         assert response(requests,item['count_request'])=={'count':len(rows)}
         assert requests[item['list_request']]['path']==INVENTORIES[name]+'?maxResults=1000'
@@ -142,6 +169,12 @@ def check_batch(entry, requests, members):
     assert len(batch['job_logs'])==3
     logs=[];queried=set()
     for row in batch['job_logs']:
+        if row.get('format')=='counted-pages-v1':
+            definition=row['parameters'].get('jobDefinitionId')
+            assert definition in definitions and definition not in queried;queried.add(definition)
+            entries=paged_inventory(row,requests,'/history/job-log',{'jobDefinitionId':definition})
+            assert all(r['jobDefinitionId']==definition for r in entries)
+            logs.extend(entries);continue
         assert row==requests[row['index']] and row['method']=='GET' and row['status']==200
         matching=[d for d in definitions if row['path']=='/history/job-log?jobDefinitionId='+d+'&maxResults=1000']
         assert len(matching)==1 and matching[0] not in queried;queried.add(matching[0])

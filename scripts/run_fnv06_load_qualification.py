@@ -18,6 +18,7 @@ sys.path.insert(0, str(ROOT))
 from benchlib.fluxnova import FluxnovaClient
 from benchlib.fnv06_functional import Recorder, save, sha
 from benchlib.fnv06_load_qualification import exercise
+from benchlib.fnv06_pagination import PaginatedRecorder
 from scripts.run_w02_functional import distribution_inventory
 from scripts.ci_tools import ASSETS
 
@@ -47,16 +48,18 @@ def run(args):
     generator = k6_inventory(args.k6.resolve(), args.k6_archive.resolve())
     with socket.socket() as probe: probe.bind(('127.0.0.1', args.port))
     output.mkdir(parents=True); (output/'empty-deployments').mkdir()
-    for name in SOURCES:
+    sources = [*SOURCES, 'benchlib/fnv06_pagination.py', 'workloads/fnv06/scale-qualification.json']
+    for name in sources:
         target = output/'inputs'/name; target.parent.mkdir(parents=True, exist_ok=True); target.write_bytes((ROOT/name).read_bytes())
-    corpus = json.loads((output/'inputs/workloads/fnv06/load-qualification.json').read_text())
+    corpus_name = 'scale-qualification.json' if args.scale else 'load-qualification.json'
+    corpus = json.loads((output/'inputs/workloads/fnv06'/corpus_name).read_text())
     run_id = uuid.uuid4().hex; username, password = 'fnv06local', secrets.token_urlsafe(24)
-    manifest = {'study_id':'FNV-06-LQ', 'run_id':run_id, 'scope':corpus['reporting']['claim'], 'runtime':inventory,
+    manifest = {'study_id':corpus['study_id'], 'run_id':run_id, 'scope':corpus['reporting']['claim'], 'runtime':inventory,
         'java':subprocess.run([str(java), '-version'], capture_output=True, text=True, check=True).stderr.strip(),
         'java_executable_sha256':sha(java), 'database':'fresh embedded H2', 'host_os':sys.platform,
-        'source_sha256':{name:sha(output/'inputs'/name) for name in SOURCES}, 'generator':generator,
+        'source_sha256':{name:sha(output/'inputs'/name) for name in sources}, 'generator':generator,
         'engine_url':'http://127.0.0.1:'+str(args.port)+'/engine-rest',
-        'functional_batch_wait_timeout_s':120, 'batch_poll_interval_s':.5,
+        'functional_batch_wait_timeout_s':corpus['batch_terminal_timeout_s'], 'batch_poll_interval_s':.5,
         'cloud_resources_accessed':False, 'model_calls':0, 'performance_comparison_complete':False}
     save(output/'manifest.json', manifest)
     config = output/'engine.local.yml'
@@ -90,8 +93,8 @@ spring.web.resources:
         '-Dcamunda.deploymentDir='+str(output/'empty-deployments'), '-jar', str(runtime/'internal/fluxnova-bpm-run-core.jar'),
         '--spring.config.location='+config.as_uri()]
     engine = FluxnovaClient('http://127.0.0.1:'+str(args.port)+'/engine-rest', username, password)
-    api = Recorder(engine, output)
-    summary = {'study_id':'FNV-06-LQ','run_id':run_id,'status':'running','cases_collected':[],
+    api = (PaginatedRecorder if args.scale else Recorder)(engine, output)
+    summary = {'study_id':corpus['study_id'],'run_id':run_id,'status':'running','cases_collected':[],
         'owned_process_ids':[], 'owned_batch_ids':[], 'cloud_resources_accessed':False, 'model_calls':0,
         'performance_comparison_complete':False}
     process = None; ready = False; log = (output/'engine.log').open('wb')
@@ -120,12 +123,12 @@ spring.web.resources:
             except Exception as error: cleanup_errors.append({'component':component,'error_type':type(error).__name__})
         if ready and process and process.poll() is None:
             def stop_workflows():
-                batches = api.get('/batch')['response']
+                batches = api.collection('/batch')['rows'] if args.scale else api.get('/batch')['response']
                 if not {b['id'] for b in batches} <= set(summary['owned_batch_ids']): raise RuntimeError('Unexpected batch owner')
                 for batch in batches:
                     row = api.call('DELETE','/batch/'+batch['id']+'?cascade=false')
                     if row['status'] != 204: raise RuntimeError('Owned batch cleanup failed')
-                active = api.get('/process-instance')['response']
+                active = api.collection('/process-instance')['rows'] if args.scale else api.get('/process-instance')['response']
                 if not {p['id'] for p in active} <= set(summary['owned_process_ids']): raise RuntimeError('Unexpected process owner')
                 for item in active:
                     row = api.call('DELETE','/process-instance/'+item['id']+'?deleteReason=fnv06-owned-cleanup')
@@ -159,6 +162,7 @@ def main():
     p.add_argument('--runtime', type=Path, default=ROOT/'.tools/fluxnova-3.0.1')
     p.add_argument('--java', type=Path, default=ROOT/'.tools/java21/jdk-21.0.12.1+1-jre/bin/java.exe')
     p.add_argument('--port', type=int, default=29380)
+    p.add_argument('--scale', action='store_true', help='Qualify fixed populations 10/100/1000 with counted pagination; no performance claim.')
     asset = ASSETS[platform.system()]
     p.add_argument('--k6', type=Path, default=ROOT/'.tools/ci'/asset[2])
     p.add_argument('--k6-archive', type=Path, default=ROOT/'.tools/ci'/asset[0])

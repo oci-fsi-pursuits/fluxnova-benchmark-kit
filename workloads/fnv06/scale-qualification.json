@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "study_id": "FNV-06-LQ-SCALE",
+  "purpose": "Qualify complete inventories, job logs and recipient accounting at the proposed larger populations before repeated performance measurements.",
+  "engine_release": "3.0.1",
+  "population_sizes": [10, 100, 1000],
+  "controls_per_observation": 2,
+  "message_client_ceiling": 4,
+  "release_lead_ms": 3000,
+  "maximum_first_dispatch_lag_ms": 1000,
+  "completion_poll_ms": 100,
+  "completion_timeout_s": 120,
+  "batch_terminal_timeout_s": 240,
+  "observations": [
+    {"id": "M010", "kind": "message", "population": 10},
+    {"id": "S010", "kind": "signal", "population": 10},
+    {"id": "B010", "kind": "batch", "population": 10},
+    {"id": "M100", "kind": "message", "population": 100},
+    {"id": "S100", "kind": "signal", "population": 100},
+    {"id": "B100", "kind": "batch", "population": 100},
+    {"id": "M1000", "kind": "message", "population": 1000},
+    {"id": "S1000", "kind": "signal", "population": 1000},
+    {"id": "B1000", "kind": "batch", "population": 1000}
+  ],
+  "reporting": {
+    "claim": "Larger-population driver and evidence qualification only; timings are diagnostic, not performance or capacity evidence.",
+    "separate_clocks": ["HTTP acknowledgment", "all intended recipients observed complete", "asynchronous batch terminal bookkeeping"],
+    "inventory_rule": "Count before, fetch every 500-row page, require an empty terminal page, count again, reject duplicated IDs or any count change. Retain every raw response. These REST inventories are collected while workload mutation is stopped; SQL reconciliation is a separate cloud gate.",
+    "failure_rule": "Retain all attempts, transport and HTTP failures, missing recipients, changed controls and incomplete batch jobs. No mutation is retried.",
+    "limit_rule": "The 120-second recipient and 240-second batch-terminal limits are fixed before this qualification. They are not production service levels or changes to the earlier small qualification."
+  },
+  "subsequent_performance_gate": {
+    "population_sizes": [10, 100, 1000],
+    "repetitions_per_cell": 5,
+    "required_before_execution": ["verified fresh equivalent state per cell", "counterbalanced population order", "declared warmup", "generator headroom", "resource telemetry", "fixed deadline and drain", "isolated PostgreSQL scale qualification", "fresh bounded cost reservation"],
+    "no_automatic_performance_campaign": true
+  }
+}

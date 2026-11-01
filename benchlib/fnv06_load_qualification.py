@@ -70,8 +70,9 @@ def run_driver(api, folder, fixture, k6, script, protocol, definition_id, *, bou
 
 def exercise(api, protocol, run_id, username, summary, k6, *, bound=lambda: None):
     output = api.output
-    if protocol['study_id'] != 'FNV-06-LQ' or protocol['population_sizes'] != [1,4,16]:
-        raise ValueError('Only the fixed small qualification protocol is supported')
+    populations = {'FNV-06-LQ': [1,4,16], 'FNV-06-LQ-SCALE': [10,100,1000]}
+    if protocol['study_id'] not in populations or protocol['population_sizes'] != populations[protocol['study_id']]:
+        raise ValueError('Only the fixed qualification protocols are supported')
     (output/'models').mkdir(); (output/'observations').mkdir()
     save(output/'baseline.json', api.snapshot())
     for spec in protocol['observations']:
@@ -106,7 +107,7 @@ def exercise(api, protocol, run_id, username, summary, k6, *, bound=lambda: None
         elif spec['kind']=='signal': requests = [{'path':'/signal','body':{'name':prefix+'-event-match','variables':variables}}]
         else: requests = [{'path':'/process-instance/message-async','body':{'messageName':prefix+'-event-match',
                 'processInstanceIds':members,'variables':variables}}]
-        fixture = {'study_id':'FNV-06-LQ','run_id':run_id,'observation_id':case_id,'kind':spec['kind'],
+        fixture = {'study_id':protocol['study_id'],'run_id':run_id,'observation_id':case_id,'kind':spec['kind'],
             'population':spec['population'],'vus':min(4,spec['population']) if spec['kind']=='message' else 1,'requests':requests}
         try:
             actions = run_driver(api,folder,fixture,k6,output/'inputs/load/fnv06_events.js',protocol,
