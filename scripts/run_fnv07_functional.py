@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from benchlib.fluxnova import FluxnovaClient
 from benchlib.fnv06_functional import Recorder, save
-from benchlib.fnv07_functional import collect, snapshot
+from benchlib.fnv07_functional import collect, snapshot, ProbeClient
 from scripts.run_w02_functional import distribution_inventory
 from services.cluster_probe import ProbeStore, make_server
 
@@ -52,11 +52,16 @@ def run(args):
     (output / 'userlib').mkdir()
     (output / 'userlib/fnv07-delegate.jar').write_bytes((build / 'fnv07-delegate.jar').read_bytes())
     save(output / 'delegate-build.json', receipt)
-    for name in SOURCES:
+    timing = getattr(args, 'timing_qualification', False)
+    sources = SOURCES + (('benchlib/fnv07_load.py', 'workloads/fnv07/load-qualification.json') if timing else ())
+    collector = collect
+    if timing:
+        from benchlib.fnv07_load import collect as collector
+    for name in sources:
         target = output / 'inputs' / name
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((ROOT / name).read_bytes())
-    corpus = json.loads((output / 'inputs/workloads/fnv07/cases.json').read_text())
+    corpus = json.loads((output / ('inputs/workloads/fnv07/load-qualification.json' if timing else 'inputs/workloads/fnv07/cases.json')).read_text())
     run_id = uuid.uuid4().hex
     user, password = 'fnv07local', secrets.token_urlsafe(24)
     admin_token, execution_token = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
@@ -102,18 +107,25 @@ spring.datasource:
 spring.web.resources:
   static-locations: NULL
 ''', encoding='utf-8')
-    save(output / 'manifest.json', {
-        'study_id': 'FNV-07-FUNCTIONAL-1', 'run_id': run_id, 'runtime': inventory,
+    manifest = {
+        'study_id': corpus['study_id'], 'run_id': run_id, 'runtime': inventory,
         'java_version': subprocess.run([str(java), '-version'], capture_output=True, text=True, check=True).stderr.strip(),
         'java_executable_sha256': sha(java), 'delegate_sha256': receipt['artifact_sha256'],
-        'source_sha256': {name: sha(output / 'inputs' / name) for name in SOURCES},
+        'source_sha256': {name: sha(output / 'inputs' / name) for name in sources},
         'database': 'fresh embedded H2', 'nodes': ['n1'], 'http_timeout_s': 10,
         'intended_cases': 6, 'expected_completed_instances': 3, 'expected_blocked_instances': 2,
         'expected_waiting_controls': 1, 'expected_external_effects': 12,
         'cloud_resources_accessed': False, 'performance_comparison_complete': False,
         'engine_sql_reconciled': False,
         'scope': 'Single-engine local functional qualification; no PostgreSQL, cluster, capacity or exactly-once network guarantee.',
-    })
+    }
+    if timing:
+        manifest.update(intended_cases=corpus['rate_per_s'] * corpus['arrival_seconds'], qualification_only=True,
+                        expected_completed_instances=corpus['rate_per_s'] * corpus['arrival_seconds'],
+                        expected_blocked_instances=0, expected_waiting_controls=0,
+                        expected_external_effects=3 * corpus['rate_per_s'] * corpus['arrival_seconds'],
+                        scope='One local H2 engine, fixed-arrival timing qualification. No resource, cluster, capacity or performance-comparison claim.')
+    save(output / 'manifest.json', manifest)
     command = [str(java), '-Xms256m', '-Xmx1024m', '-Duser.timezone=UTC', '-Djdk.httpclient.disableRetryConnect=true',
         '-Dloader.path=' + ','.join(str(p) for p in [runtime / 'internal/rest', runtime / 'internal/webapps', runtime / 'configuration/userlib', output / 'userlib']),
         '-Dcamunda.deploymentDir=' + str(output / 'empty-deployments'),
@@ -121,7 +133,7 @@ spring.web.resources:
     env = dict(os.environ, FNV07_NODE_ID='n1', FNV07_PROBE_URL=f'http://127.0.0.1:{server.server_port}', FNV07_EXECUTE_TOKEN=execution_token)
     engine = FluxnovaClient(f'http://127.0.0.1:{args.port}/engine-rest', user, password)
     api = Recorder(engine, output)
-    summary = {'study_id': 'FNV-07-FUNCTIONAL-1', 'run_id': run_id, 'status': 'started', 'instances': []}
+    summary = {'study_id': corpus['study_id'], 'run_id': run_id, 'status': 'started', 'instances': []}
     process, ready, failure = None, False, None
     with (output / 'engine-n1.log').open('wb') as log:
         try:
@@ -142,7 +154,8 @@ spring.web.resources:
                 raise RuntimeError('Wrong pinned engine release')
             save(output / 'engine-version.json', version)
             ready = True
-            collect(api, store, corpus, output / 'inputs/workloads/fnv07/cluster-jobs.bpmn', output, run_id, summary)
+            probe = ProbeClient(f'http://127.0.0.1:{server.server_port}', admin_token) if timing else store
+            collector(api, probe, corpus, output / 'inputs/workloads/fnv07/cluster-jobs.bpmn', output, run_id, summary)
         except BaseException as error:
             summary.update(status='failed', error_type=type(error).__name__, reason=str(error)[:300])
             if ready:
@@ -171,7 +184,8 @@ spring.web.resources:
     sealed = [p for p in output.rglob('*') if p.is_file() and (p.name in {
         'manifest.json', 'delegate-build.json', 'collection.json', 'requests.ndjson', 'engine-n1.log',
         'engine-version.json', 'initial-snapshot.json', 'initial-probe.json', 'final-snapshot.json',
-        'final-probe.json', 'failure-snapshot.json', 'failure-probe.json', 'probe-snapshot.sqlite', 'fnv07-delegate.jar'} or 'inputs' in p.relative_to(output).parts)]
+        'final-probe.json', 'failure-snapshot.json', 'failure-probe.json', 'probe-snapshot.sqlite', 'fnv07-delegate.jar',
+        'load-plan.json', 'load-collection.json', 'load-requests.ndjson'} or 'inputs' in p.relative_to(output).parts)]
     save(output / 'checksums.json', {'files': {p.relative_to(output).as_posix(): sha(p) for p in sealed}})
     if failure is not None:
         raise failure
@@ -183,4 +197,6 @@ if __name__ == '__main__':
     for name in ('runtime', 'java', 'build', 'output'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--port', type=int, default=18978)
+    parser.add_argument('--timing-qualification', action='store_true',
+                        help='Run the bounded normal-case open-loop timing qualification instead of the six fault cases.')
     run(parser.parse_args())

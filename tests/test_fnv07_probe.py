@@ -113,6 +113,21 @@ class ProbeTests(unittest.TestCase):
         other.register('case-fixture', 'process-fixture', 'business-fixture', case)
         self.assertEqual(other.execute(self.request(case))[0], 403)
 
+    def test_case_observation_is_durable_scoped_and_has_no_growing_attempt_ledger(self):
+        case = self.case()
+        for stage in ('stage1', 'stage2', 'stage3'):
+            self.store.execute(self.request(case, stage))
+        other = {'id': 'other', 'mode': 'normal'}
+        self.store.register('other', 'other-process', 'other-business', other)
+        reopened = ProbeStore(self.path, 'run-fixture', ['n1', 'n2'])
+        observation = reopened.observe('case-fixture')
+        self.assertEqual(set(observation), {'case', 'effects'})
+        self.assertEqual(observation['case']['input_sha256'], fingerprint(case))
+        self.assertEqual([e['stage'] for e in observation['effects']], ['stage1', 'stage2', 'stage3'])
+        self.assertEqual(reopened.observe('missing'), {'case': None, 'effects': []})
+        with self.assertRaises(ValueError):
+            reopened.observe("'; SELECT * FROM cases")
+
     def test_execution_token_cannot_register_new_authority(self):
         server = make_server(self.store, admin_token='admin-fixture', execute_token='execute-fixture')
         worker = threading.Thread(target=server.serve_forever, daemon=True)
@@ -140,6 +155,16 @@ class ProbeTests(unittest.TestCase):
                 ProbeClient(base, 'execute-fixture').snapshot()
             self.assertEqual(rejected.exception.code, 403)
             self.assertEqual(ProbeClient(base, 'admin-fixture').snapshot(), self.store.snapshot())
+            case = self.case()
+            for stage in ('stage1', 'stage2', 'stage3'):
+                self.store.execute(self.request(case, stage))
+            with self.assertRaises(urllib.error.HTTPError) as rejected:
+                ProbeClient(base, 'execute-fixture').call('/observe', {'case_key': 'case-fixture'})
+            self.assertEqual(rejected.exception.code, 403)
+            self.assertEqual(ProbeClient(base, 'admin-fixture').call('/observe', {'case_key': 'case-fixture'}), self.store.observe('case-fixture'))
+            with self.assertRaises(urllib.error.HTTPError) as malformed:
+                ProbeClient(base, 'admin-fixture').call('/observe', {'case_key': 'case-fixture', 'all': True})
+            self.assertEqual(malformed.exception.code, 400)
         finally:
             server.shutdown()
             server.server_close()

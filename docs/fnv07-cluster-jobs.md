@@ -52,6 +52,8 @@ The runner binds to loopback, creates temporary credentials and a fresh database
 
 ## What remains before the performance comparison
 
+The [local fixed-arrival timing qualification](fnv07-timing.md) now verifies the normal-case driver and original-clock observations. All 20 scheduled workflows reconciled with 60 receipts and successful jobs. This is separate from the six fault cases and from the proposed 20 measured scaling cells.
+
 The original FNV-07 question is a fixed-arrival comparison of 1, 2, 3 and 6 engine replicas. That measured campaign has not started. It still needs qualified multi-engine deployment and cleanup, declared host placement and resources, a separate offered-load pilot, verified generator/database headroom, and a frozen repeat matrix. Per-engine resources remain fixed while total engine resources increase. Fixed offered load alone cannot establish maximum capacity or linear scaling.
 
 Node-loss recovery, managed-database behavior and production payment safety require their own evidence. They are not inferred from this functional corpus.

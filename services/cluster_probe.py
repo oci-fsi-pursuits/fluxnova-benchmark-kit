@@ -156,6 +156,21 @@ class ProbeStore:
                     for table, order in [('metadata', 'key'), ('nodes', 'node_id'), ('cases', 'case_key'),
                                          ('effects', 'case_key,stage'), ('attempts', 'seq')]}
 
+    def observe(self, case_key):
+        """Read one committed case and its at-most-three effects in one snapshot.
+
+        This endpoint deliberately does not return the growing attempt ledger.
+        A receipt alone does not establish engine completion; the observer must
+        also reconcile the original process and its final engine variables.
+        """
+        if not identifier(case_key):
+            raise ValueError('invalid_case_key')
+        with self.connect() as db:
+            db.execute('BEGIN')
+            row = db.execute('SELECT * FROM cases WHERE case_key=?', (case_key,)).fetchone()
+            effects = db.execute('SELECT * FROM effects WHERE case_key=? ORDER BY stage', (case_key,)).fetchall()
+            return {'case': dict(row) if row is not None else None, 'effects': [dict(r) for r in effects]}
+
 
 def make_server(store, *, admin_token, execute_token, address=('127.0.0.1', 0)):
     if not admin_token or not execute_token or admin_token == execute_token:
@@ -186,13 +201,18 @@ def make_server(store, *, admin_token, execute_token, address=('127.0.0.1', 0)):
                 # Consume a bounded body before denying credentials. Unread
                 # request bytes can reset a Windows client's socket and hide 403.
                 raw = self.rfile.read(length)
-                expected = admin_token if self.path in ('/register', '/snapshot') else execute_token
+                expected = admin_token if self.path in ('/register', '/snapshot', '/observe') else execute_token
                 if not hmac.compare_digest(self.headers.get('X-Fnv07-Token', ''), expected):
                     return self.reply(403, {'error': 'unauthorized'})
                 if self.path == '/snapshot':
                     if json.loads(raw) != {}:
                         raise ValueError('invalid_snapshot_request')
                     return self.reply(200, store.snapshot())
+                if self.path == '/observe':
+                    body = json.loads(raw)
+                    if not isinstance(body, dict) or set(body) != {'case_key'}:
+                        raise ValueError('invalid_observation_request')
+                    return self.reply(200, store.observe(body['case_key']))
                 if self.path == '/register':
                     body = json.loads(raw)
                     if set(body) != {'case_key', 'process_id', 'business_key', 'case'}:

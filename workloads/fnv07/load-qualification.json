@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "study_id": "FNV-07-TIMING-QUALIFICATION-1",
+  "qualification_only": true,
+  "rate_per_s": 2,
+  "arrival_seconds": 10,
+  "workers": 16,
+  "poll_seconds": 0.1,
+  "http_timeout_seconds": 5,
+  "drain_seconds": 20,
+  "maximum_dispatch_lag_seconds": 0.25,
+  "deadline_seconds": 2,
+  "case": {"id": "normal", "mode": "normal"},
+  "request_routing": "All starts and observer reads use one declared ingress engine. Job execution may occur on any registered engine.",
+  "primary_clock": "One generator monotonic clock, scheduled arrival through the last response needed to verify the original process, final variables and three independently committed receipts.",
+  "arrival_policy": "Fixed absolute schedule. No queued catch-up, no mutation retries. Record a missed arrival if dispatch is late or all workers are occupied. Keep every scheduled arrival in the denominator.",
+  "scope": "Small normal-case driver and timing qualification only. No warmup, resource-headroom, capacity, scale-out or performance-comparison claim. This is not the measured campaign protocol."
+}
