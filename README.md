@@ -38,7 +38,7 @@ Imagine you build a payment workflow and want to know whether a change helps. Th
 
 An **endurance run** holds one configuration and request rate steady for hours. It checks whether correctness, response times, queues, memory, storage and telemetry remain healthy as work accumulates. Its results need a final outcome audit and a review of resource growth before acceptance.
 
-The separate [FNV-06 event and batch qualification](docs/fnv06-events-and-batches.md) checks who receives messages, signals and bulk changes. Twelve case families passed across 42 workflow instances both locally and in a separate [OCI/PostgreSQL qualification](validation/oci-20261101-fnv06/README.md), including a read-only SQL cross-check. Performance measurements remain open.
+The separate [FNV-06 event and batch qualification](docs/fnv06-events-and-batches.md) checks who receives messages, signals and bulk changes. Twelve case families passed across 42 workflow instances both locally and in a separate [OCI/PostgreSQL qualification](validation/oci-20261101-fnv06/README.md), including a read-only SQL cross-check. The [45-cell population campaign](validation/oci-20261101-fnv06-campaign/README.md) completed all 45 planned cells with verified final outcomes and resource evidence; 2 cells did not pass the predeclared generator headroom gate. Affected timing comparisons remain flagged rather than replaced. The results compare populations within each delivery pattern and preserve request failures, deadline uncertainty and batch bookkeeping separately.
 
 ## Three changes you can see
 

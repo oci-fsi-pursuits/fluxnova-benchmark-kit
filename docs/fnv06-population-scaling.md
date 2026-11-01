@@ -1,8 +1,10 @@
 # FNV-06: what happens when more workflows need the same update?
 
-Imagine ten payments waiting for a status update. Now imagine one hundred, then one thousand. The next comparison asks how long it takes to finish the intended work at each size while the machine and client settings stay fixed.
+Imagine ten payments waiting for a status update. Now imagine one hundred, then one thousand. This comparison asks how long it takes to finish the intended work at each size while the machine and client settings stay fixed.
 
 We analyze three patterns separately: individual keyed messages, one broadcast signal, and one asynchronous message batch. They have different routing semantics. A fast broadcast does not make it a substitute for a targeted message.
+
+The [45-cell population campaign](../validation/oci-20261101-fnv06-campaign/README.md) completed all 45 planned cells with verified final outcomes and resource evidence; 2 cells did not pass the predeclared generator headroom gate. Affected timing comparisons remain flagged rather than replaced. The results compare populations within each delivery pattern and preserve request failures, deadline uncertainty and batch bookkeeping separately.
 
 ## Qualification before the repeated comparison
 
@@ -20,7 +22,7 @@ python scripts/audit_fnv06_load_qualification.py --source dist/fnv06-scale-NEW -
 
 Use the verified engine and Java installation from the [load-driver guide](fnv06-load-driver.md). Always choose fresh output paths. The [scale qualification protocol](../workloads/fnv06/scale-qualification.json) declares 120-second recipient and 240-second batch-terminal bounds before execution. These are qualification limits, not customer service levels or revisions to the earlier small tests. HTTP requests retain their 30-second timeout.
 
-## The planned comparison is explicit
+## The declared comparison
 
 | Item | Declared design |
 | --- | --- |

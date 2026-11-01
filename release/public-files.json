@@ -82,7 +82,8 @@
     "validation/oci-20261101-fnv06-repeat",
     "validation/oci-20261101-fnv06-timeout-capture",
     "validation/oci-20261101-fnv06-outcomes",
-    "validation/oci-20261101-fnv06-telemetry"
+    "validation/oci-20261101-fnv06-telemetry",
+    "validation/oci-20261101-fnv06-campaign"
   ],
   "evidence_filenames": [
     "README.md",

@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "c1ca2b645c5fc87c6f59d8207109c0dcd59ce5a7",
+  "source_commit": "13a784aed6563874b13e457a3d4d2db9c5ec9aef",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -63,8 +63,8 @@
     },
     {
       "path": "README.md",
-      "source_sha256": "5adec5e1792b0c8cbd4c4fe305c124561c74c53a55350679e821896378535cb3",
-      "candidate_sha256": "5adec5e1792b0c8cbd4c4fe305c124561c74c53a55350679e821896378535cb3"
+      "source_sha256": "c89754c8c0efa7eb8591ce37aada4fb6eab2fda95bd200cfd2a679e4d18a8477",
+      "candidate_sha256": "c89754c8c0efa7eb8591ce37aada4fb6eab2fda95bd200cfd2a679e4d18a8477"
     },
     {
       "path": "SECURITY.md",
@@ -488,23 +488,23 @@
     },
     {
       "path": "docs/fnv06-events-and-batches.md",
-      "source_sha256": "4188ace0b7fd4b9fd766de9916d79886d70b22a34a83f2aaa1771fb3736183e1",
-      "candidate_sha256": "4188ace0b7fd4b9fd766de9916d79886d70b22a34a83f2aaa1771fb3736183e1"
+      "source_sha256": "52d588142f0861349c9e7ee044744f0264cc7e2f1c7d83587e9d28afccdebcaa",
+      "candidate_sha256": "52d588142f0861349c9e7ee044744f0264cc7e2f1c7d83587e9d28afccdebcaa"
     },
     {
       "path": "docs/fnv06-load-driver.md",
-      "source_sha256": "aa2e35cf7413ea943020fcb1ac77b42228e0f9e802793b14ac73566a48531a4f",
-      "candidate_sha256": "aa2e35cf7413ea943020fcb1ac77b42228e0f9e802793b14ac73566a48531a4f"
+      "source_sha256": "1e56a7617abb143ee55dcf658e4489c8cb7d28cfd4b7c3fed8d829c2b47e6609",
+      "candidate_sha256": "1e56a7617abb143ee55dcf658e4489c8cb7d28cfd4b7c3fed8d829c2b47e6609"
     },
     {
       "path": "docs/fnv06-population-scaling.md",
-      "source_sha256": "43631d7b6cc4e78ed8dcf29cc698a78b01cf7a622f0380e6411e39b541b656a4",
-      "candidate_sha256": "43631d7b6cc4e78ed8dcf29cc698a78b01cf7a622f0380e6411e39b541b656a4"
+      "source_sha256": "5b8a9575b3de8816a47a07906e841072a515f3c176c473447070edf5ead17dc1",
+      "candidate_sha256": "5b8a9575b3de8816a47a07906e841072a515f3c176c473447070edf5ead17dc1"
     },
     {
       "path": "docs/fnv06-repeated-cells.md",
-      "source_sha256": "17be28cde2878d8da54562bbecef22b01870e563229fd6e2bf2db861e4da67fd",
-      "candidate_sha256": "17be28cde2878d8da54562bbecef22b01870e563229fd6e2bf2db861e4da67fd"
+      "source_sha256": "3655343c109c4e21f23ec667f0895d31ca9eae79bcc905a64ba5a045a1e922e9",
+      "candidate_sha256": "3655343c109c4e21f23ec667f0895d31ca9eae79bcc905a64ba5a045a1e922e9"
     },
     {
       "path": "docs/getting-started.md",
@@ -643,13 +643,13 @@
     },
     {
       "path": "docs/workload-completion.md",
-      "source_sha256": "1e102fba649de41f9a75cee89200d5cd090e444ccc854790a200b8aef03e8080",
-      "candidate_sha256": "1e102fba649de41f9a75cee89200d5cd090e444ccc854790a200b8aef03e8080"
+      "source_sha256": "faf458493c536595e85caa3d980bd8c5207732cee5b16651e5c4fdca52850844",
+      "candidate_sha256": "faf458493c536595e85caa3d980bd8c5207732cee5b16651e5c4fdca52850844"
     },
     {
       "path": "docs/workloads.md",
-      "source_sha256": "778db01cefca9cdb13e8a58b770b3c1298efedf5910d0af5151180e52e8c6543",
-      "candidate_sha256": "4bd5736a80ca445c937f3e9efc1e2c6dcaea32cbb0a98517078aacf9ebcbc63c"
+      "source_sha256": "f5e2d4dd957bd49ad55f83f2f8940f43304d9b1acd38b5042a3e4e9e3d2b5aa6",
+      "candidate_sha256": "2b0e180da9baa2fb15cbbb3a1558de0fd61b8acaaa3165f79178a23063312327"
     },
     {
       "path": "infra/oci-evidence/.terraform.lock.hcl",
@@ -753,8 +753,8 @@
     },
     {
       "path": "release/public-files.json",
-      "source_sha256": "7f3a978d186cdac10dae300032bd78542b5d320e4b74f29407622c10bd7e8ca2",
-      "candidate_sha256": "7f3a978d186cdac10dae300032bd78542b5d320e4b74f29407622c10bd7e8ca2"
+      "source_sha256": "28207b9035df355275485bdfaa1f28dc24c21afe1ecca3ee8ccf341b5724cecd",
+      "candidate_sha256": "28207b9035df355275485bdfaa1f28dc24c21afe1ecca3ee8ccf341b5724cecd"
     },
     {
       "path": "requirements-cloud.txt",
@@ -1892,6 +1892,16 @@
       "candidate_sha256": "7e3974894148f04442fe827dc0ed3a13759f3c51377077c69c4724611f006ea4"
     },
     {
+      "path": "validation/oci-20261101-fnv06-campaign/README.md",
+      "source_sha256": "48b7e106d4c0bca4947497943724604fc3b6c8677522c6c10c8ea13a1cbd3b72",
+      "candidate_sha256": "48b7e106d4c0bca4947497943724604fc3b6c8677522c6c10c8ea13a1cbd3b72"
+    },
+    {
+      "path": "validation/oci-20261101-fnv06-campaign/summary.json",
+      "source_sha256": "ca45d0b42a7a411648113eaea7e18d344a47e3e29c67cb8588c12de22a65b48c",
+      "candidate_sha256": "ca45d0b42a7a411648113eaea7e18d344a47e3e29c67cb8588c12de22a65b48c"
+    },
+    {
       "path": "validation/oci-20261101-fnv06-load/README.md",
       "source_sha256": "07947f4872c8763f41e802515914f402fc0e386acb0458362f473f41f6df9f52",
       "candidate_sha256": "c12d87d6d71f127033f34db560e9769ef6ab4f8df7248c68c03d0ddc71ce1349"
@@ -1933,8 +1943,8 @@
     },
     {
       "path": "validation/oci-20261101-fnv06-telemetry/README.md",
-      "source_sha256": "3e066ad2622afd8d5398c7b9b0255d0b9929e3c401f01f91ce6b88ef59d439e2",
-      "candidate_sha256": "3e066ad2622afd8d5398c7b9b0255d0b9929e3c401f01f91ce6b88ef59d439e2"
+      "source_sha256": "c0c61de94aa7c817a3a1e9b91636b6aefc2aeff9e036e6bd1b214f47705c55e3",
+      "candidate_sha256": "c0c61de94aa7c817a3a1e9b91636b6aefc2aeff9e036e6bd1b214f47705c55e3"
     },
     {
       "path": "validation/oci-20261101-fnv06-telemetry/summary.json",
