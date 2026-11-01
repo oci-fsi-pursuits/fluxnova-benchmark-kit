@@ -33,8 +33,12 @@ def expected_requests(spec, processes, prefix):
         'processInstanceIds':[processes[a]['id'] for a in members],'variables':variables}}]
 
 
-def check_driver(fixture, actions, summary, *, expected, engine_url, max_first_lag_ms=1000, timeout_indices=()):
+def check_driver(fixture, actions, summary, *, expected, engine_url, max_first_lag_ms=1000, timeout_indices=(), account_failures=False):
     assert timeout_indices in ((),(0,1,2,3))
+    assert type(account_failures) is bool and not (account_failures and timeout_indices)
+    if account_failures:
+        from scripts.fnv06_outcome_accounting import request_result
+        assert fixture['study_id']=='FNV-06-REPEAT-QUAL' and fixture['observation_id'].endswith('M')
     if timeout_indices:
         assert fixture['study_id']=='FNV-06-REPEAT-QUAL' and fixture['observation_id']=='C01M'
         assert fixture['kind']=='message' and fixture['population']==10
@@ -48,11 +52,14 @@ def check_driver(fixture, actions, summary, *, expected, engine_url, max_first_l
     assert summary['metrics']['http_reqs']['values']['count']==len(expected)
     assert all(type(a['index']) is int for a in actions) and {a['index'] for a in actions}==set(range(len(expected)))
     release=fixture['release_epoch_ms'];status=204 if fixture['kind']=='signal' else 200
+    outcomes=[]
     for row in actions:
         assert row['study_id']==fixture['study_id'] and row['run_id']==fixture['run_id']
         assert row['observation_id']==fixture['observation_id'] and row['request']==expected[row['index']]
         assert row['scheduled_epoch_ms']==release
-        if row['index'] in timeout_indices:
+        if account_failures:
+            outcomes.append(request_result(row,status))
+        elif row['index'] in timeout_indices:
             assert row['status']==0 and row['error_code']==1050 and row['response'] is None
             assert 29900<=row['elapsed_ms']<=30100 and 0<=row['started_epoch_ms']-release<=1000
         else:assert row['status']==status and row['error_code']==0
@@ -62,15 +69,19 @@ def check_driver(fixture, actions, summary, *, expected, engine_url, max_first_l
         assert abs(row['finished_epoch_ms']-row['started_epoch_ms']-row['elapsed_ms'])<=50,'Clock disagreement'
     first=min(r['started_epoch_ms'] for r in actions)
     assert 0<=first-release<=max_first_lag_ms,'Generator missed the declared release'
-    if timeout_indices:
-        assert {r['vu'] for r in actions if r['index'] in timeout_indices}=={1,2,3,4}
+    if timeout_indices or account_failures:
+        if timeout_indices:
+            assert {r['vu'] for r in actions if r['index'] in timeout_indices}=={1,2,3,4}
         for vu in range(1,5):
             owned=sorted((r for r in actions if r['vu']==vu),key=lambda r:r['started_epoch_ms'])
             assert all(b['started_epoch_ms']>=a['finished_epoch_ms'] for a,b in zip(owned,owned[1:]))
-    acknowledged=[r for r in actions if r['index'] not in timeout_indices]
-    result={'http_ack_median_ms':statistics.median(r['elapsed_ms'] for r in acknowledged),
-            'http_ack_max_ms':max(r['elapsed_ms'] for r in acknowledged),'first_dispatch_lag_ms':first-release}
+    acknowledged=[r for i,r in enumerate(actions) if outcomes[i]=='successful'] if account_failures else [r for r in actions if r['index'] not in timeout_indices]
+    result={'http_ack_median_ms':statistics.median(r['elapsed_ms'] for r in acknowledged) if acknowledged else None,
+            'http_ack_max_ms':max(r['elapsed_ms'] for r in acknowledged) if acknowledged else None,'first_dispatch_lag_ms':first-release}
     if timeout_indices:result.update(request_timeouts=len(timeout_indices),successful_requests=len(acknowledged))
+    if account_failures:
+        counts={k:outcomes.count(k) for k in ('successful','timeout','transport_failure','http_failure')}
+        result['request_accounting']={'planned':len(expected),'observed':len(actions),**counts,'failed':len(expected)-counts['successful']}
     return result
 
 
@@ -98,7 +109,8 @@ def check_observer(observer, requests, *, population, definition_id, release_epo
             'completion_observed_s':upper,'completion_poll_requests':len(indices)}
 
 
-def audit(folder,*,timeout_control=None):
+def audit(folder,*,timeout_control=None,outcome_accounting=False):
+    assert type(outcome_accounting) is bool and not (outcome_accounting and timeout_control is not None)
     folder=folder.resolve();seal=read(folder/'checksums.json')
     actual={p.relative_to(folder).as_posix() for p in folder.rglob('*') if p.is_file() and p.name!='checksums.json'}
     assert actual==set(seal['files'])
@@ -107,6 +119,7 @@ def audit(folder,*,timeout_control=None):
     manifest=read(folder/'manifest.json');summary=read(folder/'summary.json')
     study=manifest['study_id'];assert study in ('FNV-06-LQ','FNV-06-LQ-SCALE','FNV-06-REPEAT-QUAL')
     repeat=study=='FNV-06-REPEAT-QUAL';scaled=study!='FNV-06-LQ'
+    if outcome_accounting:assert repeat
     protocol=read(folder/'inputs/workloads/fnv06'/('repeat-qualification.json' if repeat else 'scale-qualification.json' if scaled else 'load-qualification.json'))
     assert study==summary['study_id']==protocol['study_id']
     fault=None
@@ -114,7 +127,8 @@ def audit(folder,*,timeout_control=None):
         from scripts.fnv06_timeout_evidence import verify_control
         fault=verify_control(timeout_control,folder)
         assert repeat and manifest['qualification_cell']=={'id':'C01','kind':'message','population':10}
-    assert manifest['run_id']==summary['run_id'] and summary['status']==('failed' if fault else 'collected_pending_independent_audit')
+    failed=bool(fault) or (outcome_accounting and summary['status']=='failed')
+    assert manifest['run_id']==summary['run_id'] and summary['status']==('failed' if failed else 'collected_pending_independent_audit')
     assert summary['owned_engine_stopped'] and not summary['cleanup_errors']
     assert type(manifest['cloud_resources_accessed']) is bool
     cloud=manifest['cloud_resources_accessed']
@@ -127,7 +141,7 @@ def audit(folder,*,timeout_control=None):
         if repeat: assert identity['qualification_cell']==manifest['qualification_cell']
         window=check_runtime(manifest,summary,identity,runtime,read(folder/'isolation.json'),
             read(folder/'engine-closeout.json'),read(folder/'source-manifest.json'),runtime_script='scripts/run_fnv06_load_cloud.py',
-            expected_job_exit_code=1 if fault else 0)
+            expected_job_exit_code=1 if failed else 0)
         assert read(folder/'engine-version.json')==runtime['engine']
         assert manifest['engine_url']=='http://engine:8080/engine-rest'
         assert manifest['generator']==runtime['generator']==read(folder/'generator-check.json')
@@ -148,10 +162,12 @@ def audit(folder,*,timeout_control=None):
         cell=manifest['qualification_cell'];assert cell in cells
         fixed=[{'id':cell['id']+suffix,'kind':cell['kind'],'population':n} for suffix,n in [('W',100),('M',cell['population'])]]
     else: assert protocol['observations']==fixed
-    assert summary['cases_collected']==[r['id'] for r in fixed if not fault or r['id']!='C01M']
-    if fault:
+    failed_case=cell['id']+'M' if failed else None
+    assert summary['cases_collected']==[r['id'] for r in fixed if r['id']!=failed_case]
+    if failed:
         assert cloud and summary['error_type']=='RuntimeError'
-        assert summary['failed_observation']=={'id':'C01M','phase':'request_result','error_type':'RuntimeError','snapshot_available':True}
+        assert cell['kind'] in ('message','signal')
+        assert summary['failed_observation']=={'id':failed_case,'phase':'request_result','error_type':'RuntimeError','snapshot_available':True}
         assert read(folder/'failed-job-capture.json')=={'job_failed':True,'database_snapshot_available':True,'owned_workflow_cleanup_complete':True,'errors':[]}
     assert protocol['population_sizes']==list(populations) and protocol['message_client_ceiling']==4 and protocol['controls_per_observation']==2
     assert protocol['release_lead_ms']==3000 and protocol['maximum_first_dispatch_lag_ms']==1000 and protocol['completion_poll_ms']==100
@@ -195,7 +211,11 @@ def audit(folder,*,timeout_control=None):
         assert actions==logged,'Action inventory differs from native k6 log'
         intended=expected_requests(spec,record['processes'],prefix)
         timed_out=(0,1,2,3) if fault and case_id=='C01M' else ()
-        timing=check_driver(fixture,actions,k6,expected=intended,engine_url=manifest['engine_url'],timeout_indices=timed_out)
+        accounting=outcome_accounting and case_id.endswith('M')
+        timing=check_driver(fixture,actions,k6,expected=intended,engine_url=manifest['engine_url'],timeout_indices=timed_out,account_failures=accounting)
+        if outcome_accounting and case_id.endswith('M'):
+            assert bool(timing['request_accounting']['failed']) is failed
+            if failed:assert record['load_failure']==summary['failed_observation']
         if timed_out:
             assert record['load_failure']==summary['failed_observation']
             assert sha(directory/'driver-input.json')==fault['driver_input_sha256']
@@ -206,11 +226,12 @@ def audit(folder,*,timeout_control=None):
         assert epoch(requests[before_end]['finished_at'])<first
         if spec['kind']=='message':
             for action in actions:
-                if action['index'] in timed_out:continue
+                if action['index'] in timed_out or accounting and action['status']!=200:continue
                 result=action['response'];alias=aliases[action['index']]
                 assert len(result)==1 and result[0]['resultType']=='Execution'
                 assert result[0]['execution']['processInstanceId']==record['processes'][alias]['id']
-        elif spec['kind']=='signal':assert actions[0]['response'] is None
+        elif spec['kind']=='signal':
+            if not accounting or actions[0]['status']==204:assert actions[0]['response'] is None
         else:
             batch_id=check_batch({'request':actions[0],'batch':record['batch']},requests,intended[0]['body']['processInstanceIds'])
             assert batch_id not in batches;batches.append(batch_id)
@@ -241,13 +262,21 @@ def audit(folder,*,timeout_control=None):
         assert after_start>max(p['request_index'] for p in observer['polls'])
         assert epoch(requests[after_start]['started_at'])>=max(r['finished_epoch_ms'] for r in actions)
         timing.update(observed)
+        if outcome_accounting:
+            from scripts.fnv06_outcome_accounting import deadline_bounds
+            timing['deadline_accounting']=deadline_bounds(observer['polls'],spec['population'])
+            timing['verified_correct_completions']=spec['population']
+            timing['unverified_or_unfinished_completions']=0
+            if not accounting:
+                timing['request_accounting']={'planned':len(intended),'observed':len(intended),'successful':len(intended),
+                    'timeout':0,'transport_failure':0,'http_failure':0,'failed':0}
         if spec['kind']=='batch':
             last=record['batch']['observations'][-1]['history_request']
             timing['batch_terminal_observed_s']=(epoch(requests[last]['finished_at'])-fixture['release_epoch_ms'])/1000
             assert timing['batch_terminal_observed_s']>=timing['completion_observed_s']
         diagnostics.append({'id':case_id,'kind':spec['kind'],'population':spec['population'],
                             'planned_actions':len(intended),'diagnostic_only':True,**timing})
-    before_cleanup=check_snapshot(record['after'] if fault else read(folder/'before-cleanup.json'),expected,requests,jobs,batches)
+    before_cleanup=check_snapshot(record['after'] if failed else read(folder/'before-cleanup.json'),expected,requests,jobs,batches)
     total=sum(s['population']+2 for s in fixed);batch_count=sum(s['kind']=='batch' for s in fixed)
     assert set(summary['owned_process_ids'])==set(expected) and len(expected)==total and len(summary['owned_process_ids'])==total
     assert summary['owned_batch_ids']==batches and len(batches)==batch_count
@@ -295,6 +324,19 @@ def audit(folder,*,timeout_control=None):
             ordinary_qualification_passed=False,request_success=False,failure_capture_qualified=True,
             expected_request_timeouts=4,successful_native_requests=106,fault_control=fault,
             timeout_control_auditor_sha256=sha(Path(__file__).with_name('fnv06_timeout_evidence.py')))
+    if outcome_accounting:
+        from scripts.fnv06_outcome_accounting import declared_for_reset,protocol as outcome_protocol
+        declared=cloud and declared_for_reset(folder,identity,read(folder/'source-manifest.json'))
+        _,protocol_digest=outcome_protocol()
+        request_counts={k:sum(row['request_accounting'][k] for row in diagnostics) for k in diagnostics[0]['request_accounting']}
+        result.update(status='outcomes_verified_with_request_failures' if failed else 'outcomes_verified',
+            scope='Complete final outcome audit with separate request failures and conservative deadline bounds. No performance comparison.',
+            independent_outcomes_verified=True,ordinary_qualification_passed=not failed,request_success=not failed,
+            request_accounting=request_counts,reported_collector_status=summary['status'],reset_eligible=bool(declared),
+            accounting_declared_before_execution=bool(declared),retrospective_accounting=not declared,
+            accounting_protocol_sha256=protocol_digest,
+            outcome_accounting_auditor_sha256=sha(Path(__file__).with_name('fnv06_outcome_accounting.py')),
+            warmup_and_test_deadlines_separate=True,unverified_or_unfinished_completions=0)
     return result
 
 

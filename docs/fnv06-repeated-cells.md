@@ -16,13 +16,13 @@ Use fresh output paths. The command retains each cell, independently audits it b
 
 The cloud runner now accepts the same fixed qualification cells. An operator must supply a fresh signed OCI inventory, retain the preceding cell and its passing independent audit, and bind the evidence seal before requesting a reset. It rejects the reference database, changed ownership, active sessions, remaining work, foreign process history and stale guards. The role and schema names are fixed by the owned trial identity.
 
-The reset runs in one transaction and checks catalogs outside the trial schema before committing. PostgreSQL documents that [DROP SCHEMA CASCADE can affect dependencies in other schemas](https://www.postgresql.org/docs/current/sql-dropschema.html); an outside-catalog change or an expired window causes rollback. Prior evidence stays sealed, and the next cell receives a fresh engine schema and role. The [cloud attempt](../validation/oci-20261101-fnv06-repeat/README.md) passed its first three cells and three resets, including a direct cross-schema rollback control. It stopped when the 1,000-recipient signal request timed out; final outcome evidence for that cell is incomplete, and both batch cells remain unattempted. The complete six-cell gate remains open. The earlier [one-time reset rehearsal](../validation/oci-20261101-fnv06-scale/README.md) remains separate evidence.
+The reset runs in one transaction and checks catalogs outside the trial schema before committing. PostgreSQL documents that [DROP SCHEMA CASCADE can affect dependencies in other schemas](https://www.postgresql.org/docs/current/sql-dropschema.html); an outside-catalog change or an expired window causes rollback. Prior evidence stays sealed, and the next cell receives a fresh engine schema and role. The [cloud attempt](../validation/oci-20261101-fnv06-repeat/README.md) passed its first three cells and three resets, including a direct cross-schema rollback control. It stopped when the 1,000-recipient signal request timed out; final outcome evidence for that cell is incomplete, and both batch cells remain unattempted. The [six-cell outcome follow-up](../validation/oci-20261101-fnv06-outcomes/README.md) subsequently verified all six final outcome sets and five resets, with request failures retained separately. The earlier [one-time reset rehearsal](../validation/oci-20261101-fnv06-scale/README.md) remains separate evidence.
 
 ## Resource checks for short bursts
 
 The [native Linux probe](../validation/native-20261101-fnv06-resources/README.md) passed both an idle control and deliberate throttling detection. The reader keeps raw cgroup-v2 and host counters. Its independent auditor requires samples on both sides of the work interval, checks stable process identity and limits, and examines ancestor throttling too. Sample gaps, clock disagreement and counter resets cannot be converted into a pass.
 
-This is a reader qualification, not yet a workload-headroom result. Before the [declared 45-cell comparison](fnv06-population-scaling.md), complete the cloud reset/warmup checks, integrate resource sampling with the actual generator and engine, add database observations, calibrate the generator and retain failures and deadline misses in the final accounting. Keep the frozen populations, client counts and separate pattern semantics unchanged.
+This is a reader qualification, not yet a workload-headroom result. Before the [declared 45-cell comparison](fnv06-population-scaling.md), integrate resource sampling with the actual generator and engine, add database observations, calibrate the generator and retain failures and deadline misses in the final accounting. Keep the frozen populations, client counts and separate pattern semantics unchanged.
 
 ## Deliberate timeout capture check
 
@@ -35,3 +35,17 @@ python scripts/audit_fnv06_timeout.py --source PRIVATE_CELL --control PRIVATE_CO
 ```
 
 The command audits saved evidence offline. It does not inject a fault, allocate resources or connect to a database. The [controlled cloud timeout check](../validation/oci-20261101-fnv06-timeout-capture/README.md) passed: four timed-out requests remained failed, while all 110 intended workflows and four waiting controls reconciled against REST and nine SQL tables. This qualifies the controlled request-failure capture path; other failure modes and general deadline accounting remain separate work.
+
+## Separate request failures from final outcomes
+
+The [outcome-accounting protocol](../workloads/fnv06/outcome-accounting.json) keeps three questions separate: did the request receive a successful response, did every intended workflow finish correctly, and how much correct work can be confirmed by the synthetic two-second threshold?
+
+```powershell
+python scripts/audit_fnv06_outcomes.py --source PRIVATE_CELL --output dist/outcome-audit-NEW
+```
+
+The auditor can verify complete final outcomes while preserving request timeouts, transport errors and HTTP failures. A verified result is labeled `outcomes_verified` or `outcomes_verified_with_request_failures`. A missing final snapshot, unfinished recipient, wrong variable, unexpected control transition or SQL disagreement produces `not_verified`; missing evidence never becomes zero failed work. Warmup requests must still succeed. A failed batch request without complete batch evidence cannot qualify through this path.
+
+For the two-second threshold, the lower bound counts completions observed by a poll that finished by the deadline. The upper bound uses a poll that started at or after the deadline. Any difference stays uncertain. These are cohort-count bounds, not individual completion timestamps. Warmup and test results remain separate, and retrospective reports cannot authorize a reset.
+
+A new cloud run may explicitly declare `outcome_accounting_v1` and bind this protocol before execution. Its reset guard then requires a complete independent outcome audit, nine-table SQL reconciliation, exact failure accounting, stopped containers and empty owned runtime state. A failed request remains failed when the next cell starts. Runtime failure markers are archived with the prior cell only after the guarded reset commits. Undeclared, incomplete or mismatched evidence is rejected. The [six-cell outcome follow-up](../validation/oci-20261101-fnv06-outcomes/README.md) verified all six final REST/SQL outcome sets and five resets. All requests succeeded in this follow-up. The reset path after a failed request was not exercised and remains a separate native cloud validation gate. The earlier controlled timeout-capture check remains separate evidence. The original attempt remains partial and unchanged.

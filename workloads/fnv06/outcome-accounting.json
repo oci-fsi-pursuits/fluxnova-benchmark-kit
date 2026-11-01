@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "study_id": "FNV-06-OUTCOME-ACCOUNTING",
+  "underlying_study": "FNV-06-REPEAT-QUAL",
+  "qualification_phase": "outcome_accounting_v1",
+  "synthetic_deadline_s": 2,
+  "http_timeout_s": 30,
+  "recipient_drain_s": 120,
+  "batch_terminal_s": 240,
+  "warmup_requires_successful_requests": true,
+  "failed_requests_remain_failed": true,
+  "required_final_evidence": "Every intended outcome and waiting control, bound original inputs, complete REST inventories and nine-table SQL reconciliation for cloud runs",
+  "deadline_bounds": "Lower count: maximum completion count from a poll finished by the deadline. Upper count: minimum completion count from a poll started at or after the deadline, or the population if none exists. Keep the difference uncertain.",
+  "reset_policy": "Only explicitly declared cloud cells with complete independently verified final state, stopped engine and verified owned cleanup; failed requests remain recorded and unknown outcomes never qualify.",
+  "scope": "Finite-burst qualification and retrospective accounting. Not a performance, capacity or customer service-level claim."
+}

@@ -1,0 +1,330 @@
+{
+  "at": "2026-11-01T14:49:17.720440+00:00",
+  "status": "six_cell_outcome_lifecycle_closed",
+  "source_commit": "54f1d73cea3cab65a3c74ea8e2d8646a4e822d13",
+  "cell_results": [
+    {
+      "id": "C01",
+      "kind": "message",
+      "population": 10,
+      "status": "outcomes_verified",
+      "collector_status": "collected_pending_independent_audit",
+      "workflow_instances": 114,
+      "warmup_correct_completions": 100,
+      "test_correct_completions": 10,
+      "unchanged_waiting_controls": 4,
+      "request_accounting": {
+        "planned": 110,
+        "observed": 110,
+        "successful": 110,
+        "timeout": 0,
+        "transport_failure": 0,
+        "http_failure": 0,
+        "failed": 0
+      },
+      "test_request_accounting": {
+        "planned": 10,
+        "observed": 10,
+        "successful": 10,
+        "timeout": 0,
+        "transport_failure": 0,
+        "http_failure": 0,
+        "failed": 0
+      },
+      "test_deadline_accounting": {
+        "synthetic_deadline_s": 2,
+        "correct_by_deadline_lower_bound": 10,
+        "correct_by_deadline_upper_bound": 10,
+        "deadline_uncertain": 0,
+        "correct_after_deadline_lower_bound": 0,
+        "cohort_deadline_status": "confirmed_on_time",
+        "count_only_not_individual_completion_timestamps": true
+      },
+      "test_completion_interval_s": [
+        0.06883636838756502,
+        0.19307046243920922
+      ],
+      "test_diagnostics_only": true,
+      "independent_sql_tables": 9,
+      "source_checksums_sha256": "4cf540d6521142fb2c44a2cae754677aff9c4b25838897363c35a388ba91ad1e",
+      "independent_audit_sha256": "cd5f549b489bac1d70845e225c68ae03d27ac9cb68264c508f35f16be26cbb73",
+      "raw_archive_sha256": "a13c91a7e84a70c9bb819da54aeb81df962aced2c32175ed72a3ae879410730a"
+    },
+    {
+      "id": "C02",
+      "kind": "message",
+      "population": 1000,
+      "status": "outcomes_verified",
+      "collector_status": "collected_pending_independent_audit",
+      "workflow_instances": 1104,
+      "warmup_correct_completions": 100,
+      "test_correct_completions": 1000,
+      "unchanged_waiting_controls": 4,
+      "request_accounting": {
+        "planned": 1100,
+        "observed": 1100,
+        "successful": 1100,
+        "timeout": 0,
+        "transport_failure": 0,
+        "http_failure": 0,
+        "failed": 0
+      },
+      "test_request_accounting": {
+        "planned": 1000,
+        "observed": 1000,
+        "successful": 1000,
+        "timeout": 0,
+        "transport_failure": 0,
+        "http_failure": 0,
+        "failed": 0
+      },
+      "test_deadline_accounting": {
+        "synthetic_deadline_s": 2,
+        "correct_by_deadline_lower_bound": 143,
+        "correct_by_deadline_upper_bound": 152,
+        "deadline_uncertain": 9,
+        "correct_after_deadline_lower_bound": 848,
+        "cohort_deadline_status": "confirmed_late",
+        "count_only_not_individual_completion_timestamps": true
+      },
+      "test_completion_interval_s": [
+        11.95320465019904,
+        12.082781677134335
+      ],
+      "test_diagnostics_only": true,
+      "independent_sql_tables": 9,
+      "source_checksums_sha256": "4299264ed2643e1283f8287ef84540bc3eef06f45504277dba60bbc5737792f7",
+      "independent_audit_sha256": "41c855bece3027b3b4d0507c5fc90bf7a8b1e4d41eb851ae3d14f4f11b3faeab",
+      "raw_archive_sha256": "639c688ded8f39d215712f061b04963e185272d1451939c3cdb1a1baa528dc38"
+    },
+    {
+      "id": "C03",
+      "kind": "signal",
+      "population": 10,
+      "status": "outcomes_verified",
+      "collector_status": "collected_pending_independent_audit",
+      "workflow_instances": 114,
+      "warmup_correct_completions": 100,
+      "test_correct_completions": 10,
+      "unchanged_waiting_controls": 4,
+      "request_accounting": {
+        "planned": 2,
+        "observed": 2,
+        "successful": 2,
+        "timeout": 0,
+        "transport_failure": 0,
+        "http_failure": 0,
+        "failed": 0
+      },
+      "test_request_accounting": {
+        "planned": 1,
+        "observed": 1,
+        "successful": 1,
+        "timeout": 0,
+        "transport_failure": 0,
+        "http_failure": 0,
+        "failed": 0
+      },
+      "test_deadline_accounting": {
+        "synthetic_deadline_s": 2,
+        "correct_by_deadline_lower_bound": 10,
+        "correct_by_deadline_upper_bound": 10,
+        "deadline_uncertain": 0,
+        "correct_after_deadline_lower_bound": 0,
+        "cohort_deadline_status": "confirmed_on_time",
+        "count_only_not_individual_completion_timestamps": true
+      },
+      "test_completion_interval_s": [
+        0.169712299015373,
+        0.29602506291121244
+      ],
+      "test_diagnostics_only": true,
+      "independent_sql_tables": 9,
+      "source_checksums_sha256": "057d847e4b64ea4c18faa914b113bf56a4d15436bc13d825882c2b4959b1f1b2",
+      "independent_audit_sha256": "6fe6c67a0722789fa924b8742c5fe8868bd7110daafcd82485a1efdcdb153f42",
+      "raw_archive_sha256": "b803db0e95bf429e999aeb1e90826c24c38c481b6baed93566291658c49da558"
+    },
+    {
+      "id": "C04",
+      "kind": "signal",
+      "population": 1000,
+      "status": "outcomes_verified",
+      "collector_status": "collected_pending_independent_audit",
+      "workflow_instances": 1104,
+      "warmup_correct_completions": 100,
+      "test_correct_completions": 1000,
+      "unchanged_waiting_controls": 4,
+      "request_accounting": {
+        "planned": 2,
+        "observed": 2,
+        "successful": 2,
+        "timeout": 0,
+        "transport_failure": 0,
+        "http_failure": 0,
+        "failed": 0
+      },
+      "test_request_accounting": {
+        "planned": 1,
+        "observed": 1,
+        "successful": 1,
+        "timeout": 0,
+        "transport_failure": 0,
+        "http_failure": 0,
+        "failed": 0
+      },
+      "test_deadline_accounting": {
+        "synthetic_deadline_s": 2,
+        "correct_by_deadline_lower_bound": 0,
+        "correct_by_deadline_upper_bound": 0,
+        "deadline_uncertain": 0,
+        "correct_after_deadline_lower_bound": 1000,
+        "cohort_deadline_status": "confirmed_late",
+        "count_only_not_individual_completion_timestamps": true
+      },
+      "test_completion_interval_s": [
+        20.43843050999567,
+        20.56393485609442
+      ],
+      "test_diagnostics_only": true,
+      "independent_sql_tables": 9,
+      "source_checksums_sha256": "a47987e9514aec3f4e03c5e154519594375e185f430bc50c55f6bd308c93c78a",
+      "independent_audit_sha256": "d6c10518644e8444d8f0e7fb340f87e5de0dbed39059d7b57c5a4133fbc0286c",
+      "raw_archive_sha256": "d6cd6205df7bb53c619f7b8d66137f1dd33e5427ddd314399c3c2567c3a3c828"
+    },
+    {
+      "id": "C05",
+      "kind": "batch",
+      "population": 10,
+      "status": "outcomes_verified",
+      "collector_status": "collected_pending_independent_audit",
+      "workflow_instances": 114,
+      "warmup_correct_completions": 100,
+      "test_correct_completions": 10,
+      "unchanged_waiting_controls": 4,
+      "request_accounting": {
+        "planned": 2,
+        "observed": 2,
+        "successful": 2,
+        "timeout": 0,
+        "transport_failure": 0,
+        "http_failure": 0,
+        "failed": 0
+      },
+      "test_request_accounting": {
+        "planned": 1,
+        "observed": 1,
+        "successful": 1,
+        "timeout": 0,
+        "transport_failure": 0,
+        "http_failure": 0,
+        "failed": 0
+      },
+      "test_deadline_accounting": {
+        "synthetic_deadline_s": 2,
+        "correct_by_deadline_lower_bound": 10,
+        "correct_by_deadline_upper_bound": 10,
+        "deadline_uncertain": 0,
+        "correct_after_deadline_lower_bound": 0,
+        "cohort_deadline_status": "confirmed_on_time",
+        "count_only_not_individual_completion_timestamps": true
+      },
+      "test_completion_interval_s": [
+        0.16774051426909864,
+        0.2911302372813225
+      ],
+      "test_diagnostics_only": true,
+      "independent_sql_tables": 9,
+      "source_checksums_sha256": "35b5378e1d5a76500f4ad9b65a84c23143416a3b3d57e844d0edc00e7bc7a5bf",
+      "independent_audit_sha256": "24bbd98a04d236b5cf393abd270bd7a3e42d7d4db3d701aa057c9c26b2c592b4",
+      "raw_archive_sha256": "686067726881396c10c92777f5ee6480d9e9d62edd0bb9bbb5caacc842c65d88"
+    },
+    {
+      "id": "C06",
+      "kind": "batch",
+      "population": 1000,
+      "status": "outcomes_verified",
+      "collector_status": "collected_pending_independent_audit",
+      "workflow_instances": 1104,
+      "warmup_correct_completions": 100,
+      "test_correct_completions": 1000,
+      "unchanged_waiting_controls": 4,
+      "request_accounting": {
+        "planned": 2,
+        "observed": 2,
+        "successful": 2,
+        "timeout": 0,
+        "transport_failure": 0,
+        "http_failure": 0,
+        "failed": 0
+      },
+      "test_request_accounting": {
+        "planned": 1,
+        "observed": 1,
+        "successful": 1,
+        "timeout": 0,
+        "transport_failure": 0,
+        "http_failure": 0,
+        "failed": 0
+      },
+      "test_deadline_accounting": {
+        "synthetic_deadline_s": 2,
+        "correct_by_deadline_lower_bound": 366,
+        "correct_by_deadline_upper_bound": 394,
+        "deadline_uncertain": 28,
+        "correct_after_deadline_lower_bound": 606,
+        "cohort_deadline_status": "confirmed_late",
+        "count_only_not_individual_completion_timestamps": true
+      },
+      "test_completion_interval_s": [
+        4.7728938676882535,
+        4.914361480623484
+      ],
+      "test_diagnostics_only": true,
+      "independent_sql_tables": 9,
+      "source_checksums_sha256": "fca5508d430cfea4eba27447269ee21cb721384ab16fc2754826f274889ef6ee",
+      "independent_audit_sha256": "d5f25b4da54a0da7e1d785dbd15307809593a8f3b3dc0aaea6f2bbec77af7966",
+      "raw_archive_sha256": "a03ceb51e189f6b92d5537d281beea3c07db267de43dc240f533959bf2588600"
+    }
+  ],
+  "workflow_instances": 3654,
+  "correct_warmup_completions": 600,
+  "correct_test_completions": 3030,
+  "unchanged_waiting_controls": 24,
+  "native_requests": 1218,
+  "request_failures_retained": 0,
+  "cells_with_request_failures": 0,
+  "owned_resets": 5,
+  "matched_warmup_signatures_by_pattern": true,
+  "failed_job_markers_archived_after_reset": 0,
+  "failed_request_reset_native_qualified": false,
+  "all_six_outcome_lifecycle_complete": true,
+  "original_signal_failure_retained": true,
+  "performance_comparison_complete": false,
+  "integrated_workload_headroom_qualified": false,
+  "reference_preserved_except_append_only_metering": true,
+  "unchanged_reference_tables": 48,
+  "appended_metering_rows": 12,
+  "prior_metering_rows_unchanged": 18180,
+  "owned_temporary_database_state": "DELETED",
+  "controller_containers_remaining": 0,
+  "raw_evidence_uploaded": false,
+  "cleanup_errors": [],
+  "owned_access_closed": true,
+  "sleep_prevention_released": true,
+  "study_id": "FNV-06-OUTCOME-LIFECYCLE",
+  "local_tests": 557,
+  "local_test_skips": 0,
+  "real_k6": true,
+  "prior_success_audits_unchanged": 12,
+  "retrospective_cells_accounted": 10,
+  "resealed_negative_controls_rejected": 5,
+  "original_incomplete_signal_rejected": true,
+  "protocol_sha256": "aa26567508ae73dd4cd73da8b2b7d05d9c83ba1e2c09d5476d73fdb716239e74",
+  "auditors": {
+    "auditor_sha256": "4d71923ead7670dad9ea8a2f4023794e51c80c4c3eac2305ba481a6761eef720",
+    "shared_state_auditor_sha256": "9c30313c74f15c58facb4d306a060ccd0f709472cc8aabf326f9f778127ed5df",
+    "cloud_auditor_sha256": "6f62abcc6ef773001674fcd126b2feb59d2cdffa728a8adf57fb9ff06c67881e",
+    "outcome_accounting_auditor_sha256": "aab7b9794edc1522a31328fdf8a644b7ac2cf06856b1c4f07aafa3893a252b0a"
+  },
+  "scope": "Six fixed lifecycle cells and outcome/deadline accounting; not the 45-cell performance comparison."
+}

@@ -88,7 +88,7 @@ class LoadCell(Cell):
 
     def reset(self):
         """Advance exactly one qualification cell after a fresh signed-GET operator guard."""
-        from benchlib.fnv06_reset import reset_owned_schema,verify_seal
+        from benchlib.fnv06_reset import reset_owned_schema,verify_seal,require_failure_marker
         self.bound();assert self.meta.get('qualification_protocol')=='repeat'
         request=read(self.stage/'reset-request.json');issued=datetime.fromisoformat(request['issued_at'])
         assert issued.tzinfo and 0<=(datetime.now(timezone.utc)-issued).total_seconds()<120
@@ -105,9 +105,13 @@ class LoadCell(Cell):
         for key,name in [('auditor_sha256','audit_fnv06_load_qualification.py'),
                          ('shared_state_auditor_sha256','audit_fnv06_functional.py'),('cloud_auditor_sha256','audit_fnv06_cloud.py')]:
             assert audit[key]==sha(self.stage/'source/scripts'/name)
+        if self.meta.get('qualification_phase')=='outcome_accounting_v1':
+            assert audit['outcome_accounting_auditor_sha256']==sha(self.stage/'source/scripts/fnv06_outcome_accounting.py')
+            assert audit['accounting_protocol_sha256']==self.meta['outcome_protocol_sha256']==sha(self.stage/'source/workloads/fnv06/outcome-accounting.json')
         summary=read(self.output/'summary.json')
         assert not any(read(self.output/'final-engine-counts.json').values())
-        assert not (self.stage/'failure.json').exists()
+        failure_file=self.stage/'failure.json'
+        archive_failure=require_failure_marker(self.meta,summary,audit,read(failure_file) if failure_file.exists() else None)
         assert not self.command(['docker','ps','-aq','--filter','label='+self.label]).strip()
         assert subprocess.run(['docker','network','inspect',self.network],capture_output=True).returncode!=0
         archive=self.stage/'operator-receipts'/self.meta['qualification_cell']['id']
@@ -127,6 +131,9 @@ class LoadCell(Cell):
             source=self.stage/name;target=archive/name
             assert source.resolve().parent==self.stage and target.resolve().parent==archive and not target.exists()
             source.rename(target)
+        if archive_failure:
+            assert failure_file.resolve().parent==self.stage and not (archive/'failure.json').exists()
+            failure_file.rename(archive/'failure.json')
         updated=dict(self.meta,qualification_cell=result['next_cell'],prior_cell_seal_sha256=seal,
                      reset_receipt_sha256=sha(archive/'reset.json'))
         save(self.stage/'identity.json',updated)

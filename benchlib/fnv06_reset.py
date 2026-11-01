@@ -86,12 +86,36 @@ def require_previous(meta,target,summary,audit,seal_sha256):
     if meta.get('qualification_protocol')!='repeat' or previous not in cells[:-1]:
         raise ValueError('No eligible next qualification cell')
     count=100+previous['population']+4
+    expected_summary='collected_pending_independent_audit';expected_audit='passed'
+    if meta.get('qualification_phase')=='outcome_accounting_v1':
+        from scripts.fnv06_outcome_accounting import protocol
+        _,digest=protocol();counts=audit.get('request_accounting',{})
+        planned=100+previous['population'] if previous['kind']=='message' else 2
+        if (meta.get('outcome_protocol_sha256')!=digest or audit.get('accounting_protocol_sha256')!=digest
+                or audit.get('independent_outcomes_verified') is not True or audit.get('reset_eligible') is not True
+                or audit.get('accounting_declared_before_execution') is not True or audit.get('retrospective_accounting') is not False
+                or audit.get('unverified_or_unfinished_completions')!=0
+                or set(counts)!={'planned','observed','successful','timeout','transport_failure','http_failure','failed'}
+                or any(type(v) is not int or v<0 for v in counts.values())
+                or counts['planned']!=planned or counts['observed']!=planned
+                or counts['successful']+counts['failed']!=planned
+                or counts['timeout']+counts['transport_failure']+counts['http_failure']!=counts['failed']):
+            raise ValueError('Outcome accounting is incomplete or not declared for this reset')
+        failed=counts['failed']>0
+        expected_audit='outcomes_verified_with_request_failures' if failed else 'outcomes_verified'
+        expected_summary='failed' if failed else expected_summary
+        if (audit.get('request_success') is not (not failed) or audit.get('ordinary_qualification_passed') is not (not failed)
+                or audit.get('reported_collector_status')!=expected_summary
+                or summary.get('cases_collected')!=[previous['id']+'W']+([] if failed else [previous['id']+'M'])
+                or failed and (previous['kind']=='batch' or summary.get('error_type')!='RuntimeError'
+                    or summary.get('failed_observation')!={'id':previous['id']+'M','phase':'request_result','error_type':'RuntimeError','snapshot_available':True})):
+            raise ValueError('Request failure and collector status differ')
     if (summary.get('study_id')!='FNV-06-REPEAT-QUAL' or summary.get('run_id')!=run_id
-            or summary.get('status')!='collected_pending_independent_audit'
+            or summary.get('status')!=expected_summary
             or summary.get('owned_engine_stopped') is not True or summary.get('cleanup_errors')!=[]
             or len(summary.get('owned_process_ids',[]))!=count
             or len(set(summary['owned_process_ids']))!=count
-            or audit.get('study_id')!='FNV-06-REPEAT-QUAL' or audit.get('status')!='passed'
+            or audit.get('study_id')!='FNV-06-REPEAT-QUAL' or audit.get('status')!=expected_audit
             or audit.get('qualification_cell')!=previous or audit.get('workflow_instances')!=count
             or audit.get('expected_completions')!=count-4 or audit.get('unchanged_waiting_controls')!=4
             or audit.get('cloud_resources_accessed') is not True
@@ -101,6 +125,20 @@ def require_previous(meta,target,summary,audit,seal_sha256):
             or audit.get('source_checksums_sha256')!=seal_sha256):
         raise ValueError('Previous cell is not independently audited and stopped')
     return cells[cells.index(previous)+1]
+
+
+def require_failure_marker(meta,summary,audit,marker):
+    """Archive only the known failed-job marker after complete outcome audit."""
+    failed=summary['status']=='failed'
+    if not failed:
+        if marker is not None:raise ValueError('Unexpected previous runtime failure')
+        return False
+    if (meta.get('qualification_phase')!='outcome_accounting_v1'
+            or audit.get('status')!='outcomes_verified_with_request_failures'
+            or audit.get('reset_eligible') is not True or audit.get('independent_outcomes_verified') is not True
+            or marker!={'error_type':'AssertionError','reason':'qualification_job_failed'}):
+        raise ValueError('Runtime failure cannot authorize a reset')
+    return True
 
 
 def reset_owned_schema(db,*,meta,target,summary,audit,seal_sha256,bound):
