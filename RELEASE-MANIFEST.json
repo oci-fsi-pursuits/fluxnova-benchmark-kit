@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "0996f690b13d108caba5bf92186050d36522edd2",
+  "source_commit": "e7dd71cfd15258e7bd660fab222a2a1066f04908",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -33,8 +33,8 @@
     },
     {
       "path": ".gitignore",
-      "source_sha256": "c9a64c2dc8368f5fad49ec3c2675c33fbebddfb2511d286c48e7a62348d7e75f",
-      "candidate_sha256": "c9a64c2dc8368f5fad49ec3c2675c33fbebddfb2511d286c48e7a62348d7e75f"
+      "source_sha256": "e26c5df677d2213b18c3c9b4a12ba505ff5cbad1c639b3122f039f3eee50c3bd",
+      "candidate_sha256": "e26c5df677d2213b18c3c9b4a12ba505ff5cbad1c639b3122f039f3eee50c3bd"
     },
     {
       "path": ".gitleaks.toml",
@@ -188,13 +188,28 @@
     },
     {
       "path": "benchlib/fnv06_load_qualification.py",
-      "source_sha256": "acd9078908f4577642262915345b4c2f9651ea4a08e5c8e87412e9ff77ce69cd",
-      "candidate_sha256": "acd9078908f4577642262915345b4c2f9651ea4a08e5c8e87412e9ff77ce69cd"
+      "source_sha256": "5ca16f31f13a4da592cda6628b8d4716778d3f7496b11091367d880d1310b7c1",
+      "candidate_sha256": "5ca16f31f13a4da592cda6628b8d4716778d3f7496b11091367d880d1310b7c1"
     },
     {
       "path": "benchlib/fnv06_pagination.py",
       "source_sha256": "56f6251a8711ed8b03b4e6ae2856e9f6c8afafd7c0625cdd4927c9e1eaa446c8",
       "candidate_sha256": "56f6251a8711ed8b03b4e6ae2856e9f6c8afafd7c0625cdd4927c9e1eaa446c8"
+    },
+    {
+      "path": "benchlib/fnv06_repeat.py",
+      "source_sha256": "bda69f5e548138d2a70cd7e4f6dc33c3e3520b2382ef4ce7ab4f92493580316d",
+      "candidate_sha256": "bda69f5e548138d2a70cd7e4f6dc33c3e3520b2382ef4ce7ab4f92493580316d"
+    },
+    {
+      "path": "benchlib/fnv06_reset.py",
+      "source_sha256": "5cedbfeba0ea45c511dc37a330f2369d0b16df7c15c0301ebd8f40c471fdab7b",
+      "candidate_sha256": "5cedbfeba0ea45c511dc37a330f2369d0b16df7c15c0301ebd8f40c471fdab7b"
+    },
+    {
+      "path": "benchlib/fnv06_resources.py",
+      "source_sha256": "bfa22c998e0b2d70b430c8e821cd9a7f23f739d3911302edb894b259e5b6259d",
+      "candidate_sha256": "bfa22c998e0b2d70b430c8e821cd9a7f23f739d3911302edb894b259e5b6259d"
     },
     {
       "path": "benchlib/fnv06_sql.py",
@@ -463,18 +478,23 @@
     },
     {
       "path": "docs/fnv06-events-and-batches.md",
-      "source_sha256": "0c436106f8b3926b432f1676b42234ce90ce8263fd1e40d91085ca8e20e1c69e",
-      "candidate_sha256": "0c436106f8b3926b432f1676b42234ce90ce8263fd1e40d91085ca8e20e1c69e"
+      "source_sha256": "39f3e672ba42d2265b94e7e5b67525bc1a614b0ee45e388e8631a192a9c767cd",
+      "candidate_sha256": "39f3e672ba42d2265b94e7e5b67525bc1a614b0ee45e388e8631a192a9c767cd"
     },
     {
       "path": "docs/fnv06-load-driver.md",
-      "source_sha256": "851347c79f8589a8e50434c1fc76935abd773dedea8a0682e3944c2adbb60213",
-      "candidate_sha256": "851347c79f8589a8e50434c1fc76935abd773dedea8a0682e3944c2adbb60213"
+      "source_sha256": "aa2e35cf7413ea943020fcb1ac77b42228e0f9e802793b14ac73566a48531a4f",
+      "candidate_sha256": "aa2e35cf7413ea943020fcb1ac77b42228e0f9e802793b14ac73566a48531a4f"
     },
     {
       "path": "docs/fnv06-population-scaling.md",
-      "source_sha256": "a377e8fe77c9bfe30eb6100c992d33407412208729aac7b73cfa4f13597fa3b3",
-      "candidate_sha256": "a377e8fe77c9bfe30eb6100c992d33407412208729aac7b73cfa4f13597fa3b3"
+      "source_sha256": "3a6c11d7955f8f36aaa44752376a1ada872fb8cc16848e79463856e7e496a70c",
+      "candidate_sha256": "3a6c11d7955f8f36aaa44752376a1ada872fb8cc16848e79463856e7e496a70c"
+    },
+    {
+      "path": "docs/fnv06-repeated-cells.md",
+      "source_sha256": "a7d4c282789a220aae2711eab899492688d9de0028604695a84291c03cceb97f",
+      "candidate_sha256": "a7d4c282789a220aae2711eab899492688d9de0028604695a84291c03cceb97f"
     },
     {
       "path": "docs/getting-started.md",
@@ -613,13 +633,13 @@
     },
     {
       "path": "docs/workload-completion.md",
-      "source_sha256": "03431fccb5a19bcab858b69ec12dddbefb0059a860210df53e69504872bd5390",
-      "candidate_sha256": "03431fccb5a19bcab858b69ec12dddbefb0059a860210df53e69504872bd5390"
+      "source_sha256": "66093342356b879af897c832b5526df83a00763186004e800d2e2d51638d9317",
+      "candidate_sha256": "66093342356b879af897c832b5526df83a00763186004e800d2e2d51638d9317"
     },
     {
       "path": "docs/workloads.md",
-      "source_sha256": "06403a7715ea04582d80f99e654d1e1a14620d066c0a5aea3be0059fc07ed1ba",
-      "candidate_sha256": "c7cee06bb8b8081c9060b1ebe7c1a6167ef77355777951a6fb7d70686e16e4b3"
+      "source_sha256": "d0ab3448ea79b9a17c6a2183c9b594d882d39c6b743a03969a2f9cc3e0893d3f",
+      "candidate_sha256": "5e7cd3c91731e366cb1a9495a301c432994b39fb9090a75f18f8bfc6e606380f"
     },
     {
       "path": "infra/oci-evidence/.terraform.lock.hcl",
@@ -693,8 +713,8 @@
     },
     {
       "path": "load/fnv06_events.js",
-      "source_sha256": "b0de348fb86a30451120bcb3559f6c5b11bbc2c8bc3d0b11c76486c83d980722",
-      "candidate_sha256": "b0de348fb86a30451120bcb3559f6c5b11bbc2c8bc3d0b11c76486c83d980722"
+      "source_sha256": "55d4891f22419bde15c4f08669a2d634646e42e172db75de0b80b4dd136e45e1",
+      "candidate_sha256": "55d4891f22419bde15c4f08669a2d634646e42e172db75de0b80b4dd136e45e1"
     },
     {
       "path": "load/pay05_quotes.js",
@@ -723,8 +743,8 @@
     },
     {
       "path": "release/public-files.json",
-      "source_sha256": "273ad03fc2c6bc0897ce86f492ba70037287c7d31a635e40a4895400729b916e",
-      "candidate_sha256": "273ad03fc2c6bc0897ce86f492ba70037287c7d31a635e40a4895400729b916e"
+      "source_sha256": "07e782080591dba8ad485da3988f3c703ae908890a54b5914137245df7110fc9",
+      "candidate_sha256": "07e782080591dba8ad485da3988f3c703ae908890a54b5914137245df7110fc9"
     },
     {
       "path": "requirements-cloud.txt",
@@ -773,8 +793,13 @@
     },
     {
       "path": "scripts/audit_fnv06_load_qualification.py",
-      "source_sha256": "ee61ee70add1f0ea4d44842c90815326d6d006d617ea7d7814052564aa4bc9e0",
-      "candidate_sha256": "ee61ee70add1f0ea4d44842c90815326d6d006d617ea7d7814052564aa4bc9e0"
+      "source_sha256": "f4dc5f0edc7f4f73eb522fdd28697c28a484b2042232a477c37fbd2db54f966b",
+      "candidate_sha256": "f4dc5f0edc7f4f73eb522fdd28697c28a484b2042232a477c37fbd2db54f966b"
+    },
+    {
+      "path": "scripts/audit_fnv06_resources.py",
+      "source_sha256": "9b49389ae28b9bdec587c446ceb21ddf8fa72c4649d7f98ad11036e43ae6a226",
+      "candidate_sha256": "9b49389ae28b9bdec587c446ceb21ddf8fa72c4649d7f98ad11036e43ae6a226"
     },
     {
       "path": "scripts/audit_pay05_functional.py",
@@ -1053,8 +1078,8 @@
     },
     {
       "path": "scripts/run_fnv06_cloud.py",
-      "source_sha256": "04f35986cfd20e5f9d46d0fa37eedf237604e236c9b66b2c2b08ac2728019d10",
-      "candidate_sha256": "04f35986cfd20e5f9d46d0fa37eedf237604e236c9b66b2c2b08ac2728019d10"
+      "source_sha256": "37bf11d9dea27f54f04ffc7d09b6941c1b4044f08a7f476c791d166c903f3f84",
+      "candidate_sha256": "37bf11d9dea27f54f04ffc7d09b6941c1b4044f08a7f476c791d166c903f3f84"
     },
     {
       "path": "scripts/run_fnv06_functional.py",
@@ -1063,13 +1088,18 @@
     },
     {
       "path": "scripts/run_fnv06_load_cloud.py",
-      "source_sha256": "adb70839eb103e7ab847f0aedcea37c59392cb667f42e4bb19c60f7b13ec11a7",
-      "candidate_sha256": "adb70839eb103e7ab847f0aedcea37c59392cb667f42e4bb19c60f7b13ec11a7"
+      "source_sha256": "0e3342db4c3a881a7ecf000f07bf07ad6ea06c121bdfdbd46dedada5fce3c4d1",
+      "candidate_sha256": "0e3342db4c3a881a7ecf000f07bf07ad6ea06c121bdfdbd46dedada5fce3c4d1"
     },
     {
       "path": "scripts/run_fnv06_load_qualification.py",
-      "source_sha256": "222c70fc1ea699e016f38421056a50bf867a2bca089ec2dedb995801a39fbf3b",
-      "candidate_sha256": "222c70fc1ea699e016f38421056a50bf867a2bca089ec2dedb995801a39fbf3b"
+      "source_sha256": "f796c5d6f5f4140545d1711ef60ad1d752323b48228b546799c01f594ae45869",
+      "candidate_sha256": "f796c5d6f5f4140545d1711ef60ad1d752323b48228b546799c01f594ae45869"
+    },
+    {
+      "path": "scripts/run_fnv06_repeat_qualification.py",
+      "source_sha256": "44688b8bf4f5586d4e78eee7376b01430de26fb7729ef0bcc2f46fba33a0d515",
+      "candidate_sha256": "44688b8bf4f5586d4e78eee7376b01430de26fb7729ef0bcc2f46fba33a0d515"
     },
     {
       "path": "scripts/run_live_payment_trials.py",
@@ -1377,6 +1407,11 @@
       "candidate_sha256": "c78a2740049a0bfcd6d9f15455c5a998e151d6b8f5372e076616621a46523b41"
     },
     {
+      "path": "tests/test_fnv06_failure_capture.py",
+      "source_sha256": "d7239ed953260d3a3da80f83ce13a62ec03ec9a75847b4c708eca8d56b3ffef7",
+      "candidate_sha256": "d7239ed953260d3a3da80f83ce13a62ec03ec9a75847b4c708eca8d56b3ffef7"
+    },
+    {
       "path": "tests/test_fnv06_load.py",
       "source_sha256": "3142c83b265f11da51ae7398955a369a2f4fdd0b8410e18ee51030b9c4827c41",
       "candidate_sha256": "3142c83b265f11da51ae7398955a369a2f4fdd0b8410e18ee51030b9c4827c41"
@@ -1385,6 +1420,16 @@
       "path": "tests/test_fnv06_pagination.py",
       "source_sha256": "9c6ccad367aa3e7ebf728fdc1cf602ada61cd201724ee28cd9f2d73957e5cade",
       "candidate_sha256": "9c6ccad367aa3e7ebf728fdc1cf602ada61cd201724ee28cd9f2d73957e5cade"
+    },
+    {
+      "path": "tests/test_fnv06_reset.py",
+      "source_sha256": "b7f038fe90bd3a0531ab57f17d0d5c39f391704787f1577f8446969a7e1bf4e0",
+      "candidate_sha256": "b7f038fe90bd3a0531ab57f17d0d5c39f391704787f1577f8446969a7e1bf4e0"
+    },
+    {
+      "path": "tests/test_fnv06_resources.py",
+      "source_sha256": "a4393bac210a18167ae15ff12e52543e60ec1530a562f668f73cd26d6919e9a8",
+      "candidate_sha256": "a4393bac210a18167ae15ff12e52543e60ec1530a562f668f73cd26d6919e9a8"
     },
     {
       "path": "tests/test_fx_quotes.py",
@@ -1667,6 +1712,16 @@
       "candidate_sha256": "b27de4f245f13b83e5d5b380d9c537d43307cf91ede0c99525f54ad668a3d7b8"
     },
     {
+      "path": "validation/local-20261101-fnv06-repeat/README.md",
+      "source_sha256": "31881b7435ebd55ad6502bb59cb62d63926ca2ec26be8afad59908e9b59f8aa2",
+      "candidate_sha256": "19245d86d13fe291d152c38deab949f5b6414824a4343ca9da842bcd255177aa"
+    },
+    {
+      "path": "validation/local-20261101-fnv06-repeat/summary.json",
+      "source_sha256": "651ce5d0b9085fee40429ffe54fa59d485070fad47cefdb285c8796ad00cf6a7",
+      "candidate_sha256": "651ce5d0b9085fee40429ffe54fa59d485070fad47cefdb285c8796ad00cf6a7"
+    },
+    {
       "path": "validation/local-20261101-fnv06-scale/README.md",
       "source_sha256": "86db155f4eefd881f750dc518a3dee2a0c8309557c0290daff054a5ad06e1988",
       "candidate_sha256": "86db155f4eefd881f750dc518a3dee2a0c8309557c0290daff054a5ad06e1988"
@@ -1685,6 +1740,16 @@
       "path": "validation/local-20261101-fnv06/summary.json",
       "source_sha256": "b6348293c067b6428c60d0d8139abd63408602043379ccce921a7f2c6f30d6ae",
       "candidate_sha256": "b6348293c067b6428c60d0d8139abd63408602043379ccce921a7f2c6f30d6ae"
+    },
+    {
+      "path": "validation/native-20261101-fnv06-resources/README.md",
+      "source_sha256": "dfd366b8920e0673cd60453b9fde967a837e09466c7fd201a5ff4f8a322541f9",
+      "candidate_sha256": "cb0663bd2760c2dd2ddf923fc74400288b25269bae7ebd4dbed910fa0ce33c46"
+    },
+    {
+      "path": "validation/native-20261101-fnv06-resources/summary.json",
+      "source_sha256": "998d8fc3cf655d746f6dfd13228e4b8290af755ef347e82ff96af68ff640fe88",
+      "candidate_sha256": "998d8fc3cf655d746f6dfd13228e4b8290af755ef347e82ff96af68ff640fe88"
     },
     {
       "path": "validation/oci-20261027-w01-comparison/README.md",
@@ -1777,6 +1842,16 @@
       "candidate_sha256": "9d640b8f2da98d289c15c7b9b0fd69e41b2b9e7f381782a47839d195cfd7f95c"
     },
     {
+      "path": "validation/oci-20261101-fnv06-repeat/README.md",
+      "source_sha256": "1c9ee81720fa545e824e258717aebf98df25014d768e80e92e63b47516b1180e",
+      "candidate_sha256": "3dea7c38174aa033469a2f3a82c8f9130e998e9e10721ea4dbfd42c057275047"
+    },
+    {
+      "path": "validation/oci-20261101-fnv06-repeat/summary.json",
+      "source_sha256": "30d1ce242f16570087500b807dffa8c88817275cc2328456839f8892c0130aea",
+      "candidate_sha256": "30d1ce242f16570087500b807dffa8c88817275cc2328456839f8892c0130aea"
+    },
+    {
       "path": "validation/oci-20261101-fnv06-scale/README.md",
       "source_sha256": "af926e114adfe1ee5a30e561489a77c6854eacda8a7ca37ce6cc0b7027cd0dda",
       "candidate_sha256": "bf24f6da6012085aec2c47ca9b427d3404eb7931fee938e98522c6ca5ac6a8bb"
@@ -1835,6 +1910,11 @@
       "path": "workloads/fnv06/population-scaling-design.json",
       "source_sha256": "4531874e518c9a6d3984bff5bc7fb74953202636599f5609c87be1482bbb70e4",
       "candidate_sha256": "4531874e518c9a6d3984bff5bc7fb74953202636599f5609c87be1482bbb70e4"
+    },
+    {
+      "path": "workloads/fnv06/repeat-qualification.json",
+      "source_sha256": "6ffb730527ac98e1df417ac86973e91923448a3287d67facf46a0602f5df185a",
+      "candidate_sha256": "6ffb730527ac98e1df417ac86973e91923448a3287d67facf46a0602f5df185a"
     },
     {
       "path": "workloads/fnv06/scale-qualification.json",

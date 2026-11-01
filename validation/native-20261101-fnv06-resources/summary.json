@@ -1,0 +1,61 @@
+{
+  "sha256": "e87bba21ce1aa0565c8d0d472f209c3fe6d8b1ed5e3389517b4a4446e4a4dbcb",
+  "owned_container_absent": true,
+  "status": "passed",
+  "sample_count": 119,
+  "source_reader_sha256": "bfa22c998e0b2d70b430c8e821cd9a7f23f739d3911302edb894b259e5b6259d",
+  "auditor_sha256": "9b49389ae28b9bdec587c446ceb21ddf8fa72c4649d7f98ad11036e43ae6a226",
+  "integrated_workload_headroom_qualified": false,
+  "raw_evidence_uploaded": false,
+  "idle_control": {
+    "status": "passed",
+    "evidence_complete": true,
+    "generator_headroom_passed": true,
+    "issues": [],
+    "samples_covering_window": 21,
+    "bracket_epoch_ms": [
+      1793520933216.9636,
+      1793520935240.7285
+    ],
+    "generator_cpu_usage_delta_usec": 249,
+    "generator_throttled_delta_usec": 0,
+    "maximum_sampled_host_cpu_busy_fraction": 0.024390243902439046,
+    "minimum_sampled_host_available_memory_fraction": 0.9395259136603941,
+    "limits": {
+      "max_sample_gap_s": 0.25,
+      "max_read_duration_s": 0.1,
+      "clock_tolerance_s": 0.05,
+      "max_sampled_host_cpu_fraction": 0.8,
+      "min_host_available_memory_fraction": 0.2,
+      "max_lifetime_container_memory_fraction": 0.8
+    },
+    "scope": "Raw counters bracketing finite work, including ancestor throttling; sampled host utilization and lifetime container memory peak. No peak CPU-capacity or database-CPU claim."
+  },
+  "deliberately_cpu_limited_control": {
+    "status": "resource_constrained",
+    "evidence_complete": true,
+    "generator_headroom_passed": false,
+    "issues": [
+      "generator_or_ancestor_cpu_throttled:leaf"
+    ],
+    "samples_covering_window": 22,
+    "bracket_epoch_ms": [
+      1793520936150.183,
+      1793520938274.8186
+    ],
+    "generator_cpu_usage_delta_usec": 504024,
+    "generator_throttled_delta_usec": 1495907,
+    "maximum_sampled_host_cpu_busy_fraction": 0.07499999999999996,
+    "minimum_sampled_host_available_memory_fraction": 0.9395246918135775,
+    "limits": {
+      "max_sample_gap_s": 0.25,
+      "max_read_duration_s": 0.1,
+      "clock_tolerance_s": 0.05,
+      "max_sampled_host_cpu_fraction": 0.8,
+      "min_host_available_memory_fraction": 0.2,
+      "max_lifetime_container_memory_fraction": 0.8
+    },
+    "scope": "Raw counters bracketing finite work, including ancestor throttling; sampled host utilization and lifetime container memory peak. No peak CPU-capacity or database-CPU claim."
+  },
+  "scope": "Native read-only counter qualification in one disposable Linux container; no live Fluxnova headroom, database CPU or performance result."
+}

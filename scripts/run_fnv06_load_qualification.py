@@ -41,6 +41,13 @@ def k6_inventory(binary, archive):
 
 
 def run(args):
+    repeat_cell = getattr(args, 'repeat_cell', None)
+    if repeat_cell and args.scale: raise ValueError('Choose scale or one repeat-qualification cell')
+    def bound():
+        deadline = getattr(args, 'deadline_monotonic', None)
+        if deadline is not None and time.monotonic() >= deadline:
+            raise TimeoutError('Local qualification window ended; retain this attempt')
+    bound()
     output, runtime, java = args.output.resolve(), args.runtime.resolve(), args.java.resolve()
     if output.exists(): raise ValueError('Use a fresh output directory; preserve all earlier attempts.')
     if not java.is_file() or not runtime.is_dir(): raise ValueError('Verified Fluxnova and Java 21 are required.')
@@ -48,11 +55,15 @@ def run(args):
     generator = k6_inventory(args.k6.resolve(), args.k6_archive.resolve())
     with socket.socket() as probe: probe.bind(('127.0.0.1', args.port))
     output.mkdir(parents=True); (output/'empty-deployments').mkdir()
-    sources = [*SOURCES, 'benchlib/fnv06_pagination.py', 'workloads/fnv06/scale-qualification.json']
+    sources = [*SOURCES, 'benchlib/fnv06_pagination.py', 'workloads/fnv06/scale-qualification.json',
+               'benchlib/fnv06_repeat.py', 'workloads/fnv06/repeat-qualification.json']
     for name in sources:
         target = output/'inputs'/name; target.parent.mkdir(parents=True, exist_ok=True); target.write_bytes((ROOT/name).read_bytes())
-    corpus_name = 'scale-qualification.json' if args.scale else 'load-qualification.json'
+    corpus_name = 'repeat-qualification.json' if repeat_cell else 'scale-qualification.json' if args.scale else 'load-qualification.json'
     corpus = json.loads((output/'inputs/workloads/fnv06'/corpus_name).read_text())
+    if repeat_cell:
+        from benchlib.fnv06_repeat import cell_protocol
+        corpus = cell_protocol(corpus, repeat_cell)
     run_id = uuid.uuid4().hex; username, password = 'fnv06local', secrets.token_urlsafe(24)
     manifest = {'study_id':corpus['study_id'], 'run_id':run_id, 'scope':corpus['reporting']['claim'], 'runtime':inventory,
         'java':subprocess.run([str(java), '-version'], capture_output=True, text=True, check=True).stderr.strip(),
@@ -61,6 +72,7 @@ def run(args):
         'engine_url':'http://127.0.0.1:'+str(args.port)+'/engine-rest',
         'functional_batch_wait_timeout_s':corpus['batch_terminal_timeout_s'], 'batch_poll_interval_s':.5,
         'cloud_resources_accessed':False, 'model_calls':0, 'performance_comparison_complete':False}
+    if repeat_cell: manifest['qualification_cell'] = corpus['qualification_cell']
     save(output/'manifest.json', manifest)
     config = output/'engine.local.yml'
     config.write_text('''server:
@@ -93,7 +105,8 @@ spring.web.resources:
         '-Dcamunda.deploymentDir='+str(output/'empty-deployments'), '-jar', str(runtime/'internal/fluxnova-bpm-run-core.jar'),
         '--spring.config.location='+config.as_uri()]
     engine = FluxnovaClient('http://127.0.0.1:'+str(args.port)+'/engine-rest', username, password)
-    api = (PaginatedRecorder if args.scale else Recorder)(engine, output)
+    paginated = args.scale or bool(repeat_cell)
+    api = (PaginatedRecorder if paginated else Recorder)(engine, output)
     summary = {'study_id':corpus['study_id'],'run_id':run_id,'status':'running','cases_collected':[],
         'owned_process_ids':[], 'owned_batch_ids':[], 'cloud_resources_accessed':False, 'model_calls':0,
         'performance_comparison_complete':False}
@@ -103,6 +116,7 @@ spring.web.resources:
                                    creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
         deadline = time.monotonic()+180
         while True:
+            bound()
             if process.poll() is not None: raise RuntimeError('Owned engine exited during startup')
             try: version = engine.readiness(); break
             except (OSError, RuntimeError):
@@ -110,7 +124,7 @@ spring.web.resources:
                 time.sleep(.5)
         if version['version'] != '3.0.1': raise RuntimeError('Engine release mismatch')
         save(output/'engine-version.json', version); ready = True
-        exercise(api, corpus, run_id, username, summary, args.k6.resolve())
+        exercise(api, corpus, run_id, username, summary, args.k6.resolve(), bound=bound)
         summary['status'] = 'collected_pending_independent_audit'
     except BaseException as error:
         summary.update(status='failed', error_type=type(error).__name__, error=str(error))
@@ -123,12 +137,12 @@ spring.web.resources:
             except Exception as error: cleanup_errors.append({'component':component,'error_type':type(error).__name__})
         if ready and process and process.poll() is None:
             def stop_workflows():
-                batches = api.collection('/batch')['rows'] if args.scale else api.get('/batch')['response']
+                batches = api.collection('/batch')['rows'] if paginated else api.get('/batch')['response']
                 if not {b['id'] for b in batches} <= set(summary['owned_batch_ids']): raise RuntimeError('Unexpected batch owner')
                 for batch in batches:
                     row = api.call('DELETE','/batch/'+batch['id']+'?cascade=false')
                     if row['status'] != 204: raise RuntimeError('Owned batch cleanup failed')
-                active = api.collection('/process-instance')['rows'] if args.scale else api.get('/process-instance')['response']
+                active = api.collection('/process-instance')['rows'] if paginated else api.get('/process-instance')['response']
                 if not {p['id'] for p in active} <= set(summary['owned_process_ids']): raise RuntimeError('Unexpected process owner')
                 for item in active:
                     row = api.call('DELETE','/process-instance/'+item['id']+'?deleteReason=fnv06-owned-cleanup')
@@ -163,6 +177,8 @@ def main():
     p.add_argument('--java', type=Path, default=ROOT/'.tools/java21/jdk-21.0.12.1+1-jre/bin/java.exe')
     p.add_argument('--port', type=int, default=29380)
     p.add_argument('--scale', action='store_true', help='Qualify fixed populations 10/100/1000 with counted pagination; no performance claim.')
+    p.add_argument('--repeat-cell', choices=['C01','C02','C03','C04','C05','C06'],
+                   help='One fixed warmup/measurement qualification cell in a fresh local engine; no performance claim.')
     asset = ASSETS[platform.system()]
     p.add_argument('--k6', type=Path, default=ROOT/'.tools/ci'/asset[2])
     p.add_argument('--k6-archive', type=Path, default=ROOT/'.tools/ci'/asset[0])

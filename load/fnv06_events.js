@@ -8,7 +8,7 @@ const raw = open(__ENV.FNV06_CASE_FILE);
 const fixture = JSON.parse(raw);
 const hash = crypto.sha256(raw, 'hex');
 const base = (__ENV.FNV06_ENGINE_URL || '').replace(/\/$/, '');
-const populations = {'FNV-06-LQ': [1,4,16], 'FNV-06-LQ-SCALE': [10,100,1000]};
+const populations = {'FNV-06-LQ': [1,4,16], 'FNV-06-LQ-SCALE': [10,100,1000], 'FNV-06-REPEAT-QUAL': [10,100,1000]};
 if (!populations[fixture.study_id] || hash !== __ENV.FNV06_CASE_SHA256 || !base || !__ENV.FNV06_AUTH ||
     !['message', 'signal', 'batch'].includes(fixture.kind) || !populations[fixture.study_id].includes(fixture.population) ||
     fixture.requests.length !== (fixture.kind === 'message' ? fixture.population : 1) ||
@@ -18,7 +18,7 @@ if (!populations[fixture.study_id] || hash !== __ENV.FNV06_CASE_SHA256 || !base 
 }
 export const options = {
   scenarios: { qualification: { executor: 'shared-iterations', vus: fixture.vus,
-    iterations: fixture.requests.length, maxDuration: fixture.study_id === 'FNV-06-LQ-SCALE' ? '150s' : '45s', gracefulStop: '0s' } },
+    iterations: fixture.requests.length, maxDuration: fixture.study_id === 'FNV-06-LQ' ? '45s' : '150s', gracefulStop: '0s' } },
   maxRedirects: 0,
 };
 export default function () {

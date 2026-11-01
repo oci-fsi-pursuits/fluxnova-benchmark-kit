@@ -312,6 +312,17 @@ class Cell:
         return {'at': datetime.now(timezone.utc).isoformat(), 'run_id': self.run_id, 'containers': containers, 'cleanup_errors': errors,
                 'owned_engine_stopped': bool(containers.get('engine', {}).get('stopped')), 'database_deletion_separate': True}
 
+    def capture_failed_job(self):
+        """Retain SQL before owned workflow cleanup; never promote a failed job."""
+        result={'job_failed':True,'database_snapshot_available':False,'owned_workflow_cleanup_complete':False,'errors':[]}
+        for name,action,key in (('database_snapshot',self.snapshot_database,'database_snapshot_available'),
+                                ('owned_workflow_cleanup',self.cleanup_workflows,'owned_workflow_cleanup_complete')):
+            try:
+                action();result[key]=True
+            except Exception as error:
+                result['errors'].append({'phase':name,'error_type':type(error).__name__})
+        save(self.output/'failed-job-capture.json',result)
+
     def run(self):
         self.bound(); failure = None
         try:
@@ -319,7 +330,9 @@ class Cell:
             while self.inspect('job')['State']['Running']:
                 self.bound(); time.sleep(2)
             state = self.inspect('job')['State']
-            assert state['ExitCode'] == 0 and not state['OOMKilled'], 'qualification_job_failed'
+            if state['ExitCode'] != 0 or state['OOMKilled']:
+                self.capture_failed_job()
+                raise AssertionError('qualification_job_failed')
             self.snapshot_database()
             self.cleanup_workflows()
             summary = read(self.output / 'summary.json')

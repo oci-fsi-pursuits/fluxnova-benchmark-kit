@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "study_id": "FNV-06-REPEAT-QUAL",
+  "population_sizes": [10, 100, 1000],
+  "warmup_recipients": 100,
+  "message_client_ceiling": 4,
+  "controls_per_observation": 2,
+  "release_lead_ms": 3000,
+  "maximum_first_dispatch_lag_ms": 1000,
+  "completion_poll_ms": 100,
+  "completion_timeout_s": 120,
+  "batch_terminal_timeout_s": 240,
+  "cells": [
+    {"id": "C01", "kind": "message", "population": 10},
+    {"id": "C02", "kind": "message", "population": 1000},
+    {"id": "C03", "kind": "signal", "population": 10},
+    {"id": "C04", "kind": "signal", "population": 1000},
+    {"id": "C05", "kind": "batch", "population": 10},
+    {"id": "C06", "kind": "batch", "population": 1000}
+  ],
+  "reporting": {
+    "claim": "Warmup and isolated-cell lifecycle qualification only; diagnostic timings, no repeated performance result.",
+    "performance_comparison_complete": false,
+    "full_population_campaign_started": false
+  }
+}

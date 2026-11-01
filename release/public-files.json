@@ -54,7 +54,8 @@
     "docs/pay05-fx-quotes.md",
     "docs/fnv06-events-and-batches.md",
     "docs/fnv06-load-driver.md",
-    "docs/fnv06-population-scaling.md"
+    "docs/fnv06-population-scaling.md",
+    "docs/fnv06-repeated-cells.md"
   ],
   "evidence_directories": [
     "validation/oci-20261027-w01-comparison",
@@ -75,7 +76,10 @@
     "validation/local-20261101-fnv06-load",
     "validation/oci-20261101-fnv06-load",
     "validation/local-20261101-fnv06-scale",
-    "validation/oci-20261101-fnv06-scale"
+    "validation/oci-20261101-fnv06-scale",
+    "validation/local-20261101-fnv06-repeat",
+    "validation/native-20261101-fnv06-resources",
+    "validation/oci-20261101-fnv06-repeat"
   ],
   "evidence_filenames": [
     "README.md",

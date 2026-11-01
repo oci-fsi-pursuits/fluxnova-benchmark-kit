@@ -1,0 +1,278 @@
+{
+  "at": "2026-11-01T09:13:39.836046+00:00",
+  "status": "partial_qualification_closed",
+  "source_commit": "ba630890051beb3c9edff02ccfe7583126a827f4",
+  "cell_results": [
+    {
+      "id": "C01",
+      "kind": "message",
+      "population": 10,
+      "status": "passed",
+      "workflow_instances": 114,
+      "expected_completions": 110,
+      "unchanged_waiting_controls": 4,
+      "warmup_signature": {
+        "kind": "message",
+        "completed_histories": 100,
+        "waiting_controls": 2,
+        "subscriptions": 2,
+        "historic_batches": 0,
+        "variables": [
+          [
+            "alias",
+            "String",
+            5,
+            101
+          ],
+          [
+            "alias",
+            "String",
+            8,
+            1
+          ],
+          [
+            "caseId",
+            "String",
+            4,
+            102
+          ],
+          [
+            "delivery",
+            "String",
+            33,
+            100
+          ],
+          [
+            "sentinel",
+            "String",
+            29,
+            101
+          ],
+          [
+            "sentinel",
+            "String",
+            32,
+            1
+          ]
+        ],
+        "model_template_sha256": "cdf6ee28620761eadb46bd14b6ec5c0be4d871a3e856c16d6161d8d6e05008fa"
+      },
+      "independent_sql_tables": 9,
+      "independent_audit_sha256": "97768a8e92937ab0e4ce077201aec39d1e5a2cac50cde7bfa3e9062ad171550b",
+      "source_checksums_sha256": "b23b9bd492580919f58cede7f319be3a749e1cb23af076035148e6bc5d89a38f",
+      "raw_archive_sha256": "7d4ace1199f28a648f930882dae144e66d8c25ab3cad48988286950c3ce36e4a"
+    },
+    {
+      "id": "C02",
+      "kind": "message",
+      "population": 1000,
+      "status": "passed",
+      "workflow_instances": 1104,
+      "expected_completions": 1100,
+      "unchanged_waiting_controls": 4,
+      "warmup_signature": {
+        "kind": "message",
+        "completed_histories": 100,
+        "waiting_controls": 2,
+        "subscriptions": 2,
+        "historic_batches": 0,
+        "variables": [
+          [
+            "alias",
+            "String",
+            5,
+            101
+          ],
+          [
+            "alias",
+            "String",
+            8,
+            1
+          ],
+          [
+            "caseId",
+            "String",
+            4,
+            102
+          ],
+          [
+            "delivery",
+            "String",
+            33,
+            100
+          ],
+          [
+            "sentinel",
+            "String",
+            29,
+            101
+          ],
+          [
+            "sentinel",
+            "String",
+            32,
+            1
+          ]
+        ],
+        "model_template_sha256": "cdf6ee28620761eadb46bd14b6ec5c0be4d871a3e856c16d6161d8d6e05008fa"
+      },
+      "independent_sql_tables": 9,
+      "independent_audit_sha256": "3db88825ab44af2c84ed4b289a09dc8c0c309b752031f464999828570765c319",
+      "source_checksums_sha256": "212681442ae76630b956a34145b1c20f0f82451dfcf1c4e8b1408936f7a49210",
+      "raw_archive_sha256": "f3517b528c26539655e6cf024dfd705fd34a6669c82dc25b1b5d9b4b35a495f2"
+    },
+    {
+      "id": "C03",
+      "kind": "signal",
+      "population": 10,
+      "status": "passed",
+      "workflow_instances": 114,
+      "expected_completions": 110,
+      "unchanged_waiting_controls": 4,
+      "warmup_signature": {
+        "kind": "signal",
+        "completed_histories": 100,
+        "waiting_controls": 2,
+        "subscriptions": 2,
+        "historic_batches": 0,
+        "variables": [
+          [
+            "alias",
+            "String",
+            5,
+            101
+          ],
+          [
+            "alias",
+            "String",
+            8,
+            1
+          ],
+          [
+            "caseId",
+            "String",
+            4,
+            102
+          ],
+          [
+            "delivery",
+            "String",
+            33,
+            100
+          ],
+          [
+            "sentinel",
+            "String",
+            29,
+            101
+          ],
+          [
+            "sentinel",
+            "String",
+            32,
+            1
+          ]
+        ],
+        "model_template_sha256": "246778ee29e580ce552777079db5955e2bc9ba8234ae41c37b104426c3c56c72"
+      },
+      "independent_sql_tables": 9,
+      "independent_audit_sha256": "cc27dd7e71fd8adb1e4d5ffc6b2f044c8e2c2ebe547ad2fb5f93ea48623653b2",
+      "source_checksums_sha256": "56c935cfd043ea9d0611d6d6c398935180e15b07994f587f1522e546d148e3f3",
+      "raw_archive_sha256": "36f0dbac3fbe22a8d408519814d9c4c6ea08b74db87b6791e04a8dc0c5c4f2fc"
+    }
+  ],
+  "audited_workflow_instances": 1332,
+  "audited_expected_completions": 1320,
+  "audited_unchanged_controls": 12,
+  "cells_passed": 3,
+  "cells_failed": 1,
+  "cells_unattempted": [
+    "C05",
+    "C06"
+  ],
+  "successful_owned_resets": 3,
+  "failed_cell": {
+    "cell": "C04",
+    "kind": "signal",
+    "population": 1000,
+    "status": "request_timeout_incomplete_outcome_evidence",
+    "request_count": 1,
+    "http_status": 0,
+    "native_error_code": 1050,
+    "request_timeout_s": 30,
+    "request_elapsed_ms": 30000.527265,
+    "completion_count_observed": 1000,
+    "first_full_count_observed_elapsed_s": 46.88668391061947,
+    "post_workflow_snapshot_available": false,
+    "final_sql_reconciliation_available": false,
+    "all_outcomes_verified": false,
+    "source_checksums_sha256": "01447bd3c93e06ebf9e6e657723fa62f284b0e0f5f177c254305a6dd8bcfe964",
+    "raw_archive_sha256": "ca56c6db6bbf529964f7af4c602061e6ecbbf70dc262ffcd03b6882ffcee8400"
+  },
+  "negative_reset_control": {
+    "status": "passed",
+    "source_commit": "ba630890051beb3c9edff02ccfe7583126a827f4",
+    "cell": "C01",
+    "protected_cross_schema_view": true,
+    "schema_role_storage_and_history_rolled_back": true,
+    "prior_history_instances": 114,
+    "owned_storage_relations": 84,
+    "outside_catalogs_unchanged_after_rollback": true,
+    "temporary_test_view_removed": true,
+    "prior_seal_sha256": "b23b9bd492580919f58cede7f319be3a749e1cb23af076035148e6bc5d89a38f",
+    "operator_sha256": "9327f57f7510ee438d61677e97eb4a344de5ffecc141f9c0845b7849b37d15fd",
+    "performance_measurement": false
+  },
+  "full_six_cell_qualification_complete": false,
+  "reference_preserved_except_append_only_metering": true,
+  "unchanged_reference_tables": 48,
+  "appended_metering_rows": 12,
+  "prior_metering_rows_unchanged": 17904,
+  "owned_temporary_database_state": "DELETED",
+  "controller_containers_remaining": 0,
+  "raw_evidence_uploaded": false,
+  "integrated_workload_headroom_qualified": false,
+  "performance_comparison_complete": false,
+  "owned_access_closed": true,
+  "sleep_prevention_released": true,
+  "cleanup_errors": [],
+  "study_id": "FNV-06-REPEAT-QUAL",
+  "prior_attempt": {
+    "at": "2026-11-01T08:47:04.321504+00:00",
+    "status": "aborted_attempt_closed",
+    "source_commit": "194a61cf6eddf5843b4ea9401bfa559d85c4ae8d",
+    "cells_independently_audited": 1,
+    "workflow_instances": 114,
+    "expected_completions": 110,
+    "unchanged_controls": 4,
+    "successful_resets": 0,
+    "failure": "Reset guard counted owned TOAST storage outside the fluxnova schema; transaction rolled back.",
+    "prior_history_preserved_after_rollback": true,
+    "schema_and_role_preserved_after_rollback": true,
+    "owned_toast_tables": 42,
+    "later_cells_started": false,
+    "unchanged_reference_tables": 48,
+    "reference_preserved_except_append_only_metering": true,
+    "appended_metering_rows": 24,
+    "prior_metering_rows_unchanged": 17880,
+    "owned_temporary_database_state": "DELETED",
+    "controller_containers_remaining": 0,
+    "raw_evidence_uploaded": false,
+    "performance_comparison_complete": false,
+    "cell_audit_sha256": "5bd9948696f920090be10f32acb5b70a46239f27934bd2d77ae5756771245b1d",
+    "cell_archive_sha256": "1835064d5f3c880a0959d44a5cbb0ca07fff8aad6c043d7095decf0ee9678232",
+    "owned_access_closed": true,
+    "sleep_prevention_released": true,
+    "cleanup_errors": []
+  },
+  "raw_evidence_published": false,
+  "environment": "Isolated OCI managed PostgreSQL; pinned Fluxnova 3.0.1; checksum-verified native k6 v2.3.0.",
+  "failure_collection_followup": {
+    "implemented": true,
+    "request_timeout_changed": false,
+    "failed_status_preserved": true,
+    "local_regression_tests_added": 5,
+    "native_cloud_failure_capture_qualified": false
+  },
+  "scope": "Partial fixed-cell qualification. Three cells audited; the 1000-recipient signal request timed out and lacks final outcome/SQL verification. Two batch cells unattempted. No repeated performance or capacity result."
+}

@@ -1,0 +1,32 @@
+{
+  "study_id": "FNV-06-REPEAT-QUAL",
+  "status": "passed",
+  "cells_passed": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06"
+  ],
+  "workflow_instances": 3654,
+  "warmup_completions": 600,
+  "measurement_phase_completions": 3030,
+  "unchanged_waiting_controls": 24,
+  "warmup_signatures": {
+    "C01": "795bad94f9161023e0be6c84b2d4374901595fa7958e898fa832c98cf95604a7",
+    "C02": "795bad94f9161023e0be6c84b2d4374901595fa7958e898fa832c98cf95604a7",
+    "C03": "b6a99634586117d3cbb549af5a6881c55c8d2c51ee8363e83281694d9bb61fd6",
+    "C04": "b6a99634586117d3cbb549af5a6881c55c8d2c51ee8363e83281694d9bb61fd6",
+    "C05": "d4bd9a3dbb09d7a53ca6365626221f967d4e3902aa050985e79bfbebdd427ddc",
+    "C06": "d4bd9a3dbb09d7a53ca6365626221f967d4e3902aa050985e79bfbebdd427ddc"
+  },
+  "owned_engines_stopped": true,
+  "cloud_resources_accessed": false,
+  "postgresql_reset_qualified": false,
+  "resource_telemetry_qualified": false,
+  "performance_comparison_complete": false,
+  "scope": "Six fresh local H2 engines, fixed warmup state and native finite bursts; no OCI reset, headroom or performance claim.",
+  "source_checksums_sha256": "d9f9aacf47c12fb781befb7c3da0dcc6f27479e97bcb476b000e105d02adbf22",
+  "raw_evidence_published": false
+}

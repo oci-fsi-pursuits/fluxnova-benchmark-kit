@@ -19,6 +19,19 @@ def parse_actions(log):
     return result
 
 
+def retain_failure_state(api, path, record, summary, error, phase):
+    """Keep a failed observation failed, but attempt its final state inventory."""
+    failure={'id':record['spec']['id'],'phase':phase,'error_type':type(error).__name__,
+             'snapshot_available':False}
+    try:
+        record['after']=api.snapshot()
+        failure['snapshot_available']=True
+    except Exception as capture_error:
+        failure['state_capture_error_type']=type(capture_error).__name__
+    record['load_failure']=failure;summary['failed_observation']=failure
+    save(path,record);save(api.output/'progress.json',summary)
+
+
 def run_driver(api, folder, fixture, k6, script, protocol, definition_id, *, bound=lambda: None):
     """Observe completion concurrently with k6; retain the acknowledgment separately."""
     release = int(time.time() * 1000) + protocol['release_lead_ms']
@@ -70,9 +83,14 @@ def run_driver(api, folder, fixture, k6, script, protocol, definition_id, *, bou
 
 def exercise(api, protocol, run_id, username, summary, k6, *, bound=lambda: None):
     output = api.output
-    populations = {'FNV-06-LQ': [1,4,16], 'FNV-06-LQ-SCALE': [10,100,1000]}
+    populations = {'FNV-06-LQ': [1,4,16], 'FNV-06-LQ-SCALE': [10,100,1000],
+                   'FNV-06-REPEAT-QUAL': [10,100,1000]}
     if protocol['study_id'] not in populations or protocol['population_sizes'] != populations[protocol['study_id']]:
         raise ValueError('Only the fixed qualification protocols are supported')
+    if protocol['study_id'] == 'FNV-06-REPEAT-QUAL':
+        from benchlib.fnv06_repeat import cell_protocol
+        if cell_protocol(protocol, protocol['qualification_cell']['id']) != protocol:
+            raise ValueError('Warmup qualification cell differs from the fixed protocol')
     (output/'models').mkdir(); (output/'observations').mkdir()
     save(output/'baseline.json', api.snapshot())
     for spec in protocol['observations']:
@@ -109,9 +127,13 @@ def exercise(api, protocol, run_id, username, summary, k6, *, bound=lambda: None
                 'processInstanceIds':members,'variables':variables}}]
         fixture = {'study_id':protocol['study_id'],'run_id':run_id,'observation_id':case_id,'kind':spec['kind'],
             'population':spec['population'],'vus':min(4,spec['population']) if spec['kind']=='message' else 1,'requests':requests}
+        driver_error=None
         try:
             actions = run_driver(api,folder,fixture,k6,output/'inputs/load/fnv06_events.js',protocol,
                                  models['match']['definition']['id'],bound=bound)
+        except Exception as error:
+            driver_error=error
+            actions=json.loads((folder/'actions.json').read_text()) if (folder/'actions.json').exists() else []
         finally:
             if spec['kind']=='batch' and (folder/'actions.json').exists():
                 for action in json.loads((folder/'actions.json').read_text()):
@@ -120,11 +142,20 @@ def exercise(api, protocol, run_id, username, summary, k6, *, bound=lambda: None
                         if batch_id not in summary['owned_batch_ids']:summary['owned_batch_ids'].append(batch_id)
                 save(output/'progress.json',summary)
         expected_status = 204 if spec['kind']=='signal' else 200
+        if driver_error is not None:
+            retain_failure_state(api,path,record,summary,driver_error,'dispatch_or_drain')
+            raise driver_error
         if len(actions)!=len(requests) or any(a['status']!=expected_status for a in actions):
-            raise RuntimeError('Missing or unsuccessful load action')
+            error=RuntimeError('Missing or unsuccessful load action')
+            retain_failure_state(api,path,record,summary,error,'request_result')
+            raise error
         if spec['kind']=='batch':
             batch = actions[0]['response']
             record['batch'] = await_batch(api,batch,protocol['batch_terminal_timeout_s'])
         record['after'] = api.snapshot(); save(path, record)
+        if protocol['study_id'] == 'FNV-06-REPEAT-QUAL' and case_id.endswith('W'):
+            # This is a retained observation, not a collector-declared pass.
+            # The separate auditor checks every history, variable and control.
+            save(output/'warmup-state.json', {'case_id': case_id, 'state': record['after']})
         summary['cases_collected'].append(case_id); save(output/'progress.json', summary)
     save(output/'before-cleanup.json',api.snapshot())
