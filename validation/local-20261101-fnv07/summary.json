@@ -1,0 +1,79 @@
+{
+  "study_id": "FNV-07-FUNCTIONAL-1",
+  "status": "single_engine_retry_effects_verified",
+  "cases": [
+    {
+      "case": "normal",
+      "state": "completed",
+      "committed_workflow_stages": 3,
+      "external_effects": 3,
+      "failed_job_records": 0
+    },
+    {
+      "case": "retry_before",
+      "state": "completed",
+      "committed_workflow_stages": 3,
+      "external_effects": 3,
+      "failed_job_records": 1
+    },
+    {
+      "case": "retry_after",
+      "state": "completed",
+      "committed_workflow_stages": 3,
+      "external_effects": 3,
+      "failed_job_records": 1
+    },
+    {
+      "case": "exhaust_before",
+      "state": "incident",
+      "committed_workflow_stages": 1,
+      "external_effects": 1,
+      "failed_job_records": 3
+    },
+    {
+      "case": "exhaust_after",
+      "state": "incident",
+      "committed_workflow_stages": 1,
+      "external_effects": 2,
+      "failed_job_records": 3
+    },
+    {
+      "case": "waiting_control",
+      "state": "waiting",
+      "committed_workflow_stages": 0,
+      "external_effects": 0,
+      "failed_job_records": 0
+    }
+  ],
+  "instances": 6,
+  "completed_instances": 3,
+  "expected_blocked_instances": 2,
+  "unchanged_waiting_controls": 1,
+  "delegate_attempts": 19,
+  "delegate_successes": 11,
+  "delegate_failures_retained": 8,
+  "unique_external_effects": 12,
+  "blocked_instance_with_external_effect_retained": true,
+  "effective_configuration_verified": true,
+  "independent_sqlite_and_rest_reconciled": true,
+  "engine_sql_reconciled": false,
+  "owned_engine_and_probe_stopped": true,
+  "cloud_resources_accessed": false,
+  "postgresql_cluster_qualified": false,
+  "performance_comparison_complete": false,
+  "source_seal_sha256": "f4486b7063b0071dee313c4ffa8b718f131270c666170bbcea24256304b93774",
+  "auditor_sha256": "62d6660524e8f21edf712309ff4af65b94b6b38f3f3cfa5d2ac020e49d21c57d",
+  "boundary": "One local H2 engine and a synthetic receipt backend. No multi-engine, PostgreSQL, timing or exactly-once network-execution claim.",
+  "evidence_type": "native_single_engine_functional",
+  "measured_at": "2026-11-01",
+  "pinned_fluxnova_release": "3.0.1",
+  "pinned_java_runtime": "21.0.12.1",
+  "delegate_artifact_sha256": "4eed2d7a895b1e6abb7528d0ed3ef3c3df89c989a82b16cef1156683a6fed643",
+  "intentional_failed_collection": {
+    "retained": true,
+    "auditor_rejected": true,
+    "owned_processes_stopped": true,
+    "source_seal_sha256": "0712a21a1f57a6df2a0573b64cbc3fb7c07135db7db44e9c6fe931481a36641e"
+  },
+  "raw_evidence_published": false
+}

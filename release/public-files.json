@@ -55,7 +55,8 @@
     "docs/fnv06-events-and-batches.md",
     "docs/fnv06-load-driver.md",
     "docs/fnv06-population-scaling.md",
-    "docs/fnv06-repeated-cells.md"
+    "docs/fnv06-repeated-cells.md",
+    "docs/fnv07-cluster-jobs.md"
   ],
   "evidence_directories": [
     "validation/oci-20261027-w01-comparison",
@@ -83,7 +84,9 @@
     "validation/oci-20261101-fnv06-timeout-capture",
     "validation/oci-20261101-fnv06-outcomes",
     "validation/oci-20261101-fnv06-telemetry",
-    "validation/oci-20261101-fnv06-campaign"
+    "validation/oci-20261101-fnv06-campaign",
+    "validation/local-20261101-fnv07",
+    "validation/oci-20261101-fnv07"
   ],
   "evidence_filenames": [
     "README.md",

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks/fnv07">
+  <message id="release_message" name="fnv07-release"/>
+  <process id="bench_fnv07_jobs" name="Qualified asynchronous job receipts" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start"/>
+    <sequenceFlow id="to_wait" sourceRef="start" targetRef="wait"/>
+    <intermediateCatchEvent id="wait"><messageEventDefinition messageRef="release_message"/></intermediateCatchEvent>
+    <sequenceFlow id="to_stage1" sourceRef="wait" targetRef="stage1"/>
+    <serviceTask id="stage1" name="Record stage 1" camunda:asyncBefore="true" camunda:exclusive="true" camunda:class="org.finos.fluxnova.benchmark.RecordingDelegate">
+      <extensionElements><camunda:failedJobRetryTimeCycle>R3/PT1S</camunda:failedJobRetryTimeCycle></extensionElements>
+    </serviceTask>
+    <sequenceFlow id="to_stage2" sourceRef="stage1" targetRef="stage2"/>
+    <serviceTask id="stage2" name="Record stage 2" camunda:asyncBefore="true" camunda:exclusive="true" camunda:class="org.finos.fluxnova.benchmark.RecordingDelegate">
+      <extensionElements><camunda:failedJobRetryTimeCycle>R3/PT1S</camunda:failedJobRetryTimeCycle></extensionElements>
+    </serviceTask>
+    <sequenceFlow id="to_stage3" sourceRef="stage2" targetRef="stage3"/>
+    <serviceTask id="stage3" name="Record stage 3" camunda:asyncBefore="true" camunda:exclusive="true" camunda:class="org.finos.fluxnova.benchmark.RecordingDelegate">
+      <extensionElements><camunda:failedJobRetryTimeCycle>R3/PT1S</camunda:failedJobRetryTimeCycle></extensionElements>
+    </serviceTask>
+    <sequenceFlow id="to_end" sourceRef="stage3" targetRef="end"/>
+    <endEvent id="end"/>
+  </process>
+</definitions>

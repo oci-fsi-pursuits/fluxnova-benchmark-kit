@@ -1,5 +1,7 @@
 # Completed workflow patterns
 
+The [FNV-07 asynchronous-job qualification](fnv07-cluster-jobs.md) now passes locally and with [one and two engines sharing PostgreSQL](../validation/oci-20261101-fnv07/README.md). It separates retries, distinct backend effects and completed workflows. The two-engine run exercised both engines; the timed 1/2/3/6-replica comparison remains next.
+
 The thesis is **time to a correct, authorized outcome**. The W01, W02 and W03 studies, the W02 mixed-outcome follow-up, and the PAY-05 FX-quote comparison are complete in their declared scopes. There are no measured arms left in these studies. The broader original research catalogue remains open. Each study has its own control, population and limits.
 
 | Study | One changed factor | Audited result | Boundary |

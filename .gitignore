@@ -66,6 +66,7 @@ config.ready.json
 !/docs/fnv06-load-driver.md
 !/docs/fnv06-population-scaling.md
 !/docs/fnv06-repeated-cells.md
+!/docs/fnv07-cluster-jobs.md
 !/docs/getting-started.md
 !/docs/measurement-contract.md
 !/docs/oci.md

@@ -1,0 +1,261 @@
+{
+  "study_id": "FNV-07-FUNCTIONAL-1",
+  "status": "one_and_two_engine_postgresql_functional_qualified",
+  "measured_on": "2026-11-01",
+  "scope": "Two separate six-case correctness checks on one existing OCI controller.",
+  "engine_release": "3.0.1",
+  "java_runtime": "21.0.12.1",
+  "postgres_release": "17.11",
+  "attempts": [
+    {
+      "attempt": "single-engine-setup",
+      "status": "failed_retained",
+      "cases_started": 0,
+      "reason": "Operator supplied the staged model path instead of the sealed input path. The collector rejected it before deployment.",
+      "owned_cleanup_verified": true,
+      "source_seal_sha256": "811a8f35c6da76559166220a6ad3c8e43cf2abbbca78da11f8337ec16bf34f65"
+    },
+    {
+      "attempt": "single-engine-qualified",
+      "at": "2026-11-01T18:12:16.773340+00:00",
+      "study_id": "FNV-07-FUNCTIONAL-1",
+      "status": "postgresql_functional_verified",
+      "engine_nodes": 1,
+      "cases": [
+        {
+          "case": "normal",
+          "state": "completed",
+          "committed_workflow_stages": 3,
+          "external_effects": 3,
+          "failed_job_records": 0
+        },
+        {
+          "case": "retry_before",
+          "state": "completed",
+          "committed_workflow_stages": 3,
+          "external_effects": 3,
+          "failed_job_records": 1
+        },
+        {
+          "case": "retry_after",
+          "state": "completed",
+          "committed_workflow_stages": 3,
+          "external_effects": 3,
+          "failed_job_records": 1
+        },
+        {
+          "case": "exhaust_before",
+          "state": "incident",
+          "committed_workflow_stages": 1,
+          "external_effects": 1,
+          "failed_job_records": 3
+        },
+        {
+          "case": "exhaust_after",
+          "state": "incident",
+          "committed_workflow_stages": 1,
+          "external_effects": 2,
+          "failed_job_records": 3
+        },
+        {
+          "case": "waiting_control",
+          "state": "waiting",
+          "committed_workflow_stages": 0,
+          "external_effects": 0,
+          "failed_job_records": 0
+        }
+      ],
+      "instances": 6,
+      "completed_instances": 3,
+      "expected_blocked_instances": 2,
+      "unchanged_waiting_controls": 1,
+      "delegate_attempts": 19,
+      "delegate_failures_retained": 8,
+      "unique_external_effects": 12,
+      "attempts_by_engine": {
+        "n1": 19
+      },
+      "every_declared_engine_executed": true,
+      "sql_reconciliation": {
+        "tables_reconciled": 8,
+        "read_only_transaction": true,
+        "process_histories": 6,
+        "job_log_records": 32,
+        "active_processes": 3,
+        "scope": "Final durable PostgreSQL state after engine shutdown, before container retirement."
+      },
+      "sql_negative_controls_rejected": [
+        "changed_completed_counter",
+        "misclassified_job_result",
+        "wrong_incident_job",
+        "missing_job_record"
+      ],
+      "source_seal_sha256": "272e8786715d1625c03b7ff285e49061c6978e44f7f7e52080b99573ec48761c",
+      "auditor_sha256": "b54b9218486a2cdc7e914e7bbf9c32e7fd5774574b7fea8ea18d04b1afdbeff0",
+      "owned_containers_and_network_retired": true,
+      "cloud_resources_accessed": true,
+      "new_cloud_resources_allocated": false,
+      "managed_postgresql": false,
+      "performance_comparison_complete": false,
+      "source_commit_is_parent_of_worktree": true,
+      "boundary": "One existing OCI VM, isolated PostgreSQL container, one or two engines. Functional gate only; no distributed scale-out, managed-database, throughput or exactly-once network claim."
+    },
+    {
+      "attempt": "two-engine-qualified",
+      "at": "2026-11-01T18:19:52.188275+00:00",
+      "study_id": "FNV-07-FUNCTIONAL-1",
+      "status": "postgresql_functional_verified",
+      "engine_nodes": 2,
+      "cases": [
+        {
+          "case": "normal",
+          "state": "completed",
+          "committed_workflow_stages": 3,
+          "external_effects": 3,
+          "failed_job_records": 0
+        },
+        {
+          "case": "retry_before",
+          "state": "completed",
+          "committed_workflow_stages": 3,
+          "external_effects": 3,
+          "failed_job_records": 1
+        },
+        {
+          "case": "retry_after",
+          "state": "completed",
+          "committed_workflow_stages": 3,
+          "external_effects": 3,
+          "failed_job_records": 1
+        },
+        {
+          "case": "exhaust_before",
+          "state": "incident",
+          "committed_workflow_stages": 1,
+          "external_effects": 1,
+          "failed_job_records": 3
+        },
+        {
+          "case": "exhaust_after",
+          "state": "incident",
+          "committed_workflow_stages": 1,
+          "external_effects": 2,
+          "failed_job_records": 3
+        },
+        {
+          "case": "waiting_control",
+          "state": "waiting",
+          "committed_workflow_stages": 0,
+          "external_effects": 0,
+          "failed_job_records": 0
+        }
+      ],
+      "instances": 6,
+      "completed_instances": 3,
+      "expected_blocked_instances": 2,
+      "unchanged_waiting_controls": 1,
+      "delegate_attempts": 19,
+      "delegate_failures_retained": 8,
+      "unique_external_effects": 12,
+      "attempts_by_engine": {
+        "n1": 11,
+        "n2": 8
+      },
+      "every_declared_engine_executed": true,
+      "sql_reconciliation": {
+        "tables_reconciled": 8,
+        "read_only_transaction": true,
+        "process_histories": 6,
+        "job_log_records": 32,
+        "active_processes": 3,
+        "scope": "Final durable PostgreSQL state after engine shutdown, before container retirement."
+      },
+      "sql_negative_controls_rejected": [
+        "changed_completed_counter",
+        "misclassified_job_result",
+        "wrong_incident_job",
+        "missing_job_record"
+      ],
+      "source_seal_sha256": "50373dc763e9f62ef384400bcf76b933fe972985333628905797c67e19cb4fb3",
+      "auditor_sha256": "b54b9218486a2cdc7e914e7bbf9c32e7fd5774574b7fea8ea18d04b1afdbeff0",
+      "owned_containers_and_network_retired": true,
+      "cloud_resources_accessed": true,
+      "new_cloud_resources_allocated": false,
+      "managed_postgresql": false,
+      "performance_comparison_complete": false,
+      "source_commit_is_parent_of_worktree": true,
+      "boundary": "One existing OCI VM, isolated PostgreSQL container, one or two engines. Functional gate only; no distributed scale-out, managed-database, throughput or exactly-once network claim."
+    }
+  ],
+  "per_engine_limits": {
+    "vcpu": 1,
+    "memory_gib": 2,
+    "java_heap_max_gib": 1,
+    "executor_core_threads": 2,
+    "executor_max_threads": 2,
+    "executor_queue_capacity": 2,
+    "acquisition_batch": 2,
+    "jdbc_pool_max": 10
+  },
+  "placement": {
+    "controller_vcpu": 4,
+    "controller_memory_gib": 16,
+    "all_components_share_controller": true,
+    "postgres_vcpu_limit": 0.5,
+    "postgres_memory_gib_limit": 1,
+    "probe_vcpu_limit": 0.25,
+    "probe_memory_mib_limit": 256
+  },
+  "final_engine_sql_tables": 8,
+  "source_validation": {
+    "local_tests_passed": 615,
+    "skipped": 0,
+    "real_k6": true,
+    "fnv07_tests_passed": 31,
+    "earlier_windows_http_failure_retained": true,
+    "http_rejection_body_consumption_fixed": true
+  },
+  "audit_corrections": {
+    "pinned_schema_activity_column": "ACT_HI_JOB_LOG.ACT_ID_",
+    "integer_storage": "IntegerValueSerializer writes both LONG_ and TEXT_; both must agree.",
+    "original_evidence_unchanged": true,
+    "workload_and_expectations_unchanged": true,
+    "pinned_schema_sha256": "bed3709a0fc9dbeecf437438bb08c37520cbf92482b5cf0bee5f73fe49808241"
+  },
+  "closeout": {
+    "at": "2026-11-01T18:24:25.472952+00:00",
+    "status": "functional_qualification_closed",
+    "postgres_engine_counts_qualified": [
+      1,
+      2
+    ],
+    "separate_h2_gate_passed": true,
+    "failed_postgres_attempts_retained": 1,
+    "failed_attempt_original_cases_started": 0,
+    "reference_preserved_except_append_only_metering": true,
+    "unchanged_reference_tables": 48,
+    "appended_metering_rows": 24,
+    "distinct_executor_lock_owners_verified": true,
+    "controller_containers_remaining": 0,
+    "owned_bastion_session_state": "DELETED",
+    "local_access_port_released": true,
+    "new_cloud_resources_allocated": false,
+    "model_calls": 0,
+    "performance_comparison_complete": false,
+    "raw_evidence_uploaded": false,
+    "reference_remains_allocated_and_billable": true
+  },
+  "raw_evidence_published": false,
+  "cloud_operator_prototype_published": false,
+  "reproducibility": "The public local gate, corpus, Java delegate, receipt service and SQL auditors are included. OCI container staging remains a retained private operator prototype pending standardization.",
+  "managed_postgresql_qualified": false,
+  "multi_host_scale_out_qualified": false,
+  "capacity_established": false,
+  "performance_comparison_complete": false,
+  "remaining": [
+    "Freeze placement, per-replica resources and connection budget for 1/2/3/6 replicas.",
+    "Qualify generator, observer, receipt-backend and database headroom during actual work.",
+    "Run a separate offered-load pilot and freeze one rate, durations, deadline and repeat order.",
+    "Execute and audit the separately declared 20-cell measured comparison; preserve all failures and resource constraints."
+  ]
+}

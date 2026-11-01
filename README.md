@@ -40,6 +40,8 @@ An **endurance run** holds one configuration and request rate steady for hours. 
 
 The separate [FNV-06 event and batch qualification](docs/fnv06-events-and-batches.md) checks who receives messages, signals and bulk changes. Twelve case families passed across 42 workflow instances both locally and in a separate [OCI/PostgreSQL qualification](validation/oci-20261101-fnv06/README.md), including a read-only SQL cross-check. The [45-cell population campaign](validation/oci-20261101-fnv06-campaign/README.md) completed all 45 planned cells with verified final outcomes and resource evidence; 2 cells did not pass the predeclared generator headroom gate. Affected timing comparisons remain flagged rather than replaced. The results compare populations within each delivery pattern and preserve request failures, deadline uncertainty and batch bookkeeping separately.
 
+The [FNV-07 asynchronous-job qualification](docs/fnv07-cluster-jobs.md) now passes locally and with [one and two engines sharing PostgreSQL](validation/oci-20261101-fnv07/README.md). It separates retries, distinct backend effects and completed workflows. The two-engine run exercised both engines; the timed 1/2/3/6-replica comparison remains next.
+
 ## Three changes you can see
 
 ### 1. Keep the worker moving

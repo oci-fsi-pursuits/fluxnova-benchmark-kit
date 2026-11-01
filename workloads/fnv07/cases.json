@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "study_id": "FNV-07-FUNCTIONAL-1",
+  "scope": "Synthetic asynchronous jobs and an independent effect ledger; qualification, not performance or real payments.",
+  "stages": ["stage1", "stage2", "stage3"],
+  "fault_stage": "stage2",
+  "job_retries": 3,
+  "retry_cycle": "R3/PT1S",
+  "cases": [
+    {"id": "normal", "mode": "normal", "terminal": "completed", "completed_stages": 3, "effect_stages": ["stage1", "stage2", "stage3"], "failed_job_records": 0},
+    {"id": "retry_before", "mode": "fail_before_once", "terminal": "completed", "completed_stages": 3, "effect_stages": ["stage1", "stage2", "stage3"], "failed_job_records": 1},
+    {"id": "retry_after", "mode": "fail_after_once", "terminal": "completed", "completed_stages": 3, "effect_stages": ["stage1", "stage2", "stage3"], "failed_job_records": 1},
+    {"id": "exhaust_before", "mode": "fail_before_always", "terminal": "incident", "completed_stages": 1, "effect_stages": ["stage1"], "failed_job_records": 3},
+    {"id": "exhaust_after", "mode": "fail_after_always", "terminal": "incident", "completed_stages": 1, "effect_stages": ["stage1", "stage2"], "failed_job_records": 3},
+    {"id": "waiting_control", "mode": "normal", "terminal": "waiting", "completed_stages": 0, "effect_stages": [], "failed_job_records": 0}
+  ],
+  "boundaries": [
+    "Retried delegate calls are not duplicate committed effects.",
+    "The exhausted-after-effect case intentionally has an external receipt while the workflow remains blocked; never count it as a completed workflow.",
+    "No node-count comparison, recovery guarantee or exactly-once network execution is established by this corpus."
+  ]
+}
