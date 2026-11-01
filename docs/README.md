@@ -8,6 +8,7 @@ The thesis is time to a **correct, authorized outcome**. Start with the [researc
 | Open a report and try sample data | [Getting started](getting-started.md) |
 | Build and check a workflow | [Reproduction](reproduce.md) and [workloads](workloads.md) |
 | Understand completed comparisons | [Pattern register](workload-completion.md) |
+| Try FX quote selection and its safety checks | [PAY-05 workflow and local qualification](pay05-fx-quotes.md) |
 | Design a valid comparison | [Benchmark protocol](benchmark-protocol.md) and [metric definitions](measurement-contract.md) |
 | Use OCI or another environment | [OCI setup](oci.md) and [portability](portability.md) |
 | Inspect saved executions | [Browser automation](browser-automation.md) |

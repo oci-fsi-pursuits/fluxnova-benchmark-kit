@@ -42,6 +42,39 @@ for name,value in json.load(sys.stdin).items():
                    input=json.dumps(snapshots).encode(), check=True, capture_output=True, timeout=15)
 
 
+def database_snapshot(settings, connection_attempts=1):
+    """Optionally retry one connection timeout, retaining every attempt's metadata.
+
+    Query failures and authentication errors are not retried. The final snapshot
+    is either newly collected data or an explicit error; no cached values or
+    timestamps are substituted. postgres_metrics bounds connection/query waits.
+    """
+    if type(connection_attempts) is not int or connection_attempts not in (1, 2):
+        raise ValueError('Database connection attempts must be 1 or 2')
+    attempts = []
+    for number in range(1, connection_attempts + 1):
+        observed = utc_now()
+        try:
+            snapshot = postgres_metrics(settings, engine=True)
+        except Exception as exc:
+            finished = utc_now()
+            attempts.append({'attempt': number, 'started_at': observed, 'finished_at': finished,
+                             'error_type': type(exc).__name__})
+            if number < connection_attempts:
+                from psycopg.errors import ConnectionTimeout
+                if isinstance(exc, ConnectionTimeout):
+                    continue
+            return {'_meta': {'observed_at': finished, 'errors': {'database': type(exc).__name__},
+                              'read_only': True, 'connection_attempt_limit': connection_attempts,
+                              'collection_attempts': attempts}}
+        else:
+            attempts.append({'attempt': number, 'started_at': observed, 'finished_at': utc_now(),
+                             'error_type': None})
+            snapshot['_meta'] = {'observed_at': observed, 'errors': {}, 'read_only': True,
+                                 'connection_attempt_limit': connection_attempts, 'collection_attempts': attempts}
+            return snapshot
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config', type=Path, required=True)
@@ -49,6 +82,8 @@ def main(argv=None):
     parser.add_argument('--deployment', type=Path, required=True)
     parser.add_argument('--db-secret-id', required=True, help='Vault secret reference, never a password')
     parser.add_argument('--db-user', default='fluxnova_metrics')
+    parser.add_argument('--db-connection-attempts', type=int, choices=(1, 2), default=1,
+                        help='Declared connection attempts per database sample; 2 permits one ConnectionTimeout retry and retains both attempts')
     parser.add_argument('--interval-s', type=float, default=10)
     parser.add_argument('--duration-s', type=int, default=1800)
     parser.add_argument('--output', type=Path, required=True)
@@ -88,9 +123,7 @@ def main(argv=None):
                                                   check=True, capture_output=True, text=True, timeout=10)
                         snapshot = json.loads(response.stdout)
                     else:
-                        observed = utc_now()
-                        snapshot = postgres_metrics(settings, engine=True)
-                        snapshot['_meta'] = {'observed_at': observed, 'errors': {}, 'read_only': True}
+                        snapshot = database_snapshot(settings, args.db_connection_attempts)
                 except Exception as exc:
                     snapshot = {'_meta': {'observed_at': utc_now(), 'errors': {name: type(exc).__name__}}}
                 snapshots[name] = snapshot
@@ -104,7 +137,8 @@ def main(argv=None):
             audit.write(json.dumps(record) + '\n')
             audit.flush()
             print(json.dumps({'at': record['at'], 'published': record['published'],
-                              'source_errors': {n: s['_meta'].get('errors', {}) for n, s in snapshots.items()}}), flush=True)
+                              'source_errors': {n: s['_meta'].get('errors', {}) for n, s in snapshots.items()},
+                              'database_collection_attempts': snapshots['database']['_meta'].get('collection_attempts', [])}), flush=True)
             time.sleep(max(0, min(args.interval_s - (time.monotonic() - started), deadline - time.monotonic())))
     return 0
 

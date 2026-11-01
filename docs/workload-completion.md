@@ -1,6 +1,6 @@
 # Completed workflow patterns
 
-The thesis is **time to a correct, authorized outcome**. The three workflow patterns and their mixed-outcome follow-up are complete in their declared scopes. There are no measured arms left in this phase. Each study has its own control, population and limits.
+The thesis is **time to a correct, authorized outcome**. The W01, W02 and W03 studies, the W02 mixed-outcome follow-up, and the PAY-05 FX-quote comparison are complete in their declared scopes. There are no measured arms left in these studies. The broader original research catalogue remains open. Each study has its own control, population and limits.
 
 | Study | One changed factor | Audited result | Boundary |
 | --- | --- | --- | --- |
@@ -8,10 +8,15 @@ The thesis is **time to a correct, authorized outcome**. The three workflow patt
 | [W02: approved payments](../validation/oci-20261027-w02-comparison/README.md) | Sequential versus parallel independent KYC/risk | Median paired observed p95 reduced 32.1%; 6,000/6,000 correct and on time; deadline goodput unchanged at 1/s | Fixed 400/600 ms dependencies, two workers in both arms |
 | [W03: review routing](../validation/local-20261027-w03/README.md) | All-review control versus fixed-policy routing | Review tasks 10 to 4; all four mandatory reviews preserved; 20/20 expected outcomes | Local synthetic cases and scripted review; no human time-saving claim |
 | [W02-M2: mixed outcomes](../validation/oci-20261028-w02-mixed-comparison/README.md) | Sequential versus parallel checks over the same mixed corpus | Timely settlements 880 to 1,037 of 1,200; timely refusals 780 to 669 of 1,200; all 6,000 outcomes correct | Five paired OCI measurements at 1/s; five dependency profiles; latency includes 100 ms polling |
+| [PAY-05: FX quote selection](../validation/oci-20261031-pay05-comparison/README.md) | Sequential versus parallel quote requests before the same selector | Timely settlements 668/1,530 to 1,530/1,530; all 3,960 measured outcomes correct | Five paired OCI measurements at 0.5/s; three synthetic delay profiles; 910 measured cached backend replays in parallel, zero sequentially |
 
 The mixed study improved settlement timeliness and worsened refusal timeliness. Its median paired change was **+0.0517 timely settlements/s**, with a pair range of +0.0467 to +0.0617/s. Safe stops within two seconds increased from 447 to 539 of 600. All **1,648 deadline misses** remain reported. Refusals and safe stops do not count as payment throughput; paired ranges are not confidence intervals.
 
-## All five dependency profiles completed
+## Additional pattern: FX quote selection
+
+The separate [PAY-05 FX quote pattern](pay05-fx-quotes.md) has now passed local and [OCI/PostgreSQL functional qualification](../validation/oci-20261031-pay05-qualification/README.md): 22 scenarios in each of two BPMN models, 34 expected synthetic effects and ten expected no-effect outcomes. Earlier short concurrency-probe failures are retained, and corpus revision 2 uses a longer declared overlap probe in both arms. The subsequent [four-lane offered-load/reset qualification](../validation/oci-20261031-pay05-load-qualification/README.md) also passed: 264/264 correct outcomes, 204 expected effects and four verified resets, with seven deadline misses retained. The subsequent [five-pair delay-profile comparison](../validation/oci-20261031-pay05-comparison/README.md) is complete and independently audited: all 3,960 measured outcomes were correct, and timely settlements rose from 668 to 1,530 of 1,530. The median paired change was +0.2184 timely settlements/s, with a range of +0.2109 to +0.2285/s. All 1,106 measured deadline misses remain retained. Parallel work also produced 910 cached backend replays during measurement, without duplicate payment effects. These are fixed synthetic profiles, separate from the W01/W02/W03 populations and live-agent behavior.
+
+## W02 mixed study: all five dependency profiles completed
 
 The frozen corpus crosses ten policy/fault cases with five delay profiles. Both arms retain two workers, original-input binding and exact-effect checks.
 
@@ -29,7 +34,7 @@ The ten cases cover approval, sanctions refusal, risk refusal, unauthorized acti
 
 All ten mixed arms passed independent audit. The audit checked 527 exported files and original stores, including 7,000 cases with warmup, source/control hashes, reset evidence and exact effects. Browser checks passed six outcome rows, fifteen paired rows and fifty profile rows; the saved report passed visual review.
 
-The owned W01, W02 and mixed-study databases/workloads are retired. Original-reference preservation passed. The original reference remains allocated and billable; full attributed cost per correct outcome is still open.
+The owned W01, W02, mixed-study and PAY-05 databases/workloads are retired. Original-reference preservation passed. The original reference remains allocated and billable; full attributed cost per correct outcome is still open.
 
 The [first mixed qualification and interrupted handoff](../validation/oci-20261028-w02-mixed-qualification/README.md) are retained. No paired measurement started before that interruption. A fresh target [requalified independently](../validation/oci-20261028-w02-mixed-requalification/README.md) before the completed series. No failed measured arm was replaced to obtain a favorable result. Earlier [functional sensitivity](w02-dependency-sensitivity.md) and [local mixed qualification](w02-mixed-load.md) remain separate evidence.
 

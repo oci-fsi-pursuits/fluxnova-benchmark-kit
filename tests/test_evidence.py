@@ -9,7 +9,7 @@ import re
 from urllib.parse import urlsplit
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from benchlib.evidence import TelemetrySampler, collect_source, linux_host_sample, _prometheus_metrics, calibrate_generator
 from benchlib.runner import normalize_event, normalize_summary, run_k6, verify_archive
@@ -180,6 +180,48 @@ class RunnerIntegrationTests(unittest.TestCase):
             self.assertTrue((run / "events.ndjson").exists())
             self.assertEqual(analyze_run(run)["status"], "invalid")
             self.assertIn("FileNotFoundError", json.loads((run / "execution.json").read_text())["problems"])
+            window = json.loads((run / "load-window.json").read_text())
+            self.assertFalse(window["process_started"])
+            self.assertIsNone(window["returncode"])
+            self.assertGreaterEqual(datetime.fromisoformat(window["finished_at"]), datetime.fromisoformat(window["started_at"]))
+
+    def test_interruption_seals_end_time_and_preserves_failure(self):
+        def interrupted_output():
+            raise KeyboardInterrupt("bounded interruption")
+            yield "unreachable"
+        for already_exited in (False, True):
+            with self.subTest(already_exited=already_exited), tempfile.TemporaryDirectory() as temp:
+                process = Mock(stdout=interrupted_output())
+                process.poll.return_value = -15 if already_exited else None
+                process.wait.return_value = -15
+                config = self.config()
+                config["workload"].update(warmup_s=600, duration_s=1800)
+                with patch("benchlib.runner.subprocess.Popen", return_value=process):
+                    with self.assertRaises(KeyboardInterrupt):
+                        run_k6(config, "interrupted", Path(temp))
+                run = Path(temp) / "interrupted"
+                window = json.loads((run / "load-window.json").read_text())
+                self.assertTrue(window["process_started"])
+                self.assertTrue(window["interrupted"])
+                self.assertEqual(window["returncode"], -15)
+                self.assertEqual(window["error_type"], "KeyboardInterrupt")
+                self.assertGreaterEqual(datetime.fromisoformat(window["finished_at"]), datetime.fromisoformat(window["started_at"]))
+                self.assertEqual(verify_archive(run), [])
+                self.assertEqual(analyze_run(run)["status"], "invalid")
+                process.wait.assert_called_once()
+                self.assertEqual(process.kill.call_count, 0 if already_exited else 1)
+
+    def test_failure_before_launch_does_not_invent_load_window(self):
+        with tempfile.TemporaryDirectory() as temp:
+            config = self.config()
+            config["evidence"]["auto_calibrate"] = True
+            with patch("benchlib.evidence.calibrate_generator", side_effect=RuntimeError("calibration failed")), \
+                    patch("benchlib.runner.subprocess.Popen") as launch:
+                run = run_k6(config, "before-launch", Path(temp))
+            launch.assert_not_called()
+            self.assertFalse((run / "load-window.json").exists())
+            self.assertEqual(verify_archive(run), [])
+            self.assertEqual(analyze_run(run)["status"], "invalid")
 
     def test_real_k6_envelope_roundtrip_preserves_lag_and_phase_counts(self):
         with tempfile.TemporaryDirectory() as temp:

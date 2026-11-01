@@ -116,10 +116,13 @@ The diagrams explain the flows; the executable BPMN, worker code and case defini
 | [W01 worker pacing](validation/oci-20261027-w01-comparison/README.md) | Reconstructed 100 ms success delay versus idle-only backoff | Timely payments rose from 600/1,200 to 1,200/1,200; all 2,400 correct | Five matched OCI burst pairs |
 | [W02 independent checks](validation/oci-20261027-w02-comparison/README.md) | Sequential versus parallel KYC/risk, with two worker slots in both | Median paired observed p95 reduced 32.1%; 6,000/6,000 correct and within two seconds | Five matched OCI pairs at 1 start/s; deadline goodput unchanged |
 | [W03 review routing](validation/local-20261027-w03/README.md) | Review every case versus fixed-policy routing | Review tasks 10 to 4, preserving all four mandatory reviews and 20/20 outcomes | Local synthetic cases with scripted review |
+| [PAY-05 FX quotes](validation/oci-20261031-pay05-comparison/README.md) | Sequential versus parallel quote requests, with three worker slots in both | Timely settlements 668/1,530 to 1,530/1,530; all 3,960 measured outcomes correct | Five matched OCI pairs at 0.5 starts/s; three synthetic delay profiles |
 
 The [mixed-outcome follow-up](validation/oci-20261028-w02-mixed-comparison/README.md) also completed all five pairs: 6,000 correct outcomes across five dependency profiles. Parallel checks increased timely settlements from **880 to 1,037 of 1,200**, while timely refusals fell from **780 to 669 of 1,200**. The median paired settlement change was **+0.0517/s**. All 1,648 deadline misses are retained. See the [pattern register](docs/workload-completion.md) for the tradeoff and complete scope.
 
-For the actual saved result, run `python scripts/open_report.py --path docs/results/w02-mixed/report.html` after cloning. This report requires no cloud account and submits no payments.
+PAY-05 also recorded 910 cached backend replays during measured parallel work, versus zero sequentially, without duplicate effects. Its [evidence](validation/oci-20261031-pay05-comparison/summary.json) reports the additional attempts alongside timeliness. Each study keeps its own population and controls.
+
+For the actual saved W02 mixed result, run `python scripts/open_report.py --path docs/results/w02-mixed/report.html` after cloning. This report requires no cloud account and submits no payments.
 
 These results describe their declared synthetic workloads and environments. They do not establish maximum capacity, customer traffic performance, human time savings, live-agent value or OCI superiority. Complete allocated cost per outcome remains open.
 

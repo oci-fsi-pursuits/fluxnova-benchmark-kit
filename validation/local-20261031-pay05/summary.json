@@ -1,0 +1,513 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-31T16:22:07.215160+00:00",
+  "study_id": "PAY-05",
+  "status": "local_functional_qualification_passed_and_audited",
+  "scope": "Local Fluxnova/H2 functional qualification; no cloud performance or live FX/model claim.",
+  "release": "3.0.1",
+  "distribution_sha256": "ced4311c541faf1a7248d88e37ba53bd8c659fefe8387d2f78c21c30a117d7cf",
+  "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+  "database": "isolated embedded H2",
+  "worker_slots_each_arm": 3,
+  "worker_clients_preinitialized_before_fetch": true,
+  "unique_scenarios": 22,
+  "scenario_executions": 44,
+  "synthetic_effects": 34,
+  "expected_no_effect_outcomes": 10,
+  "operation_replay_calls": 352,
+  "cross_process_replay_probes": 2,
+  "cross_process_replays_blocked": 2,
+  "final_engine_counts": {
+    "active_instances": 0,
+    "external_tasks": 0,
+    "incidents": 0
+  },
+  "owned_services_stopped": true,
+  "performance_comparison_complete": false,
+  "native_model_calls": 0,
+  "cloud_resources_accessed": false,
+  "authority_scope": "Immutable registrar-bound input; not signed-intent or external FX-provider integration.",
+  "outcomes": {
+    "settled": 34,
+    "rejected": 2,
+    "blocked": 8
+  },
+  "cases": [
+    {
+      "case_id": "lowest_total_cost",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "b",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "lowest_total_cost",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "b",
+      "effects": 1,
+      "all_three_quotes_overlap": true
+    },
+    {
+      "case_id": "fees_change_route",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "b",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "fees_change_route",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "b",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "cheapest_expired",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "cheapest_expired",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "cheapest_not_yet_valid",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "cheapest_not_yet_valid",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "route_not_authorized",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "route_not_authorized",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "payment_not_authorized",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "rejected",
+      "selected_route": null,
+      "effects": 0,
+      "all_three_quotes_overlap": true
+    },
+    {
+      "case_id": "payment_not_authorized",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "rejected",
+      "selected_route": null,
+      "effects": 0,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "source_debit_limit",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "blocked",
+      "selected_route": null,
+      "effects": 0,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "source_debit_limit",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "blocked",
+      "selected_route": null,
+      "effects": 0,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "one_quote_timeout",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": true
+    },
+    {
+      "case_id": "one_quote_timeout",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "only_one_quote_available",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "c",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "only_one_quote_available",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "c",
+      "effects": 1,
+      "all_three_quotes_overlap": true
+    },
+    {
+      "case_id": "quorum_requires_two",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "blocked",
+      "selected_route": null,
+      "effects": 0,
+      "all_three_quotes_overlap": true
+    },
+    {
+      "case_id": "quorum_requires_two",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "blocked",
+      "selected_route": null,
+      "effects": 0,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "all_quotes_timeout",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "blocked",
+      "selected_route": null,
+      "effects": 0,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "all_quotes_timeout",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "blocked",
+      "selected_route": null,
+      "effects": 0,
+      "all_three_quotes_overlap": true
+    },
+    {
+      "case_id": "equal_cost_route_tie",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": true
+    },
+    {
+      "case_id": "equal_cost_route_tie",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "wrong_source_currency",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "wrong_source_currency",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": true
+    },
+    {
+      "case_id": "wrong_beneficiary",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "wrong_beneficiary",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "wrong_payment_id",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "wrong_payment_id",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "wrong_target_amount",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": true
+    },
+    {
+      "case_id": "wrong_target_amount",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "malformed_amount",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "malformed_amount",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "negative_fee",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": true
+    },
+    {
+      "case_id": "negative_fee",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "fractional_minor_units",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "fractional_minor_units",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "unexpected_authority_field",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "unexpected_authority_field",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "route_binding_mismatch",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "route_binding_mismatch",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "settled",
+      "selected_route": "a",
+      "effects": 1,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "all_quotes_expired",
+      "arm": "parallel",
+      "status": "passed",
+      "outcome": "blocked",
+      "selected_route": null,
+      "effects": 0,
+      "all_three_quotes_overlap": false
+    },
+    {
+      "case_id": "all_quotes_expired",
+      "arm": "sequential",
+      "status": "passed",
+      "outcome": "blocked",
+      "selected_route": null,
+      "effects": 0,
+      "all_three_quotes_overlap": false
+    }
+  ],
+  "initial_attempt": {
+    "status": "failed_concurrency_qualification_retained",
+    "workflow_attempts": 2,
+    "correct_business_outcomes": 2,
+    "synthetic_effects": 2,
+    "three_way_overlap_requirement_met": false,
+    "cause_established": false,
+    "change_before_new_attempt": "Preinitialize all six client contexts before the first worker fetch; same corpus, 180 ms delays, three slots and concurrency requirement in both arms.",
+    "combined_with_followup": false,
+    "retained_evidence_checksums_sha256": "19ec54b75f32adc65dcb03598743c5e723f60ba9283533f97d4696f578d7feb0"
+  },
+  "validation": {
+    "full_suite_tests_passed": 439,
+    "full_suite_skips": 0,
+    "real_k6_enabled": true,
+    "independent_audit": {
+      "status": "passed",
+      "study_id": "PAY-05",
+      "scope": "Local Fluxnova/H2 functional qualification; no cloud performance or live FX/model claim.",
+      "source_checksums_sha256": "57c6c2fc5a538b0099424466c3693c529af0dda7c9dc5d6eab8081c48b45c9ed",
+      "auditor_sha256": "461c57a42d7cedc29202857937ef822863f35b8f6a5009d0f07fcfb7dbd1f969",
+      "sealed_files_verified": 114,
+      "unique_scenarios": 22,
+      "functional_executions": 44,
+      "synthetic_effects": 34,
+      "replay_calls": 352,
+      "cross_process_replays_blocked": 2,
+      "owned_engine_stopped": true,
+      "performance_comparison_complete": false,
+      "cloud_resources_accessed": false,
+      "model_calls": 0
+    },
+    "source_sha256": {
+      "benchlib/fx_quotes.py": "cd7bbecba558fa2a32957451b7b93cf44facf27547b558739200e2ca8bc92b49",
+      "benchlib/fluxnova.py": "02f9e4cff23937dc82f3da2ddf53e860d0e827cda299d520f2d61606d7d15679",
+      "benchlib/workflow_corpus.py": "400ec6f19a71235d91ccb2e7c885c600eb34cddfdbc8b81a1f271b4570b0805c",
+      "services/fx_quotes.py": "7d0c4a1e30ff751b642f51daa8a50e1fd9d4d6f93df5f47906945bcc5a3d5285",
+      "services/workflow_checks.py": "8821c0e83cc94916d7f93c220604485f17d2fb4fd8226983339835c3bbd386d9",
+      "services/workflow_checks_worker.py": "b3d25fb753693307e3fc6a439ac0a3775b24e6f3c6f1c51a9f8a16757d52c18e",
+      "services/worker.py": "114d7ef905583133a63570a7691f21906cc1e885f86953530ece2e9402058a4e",
+      "services/http_support.py": "1ed258ef6040684402fffaa7630a9ee24a24d092d6b34312e638120d3168b23e",
+      "scripts/run_pay05_functional.py": "02febe80a65527ae1e72e670e5146b5bdcf3f28c0f3e1779a1b19e5b95099dc8",
+      "scripts/audit_pay05_functional.py": "461c57a42d7cedc29202857937ef822863f35b8f6a5009d0f07fcfb7dbd1f969",
+      "scripts/run_w02_functional.py": "d204533ba5cdf8dcb9bb15c2e750c3bff3f6652ff66f52c3996b43475a341043",
+      "workloads/pay05/cases.json": "2b524235864a1af98ae0138e61530eb2eb9f377dfd467da95b16fcdb75b36cca",
+      "workloads/pay05/sequential.bpmn": "a36d193a2cda8ce9a8e8f90954a68376915bde4c69ee81d327707c62529b8193",
+      "workloads/pay05/parallel.bpmn": "3e15b6938227b5044754fd809fbb19b8021fe3d33e08984ed281662f5ee1883b"
+    },
+    "full_suite_log_sha256": "91c5386cc07e27c9eb062be88248ebfcb8e9b01938b47aa54b1beaa4a1d64c83",
+    "full_suite_finished_at": "2026-10-31T16:17:54.712305+00:00",
+    "initial_attempt_audit_sha256": "6652fc10a016d8615bb167c83868e59b08a31c8656607cf5fc11372cf3b1ccc7"
+  },
+  "next_gate": "Qualify OCI/PostgreSQL behavior, load generation and isolated state/reset controls; then freeze matched quote delay/expiry populations and the cost/window before timed performance runs.",
+  "original_corpus_revision": 1,
+  "revision_2_follow_up": {
+    "failed_revision_1_repeat_retained": true,
+    "failed_gate": "three_quote_overlap_not_observed",
+    "preinitialization_sufficient_for_repeatability": false,
+    "changed_control": "Only lowest_total_cost quote delays: 180 to 1000 ms in both arms; same all-three-overlap requirement",
+    "audit": {
+      "status": "passed",
+      "study_id": "PAY-05",
+      "scope": "Local Fluxnova/H2 functional qualification; no performance or live FX/model claim.",
+      "source_checksums_sha256": "c91b318b33ca301c8bc48baa3d0254ebe92f095a5de5ea5424127d5efea32e0c",
+      "auditor_sha256": "74d671b9659e0b8fdcd110fbf0707212d8a384bd755ce398e68bc4450626b6ba",
+      "sealed_files_verified": 115,
+      "unique_scenarios": 22,
+      "functional_executions": 44,
+      "synthetic_effects": 34,
+      "replay_calls": 352,
+      "cross_process_replays_blocked": 2,
+      "owned_engine_stopped": true,
+      "corpus_revision": 2,
+      "performance_comparison_complete": false,
+      "cloud_resources_accessed": false,
+      "model_calls": 0
+    },
+    "audit_sha256": "d61a3c0d5cadf542186014ba819132f799612a54a3dbda19be315b68fa221312",
+    "performance_result": false
+  }
+}

@@ -1,0 +1,1552 @@
+{
+  "schema_version": 1,
+  "study_id": "PAY-05",
+  "scope": "Synthetic fixed-target quotes; functional qualification before timing. No real FX market, model or payment network.",
+  "cost_policy": "Minimize source_amount_minor + fee_minor for the fixed target amount; ascending route ID breaks ties.",
+  "validity_policy": "All quote offsets use trusted registration time; issued_ms <= decision_ms < expires_ms.",
+  "authority_policy": "Registrar binds the original intent; worker submits only case key, process ID and operation. This fixture does not claim signed-intent or external-provider integration.",
+  "cases": [
+    {
+      "case_id": "lowest_total_cost",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 1000,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 1000,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 1000,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "b",
+        "source_total_minor": 1120
+      },
+      "require_parallel_overlap": true
+    },
+    {
+      "case_id": "fees_change_route",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1075,
+            "fee_minor": 100,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "b",
+        "source_total_minor": 1120
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "cheapest_expired",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": -1000,
+            "expires_ms": -1
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "cheapest_not_yet_valid",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": 30000,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "route_not_authorized",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "payment_not_authorized",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": false,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "rejected",
+        "selected_route": null,
+        "source_total_minor": null
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "source_debit_limit",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1119,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "blocked",
+        "selected_route": null,
+        "source_total_minor": null
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "one_quote_timeout",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "timeout",
+          "quote": null
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "only_one_quote_available",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "timeout",
+          "quote": null
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "timeout",
+          "quote": null
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "c",
+        "source_total_minor": 1140
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "quorum_requires_two",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 2,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "timeout",
+          "quote": null
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "timeout",
+          "quote": null
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "blocked",
+        "selected_route": null,
+        "source_total_minor": null
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "all_quotes_timeout",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "timeout",
+          "quote": null
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "timeout",
+          "quote": null
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "timeout",
+          "quote": null
+        }
+      },
+      "expected": {
+        "outcome": "blocked",
+        "selected_route": null,
+        "source_total_minor": null
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "equal_cost_route_tie",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1120,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "wrong_source_currency",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "GBP",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "wrong_beneficiary",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "different-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "wrong_payment_id",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "another-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "wrong_target_amount",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 999,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "malformed_amount",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": "NaN",
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "negative_fee",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": -10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "fractional_minor_units",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100.5,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "unexpected_authority_field",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000,
+            "authorized": true
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "route_binding_mismatch",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "unregistered-route",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": 0,
+            "expires_ms": 60000
+          }
+        }
+      },
+      "expected": {
+        "outcome": "settled",
+        "selected_route": "a",
+        "source_total_minor": 1130
+      },
+      "require_parallel_overlap": false
+    },
+    {
+      "case_id": "all_quotes_expired",
+      "payment": {
+        "payment_id": "synthetic-fx-payment",
+        "beneficiary": "synthetic-fx-beneficiary",
+        "target_amount_minor": 1000,
+        "source_currency": "USD",
+        "target_currency": "EUR",
+        "max_source_total_minor": 1200,
+        "authorized": true,
+        "allowed_routes": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "minimum_valid_quotes": 1,
+      "quotes": {
+        "a": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "a",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1100,
+            "fee_minor": 30,
+            "issued_ms": -1000,
+            "expires_ms": -1
+          }
+        },
+        "b": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "b",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1110,
+            "fee_minor": 10,
+            "issued_ms": -1000,
+            "expires_ms": -1
+          }
+        },
+        "c": {
+          "delay_ms": 180,
+          "outcome": "quote",
+          "quote": {
+            "route_id": "c",
+            "payment_id": "synthetic-fx-payment",
+            "beneficiary": "synthetic-fx-beneficiary",
+            "target_amount_minor": 1000,
+            "source_currency": "USD",
+            "target_currency": "EUR",
+            "source_amount_minor": 1090,
+            "fee_minor": 50,
+            "issued_ms": -1000,
+            "expires_ms": -1
+          }
+        }
+      },
+      "expected": {
+        "outcome": "blocked",
+        "selected_route": null,
+        "source_total_minor": null
+      },
+      "require_parallel_overlap": false
+    }
+  ],
+  "corpus_revision": 2,
+  "overlap_probe_design": "Revision 2: the dedicated lowest_total_cost concurrency probe uses 1000 ms per quote in both arms. The previous 180 ms probe was not repeatable locally; unchanged three-way overlap assertion. This longer functional probe is not a latency or speedup measurement."
+}

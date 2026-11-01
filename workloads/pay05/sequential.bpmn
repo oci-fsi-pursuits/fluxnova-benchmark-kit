@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='utf-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="https://finos.org/benchmarks/pay05" id="pay05_sequential">
+  <process id="bench_pay05_sequential" name="PAY-05 sequential FX quote selection" isExecutable="true" camunda:historyTimeToLive="30">
+    <startEvent id="start" name="Payment request">
+      <outgoing>start_quote_a</outgoing>
+    </startEvent>
+    <serviceTask id="quote_a" name="Quote A" camunda:type="external" camunda:topic="bench-pay05-quotes">
+      <incoming>start_quote_a</incoming>
+      <outgoing>quote_a_quote_b</outgoing>
+    </serviceTask>
+    <serviceTask id="quote_b" name="Quote B" camunda:type="external" camunda:topic="bench-pay05-quotes">
+      <incoming>quote_a_quote_b</incoming>
+      <outgoing>quote_b_quote_c</outgoing>
+    </serviceTask>
+    <serviceTask id="quote_c" name="Quote C" camunda:type="external" camunda:topic="bench-pay05-quotes">
+      <incoming>quote_b_quote_c</incoming>
+      <outgoing>quote_c_select_route</outgoing>
+    </serviceTask>
+    <serviceTask id="select_route" name="Verify quotes and select route" camunda:type="external" camunda:topic="bench-pay05-quotes">
+      <incoming>quote_c_select_route</incoming>
+      <outgoing>select_route_decision</outgoing>
+    </serviceTask>
+    <exclusiveGateway id="decision" name="Outcome" default="decision_blocked">
+      <incoming>select_route_decision</incoming>
+      <outgoing>decision_settled</outgoing>
+      <outgoing>decision_rejected</outgoing>
+      <outgoing>decision_blocked</outgoing>
+    </exclusiveGateway>
+    <endEvent id="settled" name="One synthetic effect">
+      <incoming>decision_settled</incoming>
+    </endEvent>
+    <endEvent id="rejected" name="Authority rejected">
+      <incoming>decision_rejected</incoming>
+    </endEvent>
+    <endEvent id="blocked" name="No eligible route">
+      <incoming>decision_blocked</incoming>
+    </endEvent>
+    <sequenceFlow id="start_quote_a" sourceRef="start" targetRef="quote_a" />
+    <sequenceFlow id="quote_a_quote_b" sourceRef="quote_a" targetRef="quote_b" />
+    <sequenceFlow id="quote_b_quote_c" sourceRef="quote_b" targetRef="quote_c" />
+    <sequenceFlow id="quote_c_select_route" sourceRef="quote_c" targetRef="select_route" />
+    <sequenceFlow id="select_route_decision" sourceRef="select_route" targetRef="decision" />
+    <sequenceFlow id="decision_settled" sourceRef="decision" targetRef="settled">
+      <conditionExpression xsi:type="tFormalExpression">${pay05Outcome == 'settled'}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="decision_rejected" sourceRef="decision" targetRef="rejected">
+      <conditionExpression xsi:type="tFormalExpression">${pay05Outcome == 'rejected'}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="decision_blocked" sourceRef="decision" targetRef="blocked" />
+  </process>
+  <bpmndi:BPMNDiagram id="diagram_sequential">
+    <bpmndi:BPMNPlane id="plane_sequential" bpmnElement="bench_pay05_sequential">
+      <bpmndi:BPMNShape id="start_shape" bpmnElement="start">
+        <dc:Bounds x="20" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-7" y="205" width="90" height="32" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="quote_a_shape" bpmnElement="quote_a">
+        <dc:Bounds x="100" y="148" width="110" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="quote_b_shape" bpmnElement="quote_b">
+        <dc:Bounds x="250" y="148" width="110" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="quote_c_shape" bpmnElement="quote_c">
+        <dc:Bounds x="400" y="148" width="110" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="select_route_shape" bpmnElement="select_route">
+        <dc:Bounds x="550" y="148" width="140" height="64" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="decision_shape" bpmnElement="decision">
+        <dc:Bounds x="740" y="155" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="713" y="212" width="104" height="32" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="settled_shape" bpmnElement="settled">
+        <dc:Bounds x="850" y="62" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="823" y="105" width="90" height="32" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="rejected_shape" bpmnElement="rejected">
+        <dc:Bounds x="850" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="823" y="205" width="90" height="32" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="blocked_shape" bpmnElement="blocked">
+        <dc:Bounds x="850" y="262" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="823" y="305" width="90" height="32" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="start_quote_a_edge" bpmnElement="start_quote_a">
+        <di:waypoint x="56" y="180.0" />
+        <di:waypoint x="100" y="180.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="quote_a_quote_b_edge" bpmnElement="quote_a_quote_b">
+        <di:waypoint x="210" y="180.0" />
+        <di:waypoint x="250" y="180.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="quote_b_quote_c_edge" bpmnElement="quote_b_quote_c">
+        <di:waypoint x="360" y="180.0" />
+        <di:waypoint x="400" y="180.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="quote_c_select_route_edge" bpmnElement="quote_c_select_route">
+        <di:waypoint x="510" y="180.0" />
+        <di:waypoint x="550" y="180.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="select_route_decision_edge" bpmnElement="select_route_decision">
+        <di:waypoint x="690" y="180.0" />
+        <di:waypoint x="740" y="180.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="decision_settled_edge" bpmnElement="decision_settled">
+        <di:waypoint x="790" y="180.0" />
+        <di:waypoint x="820.0" y="180.0" />
+        <di:waypoint x="820.0" y="80.0" />
+        <di:waypoint x="850" y="80.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="decision_rejected_edge" bpmnElement="decision_rejected">
+        <di:waypoint x="790" y="180.0" />
+        <di:waypoint x="850" y="180.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="decision_blocked_edge" bpmnElement="decision_blocked">
+        <di:waypoint x="790" y="180.0" />
+        <di:waypoint x="820.0" y="180.0" />
+        <di:waypoint x="820.0" y="280.0" />
+        <di:waypoint x="850" y="280.0" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

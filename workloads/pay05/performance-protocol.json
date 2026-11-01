@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "protocol": "pay05-delay-profile-comparison-v1",
+  "study_id": "PAY-05",
+  "base_corpus_fingerprint": "c52cceb1a9ede427dc778eb852d41290320b964ca37c99e755b922bf2303f258",
+  "trace_seed": "pay05-profile-trace-v1",
+  "profiles": [
+    {"id": "balanced", "delay_ms": {"a": 200, "b": 200, "c": 200}},
+    {"id": "one_slow_provider", "delay_ms": {"a": 100, "b": 400, "c": 900}},
+    {"id": "all_providers_slow", "delay_ms": {"a": 900, "b": 900, "c": 900}}
+  ],
+  "rate_per_s": 0.5,
+  "qualification_warmup_cycles": 1,
+  "qualification_measurement_cycles": 1,
+  "measurement_warmup_cycles": 1,
+  "measurement_cycles": 6,
+  "pairs": 5,
+  "deadline_s": 2,
+  "poll_interval_ms": 100,
+  "worker_slots": 3,
+  "worker_idle_s": 0.1,
+  "fixed_vus": 16,
+  "drain_s": 30,
+  "primary_outcome": "Paired change in correct settlements observed within two seconds per measured second",
+  "secondary_outcomes": [
+    "Correct and timely outcomes separately for settlement, rejection and safe stop",
+    "Observed p95/p99 separately by expected outcome and dependency-delay profile",
+    "All deadline misses, dropped arrivals, incorrect and unknown outcomes",
+    "Quote receipt overlap and collection span",
+    "Worker task-attempt and backend replay counts",
+    "Generator and shared-controller/container/SQL telemetry"
+  ],
+  "population": "Equal synthetic coverage of 22 fixed policy/fault cases crossed with three declared quote-delay profiles; not measured customer/provider latency or traffic frequency",
+  "trace_policy": "SHA-256 rank of seed, base case ID and profile ID; identical trace and counts in both arms",
+  "changed_factor": "Sequential versus parallel BPMN ordering of the three independent quote requests",
+  "expiry_scope": "Preserve original eligibility/expiry and expected outcomes. The deliberately expired and not-yet-valid quotes stay in their declared states. Decision-dependent expiry crossings need a separate protocol.",
+  "overlap_scope": "The functional-only long three-way overlap assertion is disabled in this derived timing population; observed overlap is reported, not required for a performance arm to pass",
+  "deadline_miss_action": "report",
+  "rate_selection": "Fixed at 0.5/s before qualification; never selected from a favorable performance result",
+  "stop_rule": "Stop on invalid accounting, incorrect/unsafe outcomes, source/control drift, reset, generator, telemetry, worker-evidence or cost-window failure. Retain every attempt. Deadline misses remain results and never justify replacing an arm.",
+  "observation_boundary": "Scheduled arrival to first durable completion-history observation; includes 100 ms observer polling. Verification reads are separate, not pure engine time.",
+  "interpretation": "Five paired changes with their median and range, not a confidence interval. Refusals and safe stops are not settlement throughput. No maximum-capacity, live-agent, real-market, production sizing or complete-cost claim."
+}

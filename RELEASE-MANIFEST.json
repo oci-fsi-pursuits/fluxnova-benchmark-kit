@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "d08bd48d958fadf7d9fa99667fe63c387672d436",
+  "source_commit": "61485b6893cf644bb77ffa424eeb68a5491fe574",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -33,8 +33,8 @@
     },
     {
       "path": ".gitignore",
-      "source_sha256": "aeae56c164717d756374aa35cb79cc03aa8fb995d49fb2d9455f9da02243b6bc",
-      "candidate_sha256": "aeae56c164717d756374aa35cb79cc03aa8fb995d49fb2d9455f9da02243b6bc"
+      "source_sha256": "ebf6dc1085af5ef8fc6cd1af64a8186587e746c7651b59189b3f76de50a9995a",
+      "candidate_sha256": "ebf6dc1085af5ef8fc6cd1af64a8186587e746c7651b59189b3f76de50a9995a"
     },
     {
       "path": ".gitleaks.toml",
@@ -63,8 +63,8 @@
     },
     {
       "path": "README.md",
-      "source_sha256": "07a402ea403ffe8955c9c367d3d27d053c1cef1da9a4be7904ff91cc1f821857",
-      "candidate_sha256": "07a402ea403ffe8955c9c367d3d27d053c1cef1da9a4be7904ff91cc1f821857"
+      "source_sha256": "0f86d1c961d79051725d0b127a3df101377709b394d7a90f496d0c62054fd723",
+      "candidate_sha256": "0f86d1c961d79051725d0b127a3df101377709b394d7a90f496d0c62054fd723"
     },
     {
       "path": "SECURITY.md",
@@ -177,6 +177,11 @@
       "candidate_sha256": "02f9e4cff23937dc82f3da2ddf53e860d0e827cda299d520f2d61606d7d15679"
     },
     {
+      "path": "benchlib/fx_quotes.py",
+      "source_sha256": "cd7bbecba558fa2a32957451b7b93cf44facf27547b558739200e2ca8bc92b49",
+      "candidate_sha256": "cd7bbecba558fa2a32957451b7b93cf44facf27547b558739200e2ca8bc92b49"
+    },
+    {
       "path": "benchlib/managed_recovery.py",
       "source_sha256": "6adebc8095364216d44bfe8faaa51e5740ec48045128d937a07fd5221e66fe7b",
       "candidate_sha256": "6adebc8095364216d44bfe8faaa51e5740ec48045128d937a07fd5221e66fe7b"
@@ -195,6 +200,26 @@
       "path": "benchlib/otel_files.py",
       "source_sha256": "0c7506c4774bbaa793f5120e910752dbf0e20824f54e313c715fb59265a49be4",
       "candidate_sha256": "0c7506c4774bbaa793f5120e910752dbf0e20824f54e313c715fb59265a49be4"
+    },
+    {
+      "path": "benchlib/pay05_cloud.py",
+      "source_sha256": "d7a8dce87cc0b925851b8ae6d655a801ad3e7cdbe7be6348ad52d7c1ce469623",
+      "candidate_sha256": "d7a8dce87cc0b925851b8ae6d655a801ad3e7cdbe7be6348ad52d7c1ce469623"
+    },
+    {
+      "path": "benchlib/pay05_functional.py",
+      "source_sha256": "11ba0ed4a8a4661d89b50bfee7407f211883fc90a69d25381fe9554c9ff3e457",
+      "candidate_sha256": "11ba0ed4a8a4661d89b50bfee7407f211883fc90a69d25381fe9554c9ff3e457"
+    },
+    {
+      "path": "benchlib/pay05_load.py",
+      "source_sha256": "ada6f1861227dc0e1c207ae8a59f6ccb84426fd6cc148dffcd440b86811f0e50",
+      "candidate_sha256": "ada6f1861227dc0e1c207ae8a59f6ccb84426fd6cc148dffcd440b86811f0e50"
+    },
+    {
+      "path": "benchlib/pay05_performance.py",
+      "source_sha256": "a7af4af49671b4dac3dfd604856b692f22e178d3a784a410b5660f4a491344b1",
+      "candidate_sha256": "a7af4af49671b4dac3dfd604856b692f22e178d3a784a410b5660f4a491344b1"
     },
     {
       "path": "benchlib/preflight.py",
@@ -228,8 +253,8 @@
     },
     {
       "path": "benchlib/runner.py",
-      "source_sha256": "0a7c758a1cec4bc9d1dbc7705efa21312e51691ae0af6d8ef22e3d67446f3e94",
-      "candidate_sha256": "0a7c758a1cec4bc9d1dbc7705efa21312e51691ae0af6d8ef22e3d67446f3e94"
+      "source_sha256": "c2b9d70a5511b72905b5bcaf276820f3c5780038d5827bc3ac6d6da02170ebc1",
+      "candidate_sha256": "c2b9d70a5511b72905b5bcaf276820f3c5780038d5827bc3ac6d6da02170ebc1"
     },
     {
       "path": "benchlib/timing_comparison.py",
@@ -323,8 +348,8 @@
     },
     {
       "path": "docs/README.md",
-      "source_sha256": "a59520365305d8d07a5049c3f01da269ea722fdf297dda033bccc0d18c8c1444",
-      "candidate_sha256": "a59520365305d8d07a5049c3f01da269ea722fdf297dda033bccc0d18c8c1444"
+      "source_sha256": "0a84a6f7c5ad3f1b537c0dbd6a4314bb0071901644f879f95a5d3232a31c0392",
+      "candidate_sha256": "0a84a6f7c5ad3f1b537c0dbd6a4314bb0071901644f879f95a5d3232a31c0392"
     },
     {
       "path": "docs/approval-agent.md",
@@ -425,6 +450,11 @@
       "path": "docs/oci.md",
       "source_sha256": "838eac68225d414d76c2c9acc2335f57551d732f475acdb53b58e913eec3ca0a",
       "candidate_sha256": "f0ecaa9ae8e0ee8392083c21b8bc4de863b3fb696708ee681b3e7973f1bb0342"
+    },
+    {
+      "path": "docs/pay05-fx-quotes.md",
+      "source_sha256": "722e49f509b6851ceb240eb4498e77ed7515c302b8ffc86107519c58c6160a45",
+      "candidate_sha256": "722e49f509b6851ceb240eb4498e77ed7515c302b8ffc86107519c58c6160a45"
     },
     {
       "path": "docs/payment-approval.md",
@@ -543,13 +573,13 @@
     },
     {
       "path": "docs/workload-completion.md",
-      "source_sha256": "88ee6f774a0fb019ec388f69387fe91e9473b13be496a7e534c3a947fc0bc75f",
-      "candidate_sha256": "88ee6f774a0fb019ec388f69387fe91e9473b13be496a7e534c3a947fc0bc75f"
+      "source_sha256": "5cc6b3fb1fcedadb38f2ff2a41a13d562b4b8d76e4756b4ce6f3effb9fd18886",
+      "candidate_sha256": "5cc6b3fb1fcedadb38f2ff2a41a13d562b4b8d76e4756b4ce6f3effb9fd18886"
     },
     {
       "path": "docs/workloads.md",
-      "source_sha256": "d809c125906399b2d44d5edc840a5d5a5214294dedc96aa0d2840dece1a7a0d0",
-      "candidate_sha256": "7907dcbddbfd7174a28a9c79a4e5a5963dba8fd561bc1dcef42b8559ed067d56"
+      "source_sha256": "8f775bc04836229841936a95e33d7ca1857cfd22c9fdedbee5f41e764a8cce0d",
+      "candidate_sha256": "72a03dc6b2594e83ffabf1f2279bd7060f5f646dfd3504a18fa369479b90fa8b"
     },
     {
       "path": "infra/oci-evidence/.terraform.lock.hcl",
@@ -622,6 +652,11 @@
       "candidate_sha256": "c69f1db8e455188b889f41fc8fbce5d8e419aa9af3fa1c321e9cd457d712a179"
     },
     {
+      "path": "load/pay05_quotes.js",
+      "source_sha256": "c8b58dd2547f837e02f3e6a836e29547a4febac44fdf96a0ad34f5c0aee6399e",
+      "candidate_sha256": "c8b58dd2547f837e02f3e6a836e29547a4febac44fdf96a0ad34f5c0aee6399e"
+    },
+    {
       "path": "load/worker_pacing.js",
       "source_sha256": "08a35583f3e0539b84c44cc0532b6558d9b680b3f0b0673f5da3eac9ebf51e8b",
       "candidate_sha256": "08a35583f3e0539b84c44cc0532b6558d9b680b3f0b0673f5da3eac9ebf51e8b"
@@ -643,8 +678,8 @@
     },
     {
       "path": "release/public-files.json",
-      "source_sha256": "6410d24dc6c9fd98fede79f0efc9b0b32b3174860561948d176fa46f55795e4c",
-      "candidate_sha256": "6410d24dc6c9fd98fede79f0efc9b0b32b3174860561948d176fa46f55795e4c"
+      "source_sha256": "9d9539e70c3e24f5231cb97433ce5336cba8b50a6a91d64408d6373b76ae4a1d",
+      "candidate_sha256": "9d9539e70c3e24f5231cb97433ce5336cba8b50a6a91d64408d6373b76ae4a1d"
     },
     {
       "path": "requirements-cloud.txt",
@@ -680,6 +715,26 @@
       "path": "schemas/manifest.schema.json",
       "source_sha256": "549fad75450c55a4a1e767ee6b34d8ae33f0ae00b7b269fe79222554d6117577",
       "candidate_sha256": "549fad75450c55a4a1e767ee6b34d8ae33f0ae00b7b269fe79222554d6117577"
+    },
+    {
+      "path": "scripts/audit_pay05_functional.py",
+      "source_sha256": "dc47891ac207de3f7cfef116c145e836b89dfc335ded73504790f7d358aab871",
+      "candidate_sha256": "dc47891ac207de3f7cfef116c145e836b89dfc335ded73504790f7d358aab871"
+    },
+    {
+      "path": "scripts/audit_pay05_load.py",
+      "source_sha256": "3cf3a1c3d53de5e1cd7d0cf315cf856a18dbb0407498604d55e76878c83d48fa",
+      "candidate_sha256": "3cf3a1c3d53de5e1cd7d0cf315cf856a18dbb0407498604d55e76878c83d48fa"
+    },
+    {
+      "path": "scripts/audit_pay05_performance.py",
+      "source_sha256": "93d36c1159241619668c785ff5c01051a173061d3463ffa1201213a765c8fdbf",
+      "candidate_sha256": "93d36c1159241619668c785ff5c01051a173061d3463ffa1201213a765c8fdbf"
+    },
+    {
+      "path": "scripts/audit_pay05_retries.py",
+      "source_sha256": "1a6a8ea3f5275a5f7802182bd0e3ef0a4f4c9e37e7d14b3a50477c9f6d619eb8",
+      "candidate_sha256": "1a6a8ea3f5275a5f7802182bd0e3ef0a4f4c9e37e7d14b3a50477c9f6d619eb8"
     },
     {
       "path": "scripts/audit_w02_functional.py",
@@ -843,8 +898,8 @@
     },
     {
       "path": "scripts/push_metrics.py",
-      "source_sha256": "719b9b963e315aaef2e9480271c9b10bd01d8cd65eade1fccee72ea5e6c6f559",
-      "candidate_sha256": "719b9b963e315aaef2e9480271c9b10bd01d8cd65eade1fccee72ea5e6c6f559"
+      "source_sha256": "7d555e695fbed42fcabb3f17d6de522fb1a8ddd9adce8263c7f95a56bc4ad065",
+      "candidate_sha256": "7d555e695fbed42fcabb3f17d6de522fb1a8ddd9adce8263c7f95a56bc4ad065"
     },
     {
       "path": "scripts/qualify_w01_pacing.py",
@@ -942,6 +997,26 @@
       "candidate_sha256": "e8572a0fdd691aeac8d3baf39d8a6682767df8595bac9d4d0053c2a3a304b3a5"
     },
     {
+      "path": "scripts/run_pay05_cloud.py",
+      "source_sha256": "3167118fecb78152c8c194628a98bc9a00dfc3b26cabc5da8eba41aa73f5934d",
+      "candidate_sha256": "3167118fecb78152c8c194628a98bc9a00dfc3b26cabc5da8eba41aa73f5934d"
+    },
+    {
+      "path": "scripts/run_pay05_functional.py",
+      "source_sha256": "89a759d43620362a72ab6f8c9a46059c02e9c1c7f7ca253ab6f75d8c9b089cfb",
+      "candidate_sha256": "89a759d43620362a72ab6f8c9a46059c02e9c1c7f7ca253ab6f75d8c9b089cfb"
+    },
+    {
+      "path": "scripts/run_pay05_load_cloud.py",
+      "source_sha256": "d1954b7d95bda3d02bccaf9b92aaf969eaaf99f04b9fa4960f57f32e9861274f",
+      "candidate_sha256": "d1954b7d95bda3d02bccaf9b92aaf969eaaf99f04b9fa4960f57f32e9861274f"
+    },
+    {
+      "path": "scripts/run_pay05_performance_cloud.py",
+      "source_sha256": "fd8585f2b40ca98ba7a48eaaf8a192f0a0653d3d0d21c57c4419a2f3d0bdbf2d",
+      "candidate_sha256": "fd8585f2b40ca98ba7a48eaaf8a192f0a0653d3d0d21c57c4419a2f3d0bdbf2d"
+    },
+    {
       "path": "scripts/run_payment_approval_checks.py",
       "source_sha256": "abb9cc86feb3ee9ecfc998bbc56c07f7f26a7ff390a8b5119b89187503b4da53",
       "candidate_sha256": "abb9cc86feb3ee9ecfc998bbc56c07f7f26a7ff390a8b5119b89187503b4da53"
@@ -1010,6 +1085,16 @@
       "path": "services/bound_payment.py",
       "source_sha256": "009d059c87746d19e6e18bf638993fb84e3d81c0e9721a1e4d09e40d78211cb4",
       "candidate_sha256": "009d059c87746d19e6e18bf638993fb84e3d81c0e9721a1e4d09e40d78211cb4"
+    },
+    {
+      "path": "services/fx_quotes.py",
+      "source_sha256": "831cef6a53075642c06aa3aae3565c7133ddb599ead8c26ca9f38ddf2b12af78",
+      "candidate_sha256": "831cef6a53075642c06aa3aae3565c7133ddb599ead8c26ca9f38ddf2b12af78"
+    },
+    {
+      "path": "services/fx_quotes_worker.py",
+      "source_sha256": "286135a4122623d85e9eabb247d1f56c16e49d3425169c2c58c47424e75bfdb9",
+      "candidate_sha256": "286135a4122623d85e9eabb247d1f56c16e49d3425169c2c58c47424e75bfdb9"
     },
     {
       "path": "services/golden.py",
@@ -1083,13 +1168,13 @@
     },
     {
       "path": "services/workflow_checks.py",
-      "source_sha256": "53266a65572ec6c282f1a3f99e6b48f57c4633fd2b822c28d1dc697dd91a90ee",
-      "candidate_sha256": "53266a65572ec6c282f1a3f99e6b48f57c4633fd2b822c28d1dc697dd91a90ee"
+      "source_sha256": "8821c0e83cc94916d7f93c220604485f17d2fb4fd8226983339835c3bbd386d9",
+      "candidate_sha256": "8821c0e83cc94916d7f93c220604485f17d2fb4fd8226983339835c3bbd386d9"
     },
     {
       "path": "services/workflow_checks_worker.py",
-      "source_sha256": "502796041dc1a409ba923d12c47a546bac309c91720c08a7bf73555e3c3b6a5c",
-      "candidate_sha256": "502796041dc1a409ba923d12c47a546bac309c91720c08a7bf73555e3c3b6a5c"
+      "source_sha256": "b3d25fb753693307e3fc6a439ac0a3775b24e6f3c6f1c51a9f8a16757d52c18e",
+      "candidate_sha256": "b3d25fb753693307e3fc6a439ac0a3775b24e6f3c6f1c51a9f8a16757d52c18e"
     },
     {
       "path": "telemetry/collector.yaml",
@@ -1198,8 +1283,13 @@
     },
     {
       "path": "tests/test_evidence.py",
-      "source_sha256": "407dbb487d753e0f755f2fafefd6a448c85f9c34b403cb3565db674a2a242e1a",
-      "candidate_sha256": "407dbb487d753e0f755f2fafefd6a448c85f9c34b403cb3565db674a2a242e1a"
+      "source_sha256": "c5564aba004feeda8285ee70690c2d3863b185a4e71179a1af945e7ee8df3d9f",
+      "candidate_sha256": "c5564aba004feeda8285ee70690c2d3863b185a4e71179a1af945e7ee8df3d9f"
+    },
+    {
+      "path": "tests/test_fx_quotes.py",
+      "source_sha256": "659288b6b84670460b3ad1981cf5cc2ca444028b37d58b006fea0e90c9725dc9",
+      "candidate_sha256": "659288b6b84670460b3ad1981cf5cc2ca444028b37d58b006fea0e90c9725dc9"
     },
     {
       "path": "tests/test_instrumentation_mode.py",
@@ -1262,6 +1352,26 @@
       "candidate_sha256": "a2172ade8e9e3551ad81c98c2c296f9a0fbe6147638b6a7cf89bf28fffc5a44c"
     },
     {
+      "path": "tests/test_pay05_cloud.py",
+      "source_sha256": "6837dd2f44f0abdf50ae79b43732de0648e023785c81255a55fa938cd6a1652a",
+      "candidate_sha256": "6837dd2f44f0abdf50ae79b43732de0648e023785c81255a55fa938cd6a1652a"
+    },
+    {
+      "path": "tests/test_pay05_load.py",
+      "source_sha256": "551dc7341ac82514dd3a9588f16e8e2c040cfbbea9c4b821671033aa9b175002",
+      "candidate_sha256": "551dc7341ac82514dd3a9588f16e8e2c040cfbbea9c4b821671033aa9b175002"
+    },
+    {
+      "path": "tests/test_pay05_performance.py",
+      "source_sha256": "05c31fdb1f6e56ada10f0b10e61941dee22a5d13b8b6d0b70404423920339460",
+      "candidate_sha256": "05c31fdb1f6e56ada10f0b10e61941dee22a5d13b8b6d0b70404423920339460"
+    },
+    {
+      "path": "tests/test_pay05_retries.py",
+      "source_sha256": "bf93d7d786b7160d95a59f441436060cae1804f711d71a131aa3586e14cbfcc6",
+      "candidate_sha256": "bf93d7d786b7160d95a59f441436060cae1804f711d71a131aa3586e14cbfcc6"
+    },
+    {
       "path": "tests/test_payment_agent.py",
       "source_sha256": "f78be37dd3b3fcbb81c7af2c03e912ec9183e1682fdb21f5eccee99272b5fd79",
       "candidate_sha256": "f78be37dd3b3fcbb81c7af2c03e912ec9183e1682fdb21f5eccee99272b5fd79"
@@ -1278,8 +1388,8 @@
     },
     {
       "path": "tests/test_push_metrics.py",
-      "source_sha256": "900b7ab7fe62093e89814953c0d6069422299806424568b364cbee690c73eafa",
-      "candidate_sha256": "900b7ab7fe62093e89814953c0d6069422299806424568b364cbee690c73eafa"
+      "source_sha256": "df7e6b279f7aa955cf0fee8497fe4e0adeee9070ea3d8d5dbc92790499f898f0",
+      "candidate_sha256": "df7e6b279f7aa955cf0fee8497fe4e0adeee9070ea3d8d5dbc92790499f898f0"
     },
     {
       "path": "tests/test_recoverable_agent.py",
@@ -1437,6 +1547,16 @@
       "candidate_sha256": "6ccb903efed2784475ffaae531dc3cdda757153a2f3714074688d807b1c5a6e9"
     },
     {
+      "path": "validation/local-20261031-pay05/README.md",
+      "source_sha256": "3d9b923547600a9117d10cf093016c355fa76d2b36e4b08aa232e45c138a6943",
+      "candidate_sha256": "5eac22fa98f3322033b553827fc95c71905444ce18996a2410a5525ce57bd7f6"
+    },
+    {
+      "path": "validation/local-20261031-pay05/summary.json",
+      "source_sha256": "004dd5f85e42b504079233ca99fcd76975acaf45bb786c96e151d1a7ed1e1737",
+      "candidate_sha256": "004dd5f85e42b504079233ca99fcd76975acaf45bb786c96e151d1a7ed1e1737"
+    },
+    {
       "path": "validation/oci-20261027-w01-comparison/README.md",
       "source_sha256": "553e86b118f8bee7059abd65a9094f22d5ec3709fb780f8e50d199d4c3272219",
       "candidate_sha256": "a815a2ae7e279695558a6aeff361061e43a739e3a91aca542daf7066a1f74a28"
@@ -1487,6 +1607,36 @@
       "candidate_sha256": "1b491a39fa4f18453b6469ada34e7378cd88e21b74d645ac499e9ba047551851"
     },
     {
+      "path": "validation/oci-20261031-pay05-comparison/README.md",
+      "source_sha256": "fe277ee3c103fe1ed60b381f4d4a6707256e490e8c70b651adad522cb65dbb96",
+      "candidate_sha256": "4c571b48db3a616e762e5db93e6d409ca3697365031e71ac62d6ea938013c684"
+    },
+    {
+      "path": "validation/oci-20261031-pay05-comparison/summary.json",
+      "source_sha256": "34abdc148db7061b12130f77b2db362db14218aabbfc5e1ebfc4063c63ee0e26",
+      "candidate_sha256": "34abdc148db7061b12130f77b2db362db14218aabbfc5e1ebfc4063c63ee0e26"
+    },
+    {
+      "path": "validation/oci-20261031-pay05-load-qualification/README.md",
+      "source_sha256": "eba7e5d0966d6abfd6e3cdc2726fe1565e140ab6beece1f8d8f1e489fbb0770e",
+      "candidate_sha256": "d4514d48682e656778d79b101762d09ef3926e07a5d424f583ea99e3a8aec3ff"
+    },
+    {
+      "path": "validation/oci-20261031-pay05-load-qualification/summary.json",
+      "source_sha256": "b1dd99110d53930b3ac307adef383fc3e996d2ad84f8221b5a1a714e8f932d38",
+      "candidate_sha256": "b1dd99110d53930b3ac307adef383fc3e996d2ad84f8221b5a1a714e8f932d38"
+    },
+    {
+      "path": "validation/oci-20261031-pay05-qualification/README.md",
+      "source_sha256": "ec7820f9827b7244e87ad07dee342a0a9d60c19a57920d984c74fbf36aa6119e",
+      "candidate_sha256": "08cdafd9c3baea67cf5ec6c5c37733f6f312b31117d082ee41cf495576e694eb"
+    },
+    {
+      "path": "validation/oci-20261031-pay05-qualification/summary.json",
+      "source_sha256": "7e3974894148f04442fe827dc0ed3a13759f3c51377077c69c4724611f006ea4",
+      "candidate_sha256": "7e3974894148f04442fe827dc0ed3a13759f3c51377077c69c4724611f006ea4"
+    },
+    {
       "path": "workloads/agent-direct.bpmn",
       "source_sha256": "d751e373a8c211a3b1423ba43f6f4ba29b22707a928736a364594b6b49c0cf67",
       "candidate_sha256": "d751e373a8c211a3b1423ba43f6f4ba29b22707a928736a364594b6b49c0cf67"
@@ -1522,6 +1672,26 @@
       "candidate_sha256": "b2333f81f4f02e4575b80282a35c760976b6d44995a5b3f05e70b2be65f65d8d"
     },
     {
+      "path": "workloads/pay05/cases.json",
+      "source_sha256": "6a06de4b9094aa3d20c1c62a829de0ca974874e9ff65e38f8400424113afe14e",
+      "candidate_sha256": "6a06de4b9094aa3d20c1c62a829de0ca974874e9ff65e38f8400424113afe14e"
+    },
+    {
+      "path": "workloads/pay05/parallel.bpmn",
+      "source_sha256": "0c4cd606ca0dd0833ba8880d77b7620d9fba107486379d2bfb3e02d714339ddc",
+      "candidate_sha256": "0c4cd606ca0dd0833ba8880d77b7620d9fba107486379d2bfb3e02d714339ddc"
+    },
+    {
+      "path": "workloads/pay05/performance-protocol.json",
+      "source_sha256": "1f0b532edc1004a49acfc1741e6bd62d0f7b8005e11e5ea839cde6145bf781ee",
+      "candidate_sha256": "1f0b532edc1004a49acfc1741e6bd62d0f7b8005e11e5ea839cde6145bf781ee"
+    },
+    {
+      "path": "workloads/pay05/sequential.bpmn",
+      "source_sha256": "0197a9bd5729a7ed2383567785f52281e6e3be5506a04c6d6676b08b4ac3aeeb",
+      "candidate_sha256": "0197a9bd5729a7ed2383567785f52281e6e3be5506a04c6d6676b08b4ac3aeeb"
+    },
+    {
       "path": "workloads/payment-approval.bpmn",
       "source_sha256": "399a08a36170c47032da88bf98aabc88a575198b791ba47036dda092897e40aa",
       "candidate_sha256": "399a08a36170c47032da88bf98aabc88a575198b791ba47036dda092897e40aa"
@@ -1533,8 +1703,8 @@
     },
     {
       "path": "workloads/payment-cases.json",
-      "source_sha256": "a251a1d62a350374f06565af7a70ed773c09660a75a34b0d835310dc5f91728a",
-      "candidate_sha256": "a251a1d62a350374f06565af7a70ed773c09660a75a34b0d835310dc5f91728a"
+      "source_sha256": "7f2665a8a4e2e842e34d871c4ff403431c676d636cf777640b113fc573ea1f27",
+      "candidate_sha256": "7f2665a8a4e2e842e34d871c4ff403431c676d636cf777640b113fc573ea1f27"
     },
     {
       "path": "workloads/risk.bpmn",
@@ -1597,7 +1767,7 @@
       "candidate_sha256": "4df57344bce8894757560e5679182511a11182d6c4b4dae0f68b8bfe04556674"
     }
   ],
-  "excluded_file_count": 196,
+  "excluded_file_count": 224,
   "archive_references_made_explicit": [
     {
       "file": "docs/approval-agent.md",

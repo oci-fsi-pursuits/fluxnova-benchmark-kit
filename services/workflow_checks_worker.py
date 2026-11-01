@@ -17,12 +17,12 @@ ACTIVITIES = {'kyc_check': ('kyc', 'w02Kyc'), 'risk_check': ('risk', 'w02Risk'),
               'verify_settle': ('settle', 'w02Outcome')}
 
 
-def process_task(task, engine, support, worker_id):
+def process_task(task, engine, support, worker_id, *, activities=None, error_prefix='w02'):
     task_path = '/external-task/' + urllib.parse.quote(task['id'], safe='')
     operation = 'unknown'
     result = None
     try:
-        operation, variable = ACTIVITIES[task['activityId']]
+        operation, variable = (ACTIVITIES if activities is None else activities)[task['activityId']]
         key = task['variables']['studyCaseKey']['value']
         request = {'case_key': key, 'process_id': task['processInstanceId'], 'operation': operation}
         # A newly started process can be fetched just before its trusted harness
@@ -58,7 +58,7 @@ def process_task(task, engine, support, worker_id):
         retries = max(0, (3 if task.get('retries') is None else task['retries']) - 1)
         try:
             engine.request('POST', task_path + '/failure', {
-                'workerId': worker_id, 'errorMessage': 'w02_' + type(error).__name__,
+                'workerId': worker_id, 'errorMessage': error_prefix + '_' + type(error).__name__,
                 'retries': retries, 'retryTimeout': 100})
         except (urllib.error.URLError, TimeoutError, ConnectionError):
             pass
@@ -67,7 +67,8 @@ def process_task(task, engine, support, worker_id):
 
 
 class WorkerPool:
-    def __init__(self, engine_factory, support_factory, slots=2, idle_s=.1):
+    def __init__(self, engine_factory, support_factory, slots=2, idle_s=.1, *,
+                 topic=TOPIC, activities=None, error_prefix='w02'):
         if type(slots) is not int or slots < 1 or slots > 32 or idle_s < 0:
             raise ValueError('invalid_worker_pool')
         self.stop_event = threading.Event()
@@ -76,6 +77,9 @@ class WorkerPool:
         self.record_lock = threading.Lock()
         self.engine_factory, self.support_factory = engine_factory, support_factory
         self.slots, self.idle_s = slots, idle_s
+        self.topic = topic
+        self.activities = dict(ACTIVITIES if activities is None else activities)
+        self.error_prefix = error_prefix
 
     def run(self, index):
         worker_id = 'w02-' + uuid.uuid4().hex + '-' + str(index)
@@ -85,10 +89,11 @@ class WorkerPool:
             try:
                 tasks = engine.request('POST', '/external-task/fetchAndLock', {
                     'workerId': worker_id, 'maxTasks': 1, 'usePriority': False,
-                    'topics': [{'topicName': TOPIC, 'lockDuration': 60000,
+                    'topics': [{'topicName': self.topic, 'lockDuration': 60000,
                                 'variables': ['studyCaseKey']}]})
                 for task in tasks or []:
-                    record = process_task(task, engine, support, worker_id)
+                    record = process_task(task, engine, support, worker_id,
+                                          activities=self.activities, error_prefix=self.error_prefix)
                     with self.record_lock:
                         self.records.append(record)
                     successful = record['status'] == 'completed'

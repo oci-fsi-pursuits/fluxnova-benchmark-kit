@@ -161,6 +161,7 @@ def run_k6(config, run_id, output_root=None):
     timed_out = threading.Event()
     malformed, returncode = 0, None
     proc = timer = sampler = None
+    load_window = None
     calibration, telemetry = {}, {}
     observed_started, observed_scheduled = set(), set()
     lags = []
@@ -174,12 +175,14 @@ def run_k6(config, run_id, output_root=None):
         if evidence_settings.get("auto_collect", True):
             sampler = TelemetrySampler(config, run_id, directory).start()
         load_window = {"run_id": run_id, "started_at": utc_now(), "measurement_offset_s": work.get("warmup_s", 0),
-                       "measurement_duration_s": work["duration_s"], "drain_s": work.get("drain_s", 0),
+                       "measurement_duration_s": work["duration_s"], "drain_s": work.get("drain_s", 0), "process_started": False,
                        "scope": "Process launch/finish envelope; exact request times are retained in events.ndjson"}
         write_json(directory / "load-window.json", load_window)
         with (directory / "runner.log").open("w", encoding="utf-8") as log, (directory / "events.ndjson").open("w", encoding="utf-8") as events:
             proc = subprocess.Popen(argv, cwd=ROOT, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                     text=True, encoding="utf-8", errors="replace")
+            load_window["process_started"] = True
+            write_json(directory / "load-window.json", load_window)
             def stop():
                 timed_out.set()
                 if proc.poll() is None:
@@ -217,9 +220,15 @@ def run_k6(config, run_id, output_root=None):
                 problems.append("Evidence collector command failed")
     except BaseException as exc:
         problems.append(type(exc).__name__)
-        if proc is not None and proc.poll() is None:
-            proc.kill()
+        if proc is not None:
+            if proc.poll() is None:
+                proc.kill()
             returncode = proc.wait()
+        if load_window is not None and "finished_at" not in load_window:
+            load_window.update(finished_at=utc_now(), returncode=returncode,
+                               interrupted=isinstance(exc, (KeyboardInterrupt, SystemExit)),
+                               error_type=type(exc).__name__)
+            write_json(directory / "load-window.json", load_window)
         if isinstance(exc, (KeyboardInterrupt, SystemExit)):
             interrupted = exc
     finally:

@@ -185,7 +185,7 @@ class StudyStore:
             return 200, {**receipt, 'replayed': False}
 
 
-def make_server(host, port, store, worker_token, registration_token):
+def make_server(host, port, store, worker_token, registration_token, *, service_name='w02-synthetic-checks'):
     if not worker_token or not registration_token or worker_token == registration_token:
         raise ValueError('distinct_worker_and_registration_tokens_required')
 
@@ -210,7 +210,7 @@ def make_server(host, port, store, worker_token, registration_token):
         def do_GET(self):
             path = urlsplit(self.path).path
             if path == '/health':
-                return self.reply(200, {'service': 'w02-synthetic-checks', 'status': 'ok'})
+                return self.reply(200, {'service': service_name, 'status': 'ok'})
             if not (self.authorized(worker_token) or self.authorized(registration_token)):
                 return self.reply(401, {'error': 'unauthorized'})
             if path.startswith('/state/'):

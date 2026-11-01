@@ -1,0 +1,351 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-31T20:31:19.885103+00:00",
+  "study_id": "PAY-05",
+  "status": "oci_offered_load_reset_telemetry_qualification_passed_and_audited",
+  "source_commit": "90e8f5558ade35b7970572c9ac8808462c5be540",
+  "corpus_revision": 2,
+  "scope": "Four short OCI offered-load/reset/telemetry qualification lanes; not a performance comparison.",
+  "engine_release": "3.0.1",
+  "database_version": "PostgreSQL 17.6 OCI Optimized, 64-bit",
+  "runtime_topology": "Engine, k6 generator, synthetic quote backend and three-slot worker share the existing controller; fresh separate single-node managed PostgreSQL.",
+  "database_allocation": {
+    "instances": 1,
+    "ocpus": 2,
+    "memory_gb": 32
+  },
+  "worker_slots_each_arm": 3,
+  "worker_idle_s": 0.1,
+  "completion_poll_ms": 100,
+  "outcome_deadline_s": 2,
+  "image_digests": {
+    "engine_image": "4995b5f32d13b5ff3d8bc016c71cc14e45fe3775e8060c2ad50281b7d073a140",
+    "services_image": "68386688ca19b7f79d5d4bdc0e24c1e8c54aca284eeef2819ed062b2af5d7283"
+  },
+  "qualification_lanes": 4,
+  "unique_scenarios": 22,
+  "workflow_executions_including_warmup": 264,
+  "warmup_executions": 88,
+  "measured_executions": 176,
+  "correct_outcomes": 264,
+  "on_time_correct_including_warmup": 257,
+  "deadline_misses_retained_including_warmup": 7,
+  "synthetic_effects": 204,
+  "expected_no_effect_outcomes": 60,
+  "lanes": [
+    {
+      "arm": "sequential",
+      "offered_rate_per_s": 0.5,
+      "status": "passed",
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 22,
+          "correct": 22,
+          "on_time_correct": 21,
+          "dropped": 0,
+          "outcomes": {
+            "settled": {
+              "expected": 17,
+              "verified": 17,
+              "within_deadline": 16
+            },
+            "rejected": {
+              "expected": 1,
+              "verified": 1,
+              "within_deadline": 1
+            },
+            "blocked": {
+              "expected": 4,
+              "verified": 4,
+              "within_deadline": 4
+            }
+          }
+        },
+        "measurement": {
+          "offered": 44,
+          "correct": 44,
+          "on_time_correct": 42,
+          "dropped": 0,
+          "outcomes": {
+            "settled": {
+              "expected": 34,
+              "verified": 34,
+              "within_deadline": 32
+            },
+            "rejected": {
+              "expected": 2,
+              "verified": 2,
+              "within_deadline": 2
+            },
+            "blocked": {
+              "expected": 8,
+              "verified": 8,
+              "within_deadline": 8
+            }
+          }
+        }
+      },
+      "checkpoint_reset_verified": true,
+      "loopback_generator_headroom_passed": true,
+      "host_headroom_passed": true,
+      "host_cpu_p95_percent": 12.730496453900708,
+      "minimum_host_memory_available_fraction": 0.8876787989539037
+    },
+    {
+      "arm": "parallel",
+      "offered_rate_per_s": 0.5,
+      "status": "passed",
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 22,
+          "correct": 22,
+          "on_time_correct": 21,
+          "dropped": 0,
+          "outcomes": {
+            "settled": {
+              "expected": 17,
+              "verified": 17,
+              "within_deadline": 16
+            },
+            "rejected": {
+              "expected": 1,
+              "verified": 1,
+              "within_deadline": 1
+            },
+            "blocked": {
+              "expected": 4,
+              "verified": 4,
+              "within_deadline": 4
+            }
+          }
+        },
+        "measurement": {
+          "offered": 44,
+          "correct": 44,
+          "on_time_correct": 44,
+          "dropped": 0,
+          "outcomes": {
+            "settled": {
+              "expected": 34,
+              "verified": 34,
+              "within_deadline": 34
+            },
+            "rejected": {
+              "expected": 2,
+              "verified": 2,
+              "within_deadline": 2
+            },
+            "blocked": {
+              "expected": 8,
+              "verified": 8,
+              "within_deadline": 8
+            }
+          }
+        }
+      },
+      "checkpoint_reset_verified": true,
+      "loopback_generator_headroom_passed": true,
+      "host_headroom_passed": true,
+      "host_cpu_p95_percent": 25.168380007089684,
+      "minimum_host_memory_available_fraction": 0.8837906380141959
+    },
+    {
+      "arm": "parallel",
+      "offered_rate_per_s": 1,
+      "status": "passed",
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 22,
+          "correct": 22,
+          "on_time_correct": 22,
+          "dropped": 0,
+          "outcomes": {
+            "settled": {
+              "expected": 17,
+              "verified": 17,
+              "within_deadline": 17
+            },
+            "rejected": {
+              "expected": 1,
+              "verified": 1,
+              "within_deadline": 1
+            },
+            "blocked": {
+              "expected": 4,
+              "verified": 4,
+              "within_deadline": 4
+            }
+          }
+        },
+        "measurement": {
+          "offered": 44,
+          "correct": 44,
+          "on_time_correct": 44,
+          "dropped": 0,
+          "outcomes": {
+            "settled": {
+              "expected": 34,
+              "verified": 34,
+              "within_deadline": 34
+            },
+            "rejected": {
+              "expected": 2,
+              "verified": 2,
+              "within_deadline": 2
+            },
+            "blocked": {
+              "expected": 8,
+              "verified": 8,
+              "within_deadline": 8
+            }
+          }
+        }
+      },
+      "checkpoint_reset_verified": true,
+      "loopback_generator_headroom_passed": true,
+      "host_headroom_passed": true,
+      "host_cpu_p95_percent": 27.98295454545454,
+      "minimum_host_memory_available_fraction": 0.8863650692567212
+    },
+    {
+      "arm": "sequential",
+      "offered_rate_per_s": 1,
+      "status": "passed",
+      "issues": [],
+      "cohorts": {
+        "warmup": {
+          "offered": 22,
+          "correct": 22,
+          "on_time_correct": 21,
+          "dropped": 0,
+          "outcomes": {
+            "settled": {
+              "expected": 17,
+              "verified": 17,
+              "within_deadline": 16
+            },
+            "rejected": {
+              "expected": 1,
+              "verified": 1,
+              "within_deadline": 1
+            },
+            "blocked": {
+              "expected": 4,
+              "verified": 4,
+              "within_deadline": 4
+            }
+          }
+        },
+        "measurement": {
+          "offered": 44,
+          "correct": 44,
+          "on_time_correct": 42,
+          "dropped": 0,
+          "outcomes": {
+            "settled": {
+              "expected": 34,
+              "verified": 34,
+              "within_deadline": 32
+            },
+            "rejected": {
+              "expected": 2,
+              "verified": 2,
+              "within_deadline": 2
+            },
+            "blocked": {
+              "expected": 8,
+              "verified": 8,
+              "within_deadline": 8
+            }
+          }
+        }
+      },
+      "checkpoint_reset_verified": true,
+      "loopback_generator_headroom_passed": true,
+      "host_headroom_passed": true,
+      "host_cpu_p95_percent": 27.624113475177303,
+      "minimum_host_memory_available_fraction": 0.887387510672832
+    }
+  ],
+  "deadline_boundary": "All seven misses were the declared lowest_total_cost concurrency probe, which uses 1000 ms per quote in both arms. Four misses were measured arrivals and three were warmup. Keep these qualification results separate from a prespecified performance population.",
+  "database_and_ledger_resets_verified": 4,
+  "telemetry_headroom_passed": true,
+  "telemetry_scope": "Shared Linux controller CPU/memory, engine/backend/worker container status, SQL counters and TLS; not managed database CPU or full distributed tracing.",
+  "jdbc_tls_verify_full": true,
+  "internal_container_network": true,
+  "forbidden_endpoint_probes_blocked": 5,
+  "owned_temporary_database_state": "DELETED",
+  "owned_containers_and_network_removed": true,
+  "temporary_bastion_sessions_deleted": 1,
+  "source_preservation": {
+    "source_logical_snapshot_identical": false,
+    "source_preserved_except_append_only_metering": true,
+    "unchanged_tables": 48,
+    "appended_metering_rows": 24,
+    "prior_metering_rows_unchanged": 17292,
+    "source_services_and_images_unchanged": true,
+    "source_verifier_unchanged": true,
+    "source_queues_empty": true
+  },
+  "source_preservation_note": "Full content hashes at complete timestamp-group prefixes selected by the two independently captured snapshot row counts. Local file-write cutoff included a newer metering batch than the before snapshot read view. That failed probe is retained; both original full-row snapshot hashes are now matched exactly.",
+  "reference_remains_allocated_and_billable": true,
+  "independent_audit": {
+    "status": "passed",
+    "study_id": "PAY-05",
+    "scope": "Four short OCI offered-load/reset/telemetry qualification lanes; not a performance comparison.",
+    "sealed_files_verified": 289,
+    "source_checksums_sha256": "0a0c27ccec99f0032392988089b901412855d63075b536327213669c7e0ae974",
+    "auditor_sha256": "3cf3a1c3d53de5e1cd7d0cf315cf856a18dbb0407498604d55e76878c83d48fa",
+    "source_commit": "90e8f5558ade35b7970572c9ac8808462c5be540",
+    "qualification_lanes": 4,
+    "workflow_executions_including_warmup": 264,
+    "correct_outcomes": 264,
+    "on_time_correct": 257,
+    "deadline_misses_retained": 7,
+    "synthetic_effects": 204,
+    "database_and_ledger_resets_verified": 4,
+    "telemetry_headroom_passed": true,
+    "owned_engine_stopped": true,
+    "cloud_resources_accessed": true,
+    "performance_comparison_complete": false,
+    "model_calls": 0
+  },
+  "raw_archive_sha256": "7165335efd396ad0b25e5862d023474dd04aac8d12cfc27b9315dffa4e71be68",
+  "raw_evidence_location": "Retained privately on the operator workstation and controller; raw ledgers, database dumps and environment metadata are excluded from the source export.",
+  "repository_tests_passed": 458,
+  "repository_test_skips": 0,
+  "real_k6_tests_enabled": true,
+  "harness_ci": {
+    "at": "2026-10-31T20:10:53.121765+00:00",
+    "source_commit": "90e8f5558ade35b7970572c9ac8808462c5be540",
+    "run_id": 41237334205,
+    "url": "https://github.com/oci-fsi-pursuits/fluxnova-benchmarking/actions/runs/41237334205",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "test (ubuntu-latest, 3.12)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (windows-latest, 3.13)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "secrets",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "performance_comparison_complete": false,
+  "model_calls": 0,
+  "complete_cost_attribution": false,
+  "authority_scope": "Immutable registrar-bound synthetic input; signed-intent/provider/live-agent integration is separate.",
+  "next_gate": "Freeze and qualify a declared quote-delay/expiry performance population and repeat protocol before the paired timing study."
+}

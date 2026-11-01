@@ -65,6 +65,7 @@ config.ready.json
 !/docs/getting-started.md
 !/docs/measurement-contract.md
 !/docs/oci.md
+!/docs/pay05-fx-quotes.md
 !/docs/payment-approval.md
 !/docs/payment-review-form.md
 !/docs/persistent-verifier.md
