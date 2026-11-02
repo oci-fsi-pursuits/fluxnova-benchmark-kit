@@ -25,6 +25,7 @@ The [illustrated study guide](benchmark-guide.md) explains all nine diagrams and
 | Understand a pattern or result | Source checkout, Python 3.12+: `python -m benchlib.cli catalog` then `python -m benchlib.cli explain W02` | A read-only experiment explanation |
 | Validate the published register | `python -m benchlib.cli catalog --check` and `python scripts/build_benchmark_guide.py --check` | Required fields, category limits, source links/hashes and generated-guide consistency |
 | Try the reporting format | `python -m benchlib.cli demo` | Labelled sample harness data; it does not execute Fluxnova |
+| Upload and run a workflow interactively | Java 21, Python 3.12+: `python -m benchlib.cli lab --download-runtime`; [walkthrough](interactive-lab.md) | Real engine execution, manual tasks and expected-end checks; functional exploration, not a controlled performance claim |
 | Execute the W02 example locally | Java 21, verified Fluxnova 3.0.1 distribution and Python; command below | Real local engine execution, 20 case/arm outcomes and replay checks |
 | Show the same example in a browser | Build the saved viewer from that local run; command below | A portable walkthrough of recorded executions; switching cases does not start work |
 | Run another supported local family | W03, PAY05, FNV06 or FNV07 public functional runners and their family guides | The declared functional subset, with H2/local limitations |

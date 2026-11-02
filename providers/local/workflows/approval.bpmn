@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks/lab">
+  <process id="lab_approval" name="Manual approval" isExecutable="true" camunda:historyTimeToLive="1">
+    <startEvent id="start" name="Request"/>
+    <userTask id="review" name="Review the request"/>
+    <exclusiveGateway id="decision" name="Approved?" default="rejected_route"/>
+    <endEvent id="approved" name="Approved"/>
+    <endEvent id="rejected" name="Rejected"/>
+    <sequenceFlow id="a1" sourceRef="start" targetRef="review"/>
+    <sequenceFlow id="a2" sourceRef="review" targetRef="decision"/>
+    <sequenceFlow id="approved_route" sourceRef="decision" targetRef="approved"><conditionExpression>${approved == true}</conditionExpression></sequenceFlow>
+    <sequenceFlow id="rejected_route" sourceRef="decision" targetRef="rejected"/>
+  </process>
+</definitions>

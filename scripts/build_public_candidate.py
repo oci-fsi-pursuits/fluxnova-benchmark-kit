@@ -10,7 +10,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / 'release/public-files.json'
-CORE = {'benchlib', 'configs', 'deploy', 'infra', 'load', 'schemas', 'scripts',
+CORE = {'benchlib', 'configs', 'deploy', 'infra', 'load', 'providers', 'schemas', 'scripts',
         'services', 'telemetry', 'tests', 'workloads', '.github'}
 ROOT_FILES = {'README.md', 'LICENSE', 'pyproject.toml', 'requirements-cloud.txt',
               'requirements-database.txt', 'bench.ps1', 'bench.sh', '.gitignore',

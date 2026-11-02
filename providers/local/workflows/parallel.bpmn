@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="https://finos.org/benchmarks/lab">
+  <process id="lab_parallel" name="Parallel checks" isExecutable="true" camunda:historyTimeToLive="1">
+    <startEvent id="start" name="Request"/>
+    <parallelGateway id="split" name="Together"/>
+    <serviceTask id="kyc" name="Simulated KYC" camunda:type="external" camunda:topic="lab-demo"/>
+    <serviceTask id="risk" name="Simulated risk" camunda:type="external" camunda:topic="lab-demo"/>
+    <parallelGateway id="join" name="Wait for both"/>
+    <endEvent id="done" name="Checks complete"/>
+    <sequenceFlow id="p1" sourceRef="start" targetRef="split"/>
+    <sequenceFlow id="p2" sourceRef="split" targetRef="kyc"/>
+    <sequenceFlow id="p3" sourceRef="split" targetRef="risk"/>
+    <sequenceFlow id="p4" sourceRef="kyc" targetRef="join"/>
+    <sequenceFlow id="p5" sourceRef="risk" targetRef="join"/>
+    <sequenceFlow id="p6" sourceRef="join" targetRef="done"/>
+  </process>
+</definitions>

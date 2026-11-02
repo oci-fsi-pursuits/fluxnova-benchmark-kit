@@ -1,6 +1,6 @@
 # Start using the benchmark toolkit
 
-Start with reporting, then choose a functional or measured study. Use a source checkout; a standalone installed Python wheel is not currently a supported distribution of all workload/assets files.
+Choose the [live clickable lab](interactive-lab.md) to upload and run a workflow, the sample reporting demo below for report formats, or a measured study. Use a source checkout; a standalone installed Python wheel is not currently a supported distribution of all workload/assets files.
 
 For the simplest explanation, open [the illustrated benchmark guide](benchmark-guide.md), or open `docs/benchmark-guide.html` locally. `python -m benchlib.cli explain W02` describes the baseline, change, metric and result for one study. The [supported-path contract](benchmark-standard.md) separates sample reporting from real functional execution and measured campaigns.
 

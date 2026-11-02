@@ -34,6 +34,18 @@ python scripts/open_report.py --path PATH_TO_REPORT.html
 
 **The demo creates labeled sample data. It does not run Fluxnova or measure its performance.** The [getting-started guide](docs/getting-started.md) separates this demo, local functional testing and measured cloud studies.
 
+## Try a live, clickable workflow
+
+With Java 21 and Python 3.12+ installed:
+
+```bash
+python -m benchlib.cli lab --download-runtime
+```
+
+Open **http://127.0.0.1:8765**. Choose sequential checks, parallel checks or manual approval; upload a small BPMN file; set a few instances, simulated delay and a deadline; then watch actual engine history and complete tasks. This is functional exploration, separate from sample reporting and formal studies.
+
+[Interactive walkthrough](docs/interactive-lab.md) · [Provider choices](providers/README.md) · [OCI Terraform](providers/oci/README.md) · [Connect to an existing engine](providers/existing/README.md)
+
 ## How a measured workflow works
 
 Imagine you build a payment workflow and want to know whether a change helps. This kit runs repeatable cases through the actual engine and checks both the time taken and the outcome.

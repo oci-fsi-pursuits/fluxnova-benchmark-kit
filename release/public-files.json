@@ -4,6 +4,11 @@
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
   "publication_status": "approved_subject_to_matching_ci_and_sanitization_receipts",
   "documents": [
+    "docs/interactive-lab.md",
+    "providers/README.md",
+    "providers/local/README.md",
+    "providers/oci/README.md",
+    "providers/existing/README.md",
     "docs/README.md",
     "docs/getting-started.md",
     "docs/reproduce.md",

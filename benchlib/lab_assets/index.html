@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fluxnova Workflow Lab</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body><header><div><span class="eyebrow">FLUXNOVA · HANDS-ON LAB</span><h1>Make a workflow move.</h1><p>Choose a pattern, change a setting, and watch the engine do the work.</p></div><div class="connection"><span id="connection">Connecting…</span><button id="shutdown" class="quiet">Close lab</button></div></header>
+<main><div class="notice"><strong>Real engine. Small experiments.</strong> Simulated checks and manual approvals; no real payments or AI calls. This lab is for learning and functional checks. Formal benchmark results require controlled, repeated trials.</div>
+<div id="error" role="alert" hidden></div>
+<section class="workspace"><aside class="panel"><span class="eyebrow">1 · CHOOSE A WORKFLOW</span><h2>Start with a pattern</h2><div class="patterns">
+<button data-example="sequential"><strong>Sequential checks</strong><span>KYC, then risk. One thing at a time.</span></button>
+<button data-example="parallel"><strong>Parallel checks</strong><span>Independent checks run together.</span></button>
+<button data-example="approval"><strong>Manual approval</strong><span>You choose whether to approve.</span></button></div>
+<label class="upload">Or upload a .bpmn file<input id="upload" type="file" accept=".bpmn,.xml"></label>
+<p class="small">Basic events, gateways, user tasks and external tasks. Custom uploads use manual task completion. Scripts, delegates and connectors need their own runtime integration.</p>
+<label>Loaded workflow<select id="models"><option value="">Choose a pattern above</option></select></label>
+</aside><section class="panel canvas"><div class="section-top"><div><span class="eyebrow">2 · SEE THE PROCESS</span><h2 id="model-title">Your workflow appears here</h2></div><span class="pill">Live engine history</span></div>
+<p id="model-help">Try sequential checks, then parallel checks with the same delay.</p><div id="diagram"><p class="placeholder">Select a starter pattern or upload your BPMN.</p></div><div class="legend"><span>○ Waiting</span><span class="active-color">● Active</span><span class="done-color">● Completed</span></div>
+<div id="tasks" aria-live="polite"></div></section></section>
+<section class="panel controls"><span class="eyebrow">3 · RUN A SMALL TEST</span><form id="run-form"><div class="fields">
+<label>Instances<input id="count" type="number" min="1" max="20" value="1" required></label>
+<label>Check delay (ms)<input id="delay" type="number" min="0" max="2000" value="500" required></label>
+<label>Observer interval (ms)<input id="poll" type="number" min="100" max="1000" step="50" value="250" required></label>
+<label>Deadline per instance (s)<input id="deadline" type="number" min="1" max="600" value="60" required></label>
+<label>Expected end event<select id="expected"><option value="">Observe only</option></select></label></div>
+<div class="run-bottom"><label class="variables">Input variables (JSON scalars)<textarea id="variables" rows="2" spellcheck="false">{"approved": false}</textarea></label><button id="run" type="submit" disabled>Run workflow →</button><button id="stop" type="button" class="quiet" disabled>Stop run</button></div></form>
+<p class="small">Instances run one at a time. The two simulated checks have two worker slots. Timing includes start, polling and any manual wait; a deadline cancels the unfinished test instance.</p></section>
+<section class="panel"><div class="section-top"><div><span class="eyebrow">4 · INSPECT WHAT HAPPENED</span><h2>Run history</h2></div><button id="export" class="quiet">Download session JSON</button></div><div id="results"><p>No runs yet. Keep the settings the same to explore a workflow change.</p></div></section>
+<footer>Independent toolkit by Nicholas Cusato · Fluxnova engine by FINOS contributors · Local output stays under runs/ · Closing the lab removes only this session’s deployed workflows.</footer></main></body></html>

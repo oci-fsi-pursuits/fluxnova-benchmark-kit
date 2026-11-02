@@ -40,8 +40,12 @@ config.ready.json
 *.pdf
 !/docs/
 !/presentations/
+!/providers/
 !/docs/assets/
 !/docs/results/
+!/providers/existing/
+!/providers/local/
+!/providers/oci/
 !/docs/assets/workflows/
 !/docs/results/w02-mixed/
 !/docs/README.md
@@ -72,6 +76,7 @@ config.ready.json
 !/docs/fnv07-cluster-jobs.md
 !/docs/fnv07-timing.md
 !/docs/getting-started.md
+!/docs/interactive-lab.md
 !/docs/measurement-contract.md
 !/docs/oci.md
 !/docs/pay05-fx-quotes.md
@@ -105,4 +110,8 @@ config.ready.json
 !/presentations/fluxnova-osff-ny-2026.pdf
 !/presentations/fluxnova-osff-ny-2026.pptx
 !/presentations/fluxnova-team-brief-20261028.json
+!/providers/README.md
+!/providers/existing/README.md
+!/providers/local/README.md
+!/providers/oci/README.md
 # END final-document inventory

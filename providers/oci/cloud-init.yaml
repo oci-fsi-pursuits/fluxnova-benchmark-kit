@@ -1,0 +1,63 @@
+#cloud-config
+package_update: true
+packages:
+  - openjdk-21-jre-headless
+  - python3
+  - curl
+  - unzip
+write_files:
+  - path: /usr/local/sbin/setup-fluxnova-lab
+    permissions: '0700'
+    content: |
+      #!/bin/bash
+      set -euo pipefail
+      umask 077
+      useradd --system --user-group --home-dir /var/lib/fluxnova-lab --create-home --shell /usr/sbin/nologin fluxlab
+      install -d -o root -g fluxlab -m 0750 /etc/fluxnova-lab /opt/fluxnova-lab
+      install -d -o fluxlab -g fluxlab -m 0700 /var/lib/fluxnova-lab/deployments
+      curl --fail --location --retry 3 --proto '=https' --tlsv1.2 -o /opt/fluxnova-lab/runtime.zip https://repo.maven.apache.org/maven2/org/finos/fluxnova/bpm/run/fluxnova-bpm-run/3.0.1/fluxnova-bpm-run-3.0.1.zip
+      echo 'ced4311c541faf1a7248d88e37ba53bd8c659fefe8387d2f78c21c30a117d7cf  /opt/fluxnova-lab/runtime.zip' | sha256sum --check
+      unzip -q /opt/fluxnova-lab/runtime.zip -d /opt/fluxnova-lab/runtime
+      chown -R root:fluxlab /opt/fluxnova-lab
+      chmod -R g+rX /opt/fluxnova-lab
+      python3 - <<'PY'
+      import json, secrets
+      from pathlib import Path
+      content = {
+          'server': {'address': '127.0.0.1', 'port': 8080},
+          'fluxnova.bpm': {'admin-user': {'id': 'lab', 'password': secrets.token_urlsafe(32)},
+              'history-level': 'full', 'authorization': {'enabled': True}, 'filter': {'create': 'All tasks'},
+              'run': {'auth': {'enabled': True}, 'cors': {'enabled': False}, 'example': {'enabled': False}}},
+          'spring.datasource': {'url': 'jdbc:h2:/var/lib/fluxnova-lab/engine-db;DB_CLOSE_ON_EXIT=FALSE',
+              'driver-class-name': 'org.h2.Driver', 'username': 'sa', 'password': 'sa'},
+          'spring.web.resources': {'static-locations': 'NULL'}}
+      # JSON is valid YAML. Credentials are generated here, never in Terraform state.
+      Path('/etc/fluxnova-lab/engine.yml').write_text(json.dumps(content), encoding='utf-8')
+      PY
+      chown root:fluxlab /etc/fluxnova-lab/engine.yml
+      chmod 0640 /etc/fluxnova-lab/engine.yml
+      systemctl daemon-reload
+      systemctl enable --now fluxnova-lab
+  - path: /etc/systemd/system/fluxnova-lab.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Fluxnova functional lab (H2, loopback only)
+      After=network-online.target
+      Wants=network-online.target
+      [Service]
+      User=fluxlab
+      Group=fluxlab
+      WorkingDirectory=/var/lib/fluxnova-lab
+      ExecStart=/usr/bin/java -Xms256m -Xmx1024m -Dloader.path=/opt/fluxnova-lab/runtime/internal/rest,/opt/fluxnova-lab/runtime/internal/webapps,/opt/fluxnova-lab/runtime/configuration/userlib -Dcamunda.deploymentDir=/var/lib/fluxnova-lab/deployments -jar /opt/fluxnova-lab/runtime/internal/fluxnova-bpm-run-core.jar --spring.config.location=file:/etc/fluxnova-lab/engine.yml
+      Restart=on-failure
+      RestartSec=5
+      NoNewPrivileges=true
+      PrivateTmp=true
+      ProtectSystem=strict
+      ProtectHome=true
+      ReadWritePaths=/var/lib/fluxnova-lab
+      [Install]
+      WantedBy=multi-user.target
+runcmd:
+  - [/usr/local/sbin/setup-fluxnova-lab]

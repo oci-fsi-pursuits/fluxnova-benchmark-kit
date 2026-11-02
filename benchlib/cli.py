@@ -14,6 +14,9 @@ def output(value):
 def parser():
     p = argparse.ArgumentParser(prog="bench", description="Reproducible Fluxnova benchmark lifecycle")
     commands = p.add_subparsers(dest="command", required=True)
+    c = commands.add_parser("lab", help="Open a live BPMN lab on an isolated or existing Fluxnova engine")
+    from .lab import add_arguments
+    add_arguments(c)
     c = commands.add_parser("catalog", help="List benchmark types and studies; never launches work")
     c.add_argument("--check", action="store_true", help="Verify catalogue classification, files and evidence hashes")
     c = commands.add_parser("explain", help="Explain one benchmark study or diagram")
@@ -84,6 +87,9 @@ def main(argv=None):
         return 2
 
 def execute(args):
+    if args.command == "lab":
+        from .lab import serve
+        return serve(args)
     if args.command in ("catalog", "explain"):
         from .catalog import load_catalog, validate_catalog, explain
         data = load_catalog()
