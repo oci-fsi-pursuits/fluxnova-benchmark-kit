@@ -28,6 +28,8 @@ For a benchmark, declare baseline/treatment, inputs, expected business effects, 
 
 ## Upload profile
 
+The first lab profile accepts acyclic flows only. Loops are rejected before deployment so a synchronous cycle cannot continue inside an attached engine after the client's request times out.
+
 One process, 2–50 nodes, 256 KB XML: plain start/end events, sequence flows, exclusive/parallel gateways, user/manual tasks and external service tasks. A BPMN `manualTask` passes through automatically; use `userTask` to pause for a person. Conditions compare one scalar to a literal, such as `${approved == true}`. Variables support strings, finite numbers, booleans and null.
 
 Scripts, delegates, listeners, connectors, uploaded forms, arbitrary expressions, subprocesses, timers/messages/signals and DMN are rejected. BPMN is executable code; this first UI supports a limited profile. The graph preview lays out control flow automatically and is not a full modeler. Original source hashes and namespaced deployed copies are retained.

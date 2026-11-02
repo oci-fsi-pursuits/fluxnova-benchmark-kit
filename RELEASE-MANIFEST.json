@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "76861a27c266a4cc1d8c4c426068fda4fe3cac16",
+  "source_commit": "96cb0bafc8765a59b97c7926d70925a9572a5694",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -38,8 +38,8 @@
     },
     {
       "path": ".gitignore",
-      "source_sha256": "9843aaec5496ae4c0fd7ed9d9822808b2d4bfd8228e9cafd3a09dc18c9c5468e",
-      "candidate_sha256": "9843aaec5496ae4c0fd7ed9d9822808b2d4bfd8228e9cafd3a09dc18c9c5468e"
+      "source_sha256": "d53090040eb24b65ea4992c6fdc04430c1be04ccd7a942a108c687d315745202",
+      "candidate_sha256": "d53090040eb24b65ea4992c6fdc04430c1be04ccd7a942a108c687d315745202"
     },
     {
       "path": ".gitleaks.toml",
@@ -293,8 +293,8 @@
     },
     {
       "path": "benchlib/lab_model.py",
-      "source_sha256": "e50a72e7810a3e77cd9165ed57fcb76c5efdafc30531fad5db34e09a81df0067",
-      "candidate_sha256": "e50a72e7810a3e77cd9165ed57fcb76c5efdafc30531fad5db34e09a81df0067"
+      "source_sha256": "c5df9930d2ee130fea403063381d2c5d1a066d7b60e3b4855bf5e6d7fee2aae0",
+      "candidate_sha256": "c5df9930d2ee130fea403063381d2c5d1a066d7b60e3b4855bf5e6d7fee2aae0"
     },
     {
       "path": "benchlib/lab_runtime.py",
@@ -608,8 +608,8 @@
     },
     {
       "path": "docs/interactive-lab.md",
-      "source_sha256": "3ed9bd446f831497a348c39c9e20de950a89d04844d4ba34907187c2a7de1084",
-      "candidate_sha256": "3ed9bd446f831497a348c39c9e20de950a89d04844d4ba34907187c2a7de1084"
+      "source_sha256": "20ba488a4d012d7485d348e471ce94aa6134472bbd26b1b174613a78b4380e7d",
+      "candidate_sha256": "20ba488a4d012d7485d348e471ce94aa6134472bbd26b1b174613a78b4380e7d"
     },
     {
       "path": "docs/measurement-contract.md",
@@ -1783,8 +1783,8 @@
     },
     {
       "path": "tests/test_lab.py",
-      "source_sha256": "ea9275b1ae8bffa7a9cddb159db9fad38bb02852c1c729a7cf0e5ac01d0d2345",
-      "candidate_sha256": "ea9275b1ae8bffa7a9cddb159db9fad38bb02852c1c729a7cf0e5ac01d0d2345"
+      "source_sha256": "dad8244c95faa4ca2ac89bbda5fd077aaa89c2a8658825e9a7566c358533745d",
+      "candidate_sha256": "dad8244c95faa4ca2ac89bbda5fd077aaa89c2a8658825e9a7566c358533745d"
     },
     {
       "path": "tests/test_live_payment_trials.py",

@@ -111,6 +111,24 @@ def parse_model(xml, prefix):
         raise ValueError('Use 2–50 nodes and valid flow references.')
     if sum(n['type'] == 'startEvent' for n in nodes) != 1 or not any(n['type'] == 'endEvent' for n in nodes):
         raise ValueError('The lab needs one plain start event and at least one plain end event.')
+    # A synchronous loop can outlive the client's start-request timeout.
+    # This bounded learning profile accepts acyclic control flow only.
+    pending = {node: 0 for node in node_ids}
+    outgoing = {node: [] for node in node_ids}
+    for edge in edges:
+        pending[edge['target']] += 1
+        outgoing[edge['source']].append(edge['target'])
+    queue = [node for node, degree in pending.items() if degree == 0]
+    visited = 0
+    while queue:
+        node = queue.pop()
+        visited += 1
+        for target in outgoing[node]:
+            pending[target] -= 1
+            if pending[target] == 0:
+                queue.append(target)
+    if visited != len(node_ids):
+        raise ValueError('Loops are outside the small lab profile; upload an acyclic workflow.')
     process.set('id', prefix)
     process.set('isExecutable', 'true')
     process.set(f'{{{CAMUNDA}}}historyTimeToLive', '1')

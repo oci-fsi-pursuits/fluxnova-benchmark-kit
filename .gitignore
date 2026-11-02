@@ -17,6 +17,8 @@ output/
 !*.example.tfvars.json
 config.local.json
 *.local.json
+*.local.yml
+*.local.yaml
 environment.local.json
 .env
 .env.*

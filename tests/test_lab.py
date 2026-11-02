@@ -52,6 +52,7 @@ class LabModelTests(unittest.TestCase):
             self.xml.replace('${approved == true}', '${runtime.exec("evil")}'),
             self.xml.replace('${approved == true}', '${execution.processEngineServices}'),
             self.xml.replace('camunda:historyTimeToLive="1"', 'camunda:executionListener="x"'),
+            self.xml.replace('sourceRef="decision" targetRef="rejected"', 'sourceRef="decision" targetRef="review"'),
             self.xml + 'x',
         ):
             with self.subTest(xml=xml[:50]), self.assertRaises(ValueError):
