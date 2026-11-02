@@ -61,7 +61,10 @@
     "docs/benchmark-standard.md",
     "docs/benchmark-guide.md",
     "docs/benchmark-guide.html",
-    "docs/talk-15-minutes.md"
+    "docs/talk-15-minutes.md",
+    "docs/presentation.md",
+    "presentations/fluxnova-osff-ny-2026.pptx",
+    "presentations/fluxnova-osff-ny-2026.pdf"
   ],
   "evidence_directories": [
     "validation/oci-20261027-w01-comparison",
@@ -110,6 +113,8 @@
     "docs/assets/workflows/06-basic-async.png": "cd2f4961a991a23725b133277bfabb3a3393cc934bf7339c83c2980fed971fd8",
     "docs/assets/workflows/07-basic-kyc.png": "be90cce83c7d87d5ae2637ce6ee954b542ce29a2d462ba86a0b6f5b290cf0cd5",
     "docs/assets/workflows/08-basic-risk.png": "07873b9bd1c6a0d2bc4d06fdbb52293cbb72360a7e3ec42b8961abdb8903df23",
-    "docs/assets/workflows/09-basic-settlement.png": "b59b0111e290a56cfe6081de36532bfed26d76c69c5505600f2624f07ad3f5d7"
+    "docs/assets/workflows/09-basic-settlement.png": "b59b0111e290a56cfe6081de36532bfed26d76c69c5505600f2624f07ad3f5d7",
+    "presentations/fluxnova-osff-ny-2026.pptx": "4766350770c52e9f07da72b1d55ff98fc5cc7bf2e4b8934f4a5dab9e93ff65a5",
+    "presentations/fluxnova-osff-ny-2026.pdf": "5dfd07c3a9f17d8bd970b02ce3da1e94fc23cddf931e8560c489981eabaadb45"
   }
 }

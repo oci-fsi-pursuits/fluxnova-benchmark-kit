@@ -79,6 +79,7 @@ config.ready.json
 !/docs/payment-review-form.md
 !/docs/persistent-verifier.md
 !/docs/portability.md
+!/docs/presentation.md
 !/docs/public-release.md
 !/docs/remote-deployment.md
 !/docs/reproduce.md
@@ -101,5 +102,7 @@ config.ready.json
 !/docs/web-ui.md
 !/docs/workload-completion.md
 !/docs/workloads.md
+!/presentations/fluxnova-osff-ny-2026.pdf
+!/presentations/fluxnova-osff-ny-2026.pptx
 !/presentations/fluxnova-team-brief-20261028.json
 # END final-document inventory

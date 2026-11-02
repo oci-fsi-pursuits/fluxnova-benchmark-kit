@@ -1,39 +1,52 @@
 # Benchmarking Fluxnova for Financial and Agentic Payment Workflows
 
-Eight main slides, **12 minutes 45 seconds planned plus 2 minutes 15 seconds reserve**. The nine diagram reference slides follow the closing slide and are hidden from the main slideshow. The supplied OSFF New York 2026 template remains the visual system.
+**13 main slides, 13 minutes planned and 2 minutes reserve.** The 14 appendix slides are hidden from the main PowerPoint slideshow. The [final presentation](presentation.md) uses the supplied OSFF New York 2026 template.
 
-**Thesis:** Measure how workflow and runtime changes affect time to a correct, authorized outcome.
+**Thesis:** Use repeatable tests to find out whether a workflow or runtime change improves performance while preserving correct, authorized outcomes.
 
-The end user is a workflow developer or platform engineer asking whether a change helps their application. A pattern is what runs. A benchmark type is how we test it. A study is one frozen experiment. Agentic payments are a workload category; deterministic workflow timing does not measure live-agent benefit.
+The intended user is a workflow developer or platform engineer. A **pattern** is what runs. A **benchmark type** is the question we test. A **study** is one fixed experiment with declared inputs, controls and limits. Agentic payments are a workload category; deterministic workflow timing does not measure live-agent benefit.
 
-| Slide | Topic | Time | Say |
+| Slide | Topic | Time | Suggested talk track |
 | --- | --- | ---: | --- |
-| 1 | Title and thesis | 0:45 | “A workflow can look right and still be slow, send too much work to review, or produce the wrong effect. We measure time to the outcome we actually wanted.” |
-| 2 | How the benchmark works | 1:30 | “Choose a BPMN flow and known inputs. Start repeatable work. Run the real engine and workers. Independently check the final state and payment effect. Change one declared factor and repeat.” |
-| 3 | What we compared | 1:30 | “These experiments ask different questions. Pacing and quote concurrency test deadlines. Parallel checks test latency. Review routing counts tasks. Runtime and release comparisons test a fixed async reference.” |
-| 4 | Independent checks | 2:00 | “KYC and risk are independent here. Running both together reduced observed p95 by a median paired 32.1% at 1/s. Both still had to pass before payment. All 6,000 outcomes were correct and on time.” |
-| 5 | Parallel FX quotes | 2:00 | “Three independent quote waits overlap. Timely settlements rose from 668 to 1,530 out of 1,530 expected settlements per arm. All outcomes were correct. Parallel completion also caused 910 cached replays, so durable retry handling matters.” |
-| 6 | Runtime and release | 1:30 | “The small latency differences changed sign. Both comparisons met the same fixed target. We did not establish a broad speedup from Java 25 or Fluxnova 3.1.1. A useful benchmark can tell you a change made little difference.” |
-| 7 | Saved workflow demo | 1:30 | “This is a saved real functional execution. Watch the same checks run sequentially or overlap. Then see unauthorized and unknown inputs stop without a payment effect. These individual times are separate from the cloud statistics.” |
-| 8 | Summary and source QR | 2:00 | “Reuse the pattern and its outcome checks. Establish your own baseline. Change one thing and retain the result, including failures. OCI is our measured reference; other deployment adapters still need validation.” |
-| — | Questions / transitions | 2:15 | Keep the closing QR visible. |
+| 1 | Title | 0:15 | “How do we know that changing a workflow actually helps? That is the question behind this project.” |
+| 2 | Introduction | 0:30 | “I am Nicholas Cusato, a Senior Cloud Engineer at Oracle Cloud Infrastructure, aligned with Financial Services and Insurance. Much of my work involves benchmarks: helping customers answer price and performance questions with evidence.” |
+| 3 | Customer problem | 1:15 | “A customer moving from E-Business Suite to Fusion asked about using AI with existing process automation. Before choosing a technology, I would ask: what should we keep, where could AI help, and how will we know it works better? Those questions also apply when we change a workflow without moving clouds.” |
+| 4 | Quote | 0:15 | “Speed is only part of the answer. A fast agent that duplicates a payment has failed. We need to check the outcome as well as the stopwatch.” |
+| 5 | Thesis | 0:45 | “Establish a baseline, change one factor, and check both performance and correctness. Fluxnova's portability makes it a useful place to develop a repeatable method. Each deployment still needs its own validation.” |
+| 6 | Architecture | 1:30 | “BPMN describes the flow. Workers perform the external tasks. The load runner supplies repeatable cases. We observe durable completion and independently verify decisions and synthetic payment effects. The benchmark is the workload plus the controls, clock and outcome checks.” |
+| 7 | Research map | 0:45 | “This is the whole research map: workflow design, runtime, reference load, coordination, agent controls and measurement. The smaller diagrams are entry points into the repository. These are 17 study records, not 17 completed performance comparisons.” |
+| 8 | Three examples | 1:00 | “First, remove an unnecessary worker pause. Second, overlap independent checks while still waiting for both. Third, send only policy-required cases to review. These change different things, so each needs its own baseline and scorecard.” |
+| 9 | Outcomes | 2:00 | “Parallel W02 checks reduced observed p95 by a median paired 32.1% at one start per second. But mixed traffic improved timely settlements and worsened timely refusals. Scripted review routing kept all required reviews. Runtime upgrades showed small, mixed differences. The eight-hour run completed its fixed load; maximum capacity remains unqualified. Event, recovery and agent tests have their own bounded findings.” |
+| 10 | Standardization | 1:30 | “Think of a recipe and a scorecard. Name the baseline and change, keep the other conditions steady, define correct outcomes, then publish the result with its environment and limits. Another team should be able to rerun it and understand a different result. Protocol 0.2 is our community proposal, not an adopted FINOS standard.” |
+| 11 | Future work | 0:45 | “Next: representative customer workloads and live-agent studies, qualified capacity and replica scaling, other deployment and database choices, and complete cost per correct outcome. The current evidence is a starting point for those questions.” |
+| 12 | Get started and demo | 1:45 | “Start with the illustrated guide and a saved example. This 75-second recording shows real functional executions: sequential checks, parallel checks, then blocked payment cases. It is a saved workflow walkthrough, not an installation recording or the cloud p95 result. The repository separates the offline demo, real engine testing and OCI Terraform.” |
+| 13 | Conclusion and feedback | 0:45 | “Take one workflow, declare one change and verify the outcome. Use the kit, reproduce a study, or suggest the next workload through this QR code. We want a method that another team can challenge and improve.” |
+| — | Questions and transitions | 2:00 | Keep the feedback QR visible. |
+
+## The customer story
+
+The E-Business Suite to Fusion conversation motivates the research. It is **not a validated migration**, a measured AI improvement, or evidence that this customer's automations run on Fluxnova. No process count or customer identity is included. Start with the application's native capabilities, then assess whether a separate cross-system orchestration engine fits the requirement. The stock photograph is illustrative.
 
 ## Demo and fallback
 
-Use the existing reviewed 75-second recording or the portable W02 viewer. The [demo guide](w02-saved-demo.md) gives the sequence: approved sequential, approved parallel, unauthorized, unknown KYC. The viewer loads saved evidence and never initiates a payment. A fresh functional run can rebuild it using the [supported commands](benchmark-standard.md).
+Play the reviewed 75-second recording on slide 12, or open the portable W02 viewer. The [demo guide](w02-saved-demo.md) explains the sequence: approved sequential, approved parallel, unauthorized, unknown KYC. The viewer reads saved evidence and initiates no payment. A fresh functional run can rebuild it using the [supported commands](benchmark-standard.md).
 
-On the presentation laptop, open the local presenter pack before starting PowerPoint. Keep the video page open in a browser, switch to it on slide seven and return to the closing slide. If playback fails, use the saved viewer or the screenshot already on the slide. Check the venue screen once connected.
+Before the talk, open the local presenter pack and recording page. Switch from PowerPoint to the browser on slide 12, then return to slide 13. If playback fails, use the saved viewer or the screenshot on the slide. Check the venue screen once connected. The installation and Terraform guides are linked from [getting started](getting-started.md); do not describe the walkthrough as an installation demo.
 
-## Reference slides and questions
+## Appendix and likely questions
 
-The appendix explains each of the nine existing diagrams: W01 pacing, W02 parallel checks, W03 review routing, minimal start/end, variable persistence, external work, KYC/review, risk/freshness and settlement/replay. Each has its own meaning and evidence scope. The [full catalogue](benchmark-guide.md) also covers soak, capacity, population scaling, job faults, agent boundaries, recovery and observer diagnostics.
+Slides 14–22 explain the nine pattern diagrams. Slides 23–25 retain the W02, PAY-05 and runtime/release details. Slides 26–27 show the original OCI reference deployment and synthetic payment authority path. Later studies declare their own environments; the original four-host diagram does not describe every experiment.
 
-“Is it realistic?” These are intentionally controlled synthetic mechanisms. They are useful comparisons within their declared inputs; a customer must supply representative traffic and dependencies before using them for sizing.
+**“Is it realistic?”** These are controlled synthetic mechanisms. They support comparisons within their declared inputs. Customer sizing needs representative traffic, dependencies and operating conditions.
 
-“Did parallel always win?” No. The mixed W02 study improved timely settlements but reduced timely refusals. PAY05 increased cached retries. Keep both tradeoffs in the discussion.
+**“Did parallel always win?”** No. Mixed W02 improved timely settlements but reduced timely refusals. PAY-05 increased cached backend replays without duplicate effects. Keep the tradeoffs visible.
 
-“Is everything finished?” The bounded studies are usable now. Higher capacity, resource-qualified replica scaling, richer live-agent studies, platform/database alternatives, customer traffic and complete cost per correct outcome remain separate research.
+**“Does OCI make it faster?”** These studies used OCI as a measured reference. They do not compare cloud providers or establish OCI price/performance superiority. The application core is portable; provisioning and integrations need replacement and validation elsewhere.
 
-“Is this an official standard?” Protocol 0.2 is a community proposal with a checked catalogue, consistent result fields and documented run paths. It is not an adopted FINOS standard or a product certification.
+**“Is everything finished?”** The bounded studies are usable now. Higher capacity, resource-qualified replica scaling, live-agent benefit, alternative platforms and databases, customer traffic and complete cost attribution remain open.
 
-QR destination: [clean-history benchmark kit](https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit). The repository must be made accessible to the intended audience before the public talk. A QR image alone does not prove anonymous access. Source and reproduction materials credit **Nicholas Cusato** for research/OCI implementation and **FINOS contributors** for Fluxnova software.
+**“Is this an official standard?”** No. Protocol 0.2 is a community proposal with a checked catalogue, consistent result fields and documented run paths. It is not an adopted FINOS standard or product certification.
+
+The source QR points to the [clean-history benchmark kit](https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit). The closing QR opens its [feedback form](https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit/issues/new?template=benchmark-feedback.yml). Audience access must be checked after the owner changes visibility. Public feedback must not contain credentials, customer information or private logs.
+
+Research, diagrams and OCI implementation: **Nicholas Cusato**. Fluxnova software: **FINOS contributors**. See [presentation credits](presentation.md#credits).

@@ -2,7 +2,7 @@
 
 Measure how quickly and reliably financial and agentic workflows reach **correct, authorized outcomes**. This toolkit provides BPMN workloads, deterministic services, load generation, outcome checks and evidence-based reports for controlled Fluxnova comparisons.
 
-[Illustrated benchmark guide](docs/benchmark-guide.md) | [Results and their meaning](docs/benchmark-guide.md#study-register) | [Supported run paths](docs/benchmark-standard.md) | [Get started](docs/getting-started.md) | [Contribute](CONTRIBUTING.md)
+[Illustrated benchmark guide](docs/benchmark-guide.md) | [Results and their meaning](docs/benchmark-guide.md#study-register) | [Presentation](docs/presentation.md) | [Supported run paths](docs/benchmark-standard.md) | [Get started](docs/getting-started.md) | [Contribute](CONTRIBUTING.md)
 
 Independent research and OCI implementation by **Nicholas Cusato**. Fluxnova is a FINOS project; this repository is a contribution candidate, not an adopted FINOS standard or an official Fluxnova release. See the [release policy](docs/public-release.md).
 
@@ -144,7 +144,8 @@ These results describe their declared synthetic workloads and environments. They
 
 | Goal | Entry point | What you need |
 | --- | --- | --- |
-| Understand the research | [One-page PDF](docs/assets/fluxnova-research-brief-20261028.pdf), [brief](docs/research-brief.md) | A PDF reader or browser |
+| Understand the research | [Final presentation and speaker guide](docs/presentation.md), [illustrated catalogue](docs/benchmark-guide.md) | PowerPoint, a PDF reader or browser |
+| Read the earlier research snapshot | [28 October one-page PDF](docs/assets/fluxnova-research-brief-20261028.pdf), [brief](docs/research-brief.md) | A PDF reader or browser; this snapshot predates later studies |
 | Explore report behavior | `python -m benchlib.cli demo` | Python 3.12+ |
 | Build and test a local workflow | [Reproduction guide](docs/reproduce.md) | A Linux container host, pinned artifacts and declared test inputs |
 | Run a measured OCI study | [OCI setup](docs/oci.md), [campaign runbook](docs/campaign-runbook.md) | Your own isolated resources, identities, secrets, telemetry, cost coverage and cleanup |

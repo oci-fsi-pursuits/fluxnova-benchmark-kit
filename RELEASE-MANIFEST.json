@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "e1553ef39b4b102a9c1d4c8eff54167f61f5e2d6",
+  "source_commit": "94a1bf08d914279d63a86cba97782e685db84e63",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -15,6 +15,11 @@
       "path": ".gitattributes",
       "source_sha256": "2f8ae58657e6e80384f4a38feb2ebf6b94558511bb39701d9e75dd34492276f5",
       "candidate_sha256": "2f8ae58657e6e80384f4a38feb2ebf6b94558511bb39701d9e75dd34492276f5"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/benchmark-feedback.yml",
+      "source_sha256": "a2c9d6e7c7e9304e48d86d5b1ce3c062db66efa9e933b1a1ec441b6bdbedbe33",
+      "candidate_sha256": "a2c9d6e7c7e9304e48d86d5b1ce3c062db66efa9e933b1a1ec441b6bdbedbe33"
     },
     {
       "path": ".github/ISSUE_TEMPLATE/benchmark.yml",
@@ -33,8 +38,8 @@
     },
     {
       "path": ".gitignore",
-      "source_sha256": "45576a327a24d35ff5869fb8707b1b27d83e1da80b6ca14d5123c1efd5175464",
-      "candidate_sha256": "45576a327a24d35ff5869fb8707b1b27d83e1da80b6ca14d5123c1efd5175464"
+      "source_sha256": "d9b03ad8996aabaaa2b76f735eeb25a218fc01fa5db80695ab79411beaba4064",
+      "candidate_sha256": "d9b03ad8996aabaaa2b76f735eeb25a218fc01fa5db80695ab79411beaba4064"
     },
     {
       "path": ".gitleaks.toml",
@@ -63,8 +68,8 @@
     },
     {
       "path": "README.md",
-      "source_sha256": "a5c4384db33b0828eb77c60f1b5cb88139bcb9bc50cfc6c9f8b1b62089988e4d",
-      "candidate_sha256": "a5c4384db33b0828eb77c60f1b5cb88139bcb9bc50cfc6c9f8b1b62089988e4d"
+      "source_sha256": "c68c6684b311f0d167fbc3b208f3bb7bae99593add026b15edc93bc3203d48d8",
+      "candidate_sha256": "c68c6684b311f0d167fbc3b208f3bb7bae99593add026b15edc93bc3203d48d8"
     },
     {
       "path": "SECURITY.md",
@@ -433,8 +438,8 @@
     },
     {
       "path": "docs/README.md",
-      "source_sha256": "7107c0bd9068310051e58a78d99f5c03b2a091b71b66c5dae105fa2bf6f57525",
-      "candidate_sha256": "7107c0bd9068310051e58a78d99f5c03b2a091b71b66c5dae105fa2bf6f57525"
+      "source_sha256": "bd1ae7e293f45d7f778007f104eb193b7684b3b3ee140346ba5bb8be3169d210",
+      "candidate_sha256": "bd1ae7e293f45d7f778007f104eb193b7684b3b3ee140346ba5bb8be3169d210"
     },
     {
       "path": "docs/approval-agent.md",
@@ -607,9 +612,14 @@
       "candidate_sha256": "c06163a05be99d4a7e74a4034e854b78c0222d4b49d3f04e50845021bd94cb41"
     },
     {
+      "path": "docs/presentation.md",
+      "source_sha256": "b6c25527c62734e6df0a4c1e4e84f7fca2b2d31926c3c04dc1cc2afe719667f4",
+      "candidate_sha256": "b6c25527c62734e6df0a4c1e4e84f7fca2b2d31926c3c04dc1cc2afe719667f4"
+    },
+    {
       "path": "docs/public-release.md",
-      "source_sha256": "b0811ad67f2dbc5bf4f2dd345ef048b82939420ecf11bf1ac1dc32f0ad09f34b",
-      "candidate_sha256": "b0811ad67f2dbc5bf4f2dd345ef048b82939420ecf11bf1ac1dc32f0ad09f34b"
+      "source_sha256": "d9e9d7b8d96b1dc6f7128ea8c624dd3eca5f22ba2ac1af70eff948196963d6c1",
+      "candidate_sha256": "d9e9d7b8d96b1dc6f7128ea8c624dd3eca5f22ba2ac1af70eff948196963d6c1"
     },
     {
       "path": "docs/remote-deployment.md",
@@ -648,8 +658,8 @@
     },
     {
       "path": "docs/talk-15-minutes.md",
-      "source_sha256": "a55ddee495edb2a2a9e0663193b51a450a1dee29b07f31d1e2078f8437984b9b",
-      "candidate_sha256": "a55ddee495edb2a2a9e0663193b51a450a1dee29b07f31d1e2078f8437984b9b"
+      "source_sha256": "6fca467ab63155b2c5a2ea9538c0e9a9207371b3b9c314aa9700d005700afbb2",
+      "candidate_sha256": "6fca467ab63155b2c5a2ea9538c0e9a9207371b3b9c314aa9700d005700afbb2"
     },
     {
       "path": "docs/upstream-proposal.md",
@@ -807,6 +817,16 @@
       "candidate_sha256": "068d79e1cc8ca33d57363eb14ca0c3f69a67cf62d3abf7ba9f6c58bf030ce482"
     },
     {
+      "path": "presentations/fluxnova-osff-ny-2026.pdf",
+      "source_sha256": "5dfd07c3a9f17d8bd970b02ce3da1e94fc23cddf931e8560c489981eabaadb45",
+      "candidate_sha256": "5dfd07c3a9f17d8bd970b02ce3da1e94fc23cddf931e8560c489981eabaadb45"
+    },
+    {
+      "path": "presentations/fluxnova-osff-ny-2026.pptx",
+      "source_sha256": "4766350770c52e9f07da72b1d55ff98fc5cc7bf2e4b8934f4a5dab9e93ff65a5",
+      "candidate_sha256": "4766350770c52e9f07da72b1d55ff98fc5cc7bf2e4b8934f4a5dab9e93ff65a5"
+    },
+    {
       "path": "presentations/fluxnova-team-brief-20261028.json",
       "source_sha256": "995e06346523a745b912d086ffc3cfe1b21108b40e24e260795843e3a19ef2cd",
       "candidate_sha256": "995e06346523a745b912d086ffc3cfe1b21108b40e24e260795843e3a19ef2cd"
@@ -818,8 +838,8 @@
     },
     {
       "path": "release/public-files.json",
-      "source_sha256": "a99ccc1dc7fef55e7acadba1c91501858f8fd4675d0b2fcd3a4845976f5c5feb",
-      "candidate_sha256": "a99ccc1dc7fef55e7acadba1c91501858f8fd4675d0b2fcd3a4845976f5c5feb"
+      "source_sha256": "c5f79634e10d25240a90ce84c7e6546e206cb19324b8e4a2d2e0bab3449c03b0",
+      "candidate_sha256": "c5f79634e10d25240a90ce84c7e6546e206cb19324b8e4a2d2e0bab3449c03b0"
     },
     {
       "path": "requirements-cloud.txt",

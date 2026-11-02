@@ -1,0 +1,37 @@
+name: Benchmark feedback
+description: Suggest a workload, discuss a result, or report a reproduction problem.
+title: "[Feedback] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the Fluxnova benchmark kit. Share synthetic examples and public details only. Do not include credentials, customer data, cloud resource identifiers, or private logs. Report security issues using SECURITY.md.
+  - type: dropdown
+    id: topic
+    attributes:
+      label: What would you like to discuss?
+      options:
+        - A workload or comparison to add
+        - Reproducing an existing study
+        - Interpreting a result
+        - Improving the benchmark protocol
+        - Presentation or documentation feedback
+    validations:
+      required: true
+  - type: input
+    id: study
+    attributes:
+      label: Study or pattern
+      description: If relevant, include its ID, such as W02 or D02.
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Your feedback
+      description: What decision are you trying to make, and what would help?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction details
+      description: For a reproduction issue, provide the kit commit, platform, runtime versions, command with secrets removed, and expected versus actual behavior. Attach only sanitized examples.
