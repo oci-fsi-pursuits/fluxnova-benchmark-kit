@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-01",
+  "attribution": "Research and OCI implementation: Nicholas Cusato. Fluxnova software: FINOS contributors.",
+  "scope": "Sanitized index of retained studies. These are separate populations and environments. Do not pool their counts or effects.",
+  "raw_evidence": "Full raw archives remain private. Source file identifiers and SHA-256 hashes identify the retained originals; they are not downloadable archive links.",
+  "records": {
+    "P01": {
+      "source_record": "oci-20261014-baseline/summary.json",
+      "source_sha256": "63b61e32058079c2799f7b4c8a26d6c7818ba7423b44e1c90c8c2ed9da513339",
+      "values": {
+        "scope": "Five fixed-rate checkpoint-controlled repetitions; Java agent on; no capacity or cost-per-workflow claim",
+        "planned_repetitions": 5,
+        "completed_repetitions": 5,
+        "correct_measured_workflows": 90000,
+        "run_p95_seconds": [
+          0.24899252899990643,
+          0.24606210000001738,
+          0.24850414399998044,
+          0.24571633099992596,
+          0.24579759799985368
+        ],
+        "all_five_completed_and_passed": true
+      }
+    },
+    "JVM": {
+      "source_record": "oci-20261030-jvm-outcomes/summary.json",
+      "source_sha256": "51809e446c52c69682a8e4481bdbf6269432cf980856d92d936332946e954eb8",
+      "values": {
+        "totals": {
+          "offered": 180000,
+          "correct": 180000,
+          "deadline_correct": 180000,
+          "deadline_misses": 0,
+          "incorrect": 0,
+          "unknown": 0,
+          "unsafe_outcomes": 0
+        },
+        "primary_result_seconds": {
+          "median": -0.0008618820000378946,
+          "min": -0.0013692659995285794,
+          "max": 0.0008637290001161091,
+          "differences": [
+            -0.0013692659995285794,
+            -0.0008618820000378946,
+            -0.000544134999927337,
+            0.0008637290001161091,
+            -0.0008991490001122315
+          ],
+          "pairs": 5,
+          "direction": "Java25 minus Java21"
+        },
+        "completed_pairs": 5,
+        "interpretation": "Java25 observed p95 was 0.861882 ms lower at the median paired difference; four pairs were lower and one higher. Both runtimes achieved 10 timely correct outcomes/s. Small exploratory fixed-workload difference, not equivalence, capacity or a broad runtime performance win.",
+        "preceding_failed_study_combined": false
+      }
+    },
+    "RELEASE": {
+      "source_record": "oci-20261031-release-reliability/summary.json",
+      "source_sha256": "21661959b4c63fed651168a5e04243524cde1b9baa7a1de262a35fa747706b99",
+      "values": {
+        "totals": {
+          "offered": 180000,
+          "correct": 180000,
+          "deadline_correct": 180000,
+          "deadline_misses": 0,
+          "incorrect": 0,
+          "unknown": 0,
+          "unsafe_outcomes": 0,
+          "dropped": 0
+        },
+        "planned_primary_result": {
+          "unit": "milliseconds",
+          "direction": "3.1.1 minus 3.0.1",
+          "median_paired_difference": 0.125808999904109,
+          "minimum_paired_difference": -0.5518870000713605,
+          "maximum_paired_difference": 1.05483500012582,
+          "pairs": 5
+        },
+        "completed_pairs": 5,
+        "interpretation": "The observed paired p95 differences are small and change sign across five pairs at a fixed 10/s. This study establishes no meaningful speedup, capacity gain, or statistical equivalence.",
+        "preceding_study_combined": false
+      }
+    },
+    "SOAK": {
+      "source_record": "soak-20261028-001/endurance-trend-review-20261029.json",
+      "source_sha256": "51e015ea289098aa929e61636c31deae94cf9cdd57aa33bf7170c1b245fb9694",
+      "values": {
+        "measurement_s": 28800,
+        "sealed_analysis_status": "pass",
+        "total_counts": {
+          "offered": 288000,
+          "started": 288000,
+          "accepted": 288000,
+          "dropped": 0,
+          "error_events": 0,
+          "correct": 288000,
+          "deadline_correct": 288000,
+          "late_correct": 0,
+          "incorrect": 0,
+          "unknown": 0,
+          "unsafe": 0,
+          "completion_censored": 0
+        },
+        "interpretation": [
+          "Request windows use arrival cohorts; late completions stay with their original arrivals.",
+          "Resource windows use observation time; controller snapshots are deduplicated by role and timestamp.",
+          "Counter endpoint deltas are descriptive. Decreases are retained and make the delta unknown.",
+          "Database growth includes retained workflow history; it is not automatically a leak.",
+          "One observation cannot establish leak-free operation, saturation or production sizing.",
+          "No new acceptance threshold is introduced by this review."
+        ]
+      }
+    },
+    "CAPACITY": {
+      "source_record": "T1 research plan closeout",
+      "source_sha256": "64762352a787c76cb1010e4f68fab3071fef13bcfab029899833bb3489426799",
+      "values": {
+        "status": "16/s confirmation closed: 3 measured passes, observation 4 aborted in warmup, observation 5 unattempted. 16/s is not qualified. Eight-hour 10/s soak remains accepted.",
+        "claim": "The 16/s confirmation is incomplete. It does not qualify 16/s or establish maximum capacity."
+      }
+    },
+    "CORE": {
+      "source_record": "docs/README.md",
+      "source_sha256": "c1526d71f882adbc498388b7a478dabb5c1c222f1faa8c3de010329c59f55780",
+      "values": {
+        "scope": "Historical supporting evidence; use the bounded interpretation in the catalogue. This index introduces no new quantitative claim."
+      }
+    },
+    "OBSERVER": {
+      "source_record": "oci-20261013-polling/README.md",
+      "source_sha256": "98bacd40ca874abbd05ca68be104ac1f7d5efd76046dd4e7367cd7a5d104951a",
+      "values": {
+        "scope": "Historical supporting evidence; use the bounded interpretation in the catalogue. This index introduces no new quantitative claim."
+      }
+    },
+    "RECOVERY": {
+      "source_record": "oci-20261022-corrected-link-loss/README.md",
+      "source_sha256": "3341fab17442840f87058fcb013b292c8853d82f2477074e8e46327f481096a3",
+      "values": {
+        "scope": "Historical supporting evidence; use the bounded interpretation in the catalogue. This index introduces no new quantitative claim."
+      }
+    },
+    "AGENT": {
+      "source_record": "oci-20261016-live-model-trials/README.md",
+      "source_sha256": "207896165ca145358b9b377a5015b300d37552d27487f0f7d7f67b9fcb68c24b",
+      "values": {
+        "scope": "Historical supporting evidence; use the bounded interpretation in the catalogue. This index introduces no new quantitative claim."
+      }
+    }
+  }
+}

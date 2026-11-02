@@ -1,6 +1,6 @@
 {
   "status": "source_snapshot",
-  "source_commit": "ca4e537d74ff26363a05a5be0597a8f6284b8355",
+  "source_commit": "e1553ef39b4b102a9c1d4c8eff54167f61f5e2d6",
   "contains_git_history": false,
   "license": "Apache-2.0",
   "destination": "oci-fsi-pursuits/fluxnova-benchmark-kit",
@@ -23,8 +23,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "source_sha256": "efc4df0f3083ae9a8577e53fe0614f21e55153f4c39cab210eca248fb1e5eac0",
-      "candidate_sha256": "efc4df0f3083ae9a8577e53fe0614f21e55153f4c39cab210eca248fb1e5eac0"
+      "source_sha256": "dd4a232df5272e17d067656645b701e377e1438fd9e26f441527c63d73430e77",
+      "candidate_sha256": "dd4a232df5272e17d067656645b701e377e1438fd9e26f441527c63d73430e77"
     },
     {
       "path": ".github/workflows/native-compatibility.yml",
@@ -33,8 +33,8 @@
     },
     {
       "path": ".gitignore",
-      "source_sha256": "ae02ffb90f4600c0abf306a5e5703e3c6e71cfcd18c4441d858759f624e390cc",
-      "candidate_sha256": "ae02ffb90f4600c0abf306a5e5703e3c6e71cfcd18c4441d858759f624e390cc"
+      "source_sha256": "45576a327a24d35ff5869fb8707b1b27d83e1da80b6ca14d5123c1efd5175464",
+      "candidate_sha256": "45576a327a24d35ff5869fb8707b1b27d83e1da80b6ca14d5123c1efd5175464"
     },
     {
       "path": ".gitleaks.toml",
@@ -63,8 +63,8 @@
     },
     {
       "path": "README.md",
-      "source_sha256": "527aafac5a3f9c01845531f77f96dd84725fbdcde1669dc38f98b9125ab63609",
-      "candidate_sha256": "527aafac5a3f9c01845531f77f96dd84725fbdcde1669dc38f98b9125ab63609"
+      "source_sha256": "a5c4384db33b0828eb77c60f1b5cb88139bcb9bc50cfc6c9f8b1b62089988e4d",
+      "candidate_sha256": "a5c4384db33b0828eb77c60f1b5cb88139bcb9bc50cfc6c9f8b1b62089988e4d"
     },
     {
       "path": "SECURITY.md",
@@ -117,14 +117,19 @@
       "candidate_sha256": "2e856b53178b02aa98fce55d7b067e3831c95ebaa7476c9a7acccab10079107e"
     },
     {
+      "path": "benchlib/catalog.py",
+      "source_sha256": "70f362678a87397515c173001bd9d48bf306f4522364fbd975c56087f4d8d612",
+      "candidate_sha256": "70f362678a87397515c173001bd9d48bf306f4522364fbd975c56087f4d8d612"
+    },
+    {
       "path": "benchlib/checkpoint.py",
       "source_sha256": "ec8e6e1cac4c82fc1b7d9f36fc64a635c5e4baa5ac07077bc1fffe4253cd3363",
       "candidate_sha256": "ec8e6e1cac4c82fc1b7d9f36fc64a635c5e4baa5ac07077bc1fffe4253cd3363"
     },
     {
       "path": "benchlib/cli.py",
-      "source_sha256": "73c9bb25d13620c8cd6a4809dcab3635a41c3606e080747c0adc494171f609b9",
-      "candidate_sha256": "73c9bb25d13620c8cd6a4809dcab3635a41c3606e080747c0adc494171f609b9"
+      "source_sha256": "187c9223853b9f95f3036a40c31b1404f6d7e9b35f1414caa16a807afa77f3d3",
+      "candidate_sha256": "187c9223853b9f95f3036a40c31b1404f6d7e9b35f1414caa16a807afa77f3d3"
     },
     {
       "path": "benchlib/cloud.py",
@@ -223,8 +228,8 @@
     },
     {
       "path": "benchlib/fnv06_telemetry.py",
-      "source_sha256": "d2e61dbbe85b8891638be49c05663319874d51414aedb477fd82ea35ed186ebc",
-      "candidate_sha256": "d2e61dbbe85b8891638be49c05663319874d51414aedb477fd82ea35ed186ebc"
+      "source_sha256": "f5eaec4aad0fb48634185f4119bd677c1b6fda508f79b76dd54868d6c157c7dd",
+      "candidate_sha256": "f5eaec4aad0fb48634185f4119bd677c1b6fda508f79b76dd54868d6c157c7dd"
     },
     {
       "path": "benchlib/fnv07_audit.py",
@@ -428,8 +433,8 @@
     },
     {
       "path": "docs/README.md",
-      "source_sha256": "0a84a6f7c5ad3f1b537c0dbd6a4314bb0071901644f879f95a5d3232a31c0392",
-      "candidate_sha256": "0a84a6f7c5ad3f1b537c0dbd6a4314bb0071901644f879f95a5d3232a31c0392"
+      "source_sha256": "7107c0bd9068310051e58a78d99f5c03b2a091b71b66c5dae105fa2bf6f57525",
+      "candidate_sha256": "7107c0bd9068310051e58a78d99f5c03b2a091b71b66c5dae105fa2bf6f57525"
     },
     {
       "path": "docs/approval-agent.md",
@@ -497,9 +502,24 @@
       "candidate_sha256": "b59b0111e290a56cfe6081de36532bfed26d76c69c5505600f2624f07ad3f5d7"
     },
     {
+      "path": "docs/benchmark-guide.html",
+      "source_sha256": "30dae4df47767d901ce088f88202042660e399aeed2b1e0e44a86b81dda60425",
+      "candidate_sha256": "30dae4df47767d901ce088f88202042660e399aeed2b1e0e44a86b81dda60425"
+    },
+    {
+      "path": "docs/benchmark-guide.md",
+      "source_sha256": "b3556834f00a65e63119f3f95e34ee1d3fdbadfcf0a4ef3852e3f3538f6e2b1f",
+      "candidate_sha256": "b3556834f00a65e63119f3f95e34ee1d3fdbadfcf0a4ef3852e3f3538f6e2b1f"
+    },
+    {
       "path": "docs/benchmark-protocol.md",
-      "source_sha256": "e8bb95aa1dfc48d4a2deb967871281db10a82dfa14b2add5870025be7fe94090",
-      "candidate_sha256": "e8bb95aa1dfc48d4a2deb967871281db10a82dfa14b2add5870025be7fe94090"
+      "source_sha256": "db4dff97c31c2bf8c7947fc61764638eb9c0b5f96e9bcb1c235cd4bc10ee6824",
+      "candidate_sha256": "db4dff97c31c2bf8c7947fc61764638eb9c0b5f96e9bcb1c235cd4bc10ee6824"
+    },
+    {
+      "path": "docs/benchmark-standard.md",
+      "source_sha256": "4126318df3f78a0e0ed867925e8276b6d48d9d3c5ec49f86ec16d32d0283284a",
+      "candidate_sha256": "4126318df3f78a0e0ed867925e8276b6d48d9d3c5ec49f86ec16d32d0283284a"
     },
     {
       "path": "docs/bound-payment.md",
@@ -548,8 +568,8 @@
     },
     {
       "path": "docs/getting-started.md",
-      "source_sha256": "1a9c12e11a37aae2af1cf873bbca0cf189a6df859fc57d5231a298c742ff46e2",
-      "candidate_sha256": "1a9c12e11a37aae2af1cf873bbca0cf189a6df859fc57d5231a298c742ff46e2"
+      "source_sha256": "9e5dad205fb90ecc02f15c95fefaa54946f88dfd306f6d58b3b6750f08b4350f",
+      "candidate_sha256": "9e5dad205fb90ecc02f15c95fefaa54946f88dfd306f6d58b3b6750f08b4350f"
     },
     {
       "path": "docs/measurement-contract.md",
@@ -599,7 +619,7 @@
     {
       "path": "docs/reproduce.md",
       "source_sha256": "a2731009c293ab33843a4f8931ca46f1e104347689475c936cb34ede8c25ac3f",
-      "candidate_sha256": "1157322cf958125a984dcd4fff23484dba6a8a09da0e47c185f7b4a75f8f95cd"
+      "candidate_sha256": "3cede8f3b4b221aa0dee3a5b84af227ba42d10b4beeb63791b09e20786144144"
     },
     {
       "path": "docs/research-brief.md",
@@ -627,6 +647,11 @@
       "candidate_sha256": "c36fadfba73aed8d29d797e008647404f5ac975c02f64f9c4057540ab5dd500b"
     },
     {
+      "path": "docs/talk-15-minutes.md",
+      "source_sha256": "a55ddee495edb2a2a9e0663193b51a450a1dee29b07f31d1e2078f8437984b9b",
+      "candidate_sha256": "a55ddee495edb2a2a9e0663193b51a450a1dee29b07f31d1e2078f8437984b9b"
+    },
+    {
       "path": "docs/upstream-proposal.md",
       "source_sha256": "e6e0e7c8df59dfb39c3cb3d4e12a400f78e625c788cbd491ecc33206b63cffc7",
       "candidate_sha256": "e6e0e7c8df59dfb39c3cb3d4e12a400f78e625c788cbd491ecc33206b63cffc7"
@@ -648,8 +673,8 @@
     },
     {
       "path": "docs/w02-independent-checks.md",
-      "source_sha256": "ccf24ea93296c99ced0b2797e9fff1421564dd887728c23de1509fe33a6673b1",
-      "candidate_sha256": "bc624071f42f49af1ea2dcd041918b033f66309b6285962e79329750f46ed2f3"
+      "source_sha256": "d5e8d2404d5c7b96f2f22ce86835ceae3e7b45bf24bfa267d0af82d721560687",
+      "candidate_sha256": "c298f8bbfc5c5d68e0bec5bd7346440e3e896a549f5058e01bded7cec90eef53"
     },
     {
       "path": "docs/w02-load-driver.md",
@@ -793,8 +818,8 @@
     },
     {
       "path": "release/public-files.json",
-      "source_sha256": "88be9941b8fb67fee786b555752324d3d5b6bcb81c060a5a28b730c419dbf17d",
-      "candidate_sha256": "88be9941b8fb67fee786b555752324d3d5b6bcb81c060a5a28b730c419dbf17d"
+      "source_sha256": "a99ccc1dc7fef55e7acadba1c91501858f8fd4675d0b2fcd3a4845976f5c5feb",
+      "candidate_sha256": "a99ccc1dc7fef55e7acadba1c91501858f8fd4675d0b2fcd3a4845976f5c5feb"
     },
     {
       "path": "requirements-cloud.txt",
@@ -935,6 +960,11 @@
       "path": "scripts/bootstrap-terraform.py",
       "source_sha256": "9b1294f91b59ce54d58c033de0d975388826ad4840395b2281b07381d0b9522d",
       "candidate_sha256": "9b1294f91b59ce54d58c033de0d975388826ad4840395b2281b07381d0b9522d"
+    },
+    {
+      "path": "scripts/build_benchmark_guide.py",
+      "source_sha256": "26cff3cb3e1cfedc02dcc38d23736c44de5d7c8f24062e4045f909f6755483ef",
+      "candidate_sha256": "26cff3cb3e1cfedc02dcc38d23736c44de5d7c8f24062e4045f909f6755483ef"
     },
     {
       "path": "scripts/build_benchmark_story.py",
@@ -1253,8 +1283,8 @@
     },
     {
       "path": "scripts/run_w02_functional.py",
-      "source_sha256": "d204533ba5cdf8dcb9bb15c2e750c3bff3f6652ff66f52c3996b43475a341043",
-      "candidate_sha256": "d204533ba5cdf8dcb9bb15c2e750c3bff3f6652ff66f52c3996b43475a341043"
+      "source_sha256": "87fff43d562495b7e98b4141b2a9d66e3c0d3dfb470d980d1d361f22b84d23e9",
+      "candidate_sha256": "87fff43d562495b7e98b4141b2a9d66e3c0d3dfb470d980d1d361f22b84d23e9"
     },
     {
       "path": "scripts/run_w03_functional.py",
@@ -1440,6 +1470,11 @@
       "path": "tests/test_bastion_forward.py",
       "source_sha256": "a6c5bbc0676ef7f261e594b3e773a6e370f2afae81a8d60706b3448424a31a12",
       "candidate_sha256": "a6c5bbc0676ef7f261e594b3e773a6e370f2afae81a8d60706b3448424a31a12"
+    },
+    {
+      "path": "tests/test_benchmark_catalog.py",
+      "source_sha256": "af30faf1ffc544bd5b39534a1c1cecb32b3ad82e12e0fee3cd284604918e9e52",
+      "candidate_sha256": "af30faf1ffc544bd5b39534a1c1cecb32b3ad82e12e0fee3cd284604918e9e52"
     },
     {
       "path": "tests/test_bound_payment.py",
@@ -2092,6 +2127,16 @@
       "candidate_sha256": "db8fee68f1c44e57643edf526f369166de1b5906f87974fe9c75b55808b989c9"
     },
     {
+      "path": "validation/research-register-20261101/README.md",
+      "source_sha256": "9ebdb1ee2d8f39665d6ea6a1899ffffb3ad9b36dfaa9bf952ed7d907e4cf3135",
+      "candidate_sha256": "9ebdb1ee2d8f39665d6ea6a1899ffffb3ad9b36dfaa9bf952ed7d907e4cf3135"
+    },
+    {
+      "path": "validation/research-register-20261101/summary.json",
+      "source_sha256": "01e59de5ecd0f40e41c6cc46c71c60e3236a4a90f2fa779995584c9a67936a49",
+      "candidate_sha256": "01e59de5ecd0f40e41c6cc46c71c60e3236a4a90f2fa779995584c9a67936a49"
+    },
+    {
       "path": "workloads/agent-direct.bpmn",
       "source_sha256": "d751e373a8c211a3b1423ba43f6f4ba29b22707a928736a364594b6b49c0cf67",
       "candidate_sha256": "d751e373a8c211a3b1423ba43f6f4ba29b22707a928736a364594b6b49c0cf67"
@@ -2105,6 +2150,11 @@
       "path": "workloads/async.bpmn",
       "source_sha256": "64d6994743a2527b69a90952f969884315bf9a4df49758c8eac2e5b243923dd6",
       "candidate_sha256": "64d6994743a2527b69a90952f969884315bf9a4df49758c8eac2e5b243923dd6"
+    },
+    {
+      "path": "workloads/benchmark-catalog.json",
+      "source_sha256": "b2248aa28b8c73f58da9197c6ab260ea451ab7218ec1146065db7531d0561d45",
+      "candidate_sha256": "b2248aa28b8c73f58da9197c6ab260ea451ab7218ec1146065db7531d0561d45"
     },
     {
       "path": "workloads/bound-payment-approval.bpmn",
@@ -2453,10 +2503,6 @@
     {
       "file": "docs/reproduce.md",
       "target": "benchmark-thesis.md"
-    },
-    {
-      "file": "docs/reproduce.md",
-      "target": "talk-15-minutes.md"
     },
     {
       "file": "docs/reproduce.md",

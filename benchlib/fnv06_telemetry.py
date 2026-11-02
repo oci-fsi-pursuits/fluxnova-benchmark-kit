@@ -68,7 +68,14 @@ def binding(meta):
 def await_file(path, *, bound, timeout, running=lambda: True):
     end = time.monotonic()+timeout
     next_process_check = 0
-    while not path.exists():
+    while True:
+        try:
+            return read(path)
+        except (FileNotFoundError, PermissionError):
+            # Windows can briefly deny opening a newly renamed handoff file.
+            # Retain the same deadline and ownership checks while retrying.
+            # Invalid JSON and other I/O errors still fail immediately.
+            pass
         bound()
         now = time.monotonic()
         if now >= end:
@@ -77,7 +84,6 @@ def await_file(path, *, bound, timeout, running=lambda: True):
             if not running(): raise TimeoutError('Owned job exited before resource handoff')
             next_process_check = now+1
         time.sleep(.02)
-    return read(path)
 
 
 def job_start(meta, output, source, *, bound):

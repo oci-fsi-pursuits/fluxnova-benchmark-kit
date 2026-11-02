@@ -1,6 +1,6 @@
 # Proposed reusable benchmark protocol
 
-Version 0.1 is a contribution proposal, not a FINOS standard, product certification or production sizing guarantee. Ask how one declared change affects time to a correct, authorized outcome under a stated workload and environment.
+Version 0.2 is a contribution proposal, not a FINOS standard, product certification or production sizing guarantee. Ask how one declared change affects time to a correct, authorized outcome under a stated workload and environment. The [common contract](benchmark-standard.md) defines benchmark types, supported execution paths and the required publication record. The [illustrated catalogue](benchmark-guide.md) applies it to existing evidence. Earlier studies retain their original frozen execution protocols.
 
 ## Declare the experiment
 

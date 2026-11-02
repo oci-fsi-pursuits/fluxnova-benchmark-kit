@@ -1,0 +1,304 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fluxnova benchmark guide</title><style>body{margin:0;color:#073b59;font:18px/1.55 Arial;background:#fff}main{max-width:1100px;margin:auto;padding:35px}h1{font-size:40px;line-height:1.13}h2{margin-top:40px}a{color:#006d91}label{display:block}input{font:inherit;padding:10px;width:95%;max-width:650px;border:1px solid #517889}article{border-top:2px solid #bddae4;margin-top:30px;padding-top:15px}img{width:100%;height:auto}dt{font-weight:bold;margin-top:12px}dd{margin-left:0}nav a{display:inline-block;margin:5px 20px 5px 0}header{background:#e9f7fb;padding:25px}.muted{color:#425b68}[hidden]{display:none}@media print{input,label,nav{display:none}article{break-inside:avoid}h1{font-size:28px}}</style>
+<main><header><p>Research by Nicholas Cusato · Fluxnova software by FINOS contributors</p><h1>What the Fluxnova benchmarks measure</h1><p>Measure how workflow and runtime changes affect time to a correct, authorized outcome.</p></header>
+<p>A <strong>pattern</strong> is what runs. A <strong>benchmark type</strong> is how we test it. A <strong>study</strong> is one frozen experiment.</p>
+<p>Choose a workflow and known inputs. Run it. Verify the final outcome independently. Repeat with one declared change and compare against its own baseline.</p>
+<nav><a href="benchmark-standard.md">Supported run paths</a><a href="benchmark-guide.md">Text and sources</a><a href="w02-saved-demo.md">Demo instructions</a></nav>
+<label for="find">Find a pattern, result or benchmark type</label><input id="find" type="search" placeholder="Try parallel, Java, review, soak…"><p id="count" role="status"></p>
+<h2>What each type answers</h2><dl>
+<dt>Correctness and control checks</dt><dd>Does each input reach the right outcome, including rejection, review and replay?</dd>
+<dt>Repeated latency comparison</dt><dd>Does one change reduce observed completion time at the same offered load?</dd>
+<dt>Repeated deadline comparison</dt><dd>How much correct work finishes before the declared deadline?</dd>
+<dt>Repeated baseline</dt><dd>How repeatable is this declared workload before changing a factor?</dd>
+<dt>Endurance / soak</dt><dd>Does the declared load remain correct over an extended observation?</dd>
+<dt>Load and capacity qualification</dt><dd>Which tested offered rates satisfy the full acceptance contract?</dd>
+<dt>Finite-population scaling</dt><dd>How does completion time change when a burst targets more waiting workflows?</dd>
+<dt>Fault and recovery checks</dt><dd>What happens to state and business effects during a specific injected failure?</dd>
+<dt>Measurement diagnostics</dt><dd>How do observation and instrumentation settings affect what the harness reports?</dd>
+</dl><h2>Reading the results</h2><ul>
+<li>Every comparison has its own baseline. Different workloads, hosts or databases cannot be combined into one speedup.</li>
+<li>Correctness and speed answer different questions. A correctly refused payment can pass the test but does not count as a settlement.</li>
+<li>Observed p95 is the latency below which 95% of observed completions fall. It includes the declared observer boundary; it is not the slowest request or a pure engine timer.</li>
+<li>Deadline goodput counts correct outcomes within the deadline per second. Offered load counts starts requested per second. Neither alone establishes maximum capacity.</li>
+<li>Paired changes compare matched runs. A median of five changes is not a pooled percentile, and a range is not a confidence interval.</li>
+<li>Keep every miss, retry, interruption and invalid observation. Partial or resource-constrained results cannot be promoted to a completed capacity claim.</li>
+<li>Synthetic workflows expose controlled mechanisms. Customer traffic, live models, human time and complete cost per correct outcome require separate studies.</li>
+</ul>
+<article id="CORE"><h2>CORE · Six basic workflow patterns</h2><p class="muted">Correctness and control checks / functional / Reusable functional building blocks</p>
+<h3>Reusable workflows and golden checks define the basic test vocabulary.</h3><p>These are small building blocks a workflow developer can combine and extend.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Can the engine start, persist data, coordinate external work, route decisions and protect a synthetic payment?</dd>
+<dt>Control</dt><dd>Declared input and independently expected outcome</dd>
+<dt>Change</dt><dd>No performance treatment in this record</dd>
+<dt>Held fixed</dt><dd>The BPMN, payload and expected-outcome rules for each case.</dd>
+<dt>Population</dt><dd>Minimal, variables, async, KYC, risk and settlement cases.</dd>
+<dt>Repeats</dt><dd>not applicable</dd>
+<dt>Environment</dt><dd>Local Java/H2 lab or separately qualified OCI deployment.</dd>
+<dt>Metric</dt><dd>Correct branch, durable values and exact expected effects.</dd>
+<dt>Clock</dt><dd>Functional completion and state checks; no aggregate speedup.</dd>
+</dl></details><p><strong>Boundary:</strong> A diagram alone is not a completed performance study. The six basic patterns do not each have a repeated latency comparison.</p><p>
+<a href="../validation/research-register-20261101/summary.json">Evidence 1</a>
+<a href="../docs/reproduce.md">Reproduction</a></p></article>
+<article id="P01"><h2>P01 · Async reference baseline</h2><p class="muted">Repeated baseline / measured / Completed</p>
+<h3>90,000/90,000 correct and within two seconds; per-run p95 245.7–249.0 ms.</h3><p>This establishes a repeatable reference for this workflow and setup.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Is the external-task/echo path repeatable at the declared load?</dd>
+<dt>Control</dt><dd>Fluxnova 3.0.1, async external-task/echo</dd>
+<dt>Change</dt><dd>Repeat the same configuration</dd>
+<dt>Held fixed</dt><dd>Synthetic inputs, policy, worker count, resources, database and completion observer within each pair.</dd>
+<dt>Population</dt><dd>10 starts/s; 10-minute warmup then 30-minute measurement.</dd>
+<dt>Repeats</dt><dd>Five measurements.</dd>
+<dt>Environment</dt><dd>Four-host OCI reference and PostgreSQL.</dd>
+<dt>Metric</dt><dd>Observed p95, correctness and correct completions within two seconds.</dd>
+<dt>Clock</dt><dd>Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement. Polling: 100 ms.</dd>
+</dl></details><p><strong>Boundary:</strong> The echo workload contains no payment or live model. This is not maximum capacity or an engine-only microbenchmark.</p><p>
+<a href="../validation/research-register-20261101/summary.json">Evidence 1</a>
+<a href="../docs/campaign-runbook.md">Reproduction</a></p></article>
+<article id="W01"><h2>W01 · Worker pacing under bursts</h2><p class="muted">Repeated deadline comparison / measured / Completed</p>
+<h3>Timely payments rose from 600/1,200 to 1,200/1,200. All 2,400 outcomes were correct.</h3><p>Avoidable worker waiting can consume the deadline even when the payment logic is unchanged.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Does an unnecessary pause after successful work delay later payments?</dd>
+<dt>Control</dt><dd>Reconstructed 100 ms delay after success</dd>
+<dt>Change</dt><dd>Fetch immediately after success; keep idle/retry backoff</dd>
+<dt>Held fixed</dt><dd>Synthetic inputs, policy, worker count, resources, database and completion observer within each pair.</dd>
+<dt>Population</dt><dd>20 arrivals in a one-second burst every ten seconds; mean 2/s. 120-second warmup and 120-second measurement per arm.</dd>
+<dt>Repeats</dt><dd>Five matched pairs.</dd>
+<dt>Environment</dt><dd>Shared OCI controller compute with separate PostgreSQL; one worker.</dd>
+<dt>Metric</dt><dd>Correct payments within two seconds; median paired timely-goodput change.</dd>
+<dt>Clock</dt><dd>Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement.</dd>
+</dl></details><p><strong>Boundary:</strong> The control reconstructs an earlier worker setting. It is not the current default or a customer production baseline.</p><p>
+<a href="../validation/oci-20261027-w01-comparison/summary.json">Evidence 1</a>
+<a href="../docs/w01-worker-pacing.md">Reproduction</a></p></article>
+<article id="W02"><h2>W02 · Independent payment checks</h2><p class="muted">Repeated latency comparison / measured / Completed</p>
+<h3>Observed p95 was 32.1% lower at the median paired change. All 6,000 outcomes were correct and within two seconds.</h3><p>Overlap independent waits while preserving the requirement that both checks finish.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Can independent KYC and risk checks overlap without weakening payment checks?</dd>
+<dt>Control</dt><dd>Sequential KYC then risk</dd>
+<dt>Change</dt><dd>Parallel KYC and risk, with a join before settlement</dd>
+<dt>Held fixed</dt><dd>Synthetic inputs, policy, worker count, resources, database and completion observer within each pair.</dd>
+<dt>Population</dt><dd>Approved synthetic payments at 1/s. KYC waits 400 ms; risk waits 600 ms. 2-minute warmup and 10-minute measurement per arm.</dd>
+<dt>Repeats</dt><dd>Five matched pairs.</dd>
+<dt>Environment</dt><dd>Shared OCI controller and separate PostgreSQL; two worker slots.</dd>
+<dt>Metric</dt><dd>Median of paired percentage changes in observed completion p95.</dd>
+<dt>Clock</dt><dd>Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement. Polling: 100 ms.</dd>
+</dl></details><p><strong>Boundary:</strong> Both arms still delivered 1 timely payment/s. This establishes lower latency at this load, not higher maximum capacity or real-provider latency.</p><p>
+<a href="../validation/oci-20261027-w02-comparison/summary.json">Evidence 1</a>
+<a href="../docs/w02-independent-checks.md">Reproduction</a></p></article>
+<article id="W02-MIXED"><h2>W02-MIXED · Different outcomes and dependency delays</h2><p class="muted">Repeated deadline comparison / measured / Completed with deadline misses retained</p>
+<h3>Timely settlements rose from 880 to 1,037 of 1,200; timely refusals fell from 780 to 669 of 1,200. All 6,000 outcomes were correct; 1,648 deadlines were missed.</h3><p>A change can help one outcome class and hurt another. Keep the outcome breakdown.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Does the parallel-check result hold across settlements, refusals and safe stops?</dd>
+<dt>Control</dt><dd>Sequential independent checks</dd>
+<dt>Change</dt><dd>Parallel independent checks</dd>
+<dt>Held fixed</dt><dd>Synthetic inputs, policy, worker count, resources, database and completion observer within each pair.</dd>
+<dt>Population</dt><dd>Five dependency profiles and mixed expected outcomes at 1/s; 600 measured arrivals per arm.</dd>
+<dt>Repeats</dt><dd>Five matched pairs.</dd>
+<dt>Environment</dt><dd>Matched OCI controller/PostgreSQL setup.</dd>
+<dt>Metric</dt><dd>Timely correct settlements/s, with refusals and safe stops reported separately.</dd>
+<dt>Clock</dt><dd>Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement. Polling: 100 ms.</dd>
+</dl></details><p><strong>Boundary:</strong> Equal synthetic coverage is not a customer traffic distribution. The approved-only 32.1% result cannot be applied to this mix.</p><p>
+<a href="../validation/oci-20261028-w02-mixed-comparison/summary.json">Evidence 1</a>
+<a href="../docs/w02-mixed-cloud-protocol.md">Reproduction</a></p></article>
+<article id="W03"><h2>W03 · Policy-based review routing</h2><p class="muted">Correctness and control checks / functional / Completed within the scripted corpus</p>
+<h3>Review tasks fell from 10 to 4. All four mandatory reviews remained and all 20 expected outcomes passed.</h3><p>This workflow removes avoidable handoffs for the declared policy and case mix.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Can a fixed policy remove unnecessary review tasks while retaining required reviews?</dd>
+<dt>Control</dt><dd>Review every case</dd>
+<dt>Change</dt><dd>Route only policy-required cases to review</dd>
+<dt>Held fixed</dt><dd>Same ten inputs, decision policy, authenticated reviewer checks and final outcome verifier.</dd>
+<dt>Population</dt><dd>Ten synthetic cases in each arm.</dd>
+<dt>Repeats</dt><dd>One execution of each case per arm; replay probes separately retained.</dd>
+<dt>Environment</dt><dd>Local Fluxnova 3.0.1 / Java 21 / H2.</dd>
+<dt>Metric</dt><dd>Review-task count and correct expected outcomes.</dd>
+<dt>Clock</dt><dd>Scripted reviews; human waiting or working time is not measured.</dd>
+</dl></details><p><strong>Boundary:</strong> This is a task-count comparison, not measured human time or a 60% staffing saving. The all-review control is deliberately constrained.</p><p>
+<a href="../validation/local-20261027-w03/summary.json">Evidence 1</a>
+<a href="../docs/w03-review-routing.md">Reproduction</a></p></article>
+<article id="PAY05"><h2>PAY05 · Parallel FX quote requests</h2><p class="muted">Repeated deadline comparison / measured / Completed with retry tradeoff retained</p>
+<h3>Timely settlements rose from 668/1,530 to 1,530/1,530. All 3,960 outcomes were correct. Parallel runs retained 910 cached backend replays and zero duplicate payment effects.</h3><p>Overlapping quote waits helps delayed-provider cases. Durable replay handling protects the payment when completion retries occur.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Can parallel requests to three independent quote providers improve timely settlement?</dd>
+<dt>Control</dt><dd>Request three synthetic quotes sequentially</dd>
+<dt>Change</dt><dd>Request the same quotes in parallel before selection</dd>
+<dt>Held fixed</dt><dd>Synthetic inputs, policy, worker count, resources, database and completion observer within each pair. Three worker slots in both arms.</dd>
+<dt>Population</dt><dd>22 cases × three delay profiles; 396 measured arrivals per arm at 0.5/s. 132-second warmup, 792-second measurement and 30-second drain.</dd>
+<dt>Repeats</dt><dd>Five matched pairs.</dd>
+<dt>Environment</dt><dd>Shared OCI controller and separate PostgreSQL 17.6.</dd>
+<dt>Metric</dt><dd>Median paired change in correct settlements within two seconds per second.</dd>
+<dt>Clock</dt><dd>Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement. Polling: 100 ms.</dd>
+</dl></details><p><strong>Boundary:</strong> Sequential runs had zero cached replays. The parallel improvement has a retry tradeoff. Synthetic providers and equal case coverage do not represent a live FX venue or customer distribution.</p><p>
+<a href="../validation/oci-20261031-pay05-comparison/summary.json">Evidence 1</a>
+<a href="../docs/pay05-fx-quotes.md">Reproduction</a></p></article>
+<article id="JVM"><h2>JVM · Java 21 versus Java 25</h2><p class="muted">Repeated latency comparison / measured / Completed; earlier stopped study remains separate</p>
+<h3>Median paired p95 difference: −0.862 ms, range −1.369 to +0.864 ms. All 180,000 outcomes were correct and within two seconds.</h3><p>The small differences changed sign. This workload did not establish a broad Java 25 performance advantage.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Does the newer Java runtime improve this fixed async workflow?</dd>
+<dt>Control</dt><dd>Java 21</dd>
+<dt>Change</dt><dd>Java 25</dd>
+<dt>Held fixed</dt><dd>Synthetic inputs, policy, worker count, resources, database and completion observer within each pair. Fluxnova 3.0.1 fixed.</dd>
+<dt>Population</dt><dd>10 starts/s; 10-minute warmup and 30-minute measurement per observation.</dd>
+<dt>Repeats</dt><dd>Five matched pairs.</dd>
+<dt>Environment</dt><dd>Same fixed OCI reference and PostgreSQL.</dd>
+<dt>Metric</dt><dd>Median within-pair observed-p95 difference, Java 25 minus Java 21.</dd>
+<dt>Clock</dt><dd>Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement. Polling: 100 ms before deadline, 1,000 ms afterward.</dd>
+</dl></details><p><strong>Boundary:</strong> Five pairs do not prove equivalence, maximum capacity or performance for other workflows. Earlier interrupted observations are not pooled.</p><p>
+<a href="../validation/research-register-20261101/summary.json">Evidence 1</a>
+<a href="../docs/benchmark-standard.md">Reproduction</a></p></article>
+<article id="RELEASE"><h2>RELEASE · Fluxnova 3.0.1 versus 3.1.1</h2><p class="muted">Repeated latency comparison / measured / Completed; earlier stopped study remains separate</p>
+<h3>Median paired p95 difference: +0.126 ms, range −0.552 to +1.055 ms. All 180,000 outcomes were correct and within two seconds.</h3><p>Both releases met this test target. No meaningful speedup or capacity gain was established.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Does the engine release change this async workflow at the same load?</dd>
+<dt>Control</dt><dd>Fluxnova 3.0.1</dd>
+<dt>Change</dt><dd>Fluxnova 3.1.1 with its required PostgreSQL migration</dd>
+<dt>Held fixed</dt><dd>Synthetic inputs, policy, worker count, resources, database and completion observer within each pair. Java 21 fixed.</dd>
+<dt>Population</dt><dd>10 starts/s; 10-minute warmup and 30-minute measurement per observation.</dd>
+<dt>Repeats</dt><dd>Five matched pairs.</dd>
+<dt>Environment</dt><dd>Same fixed OCI reference; release-specific native schemas.</dd>
+<dt>Metric</dt><dd>Median within-pair observed-p95 difference, 3.1.1 minus 3.0.1.</dd>
+<dt>Clock</dt><dd>Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement. Polling: 100 ms.</dd>
+</dl></details><p><strong>Boundary:</strong> This does not prove statistical equivalence, universal compatibility or production sizing. Native schema changes are part of the declared treatment.</p><p>
+<a href="../validation/research-register-20261101/summary.json">Evidence 1</a>
+<a href="../docs/benchmark-standard.md">Reproduction</a></p></article>
+<article id="SOAK"><h2>SOAK · Eight-hour async endurance</h2><p class="muted">Endurance / soak / measured / Completed and accepted</p>
+<h3>All 288,000 measured workflows completed correctly within two seconds.</h3><p>The reference sustained its declared target during this observation.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Does this workload stay correct through an eight-hour observation?</dd>
+<dt>Control</dt><dd>Fixed async reference</dd>
+<dt>Change</dt><dd>Extend the observation to eight hours</dd>
+<dt>Held fixed</dt><dd>Synthetic inputs, policy, worker count, resources, database and completion observer within each pair.</dd>
+<dt>Population</dt><dd>10 starts/s for 28,800 measured seconds.</dd>
+<dt>Repeats</dt><dd>One eight-hour observation.</dd>
+<dt>Environment</dt><dd>OCI reference with retained telemetry.</dd>
+<dt>Metric</dt><dd>Correctness, deadline outcomes and descriptive time windows.</dd>
+<dt>Clock</dt><dd>Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement.</dd>
+</dl></details><p><strong>Boundary:</strong> One observation does not establish leak-free operation, maximum capacity or a production availability guarantee.</p><p>
+<a href="../validation/research-register-20261101/summary.json">Evidence 1</a>
+<a href="../docs/campaign-runbook.md">Reproduction</a></p></article>
+<article id="CAPACITY"><h2>CAPACITY · Higher-rate confirmation</h2><p class="muted">Load and capacity qualification / partial / 16/s confirmation stopped</p>
+<h3>The 16/s confirmation is incomplete. 16/s is not qualified.</h3><p>Three passing observations cannot stand in for a complete five-observation confirmation.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Does the next offered rate satisfy the complete confirmation series?</dd>
+<dt>Control</dt><dd>Previously qualified reference rate</dd>
+<dt>Change</dt><dd>Higher offered rates with unchanged acceptance rules</dd>
+<dt>Held fixed</dt><dd>Synthetic inputs, policy, worker count, resources, database and completion observer within each pair.</dd>
+<dt>Population</dt><dd>16 starts/s confirmation series.</dd>
+<dt>Repeats</dt><dd>Five planned observations: three measured passes, one warmup interruption, one unattempted.</dd>
+<dt>Environment</dt><dd>OCI reference.</dd>
+<dt>Metric</dt><dd>Full-series correctness, deadlines, resources and retained interruptions.</dd>
+<dt>Clock</dt><dd>Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement.</dd>
+</dl></details><p><strong>Boundary:</strong> Maximum sustainable capacity remains open. Do not label a discovery rate or partial confirmation as production capacity.</p><p>
+<a href="../validation/research-register-20261101/summary.json">Evidence 1</a>
+<a href="../docs/campaign-runbook.md">Reproduction</a></p></article>
+<article id="FNV06"><h2>FNV06 · Messages, signals and asynchronous batches</h2><p class="muted">Finite-population scaling / partial / 45 cells complete; two headroom flags retained</p>
+<h3>All 16,650 measured recipients were correct. 43/45 cells passed the headroom gate; batch/1,000 timing comparisons remain unqualified.</h3><p>Larger finite bursts take longer. Correct final outcomes alone do not qualify every timing comparison.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>How does completion grow when the same pattern targets more waiting workflows?</dd>
+<dt>Control</dt><dd>10 intended recipients</dd>
+<dt>Change</dt><dd>100 or 1,000 recipients within each pattern</dd>
+<dt>Held fixed</dt><dd>Engine, database, client limits, 100 ms observer and independent outcome rules.</dd>
+<dt>Population</dt><dd>Three patterns × three populations × five repeats. 16,650 measured recipients; 180 controls.</dd>
+<dt>Repeats</dt><dd>45 planned and completed cells.</dd>
+<dt>Environment</dt><dd>One OCI engine container, one generator/observer and separate PostgreSQL.</dd>
+<dt>Metric</dt><dd>Interval bounding cohort completion, with generator/resource qualification.</dd>
+<dt>Clock</dt><dd>Delivery start until all intended recipient completions are observed; HTTP acknowledgment and batch bookkeeping are separate.</dd>
+</dl></details><p><strong>Boundary:</strong> Different routing semantics cannot be ranked as interchangeable implementations. These bursts do not establish arrival-rate capacity, replica scaling or finite ratios when the control interval includes zero.</p><p>
+<a href="../validation/oci-20261101-fnv06-campaign/summary.json">Evidence 1</a>
+<a href="../docs/fnv06-population-scaling.md">Reproduction</a></p></article>
+<article id="FNV07"><h2>FNV07 · Cluster job faults and replay handling</h2><p class="muted">Fault and recovery checks / functional / Functional subset complete</p>
+<h3>Each six-case run produced the expected three completed, two blocked and one waiting outcomes, with 12 exact effects.</h3><p>The fault cases exercise coordination and idempotency without losing the expected business state.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Do job retry and failure paths preserve the intended effects?</dd>
+<dt>Control</dt><dd>Declared normal and fault cases</dd>
+<dt>Change</dt><dd>One and two engine configurations under controlled faults</dd>
+<dt>Held fixed</dt><dd>Original immutable case data, expected state and exact-effect checks.</dd>
+<dt>Population</dt><dd>Six fault-case definitions per configuration.</dd>
+<dt>Repeats</dt><dd>Separate functional configurations; no repeated capacity comparison.</dd>
+<dt>Environment</dt><dd>Local H2 plus one/two engines sharing an OCI controller with a private PostgreSQL container.</dd>
+<dt>Metric</dt><dd>Completed, blocked and waiting states; attempts and exact effects.</dd>
+<dt>Clock</dt><dd>Functional state reconciliation, including eight database tables.</dd>
+</dl></details><p><strong>Boundary:</strong> Shared-host tests do not establish multi-host availability, failover capacity or a managed-database performance advantage.</p><p>
+<a href="../validation/oci-20261101-fnv07/summary.json">Evidence 1</a>
+<a href="../docs/fnv07-cluster-jobs.md">Reproduction</a></p></article>
+<article id="FNV07-TIMING"><h2>FNV07-TIMING · Native job timing qualification</h2><p class="muted">Correctness and control checks / functional / Local qualification complete</p>
+<h3>20/20 workflows correct, 60 successful attempts and 60 exact effects.</h3><p>The timing pipeline is ready for a later controlled performance study.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Can native job timing records be matched to independently correct outcomes?</dd>
+<dt>Control</dt><dd>Known normal-case corpus</dd>
+<dt>Change</dt><dd>Qualify scheduled-arrival recording and timing verification</dd>
+<dt>Held fixed</dt><dd>Original input, job identity and exact effects.</dd>
+<dt>Population</dt><dd>20 workflows at 2/s over ten seconds.</dd>
+<dt>Repeats</dt><dd>One qualification observation plus six-case fault regression.</dd>
+<dt>Environment</dt><dd>Local Java/H2.</dd>
+<dt>Metric</dt><dd>Complete timing/outcome joins, successful attempts and exact effects.</dd>
+<dt>Clock</dt><dd>Scheduled arrival and native stage records, checked for complete coverage.</dd>
+</dl></details><p><strong>Boundary:</strong> No resource-qualified performance, replica-scaling or capacity claim follows from this local gate.</p><p>
+<a href="../validation/local-20261101-fnv07-timing/summary.json">Evidence 1</a>
+<a href="../docs/fnv07-timing.md">Reproduction</a></p></article>
+<article id="AGENT"><h2>AGENT · Agent, reviewer and payment authority</h2><p class="muted">Correctness and control checks / partial / Bounded functional and live-model evidence</p>
+<h3>Functional checks exercise the control boundaries. A measured agent-versus-rules benefit remains unestablished.</h3><p>The workflow decides when actions are allowed; a model suggestion is not payment authority.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Can an agent request work while policy, a reviewer and a verifier retain control over payment?</dd>
+<dt>Control</dt><dd>Immutable original payment intent and explicit authority</dd>
+<dt>Change</dt><dd>Exercise model/tool requests, review, rejection and tampering paths</dd>
+<dt>Held fixed</dt><dd>Expected authorized effect and binding to the original request.</dd>
+<dt>Population</dt><dd>Synthetic payment and model-provider cases.</dd>
+<dt>Repeats</dt><dd>Case coverage; no paired agent-versus-rules experiment.</dd>
+<dt>Environment</dt><dd>Separate local/OCI functional studies and bounded live-provider trials.</dd>
+<dt>Metric</dt><dd>Expected authorization, decision and exact-effect checks; provider errors retained.</dd>
+<dt>Clock</dt><dd>Model, review and workflow stages have separate timing boundaries.</dd>
+</dl></details><p><strong>Boundary:</strong> Live-provider failures and incomplete coverage remain part of the evidence. These workflow performance percentages are not AI quality or agent-productivity claims.</p><p>
+<a href="../validation/research-register-20261101/summary.json">Evidence 1</a>
+<a href="../docs/approval-agent.md">Reproduction</a></p></article>
+<article id="RECOVERY"><h2>RECOVERY · State and dependency recovery</h2><p class="muted">Fault and recovery checks / functional / Bounded failure procedures exercised</p>
+<h3>Evidence covers specific recovery procedures and retained interruptions.</h3><p>Recovery must reconcile engine state and payment authority, not only restart a process.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>Can the declared recovery procedure restore consistent workflow and payment state?</dd>
+<dt>Control</dt><dd>Known state and original authority</dd>
+<dt>Change</dt><dd>Inject selected connection, verifier, key or restore failures</dd>
+<dt>Held fixed</dt><dd>Immutable intent, checkpoint binding and reconciliation rules.</dd>
+<dt>Population</dt><dd>Separate failure-specific procedures.</dd>
+<dt>Repeats</dt><dd>Procedure-specific observations, not a general outage distribution.</dd>
+<dt>Environment</dt><dd>OCI reference and isolated recovery cells.</dd>
+<dt>Metric</dt><dd>State preservation, restored readiness and no unauthorized/duplicate effects.</dd>
+<dt>Clock</dt><dd>Failure injection, recovery readiness and reconciliation are separate clocks.</dd>
+</dl></details><p><strong>Boundary:</strong> No general availability SLA, universal RTO/RPO or production certification follows from these cases.</p><p>
+<a href="../validation/research-register-20261101/summary.json">Evidence 1</a>
+<a href="../docs/state-checkpoints.md">Reproduction</a></p></article>
+<article id="OBSERVER"><h2>OBSERVER · Polling and worker instrumentation</h2><p class="muted">Measurement diagnostics / diagnostic / Historical supporting studies retained</p>
+<h3>Polling and timing settings belong in the experiment contract.</h3><p>Faster detection is not automatically faster execution. Keep the measurement method fixed across arms.</p><details><summary>What changed and how we tested it</summary><dl>
+<dt>Question</dt><dd>How much does the observation method influence reported latency?</dd>
+<dt>Control</dt><dd>Declared observer interval or timing output disabled</dd>
+<dt>Change</dt><dd>Change only the observer interval or enable timing output</dd>
+<dt>Held fixed</dt><dd>Workload and environment within each separate diagnostic study.</dd>
+<dt>Population</dt><dd>Separate async and settlement diagnostics.</dd>
+<dt>Repeats</dt><dd>Per-study repeats; not pooled with workflow comparisons.</dd>
+<dt>Environment</dt><dd>OCI diagnostic configurations.</dd>
+<dt>Metric</dt><dd>Observed completion delay, request traffic and stage timing coverage.</dd>
+<dt>Clock</dt><dd>Observer polling adds detection delay; worker stage records measure a different boundary.</dd>
+</dl></details><p><strong>Boundary:</strong> These diagnostics are not interchangeable with payment throughput, agent benefit or the later matched workload studies.</p><p>
+<a href="../validation/research-register-20261101/summary.json">Evidence 1</a>
+<a href="../docs/measurement-contract.md">Reproduction</a></p></article>
+<h2>All nine diagrammed patterns</h2><p>Six basic building blocks, two timed workflow comparisons and one functional review comparison. Conceptual flowcharts explain the executable BPMN.</p>
+<article id="D01"><h2>D01 · Worker pacing</h2><img loading="lazy" src="../docs/assets/workflows/01-w01-worker-pacing.png" alt="Why wait after a successful task?"><p>The payment graph stays the same. The external worker either sleeps after success or immediately fetches the next task. Idle and retry backoff remain.</p><p><strong>Meaning:</strong> W01 shows more payments meeting the deadline for fixed bursts and one worker. It tests worker scheduling, not a redesigned payment process.</p><p>
+<a href="#W01">W01</a>
+</p></article>
+<article id="D02"><h2>D02 · Parallel checks</h2><img loading="lazy" src="../docs/assets/workflows/02-w02-parallel-checks.png" alt="Which checks can safely overlap?"><p>Sequential execution waits for KYC before starting risk. Parallel execution starts both independent checks and joins them before payment. Neither check is skipped.</p><p><strong>Meaning:</strong> W02 shows lower observed latency at 1/s. The mixed follow-up shows that benefits depend on the outcome and dependency delays.</p><p>
+<a href="#W02">W02</a>
+<a href="#W02-MIXED">W02-MIXED</a>
+</p></article>
+<article id="D03"><h2>D03 · Review routing</h2><img loading="lazy" src="../docs/assets/workflows/03-w03-review-routing.png" alt="Which cases actually need a reviewer?"><p>A fixed policy routes required cases to a reviewer. Eligible cases can proceed; unauthorized or unknown cases still stop. Final verification remains.</p><p><strong>Meaning:</strong> W03 reduces tasks from ten to four for its constructed cases and preserves all four mandatory reviews. It does not measure human time saved.</p><p>
+<a href="#W03">W03</a>
+</p></article>
+<article id="D04"><h2>D04 · Minimal workflow</h2><img loading="lazy" src="../docs/assets/workflows/04-basic-minimal.png" alt="Can a workflow start and durably finish?"><p>Start and finish a process with the declared correlation data and payload. The checker confirms durable completion.</p><p><strong>Meaning:</strong> A useful basic readiness check. Its input still contains data, so it is not a zero-variable engine-overhead benchmark.</p><p>
+<a href="#CORE">CORE</a>
+</p></article>
+<article id="D05"><h2>D05 · Variables and branching</h2><img loading="lazy" src="../docs/assets/workflows/05-basic-variables.png" alt="Does the right data survive the chosen branch?"><p>Choose a branch, cross an asynchronous boundary and inspect persisted values. Persistent and transient data have different expected histories.</p><p><strong>Meaning:</strong> Correctness requires the right branch and right surviving values. No separate repeated speedup claim belongs to this picture.</p><p>
+<a href="#CORE">CORE</a>
+</p></article>
+<article id="D06"><h2>D06 · External task and tool</h2><img loading="lazy" src="../docs/assets/workflows/06-basic-async.png" alt="Can the engine, worker and tool finish together?"><p>Fluxnova creates an external task. A worker fetches it, calls the deterministic echo tool and reports completion. The benchmark observes durable history.</p><p><strong>Meaning:</strong> This is the workload behind P01, the runtime/release comparisons and the soak. Their clocks include worker/tool work and observation.</p><p>
+<a href="#P01">P01</a>
+<a href="#JVM">JVM</a>
+<a href="#RELEASE">RELEASE</a>
+<a href="#SOAK">SOAK</a>
+<a href="#CAPACITY">CAPACITY</a>
+</p></article>
+<article id="D07"><h2>D07 · KYC decision and review</h2><img loading="lazy" src="../docs/assets/workflows/07-basic-kyc.png" alt="Does each screening result reach the right route?"><p>Synthetic screening approves, rejects or creates a review wait. The test simulates completion of that review.</p><p><strong>Meaning:</strong> A correct waiting or rejected state can be a passing test. Real screening quality and human working time remain outside this basic fixture.</p><p>
+<a href="#CORE">CORE</a>
+<a href="#W03">W03</a>
+</p></article>
+<article id="D08"><h2>D08 · Risk and freshness</h2><img loading="lazy" src="../docs/assets/workflows/08-basic-risk.png" alt="Do limits and stale data prevent the wrong action?"><p>Check a synthetic risk limit and market-data freshness. Accept only when both declared conditions allow it.</p><p><strong>Meaning:</strong> An expected refusal is correct work, but it is not a settled payment. Report those populations separately.</p><p>
+<a href="#CORE">CORE</a>
+<a href="#W02-MIXED">W02-MIXED</a>
+</p></article>
+<article id="D09"><h2>D09 · Settlement and replay</h2><img loading="lazy" src="../docs/assets/workflows/09-basic-settlement.png" alt="Is the authorized payment effect exact and unique?"><p>Check policy before the synthetic ledger effect. Repeating an operation must preserve its original result without paying again.</p><p><strong>Meaning:</strong> Successful HTTP responses are insufficient: the checker matches amount, beneficiary and effect count to the original intent. No real money moves.</p><p>
+<a href="#CORE">CORE</a>
+<a href="#PAY05">PAY05</a>
+<a href="#AGENT">AGENT</a>
+<a href="#RECOVERY">RECOVERY</a>
+</p></article>
+<footer><p>Protocol 0.2 community proposal. No FINOS certification. Other cloud and on-premises adapters require validation. No real money moves in these synthetic tests.</p></footer></main>
+<script>const q=document.getElementById("find"),a=[...document.querySelectorAll("article")],c=document.getElementById("count");function filter(){const s=q.value.toLowerCase();a.forEach(x=>x.hidden=!x.textContent.toLowerCase().includes(s));c.textContent=a.filter(x=>!x.hidden).length+" matching entries"}q.addEventListener("input",filter);filter();</script></html>

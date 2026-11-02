@@ -1,13 +1,13 @@
 # Use the Fluxnova benchmark kit
 
-The thesis is time to a **correct, authorized outcome**. Start with the [research brief](research-brief.md) or its [one-page PDF](assets/fluxnova-research-brief-20261028.pdf), then choose a path:
+The thesis is time to a **correct, authorized outcome**. Start with the [illustrated benchmark guide](benchmark-guide.md): what each pattern does, which experiment measured it and what the result means. The [common contract](benchmark-standard.md) defines supported run paths and contribution requirements.
 
 | Task | Maintained guide |
 | --- | --- |
 | Understand the workflow pictures | [How the benchmark works and nine diagrams](../README.md#how-a-measured-workflow-works) |
 | Open a report and try sample data | [Getting started](getting-started.md) |
 | Build and check a workflow | [Reproduction](reproduce.md) and [workloads](workloads.md) |
-| Understand completed comparisons | [Pattern register](workload-completion.md) |
+| Understand completed and partial evidence | [Study catalogue and result meanings](benchmark-guide.md#study-register) |
 | Try FX quote selection and its safety checks | [PAY-05 workflow and local qualification](pay05-fx-quotes.md) |
 | Design a valid comparison | [Benchmark protocol](benchmark-protocol.md) and [metric definitions](measurement-contract.md) |
 | Use OCI or another environment | [OCI setup](oci.md) and [portability](portability.md) |

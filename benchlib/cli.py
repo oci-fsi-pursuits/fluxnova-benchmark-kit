@@ -14,6 +14,10 @@ def output(value):
 def parser():
     p = argparse.ArgumentParser(prog="bench", description="Reproducible Fluxnova benchmark lifecycle")
     commands = p.add_subparsers(dest="command", required=True)
+    c = commands.add_parser("catalog", help="List benchmark types and studies; never launches work")
+    c.add_argument("--check", action="store_true", help="Verify catalogue classification, files and evidence hashes")
+    c = commands.add_parser("explain", help="Explain one benchmark study or diagram")
+    c.add_argument("identifier")
     for name in ("preflight", "lock", "build", "deploy", "seed", "run", "campaign", "provision", "destroy", "golden", "database-check"):
         c = commands.add_parser(name)
         c.add_argument("--config", required=True, type=Path)
@@ -80,6 +84,18 @@ def main(argv=None):
         return 2
 
 def execute(args):
+    if args.command in ("catalog", "explain"):
+        from .catalog import load_catalog, validate_catalog, explain
+        data = load_catalog()
+        if args.command == "explain":
+            output(explain(args.identifier, data))
+        elif args.check:
+            output(validate_catalog(data))
+        else:
+            output({"protocol_version": data["protocol_version"], "types": data["types"],
+                    "studies": [{k:s[k] for k in ("id", "name", "type", "status", "claim_level", "result")} for s in data["studies"]],
+                    "illustrated_patterns": [{k:p[k] for k in ("id", "name", "studies")} for p in data["patterns"]]})
+        return 0
     from .preflight import check
     from .analysis import analyze_run
     from .report import write_reports

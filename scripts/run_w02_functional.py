@@ -73,8 +73,8 @@ def require_outcome(case, state, observed, activities):
     require(state['receipts']['settle']['started_ns'] >= max(state['receipts'][op]['finished_ns'] for op in ('kyc','risk')), 'settlement_before_both_receipts')
 
 
-def distribution_inventory(runtime):
-    archive = ROOT / '.tools/fluxnova-3.0.1.zip'
+def distribution_inventory(runtime, archive=None):
+    archive = Path(archive) if archive is not None else ROOT / '.tools/fluxnova-3.0.1.zip'
     expected = 'ced4311c541faf1a7248d88e37ba53bd8c659fefe8387d2f78c21c30a117d7cf'
     require(archive.is_file() and sha(archive) == expected, 'distribution_archive_not_verified')
     jars = [runtime/'internal/fluxnova-bpm-run-core.jar']
@@ -104,7 +104,7 @@ def run(args):
     runtime, java = args.runtime.resolve(), args.java.resolve()
     if not java.is_file() or not runtime.is_dir():
         raise ValueError('Pinned local Java and Fluxnova distribution are required.')
-    inventory = distribution_inventory(runtime)
+    inventory = distribution_inventory(runtime, getattr(args, 'distribution_archive', None))
     with socket.socket() as probe:
         probe.bind(('127.0.0.1', args.port))
     output.mkdir(parents=True)
@@ -356,6 +356,8 @@ def main():
     parser.add_argument('--output',required=True,type=Path)
     parser.add_argument('--runtime',type=Path,default=ROOT/'.tools/fluxnova-3.0.1')
     parser.add_argument('--java',type=Path,default=ROOT/'.tools/java21/jdk-21.0.12.1+1-jre/bin/java.exe')
+    parser.add_argument('--distribution-archive',type=Path,
+                        help='Official pinned Fluxnova 3.0.1 ZIP; defaults to .tools/fluxnova-3.0.1.zip')
     parser.add_argument('--port',type=int,default=28180)
     parser.add_argument('--sensitivity-protocol',type=Path,
                         help='Optional prespecified dependency grid; remains local functional qualification.')

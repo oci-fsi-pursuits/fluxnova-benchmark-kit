@@ -73,4 +73,4 @@ The existing non-OCI CLI `--local` path labels runs as local functional validati
 
 ## Presentation and demo
 
-The 15-minute agenda and talk track (retained in the private research archive) identify the three comparisons and their limits. The Tasklist demo guide (retained in the private research archive) provides a visible scripted approval and an optional browser recording. That richer payment demo uses the already prepared OCI cell and its verifier; it is separate from the portable H2 functional lab above.
+The [15-minute agenda and talk track](talk-15-minutes.md) identify the three comparisons and their limits. The Tasklist demo guide (retained in the private research archive) provides a visible scripted approval and an optional browser recording. That richer payment demo uses the already prepared OCI cell and its verifier; it is separate from the portable H2 functional lab above.

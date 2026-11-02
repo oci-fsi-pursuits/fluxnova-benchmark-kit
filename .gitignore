@@ -58,7 +58,10 @@ config.ready.json
 !/docs/assets/workflows/07-basic-kyc.png
 !/docs/assets/workflows/08-basic-risk.png
 !/docs/assets/workflows/09-basic-settlement.png
+!/docs/benchmark-guide.html
+!/docs/benchmark-guide.md
 !/docs/benchmark-protocol.md
+!/docs/benchmark-standard.md
 !/docs/bound-payment.md
 !/docs/browser-automation.md
 !/docs/campaign-runbook.md
@@ -84,6 +87,7 @@ config.ready.json
 !/docs/results/w02-mixed/report.html
 !/docs/results/w02-mixed/summary.json
 !/docs/state-checkpoints.md
+!/docs/talk-15-minutes.md
 !/docs/upstream-proposal.md
 !/docs/w01-worker-pacing.md
 !/docs/w02-cloud-protocol.md

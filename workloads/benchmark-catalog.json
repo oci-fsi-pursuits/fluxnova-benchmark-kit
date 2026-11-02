@@ -1,0 +1,710 @@
+{
+  "schema_version": 1,
+  "protocol_version": "0.2",
+  "standard_status": "community_proposal",
+  "as_of": "2026-11-01",
+  "thesis": "Measure how workflow and runtime changes affect time to a correct, authorized outcome.",
+  "illustrated_pattern_count": 9,
+  "types": {
+    "functional": {
+      "name": "Correctness and control checks",
+      "question": "Does each input reach the right outcome, including rejection, review and replay?",
+      "allowed_claim_levels": [
+        "functional",
+        "partial"
+      ]
+    },
+    "latency": {
+      "name": "Repeated latency comparison",
+      "question": "Does one change reduce observed completion time at the same offered load?",
+      "allowed_claim_levels": [
+        "measured",
+        "partial"
+      ]
+    },
+    "deadline": {
+      "name": "Repeated deadline comparison",
+      "question": "How much correct work finishes before the declared deadline?",
+      "allowed_claim_levels": [
+        "measured",
+        "partial"
+      ]
+    },
+    "baseline": {
+      "name": "Repeated baseline",
+      "question": "How repeatable is this declared workload before changing a factor?",
+      "allowed_claim_levels": [
+        "measured"
+      ]
+    },
+    "endurance": {
+      "name": "Endurance / soak",
+      "question": "Does the declared load remain correct over an extended observation?",
+      "allowed_claim_levels": [
+        "measured",
+        "partial"
+      ]
+    },
+    "capacity": {
+      "name": "Load and capacity qualification",
+      "question": "Which tested offered rates satisfy the full acceptance contract?",
+      "allowed_claim_levels": [
+        "measured",
+        "partial"
+      ]
+    },
+    "population": {
+      "name": "Finite-population scaling",
+      "question": "How does completion time change when a burst targets more waiting workflows?",
+      "allowed_claim_levels": [
+        "measured",
+        "partial"
+      ]
+    },
+    "recovery": {
+      "name": "Fault and recovery checks",
+      "question": "What happens to state and business effects during a specific injected failure?",
+      "allowed_claim_levels": [
+        "functional",
+        "partial"
+      ]
+    },
+    "measurement": {
+      "name": "Measurement diagnostics",
+      "question": "How do observation and instrumentation settings affect what the harness reports?",
+      "allowed_claim_levels": [
+        "diagnostic",
+        "sample",
+        "partial"
+      ]
+    }
+  },
+  "reading_rules": [
+    "Every comparison has its own baseline. Different workloads, hosts or databases cannot be combined into one speedup.",
+    "Correctness and speed answer different questions. A correctly refused payment can pass the test but does not count as a settlement.",
+    "Observed p95 is the latency below which 95% of observed completions fall. It includes the declared observer boundary; it is not the slowest request or a pure engine timer.",
+    "Deadline goodput counts correct outcomes within the deadline per second. Offered load counts starts requested per second. Neither alone establishes maximum capacity.",
+    "Paired changes compare matched runs. A median of five changes is not a pooled percentile, and a range is not a confidence interval.",
+    "Keep every miss, retry, interruption and invalid observation. Partial or resource-constrained results cannot be promoted to a completed capacity claim.",
+    "Synthetic workflows expose controlled mechanisms. Customer traffic, live models, human time and complete cost per correct outcome require separate studies."
+  ],
+  "studies": [
+    {
+      "id": "CORE",
+      "name": "Six basic workflow patterns",
+      "type": "functional",
+      "claim_level": "functional",
+      "status": "Reusable functional building blocks",
+      "question": "Can the engine start, persist data, coordinate external work, route decisions and protect a synthetic payment?",
+      "control": "Declared input and independently expected outcome",
+      "change": "No performance treatment in this record",
+      "held_fixed": "The BPMN, payload and expected-outcome rules for each case.",
+      "population": "Minimal, variables, async, KYC, risk and settlement cases.",
+      "environment": "Local Java/H2 lab or separately qualified OCI deployment.",
+      "repeats": "not applicable",
+      "metric": "Correct branch, durable values and exact expected effects.",
+      "clock": "Functional completion and state checks; no aggregate speedup.",
+      "result": "Reusable workflows and golden checks define the basic test vocabulary.",
+      "meaning": "These are small building blocks a workflow developer can combine and extend.",
+      "limits": "A diagram alone is not a completed performance study. The six basic patterns do not each have a repeated latency comparison.",
+      "reproduce": "docs/reproduce.md",
+      "evidence": [
+        {
+          "path": "validation/research-register-20261101/summary.json",
+          "sha256": "01e59de5ecd0f40e41c6cc46c71c60e3236a4a90f2fa779995584c9a67936a49"
+        }
+      ]
+    },
+    {
+      "id": "P01",
+      "name": "Async reference baseline",
+      "type": "baseline",
+      "claim_level": "measured",
+      "status": "Completed",
+      "question": "Is the external-task/echo path repeatable at the declared load?",
+      "control": "Fluxnova 3.0.1, async external-task/echo",
+      "change": "Repeat the same configuration",
+      "held_fixed": "Synthetic inputs, policy, worker count, resources, database and completion observer within each pair.",
+      "population": "10 starts/s; 10-minute warmup then 30-minute measurement.",
+      "environment": "Four-host OCI reference and PostgreSQL.",
+      "repeats": "Five measurements.",
+      "metric": "Observed p95, correctness and correct completions within two seconds.",
+      "clock": "Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement. Polling: 100 ms.",
+      "result": "90,000/90,000 correct and within two seconds; per-run p95 245.7–249.0 ms.",
+      "meaning": "This establishes a repeatable reference for this workflow and setup.",
+      "limits": "The echo workload contains no payment or live model. This is not maximum capacity or an engine-only microbenchmark.",
+      "reproduce": "docs/campaign-runbook.md",
+      "evidence": [
+        {
+          "path": "validation/research-register-20261101/summary.json",
+          "sha256": "01e59de5ecd0f40e41c6cc46c71c60e3236a4a90f2fa779995584c9a67936a49"
+        }
+      ],
+      "numbers": {
+        "correct": 90000,
+        "offered": 90000,
+        "p95_ms_min": 245.7,
+        "p95_ms_max": 249.0
+      }
+    },
+    {
+      "id": "W01",
+      "name": "Worker pacing under bursts",
+      "type": "deadline",
+      "claim_level": "measured",
+      "status": "Completed",
+      "question": "Does an unnecessary pause after successful work delay later payments?",
+      "control": "Reconstructed 100 ms delay after success",
+      "change": "Fetch immediately after success; keep idle/retry backoff",
+      "held_fixed": "Synthetic inputs, policy, worker count, resources, database and completion observer within each pair.",
+      "population": "20 arrivals in a one-second burst every ten seconds; mean 2/s. 120-second warmup and 120-second measurement per arm.",
+      "environment": "Shared OCI controller compute with separate PostgreSQL; one worker.",
+      "repeats": "Five matched pairs.",
+      "metric": "Correct payments within two seconds; median paired timely-goodput change.",
+      "clock": "Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement.",
+      "result": "Timely payments rose from 600/1,200 to 1,200/1,200. All 2,400 outcomes were correct.",
+      "meaning": "Avoidable worker waiting can consume the deadline even when the payment logic is unchanged.",
+      "limits": "The control reconstructs an earlier worker setting. It is not the current default or a customer production baseline.",
+      "reproduce": "docs/w01-worker-pacing.md",
+      "evidence": [
+        {
+          "path": "validation/oci-20261027-w01-comparison/summary.json",
+          "sha256": "99dc02ebccc81a518222a1a3d30d95cb2e762a5cade4c8e094f0ad475b4c586c"
+        }
+      ],
+      "numbers": {
+        "control_timely": 600,
+        "candidate_timely": 1200,
+        "expected_each": 1200,
+        "correct": 2400
+      }
+    },
+    {
+      "id": "W02",
+      "name": "Independent payment checks",
+      "type": "latency",
+      "claim_level": "measured",
+      "status": "Completed",
+      "question": "Can independent KYC and risk checks overlap without weakening payment checks?",
+      "control": "Sequential KYC then risk",
+      "change": "Parallel KYC and risk, with a join before settlement",
+      "held_fixed": "Synthetic inputs, policy, worker count, resources, database and completion observer within each pair.",
+      "population": "Approved synthetic payments at 1/s. KYC waits 400 ms; risk waits 600 ms. 2-minute warmup and 10-minute measurement per arm.",
+      "environment": "Shared OCI controller and separate PostgreSQL; two worker slots.",
+      "repeats": "Five matched pairs.",
+      "metric": "Median of paired percentage changes in observed completion p95.",
+      "clock": "Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement. Polling: 100 ms.",
+      "result": "Observed p95 was 32.1% lower at the median paired change. All 6,000 outcomes were correct and within two seconds.",
+      "meaning": "Overlap independent waits while preserving the requirement that both checks finish.",
+      "limits": "Both arms still delivered 1 timely payment/s. This establishes lower latency at this load, not higher maximum capacity or real-provider latency.",
+      "reproduce": "docs/w02-independent-checks.md",
+      "evidence": [
+        {
+          "path": "validation/oci-20261027-w02-comparison/summary.json",
+          "sha256": "14e6669b9800840f6d536fd453dd6cf88949e8c5251ddb1d597974269bf30b41"
+        }
+      ],
+      "numbers": {
+        "p95_reduction_percent": 32.1,
+        "correct": 6000,
+        "offered_rate_per_s": 1
+      }
+    },
+    {
+      "id": "W02-MIXED",
+      "name": "Different outcomes and dependency delays",
+      "type": "deadline",
+      "claim_level": "measured",
+      "status": "Completed with deadline misses retained",
+      "question": "Does the parallel-check result hold across settlements, refusals and safe stops?",
+      "control": "Sequential independent checks",
+      "change": "Parallel independent checks",
+      "held_fixed": "Synthetic inputs, policy, worker count, resources, database and completion observer within each pair.",
+      "population": "Five dependency profiles and mixed expected outcomes at 1/s; 600 measured arrivals per arm.",
+      "environment": "Matched OCI controller/PostgreSQL setup.",
+      "repeats": "Five matched pairs.",
+      "metric": "Timely correct settlements/s, with refusals and safe stops reported separately.",
+      "clock": "Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement. Polling: 100 ms.",
+      "result": "Timely settlements rose from 880 to 1,037 of 1,200; timely refusals fell from 780 to 669 of 1,200. All 6,000 outcomes were correct; 1,648 deadlines were missed.",
+      "meaning": "A change can help one outcome class and hurt another. Keep the outcome breakdown.",
+      "limits": "Equal synthetic coverage is not a customer traffic distribution. The approved-only 32.1% result cannot be applied to this mix.",
+      "reproduce": "docs/w02-mixed-cloud-protocol.md",
+      "evidence": [
+        {
+          "path": "validation/oci-20261028-w02-mixed-comparison/summary.json",
+          "sha256": "debdef28ca1bdd207783019f6871f73c02c6a351c9aa14a25172112a0e810e00"
+        }
+      ],
+      "numbers": {
+        "deadline_misses": 1648
+      }
+    },
+    {
+      "id": "W03",
+      "name": "Policy-based review routing",
+      "type": "functional",
+      "claim_level": "functional",
+      "status": "Completed within the scripted corpus",
+      "question": "Can a fixed policy remove unnecessary review tasks while retaining required reviews?",
+      "control": "Review every case",
+      "change": "Route only policy-required cases to review",
+      "held_fixed": "Same ten inputs, decision policy, authenticated reviewer checks and final outcome verifier.",
+      "population": "Ten synthetic cases in each arm.",
+      "environment": "Local Fluxnova 3.0.1 / Java 21 / H2.",
+      "repeats": "One execution of each case per arm; replay probes separately retained.",
+      "metric": "Review-task count and correct expected outcomes.",
+      "clock": "Scripted reviews; human waiting or working time is not measured.",
+      "result": "Review tasks fell from 10 to 4. All four mandatory reviews remained and all 20 expected outcomes passed.",
+      "meaning": "This workflow removes avoidable handoffs for the declared policy and case mix.",
+      "limits": "This is a task-count comparison, not measured human time or a 60% staffing saving. The all-review control is deliberately constrained.",
+      "reproduce": "docs/w03-review-routing.md",
+      "evidence": [
+        {
+          "path": "validation/local-20261027-w03/summary.json",
+          "sha256": "164ffbfb77de296e7b86f73e072a7388ed786edf7830a0e7d4644104a60839e7"
+        }
+      ],
+      "numbers": {
+        "control_reviews": 10,
+        "candidate_reviews": 4,
+        "required_reviews": 4,
+        "correct": 20
+      }
+    },
+    {
+      "id": "PAY05",
+      "name": "Parallel FX quote requests",
+      "type": "deadline",
+      "claim_level": "measured",
+      "status": "Completed with retry tradeoff retained",
+      "question": "Can parallel requests to three independent quote providers improve timely settlement?",
+      "control": "Request three synthetic quotes sequentially",
+      "change": "Request the same quotes in parallel before selection",
+      "held_fixed": "Synthetic inputs, policy, worker count, resources, database and completion observer within each pair. Three worker slots in both arms.",
+      "population": "22 cases × three delay profiles; 396 measured arrivals per arm at 0.5/s. 132-second warmup, 792-second measurement and 30-second drain.",
+      "environment": "Shared OCI controller and separate PostgreSQL 17.6.",
+      "repeats": "Five matched pairs.",
+      "metric": "Median paired change in correct settlements within two seconds per second.",
+      "clock": "Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement. Polling: 100 ms.",
+      "result": "Timely settlements rose from 668/1,530 to 1,530/1,530. All 3,960 outcomes were correct. Parallel runs retained 910 cached backend replays and zero duplicate payment effects.",
+      "meaning": "Overlapping quote waits helps delayed-provider cases. Durable replay handling protects the payment when completion retries occur.",
+      "limits": "Sequential runs had zero cached replays. The parallel improvement has a retry tradeoff. Synthetic providers and equal case coverage do not represent a live FX venue or customer distribution.",
+      "reproduce": "docs/pay05-fx-quotes.md",
+      "evidence": [
+        {
+          "path": "validation/oci-20261031-pay05-comparison/summary.json",
+          "sha256": "34abdc148db7061b12130f77b2db362db14218aabbfc5e1ebfc4063c63ee0e26"
+        }
+      ],
+      "numbers": {
+        "control_timely": 668,
+        "candidate_timely": 1530,
+        "expected_each": 1530,
+        "correct": 3960,
+        "candidate_cached_replays": 910,
+        "duplicate_effects": 0
+      }
+    },
+    {
+      "id": "JVM",
+      "name": "Java 21 versus Java 25",
+      "type": "latency",
+      "claim_level": "measured",
+      "status": "Completed; earlier stopped study remains separate",
+      "question": "Does the newer Java runtime improve this fixed async workflow?",
+      "control": "Java 21",
+      "change": "Java 25",
+      "held_fixed": "Synthetic inputs, policy, worker count, resources, database and completion observer within each pair. Fluxnova 3.0.1 fixed.",
+      "population": "10 starts/s; 10-minute warmup and 30-minute measurement per observation.",
+      "environment": "Same fixed OCI reference and PostgreSQL.",
+      "repeats": "Five matched pairs.",
+      "metric": "Median within-pair observed-p95 difference, Java 25 minus Java 21.",
+      "clock": "Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement. Polling: 100 ms before deadline, 1,000 ms afterward.",
+      "result": "Median paired p95 difference: −0.862 ms, range −1.369 to +0.864 ms. All 180,000 outcomes were correct and within two seconds.",
+      "meaning": "The small differences changed sign. This workload did not establish a broad Java 25 performance advantage.",
+      "limits": "Five pairs do not prove equivalence, maximum capacity or performance for other workflows. Earlier interrupted observations are not pooled.",
+      "reproduce": "docs/benchmark-standard.md",
+      "evidence": [
+        {
+          "path": "validation/research-register-20261101/summary.json",
+          "sha256": "01e59de5ecd0f40e41c6cc46c71c60e3236a4a90f2fa779995584c9a67936a49"
+        }
+      ],
+      "numbers": {
+        "median_ms": -0.862,
+        "minimum_ms": -1.369,
+        "maximum_ms": 0.864,
+        "correct": 180000
+      }
+    },
+    {
+      "id": "RELEASE",
+      "name": "Fluxnova 3.0.1 versus 3.1.1",
+      "type": "latency",
+      "claim_level": "measured",
+      "status": "Completed; earlier stopped study remains separate",
+      "question": "Does the engine release change this async workflow at the same load?",
+      "control": "Fluxnova 3.0.1",
+      "change": "Fluxnova 3.1.1 with its required PostgreSQL migration",
+      "held_fixed": "Synthetic inputs, policy, worker count, resources, database and completion observer within each pair. Java 21 fixed.",
+      "population": "10 starts/s; 10-minute warmup and 30-minute measurement per observation.",
+      "environment": "Same fixed OCI reference; release-specific native schemas.",
+      "repeats": "Five matched pairs.",
+      "metric": "Median within-pair observed-p95 difference, 3.1.1 minus 3.0.1.",
+      "clock": "Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement. Polling: 100 ms.",
+      "result": "Median paired p95 difference: +0.126 ms, range −0.552 to +1.055 ms. All 180,000 outcomes were correct and within two seconds.",
+      "meaning": "Both releases met this test target. No meaningful speedup or capacity gain was established.",
+      "limits": "This does not prove statistical equivalence, universal compatibility or production sizing. Native schema changes are part of the declared treatment.",
+      "reproduce": "docs/benchmark-standard.md",
+      "evidence": [
+        {
+          "path": "validation/research-register-20261101/summary.json",
+          "sha256": "01e59de5ecd0f40e41c6cc46c71c60e3236a4a90f2fa779995584c9a67936a49"
+        }
+      ],
+      "numbers": {
+        "median_ms": 0.126,
+        "minimum_ms": -0.552,
+        "maximum_ms": 1.055,
+        "correct": 180000
+      }
+    },
+    {
+      "id": "SOAK",
+      "name": "Eight-hour async endurance",
+      "type": "endurance",
+      "claim_level": "measured",
+      "status": "Completed and accepted",
+      "question": "Does this workload stay correct through an eight-hour observation?",
+      "control": "Fixed async reference",
+      "change": "Extend the observation to eight hours",
+      "held_fixed": "Synthetic inputs, policy, worker count, resources, database and completion observer within each pair.",
+      "population": "10 starts/s for 28,800 measured seconds.",
+      "environment": "OCI reference with retained telemetry.",
+      "repeats": "One eight-hour observation.",
+      "metric": "Correctness, deadline outcomes and descriptive time windows.",
+      "clock": "Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement.",
+      "result": "All 288,000 measured workflows completed correctly within two seconds.",
+      "meaning": "The reference sustained its declared target during this observation.",
+      "limits": "One observation does not establish leak-free operation, maximum capacity or a production availability guarantee.",
+      "reproduce": "docs/campaign-runbook.md",
+      "evidence": [
+        {
+          "path": "validation/research-register-20261101/summary.json",
+          "sha256": "01e59de5ecd0f40e41c6cc46c71c60e3236a4a90f2fa779995584c9a67936a49"
+        }
+      ],
+      "numbers": {
+        "correct": 288000,
+        "measurement_s": 28800
+      }
+    },
+    {
+      "id": "CAPACITY",
+      "name": "Higher-rate confirmation",
+      "type": "capacity",
+      "claim_level": "partial",
+      "status": "16/s confirmation stopped",
+      "question": "Does the next offered rate satisfy the complete confirmation series?",
+      "control": "Previously qualified reference rate",
+      "change": "Higher offered rates with unchanged acceptance rules",
+      "held_fixed": "Synthetic inputs, policy, worker count, resources, database and completion observer within each pair.",
+      "population": "16 starts/s confirmation series.",
+      "environment": "OCI reference.",
+      "repeats": "Five planned observations: three measured passes, one warmup interruption, one unattempted.",
+      "metric": "Full-series correctness, deadlines, resources and retained interruptions.",
+      "clock": "Scheduled arrival to durable-history completion observation. Completion polling is part of this measurement.",
+      "result": "The 16/s confirmation is incomplete. 16/s is not qualified.",
+      "meaning": "Three passing observations cannot stand in for a complete five-observation confirmation.",
+      "limits": "Maximum sustainable capacity remains open. Do not label a discovery rate or partial confirmation as production capacity.",
+      "reproduce": "docs/campaign-runbook.md",
+      "evidence": [
+        {
+          "path": "validation/research-register-20261101/summary.json",
+          "sha256": "01e59de5ecd0f40e41c6cc46c71c60e3236a4a90f2fa779995584c9a67936a49"
+        }
+      ]
+    },
+    {
+      "id": "FNV06",
+      "name": "Messages, signals and asynchronous batches",
+      "type": "population",
+      "claim_level": "partial",
+      "status": "45 cells complete; two headroom flags retained",
+      "question": "How does completion grow when the same pattern targets more waiting workflows?",
+      "control": "10 intended recipients",
+      "change": "100 or 1,000 recipients within each pattern",
+      "held_fixed": "Engine, database, client limits, 100 ms observer and independent outcome rules.",
+      "population": "Three patterns × three populations × five repeats. 16,650 measured recipients; 180 controls.",
+      "environment": "One OCI engine container, one generator/observer and separate PostgreSQL.",
+      "repeats": "45 planned and completed cells.",
+      "metric": "Interval bounding cohort completion, with generator/resource qualification.",
+      "clock": "Delivery start until all intended recipient completions are observed; HTTP acknowledgment and batch bookkeeping are separate.",
+      "result": "All 16,650 measured recipients were correct. 43/45 cells passed the headroom gate; batch/1,000 timing comparisons remain unqualified.",
+      "meaning": "Larger finite bursts take longer. Correct final outcomes alone do not qualify every timing comparison.",
+      "limits": "Different routing semantics cannot be ranked as interchangeable implementations. These bursts do not establish arrival-rate capacity, replica scaling or finite ratios when the control interval includes zero.",
+      "reproduce": "docs/fnv06-population-scaling.md",
+      "evidence": [
+        {
+          "path": "validation/oci-20261101-fnv06-campaign/summary.json",
+          "sha256": "ca45d0b42a7a411648113eaea7e18d344a47e3e29c67cb8588c12de22a65b48c"
+        }
+      ],
+      "numbers": {
+        "correct": 16650,
+        "cells": 45,
+        "resource_qualified": 43
+      }
+    },
+    {
+      "id": "FNV07",
+      "name": "Cluster job faults and replay handling",
+      "type": "recovery",
+      "claim_level": "functional",
+      "status": "Functional subset complete",
+      "question": "Do job retry and failure paths preserve the intended effects?",
+      "control": "Declared normal and fault cases",
+      "change": "One and two engine configurations under controlled faults",
+      "held_fixed": "Original immutable case data, expected state and exact-effect checks.",
+      "population": "Six fault-case definitions per configuration.",
+      "environment": "Local H2 plus one/two engines sharing an OCI controller with a private PostgreSQL container.",
+      "repeats": "Separate functional configurations; no repeated capacity comparison.",
+      "metric": "Completed, blocked and waiting states; attempts and exact effects.",
+      "clock": "Functional state reconciliation, including eight database tables.",
+      "result": "Each six-case run produced the expected three completed, two blocked and one waiting outcomes, with 12 exact effects.",
+      "meaning": "The fault cases exercise coordination and idempotency without losing the expected business state.",
+      "limits": "Shared-host tests do not establish multi-host availability, failover capacity or a managed-database performance advantage.",
+      "reproduce": "docs/fnv07-cluster-jobs.md",
+      "evidence": [
+        {
+          "path": "validation/oci-20261101-fnv07/summary.json",
+          "sha256": "db8fee68f1c44e57643edf526f369166de1b5906f87974fe9c75b55808b989c9"
+        }
+      ]
+    },
+    {
+      "id": "FNV07-TIMING",
+      "name": "Native job timing qualification",
+      "type": "functional",
+      "claim_level": "functional",
+      "status": "Local qualification complete",
+      "question": "Can native job timing records be matched to independently correct outcomes?",
+      "control": "Known normal-case corpus",
+      "change": "Qualify scheduled-arrival recording and timing verification",
+      "held_fixed": "Original input, job identity and exact effects.",
+      "population": "20 workflows at 2/s over ten seconds.",
+      "environment": "Local Java/H2.",
+      "repeats": "One qualification observation plus six-case fault regression.",
+      "metric": "Complete timing/outcome joins, successful attempts and exact effects.",
+      "clock": "Scheduled arrival and native stage records, checked for complete coverage.",
+      "result": "20/20 workflows correct, 60 successful attempts and 60 exact effects.",
+      "meaning": "The timing pipeline is ready for a later controlled performance study.",
+      "limits": "No resource-qualified performance, replica-scaling or capacity claim follows from this local gate.",
+      "reproduce": "docs/fnv07-timing.md",
+      "evidence": [
+        {
+          "path": "validation/local-20261101-fnv07-timing/summary.json",
+          "sha256": "aef480abfba19efef5844a605a5dd8bda96117ee51c497b5cd1e0435d3d0c7ed"
+        }
+      ]
+    },
+    {
+      "id": "AGENT",
+      "name": "Agent, reviewer and payment authority",
+      "type": "functional",
+      "claim_level": "partial",
+      "status": "Bounded functional and live-model evidence",
+      "question": "Can an agent request work while policy, a reviewer and a verifier retain control over payment?",
+      "control": "Immutable original payment intent and explicit authority",
+      "change": "Exercise model/tool requests, review, rejection and tampering paths",
+      "held_fixed": "Expected authorized effect and binding to the original request.",
+      "population": "Synthetic payment and model-provider cases.",
+      "environment": "Separate local/OCI functional studies and bounded live-provider trials.",
+      "repeats": "Case coverage; no paired agent-versus-rules experiment.",
+      "metric": "Expected authorization, decision and exact-effect checks; provider errors retained.",
+      "clock": "Model, review and workflow stages have separate timing boundaries.",
+      "result": "Functional checks exercise the control boundaries. A measured agent-versus-rules benefit remains unestablished.",
+      "meaning": "The workflow decides when actions are allowed; a model suggestion is not payment authority.",
+      "limits": "Live-provider failures and incomplete coverage remain part of the evidence. These workflow performance percentages are not AI quality or agent-productivity claims.",
+      "reproduce": "docs/approval-agent.md",
+      "evidence": [
+        {
+          "path": "validation/research-register-20261101/summary.json",
+          "sha256": "01e59de5ecd0f40e41c6cc46c71c60e3236a4a90f2fa779995584c9a67936a49"
+        }
+      ]
+    },
+    {
+      "id": "RECOVERY",
+      "name": "State and dependency recovery",
+      "type": "recovery",
+      "claim_level": "functional",
+      "status": "Bounded failure procedures exercised",
+      "question": "Can the declared recovery procedure restore consistent workflow and payment state?",
+      "control": "Known state and original authority",
+      "change": "Inject selected connection, verifier, key or restore failures",
+      "held_fixed": "Immutable intent, checkpoint binding and reconciliation rules.",
+      "population": "Separate failure-specific procedures.",
+      "environment": "OCI reference and isolated recovery cells.",
+      "repeats": "Procedure-specific observations, not a general outage distribution.",
+      "metric": "State preservation, restored readiness and no unauthorized/duplicate effects.",
+      "clock": "Failure injection, recovery readiness and reconciliation are separate clocks.",
+      "result": "Evidence covers specific recovery procedures and retained interruptions.",
+      "meaning": "Recovery must reconcile engine state and payment authority, not only restart a process.",
+      "limits": "No general availability SLA, universal RTO/RPO or production certification follows from these cases.",
+      "reproduce": "docs/state-checkpoints.md",
+      "evidence": [
+        {
+          "path": "validation/research-register-20261101/summary.json",
+          "sha256": "01e59de5ecd0f40e41c6cc46c71c60e3236a4a90f2fa779995584c9a67936a49"
+        }
+      ]
+    },
+    {
+      "id": "OBSERVER",
+      "name": "Polling and worker instrumentation",
+      "type": "measurement",
+      "claim_level": "diagnostic",
+      "status": "Historical supporting studies retained",
+      "question": "How much does the observation method influence reported latency?",
+      "control": "Declared observer interval or timing output disabled",
+      "change": "Change only the observer interval or enable timing output",
+      "held_fixed": "Workload and environment within each separate diagnostic study.",
+      "population": "Separate async and settlement diagnostics.",
+      "environment": "OCI diagnostic configurations.",
+      "repeats": "Per-study repeats; not pooled with workflow comparisons.",
+      "metric": "Observed completion delay, request traffic and stage timing coverage.",
+      "clock": "Observer polling adds detection delay; worker stage records measure a different boundary.",
+      "result": "Polling and timing settings belong in the experiment contract.",
+      "meaning": "Faster detection is not automatically faster execution. Keep the measurement method fixed across arms.",
+      "limits": "These diagnostics are not interchangeable with payment throughput, agent benefit or the later matched workload studies.",
+      "reproduce": "docs/measurement-contract.md",
+      "evidence": [
+        {
+          "path": "validation/research-register-20261101/summary.json",
+          "sha256": "01e59de5ecd0f40e41c6cc46c71c60e3236a4a90f2fa779995584c9a67936a49"
+        }
+      ]
+    }
+  ],
+  "patterns": [
+    {
+      "id": "D01",
+      "name": "Worker pacing",
+      "image": "docs/assets/workflows/01-w01-worker-pacing.png",
+      "question": "Why wait after a successful task?",
+      "explanation": "The payment graph stays the same. The external worker either sleeps after success or immediately fetches the next task. Idle and retry backoff remain.",
+      "interpretation": "W01 shows more payments meeting the deadline for fixed bursts and one worker. It tests worker scheduling, not a redesigned payment process.",
+      "source": "docs/w01-worker-pacing.md",
+      "studies": [
+        "W01"
+      ]
+    },
+    {
+      "id": "D02",
+      "name": "Parallel checks",
+      "image": "docs/assets/workflows/02-w02-parallel-checks.png",
+      "question": "Which checks can safely overlap?",
+      "explanation": "Sequential execution waits for KYC before starting risk. Parallel execution starts both independent checks and joins them before payment. Neither check is skipped.",
+      "interpretation": "W02 shows lower observed latency at 1/s. The mixed follow-up shows that benefits depend on the outcome and dependency delays.",
+      "source": "docs/w02-independent-checks.md",
+      "studies": [
+        "W02",
+        "W02-MIXED"
+      ]
+    },
+    {
+      "id": "D03",
+      "name": "Review routing",
+      "image": "docs/assets/workflows/03-w03-review-routing.png",
+      "question": "Which cases actually need a reviewer?",
+      "explanation": "A fixed policy routes required cases to a reviewer. Eligible cases can proceed; unauthorized or unknown cases still stop. Final verification remains.",
+      "interpretation": "W03 reduces tasks from ten to four for its constructed cases and preserves all four mandatory reviews. It does not measure human time saved.",
+      "source": "docs/w03-review-routing.md",
+      "studies": [
+        "W03"
+      ]
+    },
+    {
+      "id": "D04",
+      "name": "Minimal workflow",
+      "image": "docs/assets/workflows/04-basic-minimal.png",
+      "question": "Can a workflow start and durably finish?",
+      "explanation": "Start and finish a process with the declared correlation data and payload. The checker confirms durable completion.",
+      "interpretation": "A useful basic readiness check. Its input still contains data, so it is not a zero-variable engine-overhead benchmark.",
+      "source": "workloads/minimal.bpmn",
+      "studies": [
+        "CORE"
+      ]
+    },
+    {
+      "id": "D05",
+      "name": "Variables and branching",
+      "image": "docs/assets/workflows/05-basic-variables.png",
+      "question": "Does the right data survive the chosen branch?",
+      "explanation": "Choose a branch, cross an asynchronous boundary and inspect persisted values. Persistent and transient data have different expected histories.",
+      "interpretation": "Correctness requires the right branch and right surviving values. No separate repeated speedup claim belongs to this picture.",
+      "source": "workloads/variables.bpmn",
+      "studies": [
+        "CORE"
+      ]
+    },
+    {
+      "id": "D06",
+      "name": "External task and tool",
+      "image": "docs/assets/workflows/06-basic-async.png",
+      "question": "Can the engine, worker and tool finish together?",
+      "explanation": "Fluxnova creates an external task. A worker fetches it, calls the deterministic echo tool and reports completion. The benchmark observes durable history.",
+      "interpretation": "This is the workload behind P01, the runtime/release comparisons and the soak. Their clocks include worker/tool work and observation.",
+      "source": "workloads/async.bpmn",
+      "studies": [
+        "P01",
+        "JVM",
+        "RELEASE",
+        "SOAK",
+        "CAPACITY"
+      ]
+    },
+    {
+      "id": "D07",
+      "name": "KYC decision and review",
+      "image": "docs/assets/workflows/07-basic-kyc.png",
+      "question": "Does each screening result reach the right route?",
+      "explanation": "Synthetic screening approves, rejects or creates a review wait. The test simulates completion of that review.",
+      "interpretation": "A correct waiting or rejected state can be a passing test. Real screening quality and human working time remain outside this basic fixture.",
+      "source": "workloads/kyc.bpmn",
+      "studies": [
+        "CORE",
+        "W03"
+      ]
+    },
+    {
+      "id": "D08",
+      "name": "Risk and freshness",
+      "image": "docs/assets/workflows/08-basic-risk.png",
+      "question": "Do limits and stale data prevent the wrong action?",
+      "explanation": "Check a synthetic risk limit and market-data freshness. Accept only when both declared conditions allow it.",
+      "interpretation": "An expected refusal is correct work, but it is not a settled payment. Report those populations separately.",
+      "source": "workloads/risk.bpmn",
+      "studies": [
+        "CORE",
+        "W02-MIXED"
+      ]
+    },
+    {
+      "id": "D09",
+      "name": "Settlement and replay",
+      "image": "docs/assets/workflows/09-basic-settlement.png",
+      "question": "Is the authorized payment effect exact and unique?",
+      "explanation": "Check policy before the synthetic ledger effect. Repeating an operation must preserve its original result without paying again.",
+      "interpretation": "Successful HTTP responses are insufficient: the checker matches amount, beneficiary and effect count to the original intent. No real money moves.",
+      "source": "workloads/settlement.bpmn",
+      "studies": [
+        "CORE",
+        "PAY05",
+        "AGENT",
+        "RECOVERY"
+      ]
+    }
+  ]
+}

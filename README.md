@@ -2,11 +2,21 @@
 
 Measure how quickly and reliably financial and agentic workflows reach **correct, authorized outcomes**. This toolkit provides BPMN workloads, deterministic services, load generation, outcome checks and evidence-based reports for controlled Fluxnova comparisons.
 
-[One-page research brief](docs/assets/fluxnova-research-brief-20261028.pdf) | [Get started](docs/getting-started.md) | [Results](docs/workload-completion.md) | [Benchmark protocol](docs/benchmark-protocol.md) | [Contribute](CONTRIBUTING.md)
+[Illustrated benchmark guide](docs/benchmark-guide.md) | [Results and their meaning](docs/benchmark-guide.md#study-register) | [Supported run paths](docs/benchmark-standard.md) | [Get started](docs/getting-started.md) | [Contribute](CONTRIBUTING.md)
 
 Independent research and OCI implementation by **Nicholas Cusato**. Fluxnova is a FINOS project; this repository is a contribution candidate, not an adopted FINOS standard or an official Fluxnova release. See the [release policy](docs/public-release.md).
 
 ## Try it in two minutes
+
+**A pattern is what runs. A benchmark type is how we test it. A study is one frozen experiment.** The [catalogue](docs/benchmark-guide.md) separates correctness checks, repeated latency/deadline comparisons, endurance, capacity, finite-population scaling and recovery. Every comparison has its own baseline. The nine diagrams explain six basic patterns, two timed workflow comparisons and one review-task comparison.
+
+```bash
+python -m benchlib.cli catalog
+python -m benchlib.cli explain W02
+python -m benchlib.cli catalog --check
+```
+
+These commands explain and validate the saved register without starting a workload. Open `docs/benchmark-guide.html` locally for the searchable illustrated version.
 
 Use Git and Python 3.12 or newer. Run from the checkout root; the offline reporting demo needs no cloud account, credentials or extra Python packages.
 

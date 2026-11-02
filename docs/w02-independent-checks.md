@@ -37,7 +37,7 @@ From this repository, using the prepared local runtime:
 python scripts/run_w02_functional.py --output dist/w02-functional-NEW
 ```
 
-For another prepared runtime location, supply `--runtime PATH --java PATH`. The Windows defaults point to `.tools/fluxnova-3.0.1` and `.tools/java21/jdk-21.0.12.1+1-jre/bin/java.exe`. These runtimes are ignored, not distributed in Git. The script does not download or install them. It requires a fresh output directory and an unused loopback port, default 28180. It never accepts a remote engine address or uses OCI credentials.
+For another prepared runtime location, supply `--runtime PATH --java PATH --distribution-archive PATH_TO_ZIP`. The explicit archive must match the same pinned SHA-256; its location can be outside the checkout. Without that option, the runner uses `.tools/fluxnova-3.0.1.zip`. The Windows defaults point to `.tools/fluxnova-3.0.1` and `.tools/java21/jdk-21.0.12.1+1-jre/bin/java.exe`. These runtimes are ignored, not distributed in Git. The script does not download or install them. It requires a fresh output directory and an unused loopback port, default 28180. It never accepts a remote engine address or uses OCI credentials.
 
 Open `report.html` in that output directory after the command succeeds. The page works with its adjacent JSON files. Retain the complete directory: manifest, archived source and workload inputs, engine history, independent receipts, worker events, database, log and checksums. The generated engine password is redacted after shutdown. Failed attempts are retained separately; do not overwrite or relabel them.
 

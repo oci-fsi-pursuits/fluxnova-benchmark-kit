@@ -57,7 +57,11 @@
     "docs/fnv06-population-scaling.md",
     "docs/fnv06-repeated-cells.md",
     "docs/fnv07-cluster-jobs.md",
-    "docs/fnv07-timing.md"
+    "docs/fnv07-timing.md",
+    "docs/benchmark-standard.md",
+    "docs/benchmark-guide.md",
+    "docs/benchmark-guide.html",
+    "docs/talk-15-minutes.md"
   ],
   "evidence_directories": [
     "validation/oci-20261027-w01-comparison",
@@ -88,7 +92,8 @@
     "validation/oci-20261101-fnv06-campaign",
     "validation/local-20261101-fnv07",
     "validation/oci-20261101-fnv07",
-    "validation/local-20261101-fnv07-timing"
+    "validation/local-20261101-fnv07-timing",
+    "validation/research-register-20261101"
   ],
   "evidence_filenames": [
     "README.md",

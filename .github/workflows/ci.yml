@@ -39,5 +39,9 @@ jobs:
         run: python scripts/ci_tools.py
       - name: Unit and real k6 checks
         run: python -m unittest discover -s tests -v
+      - name: Benchmark catalogue and guide consistency
+        run: |
+          python -m benchlib.cli catalog --check
+          python scripts/build_benchmark_guide.py --check
       - name: Fresh offline demonstration
         run: python -m benchlib.cli demo --output-root "${{ runner.temp }}/fluxnova-report-demo"
