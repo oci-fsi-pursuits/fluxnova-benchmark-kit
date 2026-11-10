@@ -1,10 +1,23 @@
 # Fluxnova workflow benchmarking
 
+[Roadmap and daily progress](ROADMAP.md) — current gate, acceptance criteria and next experiments.
+
 Measure how quickly and reliably financial and agentic workflows reach **correct, authorized outcomes**. This toolkit provides BPMN workloads, deterministic services, load generation, outcome checks and evidence-based reports for controlled Fluxnova comparisons.
 
 [Illustrated benchmark guide](docs/benchmark-guide.md) | [Results and their meaning](docs/benchmark-guide.md#study-register) | [Presentation](docs/presentation.md) | [Supported run paths](docs/benchmark-standard.md) | [Get started](docs/getting-started.md) | [Contribute](CONTRIBUTING.md)
 
 Independent research and OCI implementation by **Nicholas Cusato**. Fluxnova is a FINOS project; this repository is a contribution candidate, not an adopted FINOS standard or an official Fluxnova release. See the [release policy](docs/public-release.md).
+
+## Start here
+
+Use this repository as a **benchmark template and an executable pattern library**. Read a pattern, inspect its BPMN and expected outcomes, then adapt it to your own synthetic use case. Saved measurements apply to their recorded conditions; remeasure your adaptation.
+
+| Your goal | First step |
+| --- | --- |
+| Explore without running an engine | Clone below and run `python -m benchlib.cli demo` |
+| Understand a reusable pattern | Run `python -m benchlib.cli explain W02`, then inspect [workloads](workloads/) |
+| Generate or improve BPMN with an agent | Use the [agent starter prompt](#give-an-agent-this-repository) |
+| Contribute to a project | Start with a small synthetic case, an outcome check or a documented reproduction improvement; follow [the contribution guide](CONTRIBUTING.md) |
 
 ## Try it in two minutes
 
@@ -165,6 +178,60 @@ These results describe their declared synthetic workloads and environments. They
 | Add a comparison | [Contribution guide](CONTRIBUTING.md), [protocol](docs/benchmark-protocol.md) | An original-input oracle, negative cases and a reproducible test |
 
 The portable core is Python, BPMN, k6, containers and evidence contracts. Automated cloud provisioning currently targets OCI Compute and PostgreSQL. There is no turnkey AWS, Azure or on-premises provisioning switch, and the isolated W01/W02 operator workflow requires environment-specific preparation. See the [support matrix](docs/portability.md).
+
+## Patterns for agentic workflow design
+
+An agent can use these examples to propose BPMN, choose an existing flow or compare alternatives. Reusing a small set of explicit patterns can reduce the number of decisions it must invent, make assumptions visible and make alternatives easier to test. That is a design hypothesis: these benchmarks measure workflow behavior, not improvements in an agent's reasoning or generation accuracy.
+
+Simplification means removing unnecessary coordination while preserving policy, authorization and required review. It can also introduce costs. Parallel checks may improve settlement timeliness while worsening refusal timeliness or increasing backend attempts. Fewer review tasks help only when every required review remains. The saved W02 and W03 studies above show why both benefits and regressions belong in the decision record.
+
+| Pattern | Candidate use | What to preserve and measure |
+| --- | --- | --- |
+| [W01 worker pacing](docs/w01-worker-pacing.md) | Remove a delay after successful work | Idle/retry backoff; deadline outcomes and resource use |
+| [W02 independent checks](docs/w02-independent-checks.md) | Run independent checks together | Dependencies and final policy; settlement/refusal timeliness and attempts |
+| [W03 review routing](docs/w03-review-routing.md) | Route only policy-required cases to review | Mandatory reviews and denied/unknown cases; review count and correct outcomes |
+| [Settlement](workloads/settlement.bpmn) | Guard a side effect and handle replay | Exact authorized effect, no unauthorized effect and deduplication |
+
+For generated BPMN, first define the original-input oracle and negative cases, then validate deployment and functional outcomes in the isolated lab. Check branch coverage, joins, timeouts, retries, required reviews and replay behavior. Only then compare matched runs under declared load and resources. Syntactically valid BPMN alone does not establish correct business behavior.
+
+Keep a concise decision record: requirement, baseline, candidate pattern, dependency assumptions, policy invariants, rejected alternatives, test commands, artifact/commit identifiers, observed metrics, regressions and remaining uncertainty. This justifies a recommendation through inspectable evidence; it does not expose or require a model's private reasoning. The repository provides examples and measurement contracts; it does not currently provide an automatic BPMN generator or an agent integration service.
+
+### Give an agent this repository
+
+Point a coding agent at `https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit` and give it the following prompt after supplying your use case:
+
+```text
+Use fluxnova-benchmark-kit as a reference pattern library for this use case:
+[describe inputs, policy, required reviews, desired outcome and deadline].
+
+Clone the repo and record its commit. Read README.md, CONTRIBUTING.md,
+docs/workloads.md, docs/measurement-contract.md and docs/benchmark-protocol.md.
+Run python -m benchlib.cli catalog --check and explain W02.
+Select a relevant executable pattern and inspect its BPMN, workers and cases.
+Identify missing requirements before inventing policy. Define synthetic inputs,
+expected outcomes and an independent oracle, including denial, unknown input,
+retry and duplicate cases. Propose a baseline and one controlled change.
+Produce candidate BPMN, functional checks and a short evidence-based decision
+record covering assumptions, alternatives, tradeoffs and limitations.
+Run offline checks first. Use docs/interactive-lab.md for local functional
+validation when prerequisites are available; report what actually ran or skipped.
+Do not provision cloud resources or call live models without explicit scope.
+Do not present sample data or another study's results as measurements of my flow.
+```
+
+To evaluate whether pattern reuse helps agents themselves, compare generation with and without the library using the same tasks, model/version, tool budget and acceptance oracle over repeated trials. Record valid deployments, correct/unauthorized outcomes, revisions, tokens, elapsed time and cost. Preserve failed generations. This is a proposed experiment, not an existing result.
+
+## Opportunities across FINOS
+
+These are proposed integrations, not shipped adapters or endorsements. Start with one small comparison and an independent outcome check.
+
+| Project | Potential contribution from this kit | First experiment |
+| --- | --- | --- |
+| [Morphir](https://morphir.finos.org/) represents portable business logic | Pair explicit policy logic with workflow outcome contracts | Adapt a synthetic routing rule and compare expected decisions across implementations |
+| [CALM](https://calm.finos.org/) models machine-readable architecture | Bind each benchmark to a declared topology, dependencies and controls | Describe one study environment in CALM and retain its validated model with results |
+| [AI Governance Framework](https://air-governance-framework.finos.org/single-page.html) catalogues risks and mitigations | Supply repeatable evidence for narrowly scoped control checks | Map one authorization or duplicate-effect test to a relevant mitigation and retain failures; passing a test is not certification |
+
+The strongest starting point is a Morphir policy-to-workflow example or a CALM environment description. Both make assumptions more explicit before adding autonomous generation. FINOS also describes a broader [governance-as-code direction](https://ai.finos.org/governance-as-code/) involving Fluxnova, CALM and governance controls; this kit could contribute executable evidence to that work.
 
 ## Measurement principles
 
