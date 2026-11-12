@@ -1,4 +1,4 @@
-"""Optional metadata-only tracing; never record headers, bodies or error messages."""
+"""Metadata-only tracing; bounded numeric correlation, no credentials or bodies."""
 import json
 from pathlib import Path
 import threading
@@ -8,7 +8,7 @@ import time
 class TransportDiagnostics:
     EVENTS = {'connection_open', 'connection_closed', 'request_received', 'body_read',
               'response_started', 'response_sent', 'response_error', 'handler_error', 'http_error'}
-    FIELDS = {'connection', 'route', 'status', 'bytes', 'error_class'}
+    FIELDS = {'connection', 'route', 'status', 'bytes', 'error_class', 'request_id'}
     ROUTES = {'/node', '/execute', '/register', '/snapshot', '/observe'}
 
     def __init__(self, path):

@@ -39,8 +39,6 @@ def sha(path):
 
 def run(args):
     runtime, java, build, output = (getattr(args, name).resolve() for name in ('runtime', 'java', 'build', 'output'))
-    if args.probe_connection_close and not args.transport_diagnostics:
-        raise ValueError('Connection-close experiment requires transport diagnostics')
     if output.exists() or not java.is_file():
         raise ValueError('Use a fresh output folder and an explicit verified Java executable')
     inventory = distribution_inventory(runtime)
@@ -70,7 +68,7 @@ def run(args):
     store = ProbeStore(output / 'probe.sqlite', run_id, ['n1'])
     server = make_server(store, admin_token=admin_token, execute_token=execution_token,
                          diagnostics_path=output / 'transport.ndjson' if args.transport_diagnostics else None,
-                         connection_close=args.probe_connection_close)
+                         connection_close=not args.legacy_probe_connection)
     worker = threading.Thread(target=server.serve_forever, daemon=True)
     worker.start()
     config = output / 'engine.local.yml'
@@ -123,6 +121,7 @@ spring.web.resources:
         'engine_sql_reconciled': False,
         'transport_diagnostics_enabled': args.transport_diagnostics,
         'probe_connection_close_experiment': args.probe_connection_close,
+        'probe_connection_close': not args.legacy_probe_connection,
         'scope': 'Single-engine local functional qualification; no PostgreSQL, cluster, capacity or exactly-once network guarantee.',
     }
     if timing:
@@ -207,6 +206,9 @@ if __name__ == '__main__':
                         help='Run the bounded normal-case open-loop timing qualification instead of the six fault cases.')
     parser.add_argument('--transport-diagnostics', action='store_true',
                         help='Record metadata-only receipt-server trace; adds diagnostic overhead, not a performance comparison.')
-    parser.add_argument('--probe-connection-close', action='store_true',
-                        help='Diagnostic arm: explicitly close HTTP response connections. Not a qualified fix.')
+    connection = parser.add_mutually_exclusive_group()
+    connection.add_argument('--probe-connection-close', action='store_true',
+                            help='Explicit connection-close policy (now the default); accepted for compatibility.')
+    connection.add_argument('--legacy-probe-connection', action='store_true',
+                            help='Diagnostic baseline only: reproduce the old response without an explicit close header.')
     run(parser.parse_args())

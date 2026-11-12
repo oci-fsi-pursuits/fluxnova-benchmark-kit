@@ -174,7 +174,7 @@ class ProbeStore:
 
 
 def make_server(store, *, admin_token, execute_token, address=('127.0.0.1', 0), diagnostics_path=None,
-                connection_close=False):
+                connection_close=True):
     if not admin_token or not execute_token or admin_token == execute_token:
         raise ValueError('separate_private_tokens_required')
 
@@ -186,6 +186,8 @@ def make_server(store, *, admin_token, execute_token, address=('127.0.0.1', 0), 
 
         def trace(self, event, **fields):
             if diagnostics:
+                if getattr(self, 'diagnostic_request_id', None) is not None:
+                    fields['request_id'] = self.diagnostic_request_id
                 diagnostics.emit(event, connection=self.diagnostic_connection, **fields)
 
         def finish(self):
@@ -219,6 +221,9 @@ def make_server(store, *, admin_token, execute_token, address=('127.0.0.1', 0), 
                 self.trace('response_error', error_class=type(error).__name__)
 
         def do_POST(self):
+            # Dedicated numeric correlation metadata, not arbitrary header data.
+            marker = self.headers.get('X-Fnv07-Diagnostic-Id', '')
+            self.diagnostic_request_id = int(marker) if re.fullmatch(r'[0-9]{1,6}', marker) else None
             self.trace('request_received', route=self.path)
             try:
                 self.connection.settimeout(10)

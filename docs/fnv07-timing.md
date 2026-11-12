@@ -49,6 +49,21 @@ python scripts/diagnose_fnv07_transport.py dist/fnv07-diagnostic-NEW --output di
 
 The report verifies the saved checksum seal, counts delegate and durable receipt attempts separately, reruns the independent timing auditor and reports its rejection reason. A report can be successfully generated for a failed run; inspect `timing_qualification`, not the report command’s exit code. It refuses to overwrite a report or write inside original evidence. Historical evidence without a trace is supported. Checksums detect changes relative to the supplied seal, not the authenticity of an externally supplied experiment.
 
-`--probe-connection-close` is a separate diagnostic arm, requiring tracing. It explicitly adds `Connection: close` to fixture responses and records that choice in the manifest. It tests a connection-lifecycle hypothesis; it is not a qualified fix or an accepted benchmark change. All workload, retry and timing acceptance rules stay unchanged.
+The receipt fixture now explicitly adds `Connection: close` by default, matching its one-request-per-connection lifecycle. This avoids the EOF failures reproduced with the shared Java client. The policy is recorded in the manifest; `--probe-connection-close` remains a compatible explicit spelling. `--legacy-probe-connection` recreates the old header behavior for diagnostics only. Tracing is optional and separate: its synchronous file I/O can affect dispatch. All workload, retry and timing acceptance rules stay unchanged.
 
 A server `response_sent` event means its write returned, not that Java received the reply or that Fluxnova committed the job. Compare both sides and the receipt ledger before assigning a cause. Socket failures can occur before a request reaches the handler. Traces with recording errors or an incomplete seal are not complete diagnostic evidence.
+
+## Standalone HTTP reproducer
+
+Use Java 21 and a fresh output directory. No Fluxnova engine is launched. A shared Java HTTP client posts fixed synthetic node registrations to the real receipt handler at fixed concurrency. Two pairs alternate the order of legacy header behavior and explicit close; every planned client call remains counted. In this tool, the output label `default` means the pre-fix legacy baseline, not the receipt fixture's new default.
+
+```text
+python scripts/run_fnv07_http_probe.py --java PATH_TO_JAVA --javac PATH_TO_JAVAC --output dist/http-probe-NEW --requests 40 --concurrency 2 --repeats 2
+python scripts/audit_fnv07_http_probe.py dist/http-probe-NEW
+```
+
+The runner retains Java source/class hashes, toolchain hashes, per-call outcomes, trace, cleanup, manifests and checksums. The saved-evidence auditor recomputes counts and checks the original denominator; producing a report does not mean every call passed. Tracing permits only a dedicated bounded numeric request ID for correlation; it does not record other header values or bodies. No mutation retry is added by the Java test harness.
+
+On 12 November, the legacy baseline produced 22/40 successful calls in each of two arms, versus 40/40 for each explicit-close arm. All 36 failed legacy calls lacked a server request entry. Both corrected arms reconciled client IDs, handled requests and written responses. This isolates a connection-lifecycle interoperability issue in the tested Java 21/Python 3.14 environment; it does not prove a specific JVM defect or establish cross-version behavior. Python's [HTTP server documentation](https://docs.python.org/3.14/library/http.server.html) distinguishes protocol versions and connection persistence; our fixture explicitly signals its actual closure policy.
+
+The first subsequent traced workflow run still failed with two missed arrivals, despite zero delegate errors. A separate explicit-close run without synchronous tracing passed the original timing auditor: 20 workflows, 60 attempts/effects, 120 job records, no retries or missing arrivals. Earlier failures remain retained; this is fixture qualification, not a latency or scaling comparison.

@@ -27,10 +27,10 @@ class TransportDiagnosticsTests(unittest.TestCase):
     def test_explicit_close_is_optional_and_returns_valid_response(self):
         with tempfile.TemporaryDirectory() as tmp:
             store = ProbeStore(Path(tmp) / 'probe.sqlite', 'run-fixture', ['n1'])
-            for close in (False, True):
+            for close in (None, False, True):
                 with self.subTest(connection_close=close):
                     server = make_server(store, admin_token='admin-fixture', execute_token='execute-fixture',
-                                         connection_close=close)
+                                         **({} if close is None else {'connection_close': close}))
                     thread = threading.Thread(target=server.serve_forever, daemon=True)
                     thread.start()
                     try:
@@ -39,7 +39,7 @@ class TransportDiagnosticsTests(unittest.TestCase):
                         with urllib.request.urlopen(req, timeout=3) as response:
                             self.assertEqual(response.status, 200)
                             self.assertEqual(json.load(response), store.snapshot())
-                            if close:
+                            if close is not False:
                                 self.assertEqual(response.headers['Connection'], 'close')
                     finally:
                         server.shutdown(); server.server_close(); thread.join(timeout=3)
@@ -55,11 +55,11 @@ class TransportDiagnosticsTests(unittest.TestCase):
             try:
                 with patch.object(store, 'snapshot', side_effect=RuntimeError(secret)):
                     request = urllib.request.Request(f'http://127.0.0.1:{server.server_port}/snapshot', data=b'{}',
-                                                     headers={'X-Fnv07-Token': secret})
+                                                     headers={'X-Fnv07-Token': secret, 'X-Fnv07-Diagnostic-Id': secret})
                     with self.assertRaises(Exception):
                         urllib.request.urlopen(request, timeout=3)
                 request = urllib.request.Request(f'http://127.0.0.1:{server.server_port}/snapshot', data=b'{}',
-                                                 headers={'X-Fnv07-Token': secret})
+                                                 headers={'X-Fnv07-Token': secret, 'X-Fnv07-Diagnostic-Id': '7'})
                 with urllib.request.urlopen(request, timeout=3) as response:
                     self.assertEqual(response.status, 200)
             finally:
@@ -70,6 +70,7 @@ class TransportDiagnosticsTests(unittest.TestCase):
             self.assertEqual([r['seq'] for r in rows], list(range(1, len(rows) + 1)))
             self.assertTrue(any(r['event'] == 'handler_error' and r['error_class'] == 'RuntimeError' for r in rows))
             self.assertTrue(any(r['event'] == 'response_sent' and r['status'] == 200 for r in rows))
+            self.assertTrue(any(r['event'] == 'response_sent' and r.get('request_id') == 7 for r in rows))
 
     def test_writer_rejects_extra_fields_and_never_logs_unknown_routes(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -30,8 +30,9 @@ def diagnose(folder):
     with sqlite3.connect((folder / 'probe-snapshot.sqlite').as_uri() + '?mode=ro&immutable=1', uri=True) as db:
         counts = {table: db.execute('SELECT COUNT(*) FROM ' + table).fetchone()[0]
                   for table in ('cases', 'attempts', 'effects')}
+    timing_result = None
     try:
-        audit(folder)
+        timing_result = audit(folder)
         qualification = 'passed'
         reason = None
     except AssertionError as error:
@@ -50,6 +51,7 @@ def diagnose(folder):
             raise ValueError('diagnostic_sequence_gap')
     return {'scope': 'Local timing diagnostic only; no capacity, scale-out or transport root-cause claim.',
             'timing_qualification': qualification, 'audit_reason': reason, 'seal_verified': True,
+            'timing_audit': timing_result,
             'delegate_attempts': len(logs['ATTEMPT']), 'delegate_successes': len(logs['SUCCESS']),
             'delegate_failures': len(logs['FAILURE']), 'backend': counts,
             'history_rows': final['history']['count'],

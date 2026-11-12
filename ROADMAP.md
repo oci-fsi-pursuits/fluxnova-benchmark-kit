@@ -25,7 +25,7 @@ See [completed patterns](docs/workload-completion.md), [FNV-07](docs/fnv07-clust
 
 | ID / status | Work and acceptance | Next action / dependency |
 | --- | --- | --- |
-| R0 — in progress | Refresh local FNV-07 retry/effect and timing qualification. Reconcile original inputs, attempts, exact receipts, job history and all scheduled arrivals; retain failures and verify owned cleanup. | Retry/effect audit passed on 10 November. Timing audit rejected one unexpected delegate transport failure/retry. Diagnose the Java-to-receipt-service EOF before a separately identified diagnostic trial. |
+| R0 — passed locally | Refresh local FNV-07 retry/effect and timing qualification. Reconcile original inputs, attempts, exact receipts, job history and all scheduled arrivals; retain failures and verify owned cleanup. | Explicit connection-close restored local timing qualification on 12 November. Both default-policy timing and six-case retry/effect audits passed. All prior failures remain retained; see the evidence below. |
 | R1 — next | Qualify the multi-engine PostgreSQL deployment, reset/cleanup and telemetry. Capture generator, observer, receipt-service, engine and DB resources; show every declared executor actually performs work. | Declare host placement, CPU/memory allocation, versions, ingress, DB configuration and resource validity thresholds. Provisioning and budget must be explicitly scoped. |
 | R2 — planned | Separate offered-load pilot, followed by frozen 1/2/3/6-replica × five-repeat protocol. Keep per-engine resources fixed; disclose increasing total resources. Preserve offered arrivals, drops, retries and unresolved outcomes. | Use R1 evidence to select offered load, warmup, duration and headroom thresholds before measured runs. Do not choose them after seeing the comparison. |
 | R3 — planned | Execute and audit the frozen FNV-07 campaign. Publish paired outcome/latency/resource evidence and cost accounting. Report invalid cells and uncertainty; fixed load does not establish capacity or linear scaling. | R1/R2 must pass. Do not infer multi-host scale-out from co-located functional results. |
@@ -48,6 +48,17 @@ R4/R5 design can progress while infrastructure-dependent gates wait. Measure Aer
 Contact through public project channels only when outreach is explicitly authorized. Session-derived opportunities are hypotheses, not agreed partnerships.
 
 ## Progress log
+
+### 12 November 2026 — standalone reproduction and local qualification restored
+
+- Built a bounded shared-Java-client/Python-server reproducer with no Fluxnova engine or load scheduler. Two pairs alternated legacy-header and explicit-close arms at concurrency two, 40 calls per arm. The legacy arms each completed 22/40 calls; all 36 failed calls lacked a corresponding server request. Both explicit-close arms completed 40/40 with matching client/server IDs and response counts. Independent saved-evidence reconciliation verified every arm, including failures.
+- This isolates a connection-lifecycle interoperability problem in the tested Java 21/Python 3.14 setup. It does not prove a particular JVM defect. The receipt fixture now explicitly declares `Connection: close` by default, matching its existing one-request-per-connection behavior. A legacy diagnostic option preserves reproduction of the old behavior; no client mutation retry was added.
+- A fresh traced workflow attempt (`004`) still failed: 18/20 original arrivals completed, with zero delegate failures; the other two arrivals were missed. It remains rejected and retained.
+- A separate explicit-close attempt without synchronous tracing (`005`) passed the unchanged timing auditor. A subsequent fresh run using the new default (`007`) also passed: 20 workflows, 60 delegate/backend attempts, 60 effects, 120 job records, zero retries or missing arrivals. The default-policy six-case functional run (`006`) passed independent audit: 19 attempts, eight intended failures, 12 effects, three completed cases, two expected blocked cases and one waiting control.
+- Deadline results must stay separate from driver validity: `005` was 20/20 timely under the original two-second deadline; `007` was **0/20 timely**. All 20 misses remain visible. This variation blocks any stable latency claim and reinforces the need for controlled resource/scheduling investigation in R1.
+- Added a standalone evidence auditor and tests that reject changed/resealed summaries, missing client calls and duplicated IDs. All owned services stopped, raw evidence remains local, and no cloud resources or paid models were used.
+- [Sanitized qualification evidence](validation/local-20261112-fnv07-connection-close/README.md) records hashes and scope. These are functional/driver qualifications, not capacity or latency comparisons.
+- **Next gate is R1:** declare and qualify PostgreSQL host placement, resource telemetry, executor participation, reset and cleanup. Preserve the existing measurement clock and fixed-arrival denominator; select offered load only in a separate pilot before freezing the replica campaign.
 
 ### 12 November 2026 — transport diagnostic tooling
 
