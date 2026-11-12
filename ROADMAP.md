@@ -49,6 +49,15 @@ Contact through public project channels only when outreach is explicitly authori
 
 ## Progress log
 
+### 12 November 2026 — transport diagnostic tooling
+
+- Added opt-in receipt-server metadata tracing, sealed alongside the run; no headers, bodies or exception messages are recorded. The diagnostic report verifies checksums, separates delegate attempts from durable backend attempts/effects, and reruns the unchanged qualification rules. Added read-only immutable opening of the sealed SQLite backup in the timing auditor, consistent with the functional auditor.
+- The historical 10 November evidence still fails its original no-retry gate. It is unchanged and has no retrospective trace.
+- Retained three new diagnostic attempts: baseline inside sandbox (77 delegate attempts, 26 failures, 17 registered cases, 51 effects); baseline outside sandbox (78 attempts, 24 failures, 19 registered cases, 54 effects); explicit connection-close arm (39 attempts, zero delegate failures, 16 registered cases, 39 effects). **All three failed independent timing qualification.** Registered cases are not completed workflows, and fewer delegate errors do not establish an improvement when arrivals remain missing or unverified.
+- The outside-sandbox trace captured a `ConnectionAbortedError`; this shows the issue is not confined to sandbox execution. It does not establish the original EOF's root cause. Adding an explicit close header is an experimental option, not a qualified fix. Tracing adds synchronous I/O overhead, so these are diagnostic results rather than performance comparisons.
+- Every attempt retained its source/input seal and stopped its owned engine and receipt service. No cloud resources or paid models were used. Four new diagnostic tests, 41 existing FNV-07 tests, eight release tests and catalogue checks passed.
+- **Next gate:** build a small Java/Python HTTP reproducer independent of engine startup and offered-load scheduling. Compare default and explicit-close behavior under fixed concurrency, retain connection/request/error counts, then use the result to design the next timing diagnostic. Do not proceed to the replica campaign yet.
+
 ### 10 November 2026 — restart
 
 - Confirmed the next unfinished research question is FNV-07 engine-replica timing, with deployment/resource/pilot prerequisites still open.

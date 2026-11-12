@@ -37,3 +37,18 @@ python scripts/audit_fnv07_timing.py dist/fnv07-timing-NEW
 ```
 
 The [qualification protocol](../workloads/fnv07/load-qualification.json) is deliberately bounded. The next gate must capture generator/observer, receipt-service, engine and database resources while real work runs on the selected cloud placement. After that, a separate offered-rate pilot can inform the frozen 1/2/3/6-engine, five-repeat study.
+
+## Diagnose a rejected run
+
+Never replace a failed qualification or relax its no-retry rule. Use a fresh output directory for every diagnostic arm. The existing runner accepts `--transport-diagnostics` to capture a sealed `transport.ndjson` alongside normal evidence. This opt-in tracing records connection lifecycle, allowlisted routes, byte counts, response status and exception types; it omits headers, payloads and exception messages. Synchronous trace writes add overhead, so these runs are not performance comparisons.
+
+```text
+python scripts/run_fnv07_functional.py --runtime PATH_TO_RUNTIME --java PATH_TO_JAVA --build PATH_TO_BUILD --output dist/fnv07-diagnostic-NEW --timing-qualification --transport-diagnostics
+python scripts/diagnose_fnv07_transport.py dist/fnv07-diagnostic-NEW --output dist/diagnostics/report-NEW.json
+```
+
+The report verifies the saved checksum seal, counts delegate and durable receipt attempts separately, reruns the independent timing auditor and reports its rejection reason. A report can be successfully generated for a failed run; inspect `timing_qualification`, not the report command’s exit code. It refuses to overwrite a report or write inside original evidence. Historical evidence without a trace is supported. Checksums detect changes relative to the supplied seal, not the authenticity of an externally supplied experiment.
+
+`--probe-connection-close` is a separate diagnostic arm, requiring tracing. It explicitly adds `Connection: close` to fixture responses and records that choice in the manifest. It tests a connection-lifecycle hypothesis; it is not a qualified fix or an accepted benchmark change. All workload, retry and timing acceptance rules stay unchanged.
+
+A server `response_sent` event means its write returned, not that Java received the reply or that Fluxnova committed the job. Compare both sides and the receipt ledger before assigning a cause. Socket failures can occur before a request reaches the handler. Traces with recording errors or an incomplete seal are not complete diagnostic evidence.

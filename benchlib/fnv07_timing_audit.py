@@ -215,7 +215,9 @@ def audit(folder):
             require(attempt['status'] == 200 and attempt['disposition'] == 'committed' and attempt['receipt_id'] == effect['receipt_id']
                     and attempt['invocation_id'] == effect['first_invocation_id'] and attempt['started_ns'] <= attempt['finished_ns'], 'effect_commit_not_reconciled')
             require(logs['SUCCESS'].count({**wanted, 'receipt_id': effect['receipt_id'], 'disposition': 'committed'}) == 1, 'delegate_success_not_reconciled')
-    with sqlite3.connect('file:' + (folder / 'probe-snapshot.sqlite').as_posix() + '?mode=ro', uri=True) as db:
+    # This checksum-verified backup is closed and self-contained. Do not create
+    # SQLite WAL/SHM files beside historical evidence during a read-only audit.
+    with sqlite3.connect((folder / 'probe-snapshot.sqlite').as_uri() + '?mode=ro&immutable=1', uri=True) as db:
         db.row_factory = sqlite3.Row
         require(db.execute('PRAGMA integrity_check').fetchone()[0] == 'ok', 'ledger_integrity')
         for table, order in [('metadata', 'key'), ('nodes', 'node_id'), ('cases', 'case_key'), ('effects', 'case_key,stage'), ('attempts', 'seq')]:

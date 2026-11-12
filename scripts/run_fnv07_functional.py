@@ -28,7 +28,7 @@ from services.cluster_probe import ProbeStore, make_server
 
 SOURCES = ('benchlib/__init__.py', 'benchlib/fluxnova.py', 'benchlib/fnv06_functional.py', 'benchlib/fnv07_functional.py',
            'benchlib/workflow_corpus.py', 'services/worker.py', 'services/http_support.py',
-           'services/cluster_probe.py', 'services/workflow_checks.py', 'services/fnv07/RecordingDelegate.java',
+           'services/cluster_probe.py', 'services/transport_diagnostics.py', 'services/workflow_checks.py', 'services/fnv07/RecordingDelegate.java',
            'scripts/build_fnv07_delegate.py', 'scripts/run_w02_functional.py', 'scripts/run_fnv07_functional.py',
            'workloads/fnv07/cases.json', 'workloads/fnv07/cluster-jobs.bpmn')
 
@@ -39,6 +39,8 @@ def sha(path):
 
 def run(args):
     runtime, java, build, output = (getattr(args, name).resolve() for name in ('runtime', 'java', 'build', 'output'))
+    if args.probe_connection_close and not args.transport_diagnostics:
+        raise ValueError('Connection-close experiment requires transport diagnostics')
     if output.exists() or not java.is_file():
         raise ValueError('Use a fresh output folder and an explicit verified Java executable')
     inventory = distribution_inventory(runtime)
@@ -66,7 +68,9 @@ def run(args):
     user, password = 'fnv07local', secrets.token_urlsafe(24)
     admin_token, execution_token = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
     store = ProbeStore(output / 'probe.sqlite', run_id, ['n1'])
-    server = make_server(store, admin_token=admin_token, execute_token=execution_token)
+    server = make_server(store, admin_token=admin_token, execute_token=execution_token,
+                         diagnostics_path=output / 'transport.ndjson' if args.transport_diagnostics else None,
+                         connection_close=args.probe_connection_close)
     worker = threading.Thread(target=server.serve_forever, daemon=True)
     worker.start()
     config = output / 'engine.local.yml'
@@ -117,6 +121,8 @@ spring.web.resources:
         'expected_waiting_controls': 1, 'expected_external_effects': 12,
         'cloud_resources_accessed': False, 'performance_comparison_complete': False,
         'engine_sql_reconciled': False,
+        'transport_diagnostics_enabled': args.transport_diagnostics,
+        'probe_connection_close_experiment': args.probe_connection_close,
         'scope': 'Single-engine local functional qualification; no PostgreSQL, cluster, capacity or exactly-once network guarantee.',
     }
     if timing:
@@ -185,7 +191,7 @@ spring.web.resources:
         'manifest.json', 'delegate-build.json', 'collection.json', 'requests.ndjson', 'engine-n1.log',
         'engine-version.json', 'initial-snapshot.json', 'initial-probe.json', 'final-snapshot.json',
         'final-probe.json', 'failure-snapshot.json', 'failure-probe.json', 'probe-snapshot.sqlite', 'fnv07-delegate.jar',
-        'load-plan.json', 'load-collection.json', 'load-requests.ndjson'} or 'inputs' in p.relative_to(output).parts)]
+        'load-plan.json', 'load-collection.json', 'load-requests.ndjson', 'transport.ndjson'} or 'inputs' in p.relative_to(output).parts)]
     save(output / 'checksums.json', {'files': {p.relative_to(output).as_posix(): sha(p) for p in sealed}})
     if failure is not None:
         raise failure
@@ -199,4 +205,8 @@ if __name__ == '__main__':
     parser.add_argument('--port', type=int, default=18978)
     parser.add_argument('--timing-qualification', action='store_true',
                         help='Run the bounded normal-case open-loop timing qualification instead of the six fault cases.')
+    parser.add_argument('--transport-diagnostics', action='store_true',
+                        help='Record metadata-only receipt-server trace; adds diagnostic overhead, not a performance comparison.')
+    parser.add_argument('--probe-connection-close', action='store_true',
+                        help='Diagnostic arm: explicitly close HTTP response connections. Not a qualified fix.')
     run(parser.parse_args())
