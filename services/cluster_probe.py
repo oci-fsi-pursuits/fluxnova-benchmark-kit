@@ -16,6 +16,7 @@ import time
 from urllib.parse import parse_qs
 
 from services.workflow_checks import canonical, fingerprint
+from services.transport_diagnostics import TransportDiagnostics
 
 STAGES = ('stage1', 'stage2', 'stage3')
 MODES = ('normal', 'fail_before_once', 'fail_after_once', 'fail_before_always', 'fail_after_always')
@@ -172,27 +173,53 @@ class ProbeStore:
             return {'case': dict(row) if row is not None else None, 'effects': [dict(r) for r in effects]}
 
 
-def make_server(store, *, admin_token, execute_token, address=('127.0.0.1', 0)):
+def make_server(store, *, admin_token, execute_token, address=('127.0.0.1', 0), diagnostics_path=None,
+                connection_close=False):
     if not admin_token or not execute_token or admin_token == execute_token:
         raise ValueError('separate_private_tokens_required')
 
     class Handler(BaseHTTPRequestHandler):
+        def setup(self):
+            self.diagnostic_connection = diagnostics.connection() if diagnostics else 0
+            self.trace('connection_open')
+            super().setup()
+
+        def trace(self, event, **fields):
+            if diagnostics:
+                diagnostics.emit(event, connection=self.diagnostic_connection, **fields)
+
+        def finish(self):
+            try:
+                super().finish()
+            finally:
+                self.trace('connection_closed')
+
         def log_message(self, *_):
             pass
+
+        def send_error(self, code, message=None, explain=None):
+            self.trace('http_error', status=int(code))
+            return super().send_error(code, message, explain)
 
         def reply(self, status, data, properties=False):
             raw = (''.join(str(k) + '=' + str(v) + '\n' for k, v in sorted(data.items())).encode('ascii')
                    if properties else json.dumps(data, allow_nan=False).encode())
-            self.send_response(status)
-            self.send_header('Content-Type', 'text/plain; charset=us-ascii' if properties else 'application/json')
-            self.send_header('Content-Length', str(len(raw)))
-            self.end_headers()
+            self.trace('response_started', status=status, bytes=len(raw))
             try:
+                self.send_response(status)
+                self.send_header('Content-Type', 'text/plain; charset=us-ascii' if properties else 'application/json')
+                self.send_header('Content-Length', str(len(raw)))
+                if connection_close:
+                    self.send_header('Connection', 'close')
+                    self.close_connection = True
+                self.end_headers()
                 self.wfile.write(raw)
-            except (BrokenPipeError, ConnectionResetError):
-                pass
+                self.trace('response_sent', status=status, bytes=len(raw))
+            except (BrokenPipeError, ConnectionResetError) as error:
+                self.trace('response_error', error_class=type(error).__name__)
 
         def do_POST(self):
+            self.trace('request_received', route=self.path)
             try:
                 self.connection.settimeout(10)
                 length = int(self.headers.get('Content-Length', '0'))
@@ -201,6 +228,7 @@ def make_server(store, *, admin_token, execute_token, address=('127.0.0.1', 0)):
                 # Consume a bounded body before denying credentials. Unread
                 # request bytes can reset a Windows client's socket and hide 403.
                 raw = self.rfile.read(length)
+                self.trace('body_read', bytes=len(raw))
                 expected = admin_token if self.path in ('/register', '/snapshot', '/observe') else execute_token
                 if not hmac.compare_digest(self.headers.get('X-Fnv07-Token', ''), expected):
                     return self.reply(403, {'error': 'unauthorized'})
@@ -233,7 +261,17 @@ def make_server(store, *, admin_token, execute_token, address=('127.0.0.1', 0)):
             except (ValueError, KeyError, TypeError, UnicodeError):
                 return self.reply(400, {'error': 'invalid_request'})
 
-    server = ThreadingHTTPServer(address, Handler)
+    diagnostics = TransportDiagnostics(diagnostics_path) if diagnostics_path is not None else None
+
+    class Server(ThreadingHTTPServer):
+        def handle_error(self, request, client_address):
+            if diagnostics:
+                import sys
+                diagnostics.emit('handler_error', error_class=sys.exc_info()[0].__name__)
+            else:
+                super().handle_error(request, client_address)
+
+    server = Server(address, Handler)
     server.daemon_threads = True
     return server
 
