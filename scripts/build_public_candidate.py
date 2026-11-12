@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / 'release/public-files.json'
 CORE = {'benchlib', 'configs', 'deploy', 'infra', 'load', 'providers', 'schemas', 'scripts',
         'services', 'telemetry', 'tests', 'workloads', '.github'}
-ROOT_FILES = {'README.md', 'LICENSE', 'pyproject.toml', 'requirements-cloud.txt',
+ROOT_FILES = {'README.md', 'ROADMAP.md', 'LICENSE', 'pyproject.toml', 'requirements-cloud.txt',
               'requirements-database.txt', 'bench.ps1', 'bench.sh', '.gitignore',
               '.gitattributes', '.dockerignore', '.gitleaksignore', '.gitleaks.toml',
               'CONTRIBUTING.md', 'SECURITY.md', 'CITATION.cff', 'release/public-files.json',
