@@ -55,11 +55,13 @@ class TransportDiagnosticsTests(unittest.TestCase):
             try:
                 with patch.object(store, 'snapshot', side_effect=RuntimeError(secret)):
                     request = urllib.request.Request(f'http://127.0.0.1:{server.server_port}/snapshot', data=b'{}',
-                                                     headers={'X-Fnv07-Token': secret, 'X-Fnv07-Diagnostic-Id': secret})
+                                                     headers={'X-Fnv07-Token': secret,
+                                                              'X-Fnv07-Diagnostic-Id': secret})
                     with self.assertRaises(Exception):
                         urllib.request.urlopen(request, timeout=3)
                 request = urllib.request.Request(f'http://127.0.0.1:{server.server_port}/snapshot', data=b'{}',
-                                                 headers={'X-Fnv07-Token': secret, 'X-Fnv07-Diagnostic-Id': '7'})
+                                                 headers={'X-Fnv07-Token': secret,
+                                                          'X-Fnv07-Diagnostic-Id': '7'})
                 with urllib.request.urlopen(request, timeout=3) as response:
                     self.assertEqual(response.status, 200)
             finally:
