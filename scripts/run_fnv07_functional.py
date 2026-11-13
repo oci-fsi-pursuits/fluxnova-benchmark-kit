@@ -111,6 +111,7 @@ spring.web.resources:
 ''', encoding='utf-8')
     manifest = {
         'study_id': corpus['study_id'], 'run_id': run_id, 'runtime': inventory,
+        'python_version': sys.version,
         'java_version': subprocess.run([str(java), '-version'], capture_output=True, text=True, check=True).stderr.strip(),
         'java_executable_sha256': sha(java), 'delegate_sha256': receipt['artifact_sha256'],
         'source_sha256': {name: sha(output / 'inputs' / name) for name in sources},

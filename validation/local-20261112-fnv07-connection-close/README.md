@@ -1,6 +1,6 @@
 # Local HTTP interoperability and FNV-07 qualification
 
-The [summary](summary.json) separates a standalone HTTP diagnostic, functional qualification, timing-driver validity and deadline outcomes. These synthetic checks used Java 21, Python 3.14 and local H2. No cloud or model calls were used.
+The [summary](summary.json) separates a standalone HTTP diagnostic, functional qualification, timing-driver validity and deadline outcomes. The standalone manifest records Java 21 and Python 3.13.15. Workflow checks used Java 21 and local H2, but their original manifests did not record Python version; the runner now records it for future runs. No cloud or model calls were used.
 
 ## What changed
 

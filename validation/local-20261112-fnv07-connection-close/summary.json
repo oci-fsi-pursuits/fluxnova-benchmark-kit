@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "qualification_only": true,
-  "scope": "Local Java 21/Python 3.14/H2 diagnostic and driver qualification; not resource headroom, PostgreSQL, scaling or stable latency evidence.",
+  "scope": "Local Java 21 diagnostic and H2 driver qualification; standalone Python 3.13.15; workflow Python version not recorded; not resource headroom, PostgreSQL, scaling or stable latency evidence.",
   "standalone": {
     "seal_sha256": "f5635f8f8aea79b01eafce398efce276a5c45f6e8aa63b5813aeaf319fd5a854",
     "counts_reconciled": true,
