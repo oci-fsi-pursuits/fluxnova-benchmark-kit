@@ -1,5 +1,7 @@
 # Run a workflow you can see
 
+For a clickable reference you can share, use the **[browser-only walkthrough](https://oci-fsi-pursuits.github.io/fluxnova-benchmark-kit/demo/)**. It uses built-in synthetic illustrations, has no engine/backend or upload endpoint, and requires no credentials. Its times are not measurements. The real lab below is intentionally local.
+
 The **live lab** executes work in Fluxnova. The older `demo` command generates sample report data, and the saved W02 viewer displays recorded evidence.
 
 The optional integration check, `python scripts/check_lab_live.py --output runs/lab-check-001`, creates an owned engine, checks the connection adapter, starter flows, manual decisions, deadline/stop handling, and cleanup isolation. It needs the same cached runtime and Java as the lab, and makes no cloud calls.
@@ -9,6 +11,8 @@ python -m benchlib.cli lab --download-runtime
 ```
 
 With Python 3.12+ and Java 21, this opens **http://127.0.0.1:8765** using an isolated H2 engine. [Provider choices](../providers/README.md) cover OCI deployment and existing engines.
+
+If that URL is unavailable, first start the command above on the same computer, leave its terminal running and wait for the ready URL. The first engine startup may take about a minute. Closing the lab or terminal makes the address unavailable again. `127.0.0.1` always refers to the reader's own device; it is not a hosted service. The lab deliberately has no public bind option. Do not publish an engine port or use a public tunnel as a workaround.
 
 ## A three-minute walkthrough
 
