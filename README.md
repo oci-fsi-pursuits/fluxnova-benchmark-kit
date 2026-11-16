@@ -48,7 +48,11 @@ python scripts/open_report.py --path PATH_TO_REPORT.html
 
 **The demo creates labeled sample data. It does not run Fluxnova or measure its performance.** The [getting-started guide](docs/getting-started.md) separates this demo, local functional testing and measured cloud studies.
 
-## Try a live, clickable workflow
+## Try the shareable walkthrough
+
+**[Open the interactive walkthrough](https://oci-fsi-pursuits.github.io/fluxnova-benchmark-kit/demo/)** — no installation, account or credentials required. Explore sequential checks, parallel checks and required approval using fixed synthetic scenarios. The page runs in your browser without an engine or backend; its timings are illustrative, not benchmark results. It accepts no uploads and makes no application data submissions. GitHub Pages provides HTTPS hosting and may retain standard access logs.
+
+## Run a real workflow locally
 
 With Java 21 and Python 3.12+ installed:
 
@@ -56,7 +60,7 @@ With Java 21 and Python 3.12+ installed:
 python -m benchlib.cli lab --download-runtime
 ```
 
-Open **http://127.0.0.1:8765**. Choose sequential checks, parallel checks or manual approval; upload a small BPMN file; set a few instances, simulated delay and a deadline; then watch actual engine history and complete tasks. This is functional exploration, separate from sample reporting and formal studies.
+Keep that command running, wait for it to print its ready URL, then open **http://127.0.0.1:8765** on the same computer. This loopback address is not a public demo: it is unavailable when the local lab stops and cannot be shared with other readers. Choose sequential checks, parallel checks or manual approval; upload a small supported BPMN file; then watch actual engine history and complete tasks. This is functional exploration, separate from the static walkthrough and formal studies. Keep the lab on loopback; do not expose it through a public tunnel or change it to a public interface.
 
 [Interactive walkthrough](docs/interactive-lab.md) · [Provider choices](providers/README.md) · [OCI Terraform](providers/oci/README.md) · [Connect to an existing engine](providers/existing/README.md)
 

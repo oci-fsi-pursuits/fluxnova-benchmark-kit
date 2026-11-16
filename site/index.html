@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Fluxnova Benchmark Kit · Workflow walkthrough</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+<main>
+  <header><p class="eyebrow">FLUXNOVA BENCHMARK KIT / INTERACTIVE WALKTHROUGH</p><h1>Explore a workflow.<br>See the tradeoff.</h1><p class="intro">Compare independent checks and required review using a small, synthetic example.</p>
+  <p class="notice"><strong>Illustration, not a live engine.</strong> This page simulates fixed scenarios in your browser. It makes no engine, model or payment calls. Its timings are illustrative and are not benchmark measurements.</p></header>
+  <nav aria-label="Project resources"><a href="https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit">Repository</a><a href="https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit/blob/main/docs/benchmark-guide.md#study-register">Measured results</a><a href="https://github.com/oci-fsi-pursuits/fluxnova-benchmark-kit/blob/main/docs/interactive-lab.md">Run a real local lab</a></nav>
+  <section class="workspace" aria-labelledby="explore-title">
+    <div class="controls"><h2 id="explore-title">Choose a pattern</h2>
+      <label for="pattern">Workflow</label><select id="pattern"><option value="sequential">Sequential checks</option><option value="parallel">Parallel checks</option><option value="approval">Required approval</option></select>
+      <label for="delay">Illustrated time per check</label><select id="delay"><option value="400">400 ms</option><option value="800" selected>800 ms</option><option value="1200">1,200 ms</option></select>
+      <label for="deadline">Illustrated deadline</label><select id="deadline"><option value="1000">1 second</option><option value="2000" selected>2 seconds</option><option value="4000">4 seconds</option></select>
+      <div class="buttons"><button id="run" type="button">Play walkthrough</button><button id="reset" type="button" class="secondary">Reset</button></div>
+      <p class="small">Only built-in scenarios are available. This public preview accepts no files or credentials and stores no session data.</p>
+    </div>
+    <div class="visual"><div class="visual-heading"><h2 id="flow-title">Sequential checks</h2><span id="state" class="pill">Ready</span></div>
+      <p id="explanation">Both checks are required. Sequential execution completes one before starting the other.</p>
+      <div class="flow" aria-label="Illustrated workflow">
+        <div id="start" class="node event">Start</div><span class="arrow" aria-hidden="true">→</span>
+        <div id="checks" class="checks"><div id="kyc" class="node">KYC check</div><span id="between" class="arrow" aria-hidden="true">→</span><div id="risk" class="node">Risk check</div></div><span class="arrow" aria-hidden="true">→</span>
+        <div id="review" class="node" hidden>Required review</div><span id="review-arrow" class="arrow" aria-hidden="true" hidden>→</span><div id="end" class="node event">End</div>
+      </div>
+      <div id="approval" class="approval" hidden><p>A required review pauses this illustration. Choose an outcome.</p><button id="approve" type="button">Illustrate approval</button><button id="reject" type="button" class="secondary">Illustrate rejection</button></div>
+      <div class="score"><div><span class="small">Illustrated check duration</span><strong id="duration">1,600 ms</strong></div><div><span class="small">Deadline comparison</span><strong id="deadline-result">Within selected deadline</strong></div></div>
+      <p id="outcome" role="status" aria-live="polite">Choose a pattern, then play the walkthrough.</p>
+      <p class="small">The calculation counts the selected synthetic check delays only. Browser animation is not timed evidence. Engine overhead, network, polling and human wait are excluded. Required approval cannot be skipped.</p>
+    </div>
+  </section>
+  <section class="learning"><h2>Turn an illustration into evidence</h2><div class="cards"><article><h3>Preserve the policy</h3><p>Parallel execution is appropriate only when checks are independent and both results still gate the outcome.</p></article><article><h3>Count every outcome</h3><p>Keep refusals, required reviews, retries and deadline misses visible. A faster wrong outcome has failed.</p></article><article><h3>Remeasure your workload</h3><p>Use the benchmark kit’s real BPMN, original-input oracle and controlled runs before making a performance claim.</p></article></div></section>
+  <footer><p>Independent research by Nicholas Cusato. Fluxnova is a FINOS project; this toolkit is not an official Fluxnova release. This static walkthrough includes no third-party scripts, analytics or application data submissions. The hosting provider serves the page and may process standard access logs.</p><a href="https://github.com/finos/fluxnova-bpm-platform">FINOS Fluxnova project</a></footer>
+</main>
+</body></html>
