@@ -4,7 +4,7 @@
 
 Measure how quickly and reliably financial and agentic workflows reach **correct, authorized outcomes**. This toolkit provides BPMN workloads, deterministic services, load generation, outcome checks and evidence-based reports for controlled Fluxnova comparisons.
 
-[Illustrated benchmark guide](docs/benchmark-guide.md) | [Results and their meaning](docs/benchmark-guide.md#study-register) | [Presentation](docs/presentation.md) | [Supported run paths](docs/benchmark-standard.md) | [Get started](docs/getting-started.md) | [Contribute](CONTRIBUTING.md)
+[Results](#results) | [Get started](docs/getting-started.md) | [Roadmap](ROADMAP.md) | [Illustrated benchmark guide](docs/benchmark-guide.md) | [Presentation](docs/presentation.md) | [Contribute](CONTRIBUTING.md)
 
 Independent research and OCI implementation by **Nicholas Cusato**. Fluxnova is a FINOS project; this repository is a contribution candidate, not an adopted FINOS standard or an official Fluxnova release. See the [release policy](docs/public-release.md).
 
@@ -14,6 +14,7 @@ Use this repository as a **benchmark template and an executable pattern library*
 
 | Your goal | First step |
 | --- | --- |
+| Find results and supporting evidence | [Measured comparisons](#measured-workflow-comparisons), [qualification checks](#qualification-and-diagnostic-results), or [open questions](#what-remains-open) |
 | Explore without running an engine | Clone below and run `python -m benchlib.cli demo` |
 | Understand a reusable pattern | Run `python -m benchlib.cli explain W02`, then inspect [workloads](workloads/) |
 | Generate or improve BPMN with an agent | Use the [agent starter prompt](#give-an-agent-this-repository) |
@@ -148,12 +149,21 @@ The synthetic backend enforces policy before creating a ledger effect. Independe
 
 The diagrams explain the flows; the executable BPMN, worker code and case definitions are the technical source of truth. See [workload contracts](docs/workloads.md) and [reproduction steps](docs/reproduce.md) to run or adapt them. Research and diagram content: **Nicholas Cusato**; Fluxnova software: **FINOS contributors**. [Image provenance and branding](docs/assets/README.md).
 
-## What has been measured
+## Results
+
+**Start with the question you want to answer.** Each study links to its audited evidence and states what the result can support. Functional qualification, timing-driver validity and meeting a deadline are different outcomes.
+
+[Workflow comparisons](#measured-workflow-comparisons) · [Qualification and diagnostics](#qualification-and-diagnostic-results) · [Open questions](#what-remains-open) · [Complete study register](docs/benchmark-guide.md#study-register)
+
+<a id="what-has-been-measured"></a>
+
+### Measured workflow comparisons
 
 | Study | Controlled comparison | Audited finding | Scope |
 | --- | --- | --- | --- |
 | [W01 worker pacing](validation/oci-20261027-w01-comparison/README.md) | Reconstructed 100 ms success delay versus idle-only backoff | Timely payments rose from 600/1,200 to 1,200/1,200; all 2,400 correct | Five matched OCI burst pairs |
 | [W02 independent checks](validation/oci-20261027-w02-comparison/README.md) | Sequential versus parallel KYC/risk, with two worker slots in both | Median paired observed p95 reduced 32.1%; 6,000/6,000 correct and within two seconds | Five matched OCI pairs at 1 start/s; deadline goodput unchanged |
+| [W02 mixed outcomes](validation/oci-20261028-w02-mixed-comparison/README.md) | Sequential versus parallel checks across five dependency profiles | Timely settlements 880 to 1,037 of 1,200; timely refusals 780 to 669 of 1,200; all 6,000 outcomes correct | Five matched OCI pairs; settlement timeliness improved while refusal timeliness worsened |
 | [W03 review routing](validation/local-20261027-w03/README.md) | Review every case versus fixed-policy routing | Review tasks 10 to 4, preserving all four mandatory reviews and 20/20 outcomes | Local synthetic cases with scripted review |
 | [PAY-05 FX quotes](validation/oci-20261031-pay05-comparison/README.md) | Sequential versus parallel quote requests, with three worker slots in both | Timely settlements 668/1,530 to 1,530/1,530; all 3,960 measured outcomes correct | Five matched OCI pairs at 0.5 starts/s; three synthetic delay profiles |
 
@@ -161,7 +171,27 @@ The [mixed-outcome follow-up](validation/oci-20261028-w02-mixed-comparison/READM
 
 PAY-05 also recorded 910 cached backend replays during measured parallel work, versus zero sequentially, without duplicate effects. Its [evidence](validation/oci-20261031-pay05-comparison/summary.json) reports the additional attempts alongside timeliness. Each study keeps its own population and controls.
 
-For the actual saved W02 mixed result, run `python scripts/open_report.py --path docs/results/w02-mixed/report.html` after cloning. This report requires no cloud account and submits no payments.
+**Open a saved result without running a benchmark:** after cloning, run `python scripts/open_report.py --path docs/results/w02-mixed/report.html`. This is the actual saved W02 mixed report, requires no cloud account and submits no payments. The [offline demo](docs/getting-started.md) instead generates labeled sample data; it is not a measured result.
+
+### Qualification and diagnostic results
+
+| Question | Result and evidence | Limit |
+| --- | --- | --- |
+| Do event and batch cases reach the intended states? | [FNV-06 functional qualification](validation/oci-20261101-fnv06/README.md): twelve case families, 42 workflow instances; [45-cell campaign](validation/oci-20261101-fnv06-campaign/README.md): all planned cells completed, with two generator-headroom flags retained | Finite populations and declared delivery patterns; flagged timing comparisons remain flagged |
+| Can multiple engines execute asynchronous jobs correctly? | [FNV-07 PostgreSQL qualification](validation/oci-20261101-fnv07/README.md): one- and two-engine checks passed, and both engines performed work | Shared controller and PostgreSQL container; functional evidence, not distributed scale-out |
+| Does the receipt fixture interoperate with the shared Java HTTP client? | [HTTP reproduction and fixture correction](validation/local-20261112-fnv07-connection-close/README.md): 44/80 successful legacy calls versus 80/80 with explicit connection-close, over two matched pairs | Local transport diagnostic; not a throughput or latency benchmark |
+| Are retries, effects and blocked workflows distinguished? | [Default-policy retry/effect audit](validation/local-20261112-fnv07-connection-close/summary.json): 19 attempts, eight intended failures, 12 distinct effects; three completed, two blocked and one waiting case | Synthetic faults on one H2 engine; no general exactly-once guarantee |
+| Is timing-driver validity the same as meeting a deadline? | [Two untraced timing qualifications](validation/local-20261112-fnv07-connection-close/README.md#workflow-qualification-and-retained-limits) each verified 20 workflows and 60 effects with no retries or missing arrivals. Timely outcomes were **20/20 in one run and 0/20 in the other** | Both passed the driver audit; the later run retained all 20 deadline misses. Stable performance remains unproven |
+
+For JSON consumers and agents, each linked evidence directory includes a sanitized `summary.json`. Read its scope and qualification flags before reusing a number. See the [measurement contract](docs/measurement-contract.md) for metric definitions and the [completed-pattern register](docs/workload-completion.md) for broader context.
+
+### What remains open
+
+- **Stable timing and resource headroom:** controlled PostgreSQL placement and resource/scheduling qualification are next. R1 tooling is in development; no new resource-qualified result has been produced.
+- **Replica scaling and maximum capacity:** the proposed 1/2/3/6-engine campaign has not started. Fixed offered load alone cannot establish capacity.
+- **Cost and agent value:** complete attributed cost per correct outcome, live-model benefit and human time savings remain unmeasured. Aeron and bounded improvement loops are proposed experiments.
+
+Follow the [roadmap and progress log](ROADMAP.md) for the next gate and [supported run paths](docs/benchmark-standard.md) to reproduce a result.
 
 These results describe their declared synthetic workloads and environments. They do not establish maximum capacity, customer traffic performance, human time savings, live-agent value or OCI superiority. Complete allocated cost per outcome remains open.
 

@@ -1,5 +1,15 @@
 title = "Fluxnova benchmark examples and secret scanning"
 
+# Historical test dict syntax put this public header name after a token-key
+# variable. Only the exact header name in this one test file is non-secret.
+[[allowlists]]
+description = "Literal numeric-correlation header name in transport tests"
+targetRules = ["generic-api-key"]
+condition = "AND"
+regexTarget = "secret"
+paths = ['''(^|/)tests/test_transport_diagnostics\.py$''']
+regexes = ['''^X-Fnv07-Diagnostic-Id$''']
+
 [extend]
 useDefault = true
 

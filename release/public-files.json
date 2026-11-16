@@ -101,7 +101,8 @@
     "validation/local-20261101-fnv07",
     "validation/oci-20261101-fnv07",
     "validation/local-20261101-fnv07-timing",
-    "validation/research-register-20261101"
+    "validation/research-register-20261101",
+    "validation/local-20261112-fnv07-connection-close"
   ],
   "evidence_filenames": [
     "README.md",
