@@ -1,0 +1,10 @@
+{
+  "source_commit": "f7ff084bd52e5b13c23189df51702c0f9f10312a",
+  "assets": {
+    ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "index.html": "70281e48bcec6d1fcc4324622681174652886e73a9cd6370115feee8574b25ca",
+    "app.js": "8227e3724844fce092ff9d921a4edee62f3562a544ffcf7207ef26b4fd4834b2",
+    "style.css": "16d83832504e0019b7cb6e5f554065be3463fc0b710a51c5f672f6859c6ed741"
+  },
+  "scope": "Static synthetic illustration. No engine, backend, data submission or measured performance."
+}
